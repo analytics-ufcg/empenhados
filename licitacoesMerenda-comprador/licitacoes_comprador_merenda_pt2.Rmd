@@ -1,0 +1,82 @@
+---
+title: "licitacoes_comprador_merenda_pt2"
+author: "Gileade, Júlio"
+date: "6 de março de 2017"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE)
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Instancia conexão com o BD usando as configurações em ~/.my.cnf
+sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
+
+licitacoes = tbl(sagres, 'licitacao') %>%
+  filter(dt_Ano >= 2010) %>%
+  collect(n = Inf)
+```
+
+
+
+```{r limpeza de dados}
+unidades_gestoras = tbl(sagres, 'codigo_ugestora') %>% 
+  select(de_Ugestora, cd_Ugestora) %>%
+  distinct() %>%
+  collect()
+
+tipos_licitacao = tbl(sagres, 'tipo_modalidade_licitacao') %>% 
+  select(de_TipoLicitacao) %>%
+  collect() %>%
+  mutate(de_TipoLicitacao = as.character(de_TipoLicitacao))
+
+tipos_regime = tbl(sagres, 'regimeexecucao') %>% 
+  select(de_regimeExecucao) %>%
+  collect() %>%
+  mutate(de_regimeExecucao = as.character(de_regimeExecucao))
+  
+licitacoes = tbl(sagres, 'licitacao') %>% 
+  filter(dt_Ano >= 2010) %>% 
+  collect(n = Inf) %>%
+  mutate(tp_Licitacao = factor(tp_Licitacao)) %>%
+  mutate(tp_Licitacao = factor(tp_Licitacao, 
+                               levels = c(levels(tp_Licitacao), '14'),
+                               labels = tipos_licitacao$de_TipoLicitacao)) %>%
+  mutate(tp_Objeto = factor(tp_Objeto)) %>%
+  mutate(tp_regimeExecucao = factor(tp_regimeExecucao)) %>%
+  mutate(tp_regimeExecucao = factor(tp_regimeExecucao,
+                                    levels = c('1', '2', '3', '4', '5'),
+                                    labels = tipos_regime$de_regimeExecucao)) %>%
+  separate(dt_Homologacao, c('dt_AnoHomologacao', 'dt_MesHomologacao', 'dt_DiaHomologacao', 'dt_Hora', 'dt_Minuto', 'dt_Segundo')) %>%
+  select(-c(dt_Hora, dt_Minuto, dt_Segundo, registroCGE)) %>%
+  # verificando relacoes entre colunas com datas
+  # select(dt_Ano, nu_Licitacao, dt_AnoHomologacao, dt_MesHomologacao, dt_MesAno) %>%
+  # separate(nu_Licitacao, c('cd_licitacao','cd_ano_Licitacao'), -5) %>%
+  # separate(dt_MesAno, c('dt_Mes_', 'dt_Ano_'), -5)
+  # ate aqui
+  select(-dt_MesAno) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Município'), -4) %>%
+  mutate(dt_AnoHomologacao = as.integer(dt_AnoHomologacao)) %>%
+  mutate(dt_MesHomologacao = as.integer(dt_MesHomologacao)) %>%
+  mutate(dt_DiaHomologacao = as.integer(dt_DiaHomologacao)) %>%
+  left_join(unidades_gestoras, c('cd_UGestora' = 'cd_Ugestora')) %>%
+  mutate(de_UGestora = factor(de_Ugestora)) %>%
+  select(-de_Ugestora)
+
+```
+
+```{r removendo tabelas}
+rm(tipos_licitacao)
+rm(tipos_regime)
+rm(unidades_gestoras)
+```
+
