@@ -72,8 +72,23 @@ licitacoes = tbl(sagres, 'licitacao') %>%
   mutate(de_UGestora = factor(de_Ugestora)) %>%
   select(-de_Ugestora)
 
+```
+
+```{r removendo tabelas}
 rm(tipos_licitacao)
 rm(tipos_regime)
 rm(unidades_gestoras)
 ```
+
+## Número total de licitações feitas por ano entre 2010 e 2016
+```{r}
+ggplot(aes(dt_Ano), data = licitacoes) +
+  geom_bar() +
+  xlab("Ano") +
+  ylab("Número total de licitações") +
+  scale_x_continuous(breaks = seq(2010, 2016, 1))
+```
+
+
+
 
