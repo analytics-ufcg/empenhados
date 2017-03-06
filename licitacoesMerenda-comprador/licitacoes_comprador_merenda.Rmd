@@ -63,6 +63,8 @@ licitacoes = tbl(sagres, 'licitacao') %>%
   # separate(dt_MesAno, c('dt_Mes_', 'dt_Ano_'), -5)
   # ate aqui
   select(-dt_MesAno) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Município'), -4) %>%
   mutate(dt_AnoHomologacao = as.integer(dt_AnoHomologacao)) %>%
   mutate(dt_MesHomologacao = as.integer(dt_MesHomologacao)) %>%
   mutate(dt_DiaHomologacao = as.integer(dt_DiaHomologacao)) %>%
