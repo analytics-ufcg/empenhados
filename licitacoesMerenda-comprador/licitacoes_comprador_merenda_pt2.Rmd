@@ -43,6 +43,7 @@ tipos_regime = tbl(sagres, 'regimeexecucao') %>%
   collect() %>%
   mutate(de_regimeExecucao = as.character(de_regimeExecucao))
   
+# Verificar diferenças entre arquivos aqui
 licitacoes = tbl(sagres, 'licitacao') %>% 
   filter(dt_Ano >= 2010) %>% 
   collect(n = Inf) %>%
@@ -55,14 +56,12 @@ licitacoes = tbl(sagres, 'licitacao') %>%
   mutate(tp_regimeExecucao = factor(tp_regimeExecucao,
                                     levels = c('1', '2', '3', '4', '5'),
                                     labels = tipos_regime$de_regimeExecucao)) %>%
+  select(-dt_Ano) %>%
   separate(dt_Homologacao, c('dt_AnoHomologacao', 'dt_MesHomologacao', 'dt_DiaHomologacao', 'dt_Hora', 'dt_Minuto', 'dt_Segundo')) %>%
+  separate(dt_MesAno, c('dt_Mes', 'dt_Ano'), -5) %>%
+  mutate(dt_Mes = as.integer(dt_Mes)) %>%
+  mutate(dt_Ano = as.integer(dt_Ano)) %>%
   select(-c(dt_Hora, dt_Minuto, dt_Segundo, registroCGE)) %>%
-  # verificando relacoes entre colunas com datas
-  # select(dt_Ano, nu_Licitacao, dt_AnoHomologacao, dt_MesHomologacao, dt_MesAno) %>%
-  # separate(nu_Licitacao, c('cd_licitacao','cd_ano_Licitacao'), -5) %>%
-  # separate(dt_MesAno, c('dt_Mes_', 'dt_Ano_'), -5)
-  # ate aqui
-  select(-dt_MesAno) %>%
   mutate(cd_UGestora_copy = cd_UGestora) %>%
   separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Município'), -4) %>%
   mutate(dt_AnoHomologacao = as.integer(dt_AnoHomologacao)) %>%
@@ -79,4 +78,55 @@ rm(tipos_licitacao)
 rm(tipos_regime)
 rm(unidades_gestoras)
 ```
+
+```{r filtrando merendas}
+licitacoes_merenda = licitacoes %>%
+  filter(grepl('alimentacao[[:space:]]escolar|merenda', licitacoes$de_Obs, ignore.case = T))
+```
+
+## Que tipo de licitação é mais comum na compra de merenda?
+```{r}
+ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
+  geom_bar(aes(fill = tp_Licitacao)) +
+  scale_x_discrete(labels = c()) +
+  labs(title = 'Quais licitações são mais comuns na compra de merenda?', 
+       x = 'Tipo de licitação', y = 'Total', fill = 'Tipo de licitação')
+```
+
+## Geralmente, quantas propostas são recebidas para licitações de merenda?
+```{r}
+ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
+  geom_histogram(fill = 'orange', binwidth = 1) +
+  labs(title = 'Total de propostas para licitações de merenda',
+       x = 'Número de propostas', y = 'Total') +
+  scale_x_continuous(breaks = seq(0, 50, 5))
+```
+
+
+```{r}
+# Total de licitacoes com mais de 10 propostas
+nrow(filter(licitacoes_merenda, nu_Propostas < 10))
+nrow(filter(licitacoes_merenda, nu_Propostas >= 10))
+
+ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
+  geom_histogram(fill = 'orange', binwidth = 5) +
+  labs(title = 'Total de propostas para licitações de merenda',
+       x = 'Número de propostas', y = 'Total') +
+  scale_x_continuous(breaks = seq(0, 50, 5))
+```
+
+## Em que mês ocorrem mais licitações?
+Aqui, usamos dados a partir de 2011, pois o ano de 2010 estava muito incompleto e 2016 não tem todoso os meses
+```{r}
+ggplot(aes(x = dt_Mes), data = filter(licitacoes_merenda, 
+                                      dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
+  geom_histogram(binwidth = 1, fill = I('#CF6360')) +
+  scale_x_continuous(breaks = seq(1,12,1)) +
+  labs(title = 'Total de licitações por mês entre os anos 2011 e 2015',
+       x = 'Mês', y = 'Total')
+```
+
+## 
+
+
 
