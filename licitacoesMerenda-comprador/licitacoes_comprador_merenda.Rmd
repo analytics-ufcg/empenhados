@@ -83,7 +83,7 @@ rm(unidades_gestoras)
 ## Número total de licitações feitas por ano entre 2010 e 2016
 ```{r}
 ggplot(aes(dt_Ano), data = licitacoes) +
-  geom_bar() +
+  geom_bar(fill = I('#009688')) +
   xlab("Ano") +
   ylab("Número total de licitações") +
   scale_x_continuous(breaks = seq(2010, 2016, 1))
