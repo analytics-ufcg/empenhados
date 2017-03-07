@@ -99,7 +99,8 @@ ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
   geom_histogram(fill = 'orange', binwidth = 1) +
   labs(title = 'Total de propostas para licitações de merenda',
        x = 'Número de propostas', y = 'Total') +
-  scale_x_continuous(breaks = seq(0, 50, 5))
+  scale_x_continuous(breaks = seq(0, 50, 5)) +
+  scale_y_continuous(breaks = seq(0,1500,250))
 ```
 
 
@@ -112,21 +113,89 @@ ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
   geom_histogram(fill = 'orange', binwidth = 5) +
   labs(title = 'Total de propostas para licitações de merenda',
        x = 'Número de propostas', y = 'Total') +
-  scale_x_continuous(breaks = seq(0, 50, 5))
+  scale_x_continuous(breaks = seq(0, 50, 5)) +
+  scale_y_continuous(breaks = seq(0,1500,250))
 ```
+
+```{r}
+ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
+  geom_histogram(fill = 'orange', binwidth = 1) +
+  labs(title = 'Total de propostas para licitações de merenda',
+       x = 'Número de propostas', y = 'Total') +
+  scale_x_continuous(breaks = 0:10, limits = c(0,10)) +
+  scale_y_continuous(breaks = seq(0,1500,250))
+```
+
 
 ## Em que mês ocorrem mais licitações?
 Aqui, usamos dados a partir de 2011, pois o ano de 2010 estava muito incompleto e 2016 não tem todoso os meses
 ```{r}
-ggplot(aes(x = dt_Mes), data = filter(licitacoes_merenda, 
-                                      dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
+ggplot(aes(x = dt_Mes), 
+       data = filter(licitacoes_merenda, dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
   geom_histogram(binwidth = 1, fill = I('#CF6360')) +
   scale_x_continuous(breaks = seq(1,12,1)) +
   labs(title = 'Total de licitações por mês entre os anos 2011 e 2015',
        x = 'Mês', y = 'Total')
 ```
 
-## 
+## As licitaçoes mais caras estao concentradas em alguma época do ano?
+```{r}
+media_total = mean(licitacoes_merenda$vl_Licitacao)/1000
+
+ggplot(aes(x = dt_Mes, y = vl_Licitacao/1000), 
+       data = filter(licitacoes_merenda, dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
+  geom_line(stat = 'summary', fun.y = 'mean') +
+  geom_point(stat = 'summary', fun.y = 'mean') +
+  geom_hline(yintercept = media_total, 
+             color = 'red', linetype = 'dashed') +
+  scale_x_continuous(breaks = 1:12) +
+  geom_text(aes(1, media_total, label = 'Média anual', vjust = -1, hjust = -0.1), size = 4) +
+  labs(title = 'Valor médio de licitações por mês entre os anos 2011 e 2015',
+       x = 'Mês', y = 'Valor médio em reais (x1000)')
+```
+
+## Há correlação linear entre o valor da licitação e o total de propostas recebidas?
+```{r}
+ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), data = licitacoes_merenda) +
+  geom_jitter(alpha = 0.2) +
+  labs(title = 'Número de propostas por valor total de licitação',
+       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
+  scale_x_continuous()
+
+with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas))
+
+ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), 
+       data = filter(licitacoes_merenda, vl_Licitacao <= 3e+06)) +
+  geom_jitter(alpha = 0.2) +
+  scale_x_continuous(breaks = 0:3, labels = 0:3, limits = c(0,3)) + 
+  labs(title = 'Número de propostas por valor total de licitação',
+       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') 
+
+with(filter(licitacoes_merenda, vl_Licitacao <= 3e+06), 
+     cor(vl_Licitacao, nu_Propostas))
+```
+
+
+## A popularidade de algum tipo de licitação mudou ao longo dos anos?
+```{r}
+ggplot(aes(x = dt_Ano), 
+       data = (licitacoes_merenda %>%
+                 filter(dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0) %>%
+                 group_by(dt_Ano, tp_Licitacao) %>%
+                 summarize(total = n()) %>%
+                 ungroup()
+               )) +
+  geom_line(aes(y = total, color = tp_Licitacao)) +
+  labs(title = 'Popularidade dos tipos de licitação entre os anos 2011 e 2015',
+       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')
+```
+
+
+
+
+
+
+
 
 
 
