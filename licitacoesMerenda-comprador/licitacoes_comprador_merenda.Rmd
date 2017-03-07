@@ -13,9 +13,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
-library(dplyr)
-library(tidyr)
-library(ggplot2)
+library('dplyr')
+library('tidyr')
+library('ggplot2')
+
 
 # Instancia conexão com o BD usando as configurações em ~/.my.cnf
 sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
