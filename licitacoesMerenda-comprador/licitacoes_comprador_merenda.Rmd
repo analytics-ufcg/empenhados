@@ -88,8 +88,10 @@ ggplot(aes(dt_Ano), data = licitacoes) +
   xlab("Ano") +
   ylab("Número total de licitações") +
   scale_x_continuous(breaks = seq(2010, 2016, 1)) +
-  scale_y_continuous(breaks = seq(0, 60000, 10000))
+  scale_y_continuous(breaks = seq(0, 60000, 10000)) +
+  ggtitle("Total de licitações por ano")
 ```
+
 Percebe-se que grande parte do número de licitações do conjunto de dados aconteceu em 2010. O ano de 2016 possui um número de licitações bem inferior ao dos anos anteriores pois os dados foram coletados apenas até maio de 2016.
 
 ## Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
@@ -100,10 +102,12 @@ ggplot(NULL, aes(dt_Ano)) +
   geom_bar(aes(fill = "João Pessoa"), data = subset(licitacoes, cd_Municipio == "095")) +
   xlab("Ano") +
   ylab("Número total de licitações") +
+  ggtitle("Total de licitações feitas na Paraíba e em João Pessoa por ano") +
   labs(fill = "") +
   scale_x_continuous(breaks = seq(2010, 2016, 1)) +
   scale_y_continuous(breaks = seq(0, 60000, 10000))
 ```
+
 No ano de 2015, a maioria das licitações foram feitas em João Pessoa. Apesar de ser a maior cidade da Paraíba, é "entranho" ter uma diferença tão grande em relação aos demais anos.
 
 
@@ -118,8 +122,10 @@ ggplot(aes(dt_Ano), data = licitacoes_merenda) +
   geom_bar(fill = I('#009688')) +
   xlab("Ano") +
   ylab("Número total de licitações") +
+  ggtitle("Total de licitações de merenda por ano")
   scale_x_continuous(breaks = seq(2010, 2016, 1))
 ```
+
 Filtrando apenas as licitações que possuem em sua descrição as palavras "merenda" ou "alimentação escolar", observa-se que novamente em 2010 existe uma grande diferença do número de licitações em relação a outros anos.
 
 ```{r}
@@ -128,8 +134,9 @@ ggplot(NULL, aes(dt_Ano)) +
   geom_bar(aes(fill = "Merenda Escolar"), data = licitacoes_merenda) +
   xlab("Ano") +
   ylab("Número total de licitações") +
+  ggtitle("Total de licitações de merenda em relação ao total de licitações") +
   labs(fill = "") +
-  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  scale_x_continuous(breaks = seq(2010, 2016)) +
   scale_y_continuous(breaks = seq(0, 60000, 10000))
 ```
 
@@ -152,17 +159,22 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000), data = licitacoes_merenda) +
   geom_point(stat = 'summary', fun.y = median, color = 'blue') +
   scale_x_continuous(breaks = seq(2010, 2016, 1)) +
   scale_y_continuous(breaks = seq(0, 500, 100)) +
-  labs(x = "Ano", y = "Valor da licitação (mil reais)")
+  labs(x = "Ano", y = "Valor da licitação (mil reais)", title = "Valor médio e mediano das licitações de merenda por ano")
 ```
+
 É percebido que a média sempre está acima da mediana o que pode indicar que alguns valores extremos estão influenciando a média fazendo com que ela não seja uma medida precisa dos dados. É também notado que tanto a média quando a mediana crescem ao longo dos anos, ou seja, em geral o valor da licitação relacionada a merenda vem aumentando. Em 2014, há a maior diferença entre a média e a mediana provavelmente neste ano algumas licitações com merendas tiveram um alto valor com relação as demais.
 
-## Distribuição do valor de licitação em relação ao tipo de licitação
+## O valor médio da licitação alterou ao longo dos anos com relação aos tipos de licitação?
 ```{r}
-ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = subset(licitacoes_merenda)) +
+ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = licitacoes_merenda) +
   geom_point(stat = "summary", fun.y = "mean") +
   geom_line(stat = "summary", fun.y = "mean") +
-  scale_x_continuous(breaks = seq(2010, 2016, 1))
+  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  scale_y_continuous(breaks = seq(0, 500, 100)) +
+  labs(x = "Ano", y = "Valor médio das licitações (mil reais)", title = "Valor médio das licitações por tipo de licitação ao longo dos anos", color = "Tipo de licitação")
 ```
+
+Observa-se que alguns tipos de licitação não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão Presencial, Adesão a Registro de Preço e Chamada Pública.
 
 
 
