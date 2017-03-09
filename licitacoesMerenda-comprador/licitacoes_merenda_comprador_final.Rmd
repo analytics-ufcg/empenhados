@@ -1,0 +1,22 @@
+---
+title: "Análise das Licitações de Merenda na Paraíba"
+author: "Gileade Silva, Júlio César Silva"
+date: "7 de março de 2017"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.height = 10,
+  fig.width = 10)
+```
+
+```{r adicao de bibliotecas}
+library('dplyr')
+library('tidyr')
+library('ggplot2')
+```
