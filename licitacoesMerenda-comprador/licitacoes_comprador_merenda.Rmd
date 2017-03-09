@@ -177,6 +177,55 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = lici
 Observa-se que alguns tipos de licitação não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão Presencial, Adesão a Registro de Preço e Chamada Pública.
 
 
+```{r}
+library(maps) #mapas simples, eixos, escala, cidades 
+library(mapdata) #base de dados WorldHires e rios
+library(rworldmap) #outra base de dados de mapas do mundo
+library(maptools) #Ler ESRI shapefiles 
+library(mapproj) #Projeções e grids
+library(ggmap) #Gmaps, OSM + mapas baseados em ggplot2
+library(rgdal)
+```
+
+```{r}
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+
+municipios = tbl(utils, 'municipio') %>%
+  collect()
+```
+
+
+```{r}
+mapa_paraiba <- readOGR("./Municipios/Municipios.shp")
+```
+
+```{r}
+plot(mapa_paraiba)
+map.axes()
+map.scale(ratio=F)
+```
+
+```{r}
+n <- nrow(mapa_paraiba@data)
+mapa_paraiba@data$Y <- rnorm(n)
+mapa_paraiba@data$X <- factor(sample(LETTERS[1:4], size = n, replace = T))
+spplot(mapa_paraiba, "Y")
+```
+
+```{r}
+municipios$de_Municipio = factor(municipios$de_Municipio)
+paraiba = mapa_paraiba@data %>% inner_join(municipios, c('Nome_Munic' = 'de_Municipio'))
+```
+
+```{r}
+levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels_mapa[200] = "São Vicente do Seridó"
+levels_mapa[173] = "Joca Claudino"
+levels(mapa_paraiba@data$Nome_Munic) = levels_mapa 
+```
+
+
 
 
 
