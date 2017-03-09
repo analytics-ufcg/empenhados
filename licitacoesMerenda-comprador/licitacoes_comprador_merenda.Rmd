@@ -210,8 +210,6 @@ municipios$de_Municipio[199] = 'Sao Vicente do Serido'
 merenda_paraiba = licitacoes_merenda %>%
   left_join(municipios, 'cd_Municipio')
 
-#OS dados onde de_UGestora = NA aparentam ser uma anomalia nos dados, devemos removê-los?
-
 
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba = mapa_paraiba@data %>% inner_join(merenda_paraiba, c('Nome_Munic' = 'de_Municipio'))
@@ -228,13 +226,23 @@ data_temp = data.frame(Nome_Munic = c('Mato Grosso', 'Nova Floresta', 'Mamanguap
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
 # 
-paraiba_sumarizado$total = cut(paraiba_sumarizado$total, breaks = seq(0, 70, 10), include.lowest = T)
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
+                               breaks = c(0,5,10,15,20,25,30,40,50,70), 
+                               include.lowest = T)
+
+mapa_paraiba@data$Index = row.names(mapa_paraiba@data)
+
+mapa_paraiba@data = mapa_paraiba@data[order(as.numeric(mapa_paraiba@data$Index)),]
+
+mapa_paraiba@data= mapa_paraiba@data %>% 
+  left_join(paraiba_sumarizado, 'Nome_Munic')
 ```
 
 ```{r}
-mapa_paraiba@data$Y <- paraiba_sumarizado$total
-mapa_paraiba@data$X <- paraiba_sumarizado$Nome_Munic
-spplot(mapa_paraiba, "Y")
+
+mapa_paraiba@data$Y <- mapa_paraiba@data$total
+mapa_paraiba@data$X <- mapa_paraiba@data$Nome_Munic
+spplot(mapa_paraiba, 'Y')
 ```
 
 
