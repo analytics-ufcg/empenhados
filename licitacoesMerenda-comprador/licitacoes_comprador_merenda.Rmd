@@ -196,12 +196,6 @@ mapa_paraiba <- readOGR("./Municipios/Municipios.shp")
 ```
 
 ```{r}
-plot(mapa_paraiba)
-map.axes()
-map.scale(ratio=F)
-```
-
-```{r}
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
 levels_mapa[51] = "Tacima"
 levels_mapa[200] = "Sao Vicente do Serido"
@@ -217,6 +211,8 @@ merenda_paraiba = licitacoes_merenda %>%
   left_join(municipios, 'cd_Municipio')
 
 #OS dados onde de_UGestora = NA aparentam ser uma anomalia nos dados, devemos removê-los?
+
+
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba = mapa_paraiba@data %>% inner_join(merenda_paraiba, c('Nome_Munic' = 'de_Municipio'))
 
@@ -227,11 +223,12 @@ paraiba_sumarizado = paraiba %>%
   summarize(total = n())
 
 # Imputação de dados
-# paraiba_sumarizado[221] = c('Mato Grosso', NA)
-# paraiba_sumarizado[222] = c('Nova Floresta', NA)
-# paraiba_sumarizado[223] = c('Mamanguape', NA]
+data_temp = data.frame(Nome_Munic = c('Mato Grosso', 'Nova Floresta', 'Mamanguape'),
+                       total = c(0, 0, 0))
+paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
+
 # 
-# paraiba_sumarizado$total = cut(paraiba_sumarizado$total, breaks = seq(0, 70, 10))
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, breaks = seq(0, 70, 10), include.lowest = T)
 ```
 
 ```{r}
