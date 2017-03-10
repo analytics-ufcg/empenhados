@@ -9,7 +9,9 @@ output: html_document
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
-  message = FALSE)
+  message = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
 ```
 
 ```{r}
@@ -81,7 +83,9 @@ rm(tipos_regime)
 rm(unidades_gestoras)
 ```
 
-## Qual o número total de licitações feitas por ano entre 2010 e 2016?
+## 1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
+Para responder a essa pergunta utilizou-se todos os dados referentes a licitações entre os anos de 2010 até 2016. Esse intervalo foi escolhido pois é o que apresenta a grande maioria do número de licitações. O objetivo seria identificar se existe uma tendência anual para o número de licitações em toda a Paraíba ou se existe algum ano que o número de licitações é muito diferente dos demais.
+
 ```{r total de licitacoes na paraiba}
 ggplot(aes(dt_Ano), data = licitacoes) +
   geom_bar(fill = '#CF6360') +
@@ -92,9 +96,11 @@ ggplot(aes(dt_Ano), data = licitacoes) +
   ggtitle("Total de licitações por ano")
 ```
 
-Percebe-se que grande parte do número de licitações do conjunto de dados aconteceu em 2010. O ano de 2016 possui um número de licitações bem inferior ao dos anos anteriores pois os dados foram coletados apenas até maio de 2016.
+Segundo o gráfico acima percebe-se que no ano de 2010 cerca de `r count(subset(licitacoes, licitacoes$dt_Ano == 2010))` licitações foram realizadas, esse valor é bem superior se comparado com os anos seguintes. No ano de 2016 é observado uma queda do número de licitações, isso se deve ao fato de que os dados observados possuem licitações até maio de 2016, ao contrário dos outros anos em que os dados possuem todos os meses.
 
-## Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
+## 2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
+Em seguida, buscamos verificar como a capital e maior cidade da Paraíba aparece nos dados de licitação. Buscou-se verificar se a mesma possui uma parcela significativa no número de licitações com relação a todo o Estado.
+
 ```{r}
 # Código do Município de João Pessoa é "095"
 ggplot(NULL, aes(dt_Ano)) + 
@@ -108,10 +114,11 @@ ggplot(NULL, aes(dt_Ano)) +
   scale_y_continuous(breaks = seq(0, 60000, 10000))
 ```
 
-No ano de 2015, a maioria das licitações foram feitas em João Pessoa. Apesar de ser a maior cidade da Paraíba, é "entranho" ter uma diferença tão grande em relação aos demais anos.
+Pelo gráfico fica claro que entre 2011 e 2014 o número de licitações feitas em João Pessoa possui um valor semelhante, mas em 2015 esse valor em relação ao total de licitações no estado aumenta muito. Inicialmente, somente por este gráfico não é possível saber a causa dessa diferença entre 2015 e os outros anos.
 
+## 3 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
+Agora que já entendemos um pouco sobre como o número de licitações se comportam ao longo do ano, e algumas tendências e anomalias, buscamos responder essa pergunta filtrando apenas as licitações que possuem em sua descrição as seguintes sentenças: "Merenda" e "Alimentação escolar". O filtro foi feito ignorando acentos e caixa alta.
 
-## Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
 ```{r filtrando licitacoes que envolvem merenda escolar}
 licitacoes_merenda = licitacoes %>%
   filter(grepl('alimentacao[[:space:]]escolar|merenda', licitacoes$de_Obs, ignore.case = T))
@@ -122,11 +129,12 @@ ggplot(aes(dt_Ano), data = licitacoes_merenda) +
   geom_bar(fill = I('#009688')) +
   xlab("Ano") +
   ylab("Número total de licitações") +
-  ggtitle("Total de licitações de merenda por ano")
-  scale_x_continuous(breaks = seq(2010, 2016, 1))
+  ggtitle("Total de licitações de merenda por ano") +
+  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  scale_y_continuous(breaks = seq(0, 1500, 250))
 ```
 
-Filtrando apenas as licitações que possuem em sua descrição as palavras "merenda" ou "alimentação escolar", observa-se que novamente em 2010 existe uma grande diferença do número de licitações em relação a outros anos.
+Pelo gráfico nota-se que novamente em 2010 cerca de `r count(subset(licitacoes_merenda, licitacoes_merenda$dt_Ano == 2010))` licitações envolvendo merenda foram feitas, número esse bem grande se comparado a outros anos entre 2011 e 2015 (`r count(subset(licitacoes_merenda, licitacoes_merenda$dt_Ano != 2010 & licitacoes_merenda$dt_Ano != 2016))` licitações). O ano de 2016 possui um baixo número de licitações envolvendo merenda já que os dados estão atualizados até maio de 2016.
 
 ```{r}
 ggplot(NULL, aes(dt_Ano)) + 
@@ -140,17 +148,27 @@ ggplot(NULL, aes(dt_Ano)) +
   scale_y_continuous(breaks = seq(0, 60000, 10000))
 ```
 
-## Qual a média do valor das licitações de merendas?
+Se compararmos os dois gráficos(o número total de licitações por ano e o número total de licitações envolvendo merenda por ano) nota-se que licitações envolvendo merenda representam uma pequena parcela do universo de licitações. A partir daqui, vamos buscar analisar de forma mais específica essa pequena parcela e responder mais algumas perguntas.
+
+## Analisando o valor da licitação
+Até aqui trabalhamos com o número total de licitações, a seguir vamos buscar entender como o valor da licitação se comporta.
+Inicialmente, determinamos a média e a mediana do valor de licitações envolvendo merenda, como mostrado a seguir.
+
+## 5 - Qual a média do valor da licitação por merenda?
 ```{r}
 mean(licitacoes_merenda$vl_Licitacao)
 ```
-## Qual a mediana do valor das licitações de merendas?
+
+## 6 - Qual a mediana do valor da licitação por merenda?
 ```{r}
 median(licitacoes_merenda$vl_Licitacao)
 ```
-A diferença entre a média e a mediana é grande, ou seja, alguns valores extremos podem estar influenciando a média, fazendo com que a mesma não seja uma medida muito precisa para representar os dados.
 
-## Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos(2010-2016)?
+Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licitacoes_merenda$vl_Licitacao) - median(licitacoes_merenda$vl_Licitacao), scientific=FALSE)`, isso pode indicar que a média não é uma boa medida para representar os dados de licitações quando estamos trabalhando com merenda. A causa disso é que alguns valores de licitação muito altos estão influenciando a média causando essa diferença.
+
+## 7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos(2010-2016)?
+No gráfico a seguir mostramos como o valor da média(preto) e da mediana(azul) se comporta entre os anos de 2010 e 2016.
+
 ```{r}
 ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000), data = licitacoes_merenda) +
   geom_point(stat = 'summary', fun.y = mean) +
@@ -162,9 +180,11 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000), data = licitacoes_merenda) +
   labs(x = "Ano", y = "Valor da licitação (mil reais)", title = "Valor médio e mediano das licitações de merenda por ano")
 ```
 
-É percebido que a média sempre está acima da mediana o que pode indicar que alguns valores extremos estão influenciando a média fazendo com que ela não seja uma medida precisa dos dados. É também notado que tanto a média quando a mediana crescem ao longo dos anos, ou seja, em geral o valor da licitação relacionada a merenda vem aumentando. Em 2014, há a maior diferença entre a média e a mediana provavelmente neste ano algumas licitações com merendas tiveram um alto valor com relação as demais.
+Observamos que a média sempre está acima da mediana, no ano de 2010 elas estavam bem próximas, mas nos anos seguintes a tendência foi a diferença aumentar, principalmente em 2014. Nesse ano algumas licitações de alto valor foram realizadas, o que afetou a média. Outra coisa que é possível perceber a partir desse gráfico é que, em geral, o valor das licitações que envolvem merenda aumentaram com o tempo.
 
-## O valor médio da licitação alterou ao longo dos anos com relação aos tipos de licitação?
+## 9 - O valor médio da licitação alterou ao longo dos anos com relação aos tipos de licitação?
+Outra variável interessante de se analisar nos dados é o tipo de licitação. Será que o valor médio de licitação varia com o seu tipo ou ainda se esse valor também sofre influência do ano em que a licitação foi realizada. Essas são algumas questões que o gráfico a seguir pode responder.
+
 ```{r}
 ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = licitacoes_merenda) +
   geom_point(stat = "summary", fun.y = "mean") +
@@ -174,7 +194,7 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = lici
   labs(x = "Ano", y = "Valor médio das licitações (mil reais)", title = "Valor médio das licitações por tipo de licitação ao longo dos anos", color = "Tipo de licitação")
 ```
 
-Observa-se que alguns tipos de licitação não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão Presencial, Adesão a Registro de Preço e Chamada Pública.
+Observa-se que alguns tipos de licitação não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão Presencial, Adesão a Registro de Preço e Chamada Pública. Alem disso, em geral, o valor médio das licitações aumentaram com os anos em praticamente todos os tipos de licitação.
 
 
 ```{r}
@@ -242,7 +262,7 @@ mapa_paraiba@data= mapa_paraiba@data %>%
 
 mapa_paraiba@data$Y <- mapa_paraiba@data$total
 mapa_paraiba@data$X <- mapa_paraiba@data$Nome_Munic
-spplot(mapa_paraiba, 'Y')
+#spplot(mapa_paraiba, 'Y')
 ```
 
 
