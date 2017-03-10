@@ -101,7 +101,7 @@ Uma das utilizações dos processos licitatórios diz respeito à compra de alim
 O objetivo dessa análise é descrever como se dá a realização de licitações para compra de merenda no estado da Paraíba, observando tendências e discrepâncias que possam surgir.  
 
 # Análises
-## 4 - Em que período do ano ocorrem mais licitações de merenda?
+## 4 - Em que período do ano ocorrem mais licitações de merenda? {#perg-4}
 Seguindo com a análise feita nas perguntas anteriores, buscou-se verificar se há algum período do ano que concentra mais licitações de merenda.  
 Foram analisados os dados no período compreendido entre os anos 2011 e 2015 e observou-se que o intervalo entre os meses de fevereiro e abril concentra a maioria das licitações de merenda e que o número de licitações desse tipo decai conforme nos aproximamos dos meses finais do ano.  
 Segundo o gráfico abaixo, podemos ainda observar que tal concentração se dá exatamente nos primeiros meses da volta às aulas da escolas, onde possivelmente são firmados contratos anuais de distribuição de alimentação escolar. 
@@ -115,7 +115,7 @@ ggplot(aes(x = dt_Mes),
        x = 'Mês', y = 'Total')
 ```
 
-## 7 - Geralmente, quantas propostas são recebidas para licitações de merenda?
+## 7 - Geralmente, quantas propostas são recebidas para licitações de merenda? {#perg-7}
 Conforme descrito na figura lorem, é possível observar que grande parte das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas < 5))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu menos de 5 propostas.
 
 ```{r fig.cap='Figura lorem'}
@@ -127,7 +127,7 @@ ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
   scale_y_continuous(breaks = seq(0,1500,250))
 ```
 
-É possível ainda, restringir a abrangência do gráfico à área de maior concentração e perceber que a maioria das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas == 3))/nrow(licitacoes_merenda) * 100, 2)`)% recebeu apenas 3 propostas.
+É possível ainda, restringir a abrangência do gráfico à área de maior concentração e perceber que a maioria das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas == 3))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu apenas 3 propostas.
 
 ```{r fig.cap ='Figura lorem'}
 ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
@@ -147,7 +147,7 @@ Os detalhes desses dois processos podem ser observados na tabela abaixo.
 |Monteiro|2014|50|250.911,00|
 
 
-## 8 - Que tipo de licitação é mais comum na compra de merenda?
+## 8 - Que tipo de licitação é mais comum na compra de merenda? {#perg-8}
 A seguir, buscamos entender se há algum tipo de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observar a maior parte das licitações de merenda fazem parte das modalidades convite e pregão presencial. Outros tipos como concorrência, tomada de preços e chamada pública também são amplamente utilizados. Um número expressivo de licitações, ainda, é considerado dispensável.  
 
 ```{r fig.cap='Figura lorem'}
@@ -161,48 +161,65 @@ ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
 ```
 
 
-## 10 - A popularidade de algum tipo de licitação mudou ao longo dos anos?
+## 10 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos? {#perg-10}
+Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2011 e 2015. Os resultados podem ser observados na figura lorem.  
 
-```{r}
-## Deve Juntar os dois tipos de pregão?
-## Por que a chamada pública e pregão eletronico só começam em 2013?
+```{r fig.cap ='Figura lorem'}
+## Deve juntar os dois tipos de pregão?
+## Por que a chamada pública só começa em 2013?
+
+niveis = levels(licitacoes_merenda$tp_Licitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+levels(licitacoes_merenda$tp_Licitacao) = niveis
+
 ggplot(aes(x = dt_Ano), 
        data = (licitacoes_merenda %>%
                  filter(dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0) %>%
                  group_by(dt_Ano, tp_Licitacao) %>%
                  summarize(total = n()) %>%
-                 ungroup()
+                 ungroup() 
                )) +
   geom_line(aes(y = total, color = tp_Licitacao)) +
-  labs(title = 'Popularidade dos tipos de licitação entre os anos 2011 e 2015',
+  labs(title = 'Popularidade das modalidades de licitação entre os anos 2011 e 2015',
        x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')
 ```
 
-## 11 - As licitaçoes mais caras estao concentradas em alguma época do ano?
-```{r}
-media_total = mean(licitacoes_merenda$vl_Licitacao)/1000
+A modalidade de licitação mais utilizada para a obtenção de merenda no período observado foi o pregão, seja ele eletrônico ou presencial, e sua utilização ainda está em ascenção.  
+Se por um lado a utilização do pregão apresentou popularidade ascendente no período, por outro, a popularidade das licitações da modalidade convite apresentaram uma queda considerável, chegando quase a 0 nos anos 2014 e 2015.  
+Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possível observar, por exemplo, que há uma grande diferença entre o total de licitações dispensadas em 2013 e o de seus anos vizinhos e que a modalidade chamada pública começou a ser utilizada apenas nesse referido ano.    
+
+## 11 - Em geral, as licitaçoes mais caras estao concentradas em alguma época do ano? {#perg-11}
+Foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido em \#[4](#perg-4), é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
+
+```{r fig.cap='Figura lorem'}
+mediana_total = median(licitacoes_merenda$vl_Licitacao)/1000
 
 ggplot(aes(x = dt_Mes, y = vl_Licitacao/1000), 
        data = filter(licitacoes_merenda, dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
-  geom_line(stat = 'summary', fun.y = 'mean') +
-  geom_point(stat = 'summary', fun.y = 'mean') +
-  geom_hline(yintercept = media_total, 
+  geom_line(stat = 'summary', fun.y = 'median') +
+  geom_point(stat = 'summary', fun.y = 'median') +
+  geom_hline(yintercept = mediana_total, 
              color = 'red', linetype = 'dashed') +
   scale_x_continuous(breaks = 1:12) +
-  geom_text(aes(1, media_total, label = 'Média anual', vjust = -1, hjust = -0.1), size = 4) +
-  labs(title = 'Valor médio de licitações por mês entre os anos 2011 e 2015',
-       x = 'Mês', y = 'Valor médio em reais (x1000)')
+  geom_text(aes(1, mediana_total, label = 'Mediana anual', vjust = -1, hjust = -0.1), size = 4) +
+  labs(title = 'Valor mediano de licitações por mês entre os anos 2011 e 2015',
+       x = 'Mês', y = 'Valor mediano em reais (x1000)')
 ```
 
-## 12 - Há correlação linear entre o valor da licitação e o total de propostas recebidas?
-```{r}
+## 12 - O valor da licitação está relacionado com o total de propostas recebidas? {#perg-12}
+```{r fig.cap='Figura lorem'}
+cor1 = round(with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas)), 2)
+
 ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), data = licitacoes_merenda) +
   geom_jitter(alpha = 0.2) +
   labs(title = 'Número de propostas por valor total de licitação',
        x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
-  scale_x_continuous()
+  scale_x_continuous() +
+  geom_label(aes(7.5, 15, label = paste('r=', as.character(cor1))))
 
-with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas))
+cor2 = round(with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas)), 2)
 
 ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), 
        data = filter(licitacoes_merenda, vl_Licitacao <= 3e+06)) +
