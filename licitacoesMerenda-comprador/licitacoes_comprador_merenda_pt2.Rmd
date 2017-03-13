@@ -103,7 +103,7 @@ O objetivo dessa análise é descrever como se dá a realização de licitaçõe
 # Análises
 ## 4 - Em que período do ano ocorrem mais licitações de merenda? {#perg-4}
 Seguindo com a análise feita nas perguntas anteriores, buscou-se verificar se há algum período do ano que concentra mais licitações de merenda.  
-Foram analisados os dados no período compreendido entre os anos 2011 e 2015 e observou-se que o intervalo entre os meses de fevereiro e abril concentra a maioria das licitações de merenda e que o número de licitações desse tipo decai conforme nos aproximamos dos meses finais do ano.  
+Aqui, foram analisados apenas os dados no período compreendido entre os anos 2011 e 2015 e observou-se que o intervalo entre os meses de fevereiro e abril concentra a maioria das licitações de merenda e que o número de licitações desse tipo decai conforme nos aproximamos dos meses finais do ano.  
 Segundo o gráfico abaixo, podemos ainda observar que tal concentração se dá exatamente nos primeiros meses da volta às aulas da escolas, onde possivelmente são firmados contratos anuais de distribuição de alimentação escolar. 
 
 ```{r fig.cap='Figura lorem'}
@@ -162,12 +162,9 @@ ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
 
 
 ## 10 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos? {#perg-10}
-Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2011 e 2015. Os resultados podem ser observados na figura lorem.  
+Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2010 e 2015. Os resultados podem ser observados na figura lorem.  
 
 ```{r fig.cap ='Figura lorem'}
-## Deve juntar os dois tipos de pregão?
-## Por que a chamada pública só começa em 2013?
-
 niveis = levels(licitacoes_merenda$tp_Licitacao)
 niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
 niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
@@ -176,22 +173,44 @@ levels(licitacoes_merenda$tp_Licitacao) = niveis
 
 ggplot(aes(x = dt_Ano), 
        data = (licitacoes_merenda %>%
-                 filter(dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0) %>%
+                 filter(dt_Ano < 2016) %>%
                  group_by(dt_Ano, tp_Licitacao) %>%
                  summarize(total = n()) %>%
                  ungroup() 
                )) +
   geom_line(aes(y = total, color = tp_Licitacao)) +
-  labs(title = 'Popularidade das modalidades de licitação entre os anos 2011 e 2015',
+  labs(title = 'Popularidade das modalidades de licitação entre os anos 2010 e 2015',
+       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')
+```
+
+É interessante observar o grande número de licitações da modalidade convite no ano 2010, apresentando um claro outlier em relação aos anos posteriores. A que se deveria tamanha discrepância?  
+Analisando apenas os dados referentes ao período entre os anos 2011 e 2015, podemos observar um padrão diferente na distribuição das modalidades de licitação. O resultado pode ser visto no gráfico abaixo. 
+
+```{r fig.cap ='Figura lorem'}
+niveis = levels(licitacoes_merenda$tp_Licitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+levels(licitacoes_merenda$tp_Licitacao) = niveis
+
+ggplot(aes(x = dt_Ano), 
+       data = (licitacoes_merenda %>%
+                 filter(dt_Ano > 2010 & dt_Ano < 2016) %>%
+                 group_by(dt_Ano, tp_Licitacao) %>%
+                 summarize(total = n()) %>%
+                 ungroup() 
+               )) +
+  geom_line(aes(y = total, color = tp_Licitacao)) +
+  labs(title = 'Popularidade das modalidades de licitação entre os anos 2010 e 2015',
        x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')
 ```
 
 A modalidade de licitação mais utilizada para a obtenção de merenda no período observado foi o pregão, seja ele eletrônico ou presencial, e sua utilização ainda está em ascenção.  
 Se por um lado a utilização do pregão apresentou popularidade ascendente no período, por outro, a popularidade das licitações da modalidade convite apresentaram uma queda considerável, chegando quase a 0 nos anos 2014 e 2015.  
-Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possível observar, por exemplo, que há uma grande diferença entre o total de licitações dispensadas em 2013 e o de seus anos vizinhos e que a modalidade chamada pública começou a ser utilizada apenas nesse referido ano.    
+Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possível observar, por exemplo, que há uma grande diferença entre o total de licitações dispensadas em 2013 e o de seus anos vizinhos e que a modalidade chamada pública começou a ser utilizada apenas no ano referido anteriormente.    
 
 ## 11 - Em geral, as licitaçoes mais caras estao concentradas em alguma época do ano? {#perg-11}
-Foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido em \#[4](#perg-4), é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
+Analisando novamente vez os dados do período entre 2011 e 2015, foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido em \#[4](#perg-4), é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
 
 ```{r fig.cap='Figura lorem'}
 mediana_total = median(licitacoes_merenda$vl_Licitacao)/1000
@@ -209,31 +228,42 @@ ggplot(aes(x = dt_Mes, y = vl_Licitacao/1000),
 ```
 
 ## 12 - O valor da licitação está relacionado com o total de propostas recebidas? {#perg-12}
+Para tentar responder essa pergunta, foi criado um gráfico de dispersão do valor das licitações pelo total de propostas. Além disso, o coeficiente de correlação linear entre as variáveis foi calculado.  
+
 ```{r fig.cap='Figura lorem'}
-cor1 = round(with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas)), 2)
+cor1 = with(licitacoes_merenda, 
+            round(cor(vl_Licitacao, nu_Propostas), 2))
 
 ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), data = licitacoes_merenda) +
   geom_jitter(alpha = 0.2) +
   labs(title = 'Número de propostas por valor total de licitação',
        x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
   scale_x_continuous() +
-  geom_label(aes(7.5, 15, label = paste('r=', as.character(cor1))))
+  geom_label(aes(7.5, 15, label = paste('r = ', as.character(cor1))))
+```
 
-cor2 = round(with(licitacoes_merenda, cor(vl_Licitacao, nu_Propostas)), 2)
+Observando a figura acima observamos que aparentemente não há relação linear entre as duas variáveis. Isso pode ser comprovado pelo valor do coeficiente de correlação linear entre elas, que é de 0.23.  
+
+É possível, ainda, aproximar o gráfico da área que contém a maior concentração de pontos e recalcular a correlação entre as variáveis.  
+
+```{r fig.cap='Figura lorem'}
+cor2 = with(filter(licitacoes_merenda, 
+                   vl_Licitacao <= quantile(licitacoes_merenda$vl_Licitacao, .975) & 
+                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .975)), 
+            round(cor(vl_Licitacao, nu_Propostas), 2))
 
 ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), 
        data = filter(licitacoes_merenda, vl_Licitacao <= 3e+06)) +
   geom_jitter(alpha = 0.2) +
-  scale_x_continuous(breaks = 0:3, labels = 0:3, limits = c(0,3)) + 
+  scale_x_continuous(limits = c(0, quantile(licitacoes_merenda$vl_Licitacao, .975)/1e+06)) + 
+  scale_y_continuous(limits = c(0, quantile(licitacoes_merenda$nu_Propostas, .975))) +
   labs(title = 'Número de propostas por valor total de licitação',
-       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') 
+       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
+  geom_label(aes(0.45, 6.5, label = paste('r = ', as.character(cor2))))
 
-with(filter(licitacoes_merenda, vl_Licitacao <= 3e+06), 
-     cor(vl_Licitacao, nu_Propostas))
 ```
 
-
-
+Agora observamos que há ainda menos indícios de uma correlação linear entre as duas variáveis. Isso pode ser comprovado, mais uma vez, pelo valor do coeficiente de correlação linear entre elas, que diminuiu e passou a ser de -0.1.  
 
 
 
