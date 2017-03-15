@@ -235,73 +235,80 @@ ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
 
 Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite diminui bastante, mas permanece sendo mais frequente quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta. Pelos dados não é possível concluir a razão pela qual o número de licitações de convite é tão superior em 2010 em relação a outros anos.
 
+
 ```{r}
 library(maps) #mapas simples, eixos, escala, cidades 
 library(ggmap) #Gmaps, OSM + mapas baseados em ggplot2
 library(rgdal)
+library(RColorBrewer)
 ```
 
 ```{r}
 utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 
+# Lista dos municípios da paraíba organizados pelo código (Referente aos três últimos dígitos da Unidade Gestora)
 municipios = tbl(utils, 'municipio') %>%
   collect()
 ```
 
-
-```{r}
+```{r, results='hide'}
+# Encontrado em: http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html
 mapa_paraiba <- readOGR("./Municipios/Municipios.shp")
-```
 
-```{r}
+# Atualizando nome de municípios que mudaram de nome nos últimos anos
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
 levels_mapa[51] = "Tacima"
 levels_mapa[200] = "Sao Vicente do Serido"
 levels_mapa[173] = "Joca Claudino"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa 
-
-municipios$de_Municipio[199] = 'Sao Vicente do Serido'
 ```
 
 ```{r}
-# Só há 220 códigos (cidades) presentes nos dados que temos
+# Join das tabelas de licitação com o nome do município
 merenda_paraiba = licitacoes_merenda %>%
   left_join(municipios, 'cd_Municipio')
 
-
+# Join entre a tabela de licitações e a lista de municípios do mapa
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
-paraiba = mapa_paraiba@data %>% inner_join(merenda_paraiba, c('Nome_Munic' = 'de_Municipio'))
+paraiba = merenda_paraiba %>% inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
 
-#paraiba$Nome_Munic = factor(paraiba$Nome_Munic)
-
+# Sumarização dos dados por município
 paraiba_sumarizado = paraiba %>%
-  group_by(Nome_Munic) %>%
+  group_by(de_Municipio) %>%
   summarize(total = n())
 
-# Imputação de dados
-data_temp = data.frame(Nome_Munic = c('Mato Grosso', 'Nova Floresta', 'Mamanguape'),
-                       total = c(0, 0, 0))
+# Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
+data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido'),
+                       total = c(0, 0, 0, 9))
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
-# 
+# Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
-                               breaks = c(0,5,10,15,20,25,30,40,50,70), 
-                               include.lowest = T)
-
-mapa_paraiba@data$Index = row.names(mapa_paraiba@data)
-
-mapa_paraiba@data = mapa_paraiba@data[order(as.numeric(mapa_paraiba@data$Index)),]
-
-mapa_paraiba@data= mapa_paraiba@data %>% 
-  left_join(paraiba_sumarizado, 'Nome_Munic')
+                                breaks = c(0,5,10,15,20,25,30,40,70), 
+                                include.lowest = T)
 ```
+
+## Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
+Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba par obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados(2010-2016). O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
 
 ```{r}
+# Criando um data frame com os municípios na ordem do mapa
+levels_mapa = mapa_paraiba@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
-mapa_paraiba@data$Y <- mapa_paraiba@data$total
-mapa_paraiba@data$X <- mapa_paraiba@data$Nome_Munic
-#spplot(mapa_paraiba, 'Y')
+# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
+colors = brewer.pal(8,"YlOrRd")
+
+# A variável Y recebe os valores em ordem que devem apontar para cada municipio
+mapa_paraiba@data$Y <- paraiba_municipios$total
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações de merenda por município")
 ```
+
+Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais municípios. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios citados a pouco, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns municípios possuem um total de licitações próximo, e inclusive são municípios vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar. Mais tarde nessa análise trataremos mais sobre como as características dos municípios, como a população, influenciam nas variáveis de merenda no conjunto de dados.
+
+
 
 
 
