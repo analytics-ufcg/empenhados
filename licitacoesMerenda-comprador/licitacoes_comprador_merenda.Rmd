@@ -166,7 +166,7 @@ median(licitacoes_merenda$vl_Licitacao)
 
 Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licitacoes_merenda$vl_Licitacao) - median(licitacoes_merenda$vl_Licitacao), scientific=FALSE)` reais, isso pode indicar que a média não é uma boa medida para representar os dados de licitações quando estamos trabalhando com merenda. A causa disso é que alguns valores de licitação muito altos estão influenciando a média causando essa diferença.
 
-## 7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos(2010-2016)?
+## 7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2010-2016)?
 No gráfico a seguir mostramos como o valor da média(preto) e da mediana(azul) se comporta entre os anos de 2010 e 2016.
 
 ```{r}
@@ -207,7 +207,7 @@ Observou-se que algumas modalidades de licitações não possuem valores médios
 
 A partir dessa resposta faz-se necessário saber se existem licitações de merenda da modalidade de Convite que ultrapassam o valor limite de 80.000 mil reais previsto pela Lei 8666. Descobrimos que `r nrow(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & vl_Licitacao > 80000))` licitações possuem valor acima do limite. Essa inconsistência pode ser melhor investigada em análises futuras.
 
-## Qual o total de licitações de merenda com relação número de participantes por modalidade?
+## Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
 Para responder a essa pergunta iremos considerar, inicialmente, os anos de 2010 até 2016. A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo(1:6) contém 96% dos dados de merenda. O 96º percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.956))`.
 
 ```{r}
