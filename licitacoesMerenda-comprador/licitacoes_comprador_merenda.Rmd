@@ -236,6 +236,7 @@ ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
 Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite diminui bastante, mas permanece sendo mais frequente quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta. Pelos dados não é possível concluir a razão pela qual o número de licitações de convite é tão superior em 2010 em relação a outros anos.
 
 
+## Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
 ```{r}
 library(maps) #mapas simples, eixos, escala, cidades 
 library(ggmap) #Gmaps, OSM + mapas baseados em ggplot2
@@ -299,7 +300,6 @@ paraiba_sumarizado$valor_medio_lic = cut(paraiba_sumarizado$valor_medio_lic,
 
 ```
 
-## Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
 Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba par obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados(2010-2016). O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
 
 ```{r}
