@@ -275,17 +275,28 @@ paraiba = merenda_paraiba %>% inner_join(mapa_paraiba@data, c('de_Municipio' = '
 # Sumarização dos dados por município
 paraiba_sumarizado = paraiba %>%
   group_by(de_Municipio) %>%
-  summarize(total = n())
+  summarize(total = n(),
+            valor_medio_lic = mean(vl_Licitacao))
 
 # Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
 data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido'),
-                       total = c(0, 0, 0, 9))
+                       total = c(0, 0, 0, 9), valor_medio_lic = c(0, 0, 0, mean(subset(merenda_paraiba, de_Municipio == "São Vicente do Seridó")$vl_Licitacao)))
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
                                 breaks = c(0,5,10,15,20,25,30,40,70), 
+                               labels = c("de 0 a 5", "de 5 a 10", "de 10 a 15", "de 15 a 20", "de 20 a 25", "de 25 a 30", 
+                                          "de 30 a 40", "de 40 a 70"),
                                 include.lowest = T)
+
+paraiba_sumarizado$valor_medio_lic = cut(paraiba_sumarizado$valor_medio_lic,
+                                         breaks = c(0, 50000, 100000, 200000, 500000, 1000000, 5000000, 10000000, 15000000),
+                                         labels = c("De 0 a 50", "De 50 a 100", "De 100 a 200", "De 200 a 500",
+                                                    "De 500 a 1000", "De 1000 a 5000", "De 5000 a 10000", 
+                                                    "De 10000 a 15000"),
+                                         include.lowest = T)
+
 ```
 
 ## Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
@@ -308,9 +319,15 @@ spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações 
 
 Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais municípios. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios citados a pouco, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns municípios possuem um total de licitações próximo, e inclusive são municípios vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar. Mais tarde nessa análise trataremos mais sobre como as características dos municípios, como a população, influenciam nas variáveis de merenda no conjunto de dados.
 
+##  Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba? 
+Para responder a essa pergunta consideramos todas as licitações que envolvem merenda na Paraíba e os respectivos valores das licitações e determinamos a média desse valor por município. Em seguida, utilizamos o mapa abaixo para observar os resultados.
 
+```{r}
+mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_lic
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio(em milhares de reais) de licitações de merenda por município")
+```
 
-
+É notado que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
 
 
 
