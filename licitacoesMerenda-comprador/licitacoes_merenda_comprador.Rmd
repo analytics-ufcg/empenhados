@@ -261,7 +261,7 @@ mapa_paraiba@data$Y <- paraiba_municipios$total
 spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações de merenda por município")
 ```
 
-Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais municípios. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios citados a pouco, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns municípios possuem um total de licitações próximo, e inclusive são municípios vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar. Mais tarde nessa análise trataremos mais sobre como as características dos municípios, como a população, influenciam nas variáveis de merenda no conjunto de dados.
+Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais municípios. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios citados a pouco, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns municípios possuem um total de licitações próximo, e inclusive são municípios vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar.
 
 <br>
 
@@ -549,8 +549,10 @@ Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos q
 
 <br>
 
-# Conclusao
-TODO
+# Conclusão
+Ao analisar os dados das licitações de merenda na Paraíba, pelo lado do comprador, pudemos observar que a modalidade mais comum de licitação é a Convite, e se gasta em média por licitação `r format(mean(licitacoes_merenda$vl_Licitacao), scientific=FALSE)` reais. Os gastos com merenda são maiores no começo do ano, período em que ocorre também a maior quantidade de licitações dessa natureza. Os municípios que mais lançaram licitações de merenda no período estudado foram Santa Rita e Monteiro.  
+Durante a análise algumas discrepâncias foram observadas, dentre elas o fato de João Pessoa ter aberto apenas 3 licitações de merenda durante todo o período analisado. Há também algumas licitações de merenda com valores muito mais altos se comparadas a outras licitações.  
+Por fim espera-se que essa análise tenha sido de grande utilidade para que o contexto de licitação de merenda na Paraíba seja melhor compreendido pelos cidadãos do Estado.  
 
 </div>
 
