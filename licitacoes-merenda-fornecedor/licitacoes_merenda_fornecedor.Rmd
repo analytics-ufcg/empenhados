@@ -1,0 +1,192 @@
+---
+title: "Licitações - Fornecedor"
+author: 'Hugo, Victor'
+date: '8 de março de 2017'
+output: html_document
+---
+  
+``` {r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+```{r Carregando os dados}
+library(dplyr)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+
+sagres <- src_mysql('sagres', group='ministerio-publico', password=NULL)
+
+query <- sql('
+             SELECT *
+             FROM licitacao
+             WHERE de_Obs REGEXP "merenda"
+             ')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+query <- sql('
+             SELECT *
+             FROM contratos
+             WHERE (cd_UGestora, nu_Licitacao, tp_Licitacao) IN
+             (SELECT cd_UGestora, nu_Licitacao, tp_Licitacao FROM lm)
+             ')
+
+contratos <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+             SELECT *
+             FROM participantes
+             WHERE (cd_UGestora, nu_Licitacao, tp_Licitacao) IN
+             (SELECT cd_UGestora, nu_Licitacao, tp_Licitacao FROM lm)
+             ')
+
+participantes <- tbl(sagres, query) %>%
+  compute(name = 'pm') %>%
+  collect()
+
+query <- sql('
+             SELECT *
+             FROM fornecedores
+             WHERE (cd_UGestora, nu_CPFCNPJ) IN
+             (SELECT cd_UGestora, nu_CPFCNPJ FROM pm)
+             ')
+
+fornecedores <- tbl(sagres, query) %>%
+  collect()
+
+#---------------------------------------------------------------------------
+
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+municipios <- tbl(utils, 'municipio') %>%
+  collect()
+
+get.municipio <- function(cd_UGestora) {
+  result <- data.frame(cd_Municipio = str_sub(cd_UGestora, -3)) %>%
+    merge(municipios)
+  
+  return(result$de_Municipio)
+}
+# -----------------------------------------------------------------------------------
+# Adicionando o nome dos municípios nos dados de fornecedores
+fornecedores$cd_Municipio <- substr(as.character(fornecedores$cd_UGestora), 4, 6)
+fornecedores <- merge(fornecedores, municipios, by = 'cd_Municipio')
+
+fornecedores$Nome_Munic <- fornecedores$de_Municipio.y
+fornecedores$de_Municipio.y <- NULL
+
+# Adicionando o nome dos municipios nos dados de licitacoes
+licitacoes$cd_Municipio <- substr(as.character(licitacoes$cd_UGestora), 4, 6)
+licitacoes <- merge(licitacoes, municipios, by = 'cd_Municipio')
+
+licitacoes$Nome_Munic <- licitacoes$de_Muninipio.y
+licitacoes$de_Municipio.y <- NULL
+
+```
+
+
+## Quais são os fornecedores de merenda de cada município?
+
+```{r}
+library(maps) #mapas simples, eixos, escala, cidades 
+library(ggmap) #Gmaps, OSM + mapas baseados em ggplot2
+library(rgdal)
+library(RColorBrewer)
+
+mapa_pb <- readOGR('Municipios/Municipios.shp')
+
+levels_mapa = levels(mapa_pb@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels_mapa[200] = "Sao Vicente do Serido"
+levels_mapa[173] = "Joca Claudino"
+levels(mapa_pb@data$Nome_Munic) = levels_mapa
+
+merenda_pb <- left_join(fornecedores, municipios, 'cd_Municipio')
+
+# Join entre a tabela de fornecedores e a lista de municípios do mapa
+mapa_pb@data$Nome_Munic = as.character(mapa_pb@data$Nome_Munic)
+paraiba = merenda_pb %>% inner_join(mapa_pb@data, c('de_Municipio' = 'Nome_Munic'))
+
+# Sumarização dos dados por município
+paraiba_sumarizado = paraiba %>%
+  group_by(de_Municipio) %>%
+  summarize(total = n())
+
+
+# Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
+data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido', 'Mogeiro', 'Alagoa Grande'),
+                       total = c(0, 0, 0, 9, 0, 0))
+paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
+
+# Dividindo em faixas
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
+                                breaks = c(0,10,20,40,60,110), 
+                                include.lowest = T)
+
+# Criando um data frame com os municípios na ordem do mapa
+levels_mapa = mapa_pb@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_pb@data$OBJECTID)
+paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
+
+# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
+colors = brewer.pal(5,"YlOrRd")
+
+# A variável Y recebe os valores em ordem que devem apontar para cada municipio
+mapa_pb@data$Y <- paraiba_municipios$total
+spplot(mapa_pb, 'Y',  col.regions = colors, main = "Número de fornecedores de merenda por município")
+
+```
+
+Como esperado, viu-se que as maiores cidades possuem mais fornecedores, que as demais, e mesmo entre as 10 maiores cidades (em população) a discrepância é evidente; Um exemplo disso é a cidade de João Pessoa, que sozinha possui mais fornecedores que todas as outras 9.
+Quanto as demais cidades do estado, o número máximo
+
+## Quantos fornecedores, em média, competem nas licitações?
+```{r}
+# FALTA organizar os dados
+mean(licitacoes$nu_Propostas)
+summary(licitacoes$nu_Propostas)
+
+```
+Observa-se que na imensa maioria das licitações a concorrência é entre 2 ou 3 candidatos, o que faz com que a média de propostas seja também, relativamente baixa.
+
+## Existe relação entre o número de propostas e o valor de uma licitação?
+```{r}
+
+cor(x = licitacoes$nu_Propostas, y = licitacoes$vl_Licitacao)
+
+ggplot(aes(x = nu_Propostas, y = vl_Licitacao), data = subset(licitacoes, vl_Licitacao < 5000000)) + geom_point(color = '#8C1717') + 
+  xlab(label = 'Número de propostas') +
+  ylab(label = 'Valor da Licitação') + 
+  labs(color = 'Ano')
+
+  # xlim(c(0, 22)) + ylim(c(0, 1000000))
+```
+O valor de correlação obtido é insuficiente para afirmarmos que há influência do valor da licitação sobre o número de concorrentes desta.
+
+
+
+## Existem fornecedores que dominem a distribuição de merenda?
+Observa-se que a imensa maioria dos fornecedores ganhou 5 licitações ou menos, no entanto, um pequeno número de fornecedores ultrapassa muito este valor
+```{r}
+names(contratos)
+
+fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
+data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
+
+mediana <- median(data_fornecedores_groups$n)
+media <- mean(data_fornecedores_groups$n)
+ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
+  geom_histogram(stat = 'count', color = '#5CA171') + 
+  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
+  geom_hline(yintercept = mediana, linetype = 'dashed', color = 'red') +
+  scale_y_continuous(breaks = seq(0, 80, 5))
+```
+
