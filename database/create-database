@@ -1,0 +1,30 @@
+#!/bin/bash
+
+echo -n 'Enter password: '
+read -s password
+echo
+
+docker run \
+  --name database \
+  --env MYSQL_ROOT_PASSWORD=$password \
+  --publish 3306:3306 \
+  --restart=always \
+  --detach mariadb
+
+unzip SAGRES.zip -d tmp
+unzip utils.zip -d tmp
+
+cd tmp
+
+mysql -p$password < SAGRES.sql
+mysql -p$password < utils.sql
+
+mysqlimport -p$password \
+  --ignore-lines=1 \
+  --fields-enclosed-by='"' \
+  --fields-terminated-by=',' \
+  --lines-terminated-by='\n' \
+  --local utils municipio.csv
+
+cd ..
+rm -r tmp
