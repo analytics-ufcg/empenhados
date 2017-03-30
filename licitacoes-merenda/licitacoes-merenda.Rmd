@@ -710,7 +710,6 @@ Um primeiro passo para analisar o comportamento das licitações de merenda pode
 
 ```{r}
 
-set.seed(12123)
 termos.irrelevantes <- c(
   'merenda', 'escolar', 'aquisição', 'aquisicao', 'destinados', 'destinado',
   'secretarias', 'secretaria', 'alimenticios', 'alimentícios', 'generos', 'gêneros',
@@ -729,7 +728,7 @@ dtm <- DocumentTermMatrix(descricao)
 freq <- colSums(as.matrix(dtm))   
 
 wf <- data.frame(word=names(freq), freq=freq)  
-wordcloud(names(freq), freq)
+wordcloud(names(freq), freq, random.order = F)
 ```
 
 É notavel que muitas dos termos que mais aparecem não tem real relevância para nosso propósito, mesmo vários desses já tendo sido filtrados. Entretanto, alguns tipos de alimentos são recorrentes nas descrições e são candidatos a classificadores. Estes são: carnes, frutas, bolos, iogurte, hortaliças, cereais, legumes, bolachas, leite, queijo, ovos, polpa e pães.
