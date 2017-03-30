@@ -184,7 +184,8 @@ O objetivo dessa análise é descrever como se dá a realização de licitaçõe
 <br>
 
 # Análise  
-## 1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
+## 1 - Panorama
+### 1.1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
 Para responder a essa pergunta utilizou-se todos os dados referentes a licitações entre os anos de 2010 até 2016. Esse intervalo foi escolhido pois é o que apresenta a grande maioria do número de licitações. O objetivo seria identificar se existe uma tendência anual para o número de licitações em toda a Paraíba ou se existe algum ano que o número de licitações é muito diferente dos demais.
 
 ```{r total de licitacoes na paraiba, fig.cap = 'Figura 01'}
@@ -202,7 +203,7 @@ Segundo o gráfico acima percebe-se que no ano de 2010 cerca de `r count(subset(
 
 <br>
 
-## 2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
+### 1.2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
 Em seguida, buscamos verificar como a capital e maior cidade da Paraíba aparece nos dados de licitação. Buscou-se verificar se a mesma possui uma parcela significativa no número de licitações com relação a todo o Estado.
 
 ```{r fig.cap = 'Figura 02'}
@@ -223,7 +224,8 @@ Pelo gráfico fica claro que entre 2011 e 2014 o número de licitações feitas 
 
 <br>
 
-## 3 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
+## 2 - Análise de Licitações
+### 2.1 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
 Agora que já entendemos um pouco sobre como o número de licitações se comportam ao longo do ano, e algumas tendências e anomalias, buscamos responder essa pergunta filtrando apenas as licitações que possuem em sua descrição as seguintes sentenças: "Merenda" e "Alimentação escolar". O filtro foi feito ignorando acentos e caixa alta.
 
 ```{r fig.cap = 'Figura 03'}
@@ -256,7 +258,7 @@ Se compararmos os dois gráficos (o número total de licitações por ano e o n�
 
 <br>
 
-## 4 - Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
+### 2.2 - Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
 
 ```{r}
 utils = src_mysql('utils', group='ministerio-publico', password=NULL)
@@ -292,11 +294,12 @@ paraiba = licitacoes_merenda %>% inner_join(mapa_paraiba@data, c('de_Municipio' 
 paraiba_sumarizado = paraiba %>%
   group_by(de_Municipio) %>%
   summarize(total = n(),
-            valor_medio_lic = mean(vl_Licitacao))
+            valor_medio_lic = mean(vl_Licitacao),
+            valor_total_lic = sum(vl_Licitacao))
 
 # Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
 data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape'),
-                       total = c(0, 0, 0), valor_medio_lic = c(0, 0, 0))
+                       total = c(0, 0, 0), valor_medio_lic = c(0, 0, 0), valor_total_lic = c(0,0,0))
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
 # Dividindo em faixas
@@ -312,6 +315,14 @@ paraiba_sumarizado$valor_medio_lic = cut(paraiba_sumarizado$valor_medio_lic,
                                                     "De 500 a 1000", "De 1000 a 5000", "De 5000 a 10000", 
                                                     "De 10000 a 15000"),
                                          include.lowest = T)
+
+paraiba_sumarizado$valor_total_lic = cut(paraiba_sumarizado$valor_total_lic,
+                                         breaks = c(0, 50000, 100000, 500000, 1000000, 5000000, 10000000, 25000000, 50000000),
+                                         labels = c("De 0 a 50", "De 50 a 100", "De 100 a 500", "De 500 a 1000",
+                                                    "De 1000 a 5000", "De 5000 a 10000", "De 10000 a 25000", 
+                                                    "De 25000 a 50000"),
+                                         include.lowest = T
+                                         )
 
 ```
 
@@ -336,24 +347,7 @@ Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um mai
 
 <br>
 
-## 5 - Em que período do ano ocorrem mais licitações de merenda? {#perg-5}
-Seguindo com a análise feita nas perguntas anteriores, buscou-se verificar se há algum período do ano que concentra mais licitações de merenda.  
-Aqui, foram analisados apenas os dados no período compreendido entre os anos 2011 e 2015 e observou-se que o intervalo entre os meses de fevereiro e abril concentra a maioria das licitações de merenda e que o número de licitações desse tipo decai conforme nos aproximamos dos meses finais do ano.  
-Segundo o gráfico abaixo, podemos ainda observar que tal concentração se dá exatamente nos primeiros meses da volta às aulas da escolas, onde possivelmente são firmados contratos anuais de distribuição de alimentação escolar. 
-
-```{r fig.cap='Figura 06'}
-ggplot(aes(x = dt_Mes), 
-       data = filter(licitacoes_merenda, dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
-  geom_histogram(binwidth = 1, fill = I('#CF6360')) +
-  scale_x_continuous(breaks = seq(1,12,1)) +
-  labs(title = 'Total de licitações por mês entre os anos 2011 e 2015',
-       x = 'Mês', y = 'Total') +
-  theme_minimal()
-```
-
-<br>
-
-## 6 - Qual a média do valor da licitação por merenda?
+### 2.3 - Qual a média do valor da licitação por merenda?
 Até aqui trabalhamos com o número total de licitações, a seguir vamos buscar entender como o valor da licitação se comporta.  
 Inicialmente, determinamos a média e a mediana do valor (em reais) de licitações envolvendo merenda, como mostrado a seguir.
 ```{r}
@@ -362,7 +356,7 @@ mean(licitacoes_merenda$vl_Licitacao)
 
 <br>
 
-## 7 - Qual a mediana do valor da licitação por merenda?
+### 2.4 - Qual a mediana do valor da licitação por merenda?
 ```{r}
 median(licitacoes_merenda$vl_Licitacao)
 ```
@@ -371,7 +365,7 @@ Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licita
 
 <br>
 
-## 8 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2010-2016)?
+### 2.5 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2010-2016)?
 No gráfico a seguir mostramos como o valor da média (preto) e da mediana (azul) se comporta entre os anos de 2010 e 2016.
 
 ```{r fig.cap='Figura 07'}
@@ -390,142 +384,24 @@ Observamos que a média sempre está acima da mediana. No ano de 2010 elas estav
 
 <br>
 
-## 9 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba? 
-Para responder a essa pergunta consideramos todas as licitações que envolvem merenda na Paraíba e os respectivos valores das licitações e determinamos a média desse valor por município. Em seguida, utilizamos o mapa abaixo para observar os resultados.
+### 2.6 - Em que período do ano ocorrem mais licitações de merenda? {#perg-5}
+Seguindo com a análise feita nas perguntas anteriores, buscou-se verificar se há algum período do ano que concentra mais licitações de merenda.  
+Aqui, foram analisados apenas os dados no período compreendido entre os anos 2011 e 2015 e observou-se que o intervalo entre os meses de fevereiro e abril concentra a maioria das licitações de merenda e que o número de licitações desse tipo decai conforme nos aproximamos dos meses finais do ano.  
+Segundo o gráfico abaixo, podemos ainda observar que tal concentração se dá exatamente nos primeiros meses da volta às aulas da escolas, onde possivelmente são firmados contratos anuais de distribuição de alimentação escolar. 
 
-```{r fig.cap = 'Figura 08'}
-mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_lic
-spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio(em milhares de reais) de licitações de merenda por município")
-```
-
-É notado que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
-
-<br>
-
-## 10 - Geralmente, quantas propostas são recebidas para licitações de merenda? {#perg-10}
-Aqui, busca-se compreender como está distribuído o total de propostas para as licitações de merenda. A partir dessa análise é possível perceber se há muitos interessados nesse tipo de licitação e se algum valor mais comum ou discrepante.
-Conforme descrito na figura 09, é possível observar que grande parte das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas < 5))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu menos de 5 propostas.
-
-```{r fig.cap='Figura 09'}
-ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
-  geom_histogram(fill = I('#e2a76f'), binwidth = 1) +
-  labs(title = 'Total de propostas para licitações de merenda',
-       x = 'Número de propostas', y = 'Total') +
-  scale_x_continuous(breaks = seq(0, 50, 5)) +
-  scale_y_continuous(breaks = seq(0,1500,250)) +
+```{r fig.cap='Figura 06'}
+ggplot(aes(x = dt_Mes), 
+       data = filter(licitacoes_merenda, dt_Ano > 2010 & dt_Ano < 2016 & dt_Mes != 0)) +
+  geom_histogram(binwidth = 1, fill = I('#CF6360')) +
+  scale_x_continuous(breaks = seq(1,12,1)) +
+  labs(title = 'Total de licitações por mês entre os anos 2011 e 2015',
+       x = 'Mês', y = 'Total') +
   theme_minimal()
-```
-
-É possível ainda, restringir a abrangência do gráfico à área de maior concentração e perceber que a maioria das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas == 3))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu apenas 3 propostas.
-
-```{r fig.cap='Figura 10'}
-ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
-  geom_histogram(fill = I('#b2628b'), binwidth = 1) +
-  labs(title = 'Total de propostas para licitações de merenda',
-       x = 'Número de propostas', y = 'Total') +
-  scale_x_continuous(breaks = 0:6, limits = c(0,6)) +
-  scale_y_continuous(breaks = seq(0,1500,250))  +
-  theme_minimal()
-```
-
-Por outro lado, há 2 licitações cujo número de participantes passa dos 25, desviando-se mais de 10 vezes do número médio de participantes das demais. Uma dessas licitações foi realizada em João Pessoa em 2015, enquanto a outra, foi realizada em Monteiro no ano de 2014. 
-Os detalhes desses dois processos podem ser observados na tabela abaixo.
-
-| Cidade | Ano | Propostas | Valor(R$) |
-|:------:|:---:|:---------:|:---------:|
-|João Pessoa|2015|31|25.078.839,00|
-|Monteiro|2014|50|250.911,00|
-
-<br>
-
-## 11 - Que tipo de licitação é mais comum na compra de merenda? {#perg-11}
-A seguir, buscamos entender se há algum tipo de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observar a maior parte das licitações de merenda fazem parte das modalidades convite e pregão presencial. Outros tipos como concorrência, tomada de preços e chamada pública também são amplamente utilizados. Um número expressivo de licitações, ainda, é considerado dispensável.  
-
-```{r fig.cap='Figura 11'}
-niveis = levels(licitacoes_merenda$tp_Licitacao)
-niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Dispensa por outros motivos'] = 'Dispensa'
-niveis[niveis == 'Dispensa por Valor'] = 'Dispensa'
-levels(licitacoes_merenda$tp_Licitacao) = niveis
-
-ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
-  geom_bar(aes(fill = tp_Licitacao)) +
-  scale_x_discrete(labels = c()) +
-  labs(title = 'Quais licitações são mais comuns na compra de merenda?', 
-       x = 'Tipo de licitação', y = 'Total', fill = 'Tipo de licitação')  +
-  theme_minimal()
-
 ```
 
 <br>
 
-## 12 - O valor médio da licitação alterou ao longo dos anos com relação aos tipos de licitação?
-Outra variável interessante de se analisar nos dados é o tipo de licitação. Será que o valor médio(em reais) de licitação varia com o seu tipo ou ainda se esse valor também sofre influência do ano em que a licitação foi realizada. Essas são algumas questões que o gráfico a seguir pode responder.
-
-```{r fig.cap='Figura 12'}
-ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = licitacoes_merenda) +
-  geom_line(stat = "summary", fun.y = "mean") +
-  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
-  scale_y_continuous(breaks = seq(0, 500, 100)) +
-  labs(x = "Ano", y = "Valor médio das licitações (mil reais)", title = "Valor médio das licitações por tipo de licitação ao longo dos anos", color = "Modalidade de licitação")  +
-  theme_minimal()
-```
-
-Observou-se que algumas modalidades de licitações não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão (Eletrônico e Presencial), Adesão a Registro de Preço e Tomada de preços. Algumas modalidades possuem valores limites, por exemplo, Licitações por Convite não podem ter valor superior a 80 mil reais, isso fica claro no gráfico já que a média de licitações dessa modalidade fica em torno desse valor. Além disso, em geral, o valor médio das licitações aumentaram com os anos em praticamente todos os tipos de licitação.
-
-A partir dessa resposta faz-se necessário saber se existem licitações de merenda da modalidade de Convite que ultrapassam o valor limite de 80.000 mil reais previsto pela Lei 8666. Descobrimos que `r nrow(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & vl_Licitacao > 80000))` licitações possuem valor acima do limite. Essa inconsistência pode ser melhor investigada em análises futuras.
-
-<br>
-
-## 13 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos? {#perg-13}
-Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2010 e 2015. Os resultados podem ser observados na figura 13.  
-
-```{r fig.cap='Figura 13'}
-ggplot(aes(x = dt_Ano), 
-       data = (licitacoes_merenda %>%
-                 filter(dt_Ano < 2016) %>%
-                 group_by(dt_Ano, tp_Licitacao) %>%
-                 summarize(total = n()) %>%
-                 ungroup() 
-               )) +
-  geom_line(aes(y = total, color = tp_Licitacao)) +
-  labs(title = 'Popularidade das modalidades de licitação entre os anos 2010 e 2015',
-       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')  +
-  theme_minimal()
-```
-
-É interessante observar o grande número de licitações da modalidade convite no ano 2010, apresentando um claro outlier em relação aos anos posteriores. A que se deveria tamanha discrepância?  
-Analisando apenas os dados referentes ao período entre os anos 2011 e 2015, podemos observar um padrão diferente na distribuição das modalidades de licitação. O resultado pode ser visto no gráfico abaixo. 
-
-```{r fig.cap='Figura 14'}
-niveis = levels(licitacoes_merenda$tp_Licitacao)
-niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
-levels(licitacoes_merenda$tp_Licitacao) = niveis
-
-ggplot(aes(x = dt_Ano), 
-       data = (licitacoes_merenda %>%
-                 filter(dt_Ano > 2010 & dt_Ano < 2016) %>%
-                 group_by(dt_Ano, tp_Licitacao) %>%
-                 summarize(total = n()) %>%
-                 ungroup() 
-               )) +
-  geom_line(aes(y = total, color = tp_Licitacao)) +
-  labs(title = 'Popularidade das modalidades de licitação entre os anos 2011 e 2015',
-       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')  +
-  theme_minimal()
-```
-
-A modalidade de licitação mais utilizada para a obtenção de merenda no período observado foi o pregão, seja ele eletrônico ou presencial, e sua utilização ainda está em ascenção.  
-Se por um lado a utilização do pregão apresentou popularidade ascendente no período, por outro, a popularidade das licitações da modalidade convite apresentaram uma queda considerável, chegando quase a 0 nos anos 2014 e 2015.  
-Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possível observar, por exemplo, que há uma grande diferença entre o total de licitações dispensadas em 2013 e o de seus anos vizinhos e que a modalidade chamada pública começou a ser utilizada apenas no ano referido anteriormente.    
-
-<br>
-
-## 14 - Em geral, as licitaçoes mais caras estao concentradas em alguma época do ano? {#perg-14}
+### 2.7 - Em geral, as licitaçoes mais caras estao concentradas em alguma época do ano? {#perg-14}
 Analisando novamente vez os dados do período entre 2011 e 2015, foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido em \#[5](#perg-5), é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
 
 ```{r fig.cap='Figura 15'}
@@ -546,165 +422,26 @@ ggplot(aes(x = dt_Mes, y = vl_Licitacao/1000),
 
 <br>
 
-## 15 - O valor da licitação está relacionado com o total de propostas recebidas? {#perg-15}
-Para tentar responder essa pergunta, foi criado um gráfico de dispersão do valor das licitações pelo total de propostas. Além disso, o coeficiente de correlação linear entre as variáveis foi calculado.  
+### 2.8 - Quanto cada município já gastou com licitações?
 
-```{r fig.cap='Figura 16'}
-cor1 = with(licitacoes_merenda, 
-            round(cor(vl_Licitacao, nu_Propostas), 2))
-
-ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), data = licitacoes_merenda) +
-  geom_jitter(alpha = 0.2) +
-  labs(title = 'Número de propostas por valor total de licitação',
-       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
-  scale_x_continuous() +
-  geom_label(aes(7.5, 15, label = paste('r = ', as.character(cor1)))) +
-  theme_minimal()
+```{r}
+mapa_paraiba@data$Y <- paraiba_municipios$valor_total_lic
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor total(em milhares de reais) de licitações de merenda por município")
 ```
 
-Observando a figura acima observamos que aparentemente não há relação linear entre as duas variáveis. Isso pode ser comprovado pelo valor do coeficiente de correlação linear entre elas, que é de 0.23.  
+### 2.9 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba? 
+Para responder a essa pergunta consideramos todas as licitações que envolvem merenda na Paraíba e os respectivos valores das licitações e determinamos a média desse valor por município. Em seguida, utilizamos o mapa abaixo para observar os resultados.
 
-É possível, ainda, aproximar o gráfico da área que contém a maior concentração de pontos e recalcular a correlação entre as variáveis.  
-
-```{r fig.cap='Figura 17'}
-cor2 = with(filter(licitacoes_merenda, 
-                   vl_Licitacao <= quantile(licitacoes_merenda$vl_Licitacao, .975) & 
-                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .975)), 
-            round(cor(vl_Licitacao, nu_Propostas), 2))
-
-ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), 
-       data = filter(licitacoes_merenda, vl_Licitacao <= 3e+06)) +
-  geom_jitter(alpha = 0.2) +
-  scale_x_continuous(limits = c(0, quantile(licitacoes_merenda$vl_Licitacao, .975)/1e+06)) + 
-  scale_y_continuous(limits = c(0, quantile(licitacoes_merenda$nu_Propostas, .975))) +
-  labs(title = 'Número de propostas por valor total de licitação',
-       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
-  geom_label(aes(0.45, 6.5, label = paste('r = ', as.character(cor2))))  +
-  theme_minimal()
-
+```{r fig.cap = 'Figura 08'}
+mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_lic
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio(em milhares de reais) de licitações de merenda por município")
 ```
 
-Agora observamos que há ainda menos indícios de uma correlação linear entre as duas variáveis. Isso pode ser comprovado, mais uma vez, pelo valor do coeficiente de correlação linear entre elas, que diminuiu e passou a ser de -0.1.  
+É notado que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
 
 <br>
 
-## 16 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
-Para responder a essa pergunta iremos considerar, inicialmente, os anos de 2010 até 2016. A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo(1:6) contém 96% dos dados de merenda. O 96º percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.956))`.
-
-```{r fig.cap='Figura 18'}
-ggplot(aes(nu_Propostas), data = licitacoes_merenda) +
-  geom_bar(aes(fill = tp_Licitacao), position = 'dodge') +
-  scale_x_continuous(limits = c(0, 6.5), breaks = seq(0, 6, 1)) +
-  scale_y_continuous(breaks = seq(0, 1200, 100)) +
-  labs(x = 'Número de propostas', y = 'Número de licitações', fill = 'Modalidade', title = 'Total de licitações por número de propostas por modalidade') +
-  theme_minimal()
-```
-
-Observou-se que a modalidade que mais possui licitações é Convite, e a maioria das licitações dessa modalidade possuem 3 propostas, isso ocorre devido ao número mínimo de participantes de uma licitação dessa modalidade que é 3, estabelecido pela Lei Nº 8666.
-
-A interpretação do gráfico nos levou a outra pergunta: existem licitações de merenda da modalidade convite com número de propostas inferior ao número mínimo(3) exigido por Lei?
-Encontramos `r count(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & nu_Propostas < 3))` licitações de merenda que são da modalidade Convite e possuem menos de 3 propostas, o que não é permitido por Lei.
-
-No ano de 2010, `r sprintf("%.1f %%", count(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & dt_Ano == 2010)) / count(subset(licitacoes_merenda, dt_Ano == 2010))*100)` das licitações de merenda são da modalidade convite, totalizando `r nrow(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & dt_Ano == 2010))` licitações. Se retirarmos esse ano da nossa análise podemos melhor identificar que outras modalidades, com relação ao número de propostas, são mais frequentes.
-
-```{r fig.cap='Figura 19'}
-ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
-  geom_bar(aes(fill = tp_Licitacao), position = 'dodge') +
-  scale_x_continuous(limits = c(0, 6.5), breaks = seq(0, 6, 1)) +
-  scale_y_continuous(breaks = seq(0, 400, 50)) +
-  labs(x = 'Número de propostas', y = 'Número de licitações', fill = 'Modalidade', title = 'Total de licitações por número de propostas por modalidade (a partir de 2011)')  +
-  theme_minimal()
-```
-
-Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite diminui bastante, mas permanece sendo mais frequente quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta. Pelos dados não é possível concluir a razão pela qual o número de licitações de convite é tão superior em 2010 em relação a outros anos.  
-
-<br>
-
-# Lado do Fornecedor
-
-## 1 - Quantos são os fornecedores de merenda de cada município?
-
-A questão foi respondida através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016. O objetivo da questão é prover um panorama da distribuição e diversidade de fornecedores no estado da Paraíba.
-
-```{r, results='hide'}
-#mapa_paraiba <- readOGR('mapa/Municipios.shp')
-```
-
-```{r}
-levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
-levels_mapa[51] = "Tacima"
-levels_mapa[200] = "Sao Vicente do Serido"
-levels_mapa[173] = "Joca Claudino"
-levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
-
-merenda_pb <- left_join(fornecedores, municipios, 'cd_Municipio')
-
-# Join entre a tabela de fornecedores e a lista de municípios do mapa
-mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
-paraiba = merenda_pb %>% inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
-
-# Sumarização dos dados por município
-paraiba_sumarizado = paraiba %>%
-  group_by(de_Municipio) %>%
-  summarize(total = n())
-
-# Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
-data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido', 'Mogeiro', 'Alagoa Grande'),
-                       total = c(0, 0, 0, 9, 0, 0))
-paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
-
-# Dividindo em faixas
-paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
-                                breaks = c(0,10,20,40,60,110), 
-                                include.lowest = T)
-
-# Criando um data frame com os municípios na ordem do mapa
-levels_mapa = mapa_paraiba@data$Nome_Munic
-paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
-paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
-
-# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
-paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
-
-colors = brewer.pal(5,"YlOrRd")
-
-# A variável Y recebe os valores em ordem que devem apontar para cada municipio
-mapa_paraiba@data$Y <- paraiba_municipios$total
-spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Número de fornecedores de merenda por município")
-```
-
-Com a visualização observa-se que a diversidade de competidores é baixa, uma vez que 159 (71.3%) cidades tiveram menos de 20 fornecedores diferentes no período observado.
-Apenas a cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 110 fornecedores e a segunda cidade com mais fornecedores (Santa Rita) teve apenas 65.
-
-## 2 - Quantos fornecedores, em média, competem nas licitações?
-
-```{r}
-mean(licitacoes_fornecedor$nu_Propostas)
-a <- subset(licitacoes_fornecedor, nu_Propostas <= 1)
-```
-
-Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que 573 (`r round(length(a$cd_Municipio)/length(licitacoes_fornecedor$cd_Municipio)*100, 2)`%) licitações receberam 0 ou 1 proposta, ou seja, não tiveveram concorrência.
-
-## 3 - Existem fornecedores que dominem a distribuição de merenda?
-
-Para responder essa questão foi calculado o número de contratos celebrados por cada fornecedor de merenda no período de 2010 a 2016, com o intuito de identificar a possível existência de fornecedores que vençam muito mais licitações que os demais.
-
-```{r}
-fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
-data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
-
-media <- mean(data_fornecedores_groups$n)
-ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
-  geom_histogram(stat = 'count', color = '#5CA171') + 
-  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
-  geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
-  geom_text(aes(0, media, label = 'Média', vjust = -0.5, hjust = -0.1), size = 4) +
-  scale_y_continuous(breaks = seq(0, 80, 5))
-```
-
-Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa, no entanto, um pequeno grupo de 88 (9.8%) dos fornecedores conseguiu fechar mais de 5 contratos no período estudado.
-
-## 4 - Como é o padrão para descrição de licitações de merenda?
+### 2.10 - Como é o padrão para descrição de licitações de merenda?
 
 Um primeiro passo para analisar o comportamento das licitações de merenda pode ser subdividí-las em categorias menores. Para isso, podemos fazer uma word cloud com as descrições das licitações, de modo que seja possível observar quais os termos mais recorrentes que sejam úteis para nosso propósito.
 
@@ -733,7 +470,7 @@ wordcloud(names(freq), freq, random.order = F)
 
 É notavel que muitas dos termos que mais aparecem não tem real relevância para nosso propósito, mesmo vários desses já tendo sido filtrados. Entretanto, alguns tipos de alimentos são recorrentes nas descrições e são candidatos a classificadores. Estes são: carnes, frutas, bolos, iogurte, hortaliças, cereais, legumes, bolachas, leite, queijo, ovos, polpa e pães.
 
-## 5 - Quanto se gasta com cada tipo de alimento?
+### 2.11 - Quanto se gasta com cada tipo de alimento?
 
 Agrupando as licitações por ocorrência dos termos encontrados anteriormente, podemos comparar o quanto é gasto, em sua totalidade e por ano, com cada tipo de alimento. Isso pode ser um indicativo de certo mercado pode ser mais lucrativo que outros e, por consequência, apresentar uma maior concorrência.
 
@@ -798,7 +535,289 @@ alimentos.resumo %>%
 
 Outra hipótese é que carne tem um preço elevado e, muitas das vezes que aparece em uma licitação, também aparecem hortifrutigranjeiros e pães, o que faz com que haja uma distorção de seus preços aparentes.
 
-## 6 - Quantos tipos diferentes de alimento cada fornecedor vende?
+### 2.12 - Que tipo de licitação é mais comum na compra de merenda? {#perg-11}
+A seguir, buscamos entender se há algum tipo de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observar a maior parte das licitações de merenda fazem parte das modalidades convite e pregão presencial. Outros tipos como concorrência, tomada de preços e chamada pública também são amplamente utilizados. Um número expressivo de licitações, ainda, é considerado dispensável.  
+
+```{r fig.cap='Figura 11'}
+niveis = levels(licitacoes_merenda$tp_Licitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Dispensa por outros motivos'] = 'Dispensa'
+niveis[niveis == 'Dispensa por Valor'] = 'Dispensa'
+levels(licitacoes_merenda$tp_Licitacao) = niveis
+
+ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
+  geom_bar(aes(fill = tp_Licitacao)) +
+  scale_x_discrete(labels = c()) +
+  labs(title = 'Quais licitações são mais comuns na compra de merenda?', 
+       x = 'Tipo de licitação', y = 'Total', fill = 'Tipo de licitação')  +
+  theme_minimal()
+
+```
+
+<br>
+
+### 2.13 - O valor médio da licitação alterou ao longo dos anos com relação aos tipos de licitação?
+Outra variável interessante de se analisar nos dados é o tipo de licitação. Será que o valor médio(em reais) de licitação varia com o seu tipo ou ainda se esse valor também sofre influência do ano em que a licitação foi realizada. Essas são algumas questões que o gráfico a seguir pode responder.
+
+```{r fig.cap='Figura 12'}
+ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000, color = tp_Licitacao), data = licitacoes_merenda) +
+  geom_line(stat = "summary", fun.y = "mean") +
+  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  scale_y_continuous(breaks = seq(0, 500, 100)) +
+  labs(x = "Ano", y = "Valor médio das licitações (mil reais)", title = "Valor médio das licitações por tipo de licitação ao longo dos anos", color = "Modalidade de licitação")  +
+  theme_minimal()
+```
+
+Observou-se que algumas modalidades de licitações não possuem valores médios em alguns anos, isso ocorre porque não houve licitações daquele tipo naquele ano. Alguns tipos de licitações se destacam por seu valor médio parecido e acima dos demais, são elas: Pregão (Eletrônico e Presencial), Adesão a Registro de Preço e Tomada de preços. Algumas modalidades possuem valores limites, por exemplo, Licitações por Convite não podem ter valor superior a 80 mil reais, isso fica claro no gráfico já que a média de licitações dessa modalidade fica em torno desse valor. Além disso, em geral, o valor médio das licitações aumentaram com os anos em praticamente todos os tipos de licitação.
+
+A partir dessa resposta faz-se necessário saber se existem licitações de merenda da modalidade de Convite que ultrapassam o valor limite de 80.000 mil reais previsto pela Lei 8666. Descobrimos que `r nrow(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & vl_Licitacao > 80000))` licitações possuem valor acima do limite. Essa inconsistência pode ser melhor investigada em análises futuras.
+
+<br>
+
+### 2.14 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos? {#perg-13}
+Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2010 e 2015. Os resultados podem ser observados na figura 13.  
+
+```{r fig.cap='Figura 13'}
+ggplot(aes(x = dt_Ano), 
+       data = (licitacoes_merenda %>%
+                 filter(dt_Ano < 2016) %>%
+                 group_by(dt_Ano, tp_Licitacao) %>%
+                 summarize(total = n()) %>%
+                 ungroup() 
+               )) +
+  geom_line(aes(y = total, color = tp_Licitacao)) +
+  labs(title = 'Popularidade das modalidades de licitação entre os anos 2010 e 2015',
+       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')  +
+  theme_minimal()
+```
+
+É interessante observar o grande número de licitações da modalidade convite no ano 2010, apresentando um claro outlier em relação aos anos posteriores. A que se deveria tamanha discrepância?  
+Analisando apenas os dados referentes ao período entre os anos 2011 e 2015, podemos observar um padrão diferente na distribuição das modalidades de licitação. O resultado pode ser visto no gráfico abaixo. 
+
+```{r fig.cap='Figura 14'}
+niveis = levels(licitacoes_merenda$tp_Licitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+levels(licitacoes_merenda$tp_Licitacao) = niveis
+
+ggplot(aes(x = dt_Ano), 
+       data = (licitacoes_merenda %>%
+                 filter(dt_Ano > 2010 & dt_Ano < 2016) %>%
+                 group_by(dt_Ano, tp_Licitacao) %>%
+                 summarize(total = n()) %>%
+                 ungroup() 
+               )) +
+  geom_line(aes(y = total, color = tp_Licitacao)) +
+  labs(title = 'Popularidade das modalidades de licitação entre os anos 2011 e 2015',
+       x = 'Ano', y = 'Total de licitações', color = 'Tipo de licitação')  +
+  theme_minimal()
+```
+
+A modalidade de licitação mais utilizada para a obtenção de merenda no período observado foi o pregão, seja ele eletrônico ou presencial, e sua utilização ainda está em ascenção.  
+Se por um lado a utilização do pregão apresentou popularidade ascendente no período, por outro, a popularidade das licitações da modalidade convite apresentaram uma queda considerável, chegando quase a 0 nos anos 2014 e 2015.  
+Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possível observar, por exemplo, que há uma grande diferença entre o total de licitações dispensadas em 2013 e o de seus anos vizinhos e que a modalidade chamada pública começou a ser utilizada apenas no ano referido anteriormente.    
+
+<br>
+
+### 2.15 - Geralmente, quantas propostas são recebidas para licitações de merenda? {#perg-10}
+Aqui, busca-se compreender como está distribuído o total de propostas para as licitações de merenda. A partir dessa análise é possível perceber se há muitos interessados nesse tipo de licitação e se algum valor mais comum ou discrepante.
+Conforme descrito na figura 09, é possível observar que grande parte das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas < 5))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu menos de 5 propostas.
+
+```{r fig.cap='Figura 09'}
+ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
+  geom_histogram(fill = I('#e2a76f'), binwidth = 1) +
+  labs(title = 'Total de propostas para licitações de merenda',
+       x = 'Número de propostas', y = 'Total') +
+  scale_x_continuous(breaks = seq(0, 50, 5)) +
+  scale_y_continuous(breaks = seq(0,1500,250)) +
+  theme_minimal()
+```
+
+É possível ainda, restringir a abrangência do gráfico à área de maior concentração e perceber que a maioria das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas == 3))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu apenas 3 propostas.
+
+```{r fig.cap='Figura 10'}
+ggplot(aes(x = nu_Propostas), data = licitacoes_merenda) +
+  geom_histogram(fill = I('#b2628b'), binwidth = 1) +
+  labs(title = 'Total de propostas para licitações de merenda',
+       x = 'Número de propostas', y = 'Total') +
+  scale_x_continuous(breaks = 0:6, limits = c(0,6)) +
+  scale_y_continuous(breaks = seq(0,1500,250))  +
+  theme_minimal()
+```
+
+Por outro lado, há 2 licitações cujo número de participantes passa dos 25, desviando-se mais de 10 vezes do número médio de participantes das demais. Uma dessas licitações foi realizada em João Pessoa em 2015, enquanto a outra, foi realizada em Monteiro no ano de 2014. 
+Os detalhes desses dois processos podem ser observados na tabela abaixo.
+
+| Cidade | Ano | Propostas | Valor(R$) |
+|:------:|:---:|:---------:|:---------:|
+|João Pessoa|2015|31|25.078.839,00|
+|Monteiro|2014|50|250.911,00|
+
+<br>
+
+### 2.16 - O valor da licitação está relacionado com o total de propostas recebidas? {#perg-15}
+Para tentar responder essa pergunta, foi criado um gráfico de dispersão do valor das licitações pelo total de propostas. Além disso, o coeficiente de correlação linear entre as variáveis foi calculado.  
+
+```{r fig.cap='Figura 16'}
+cor1 = with(licitacoes_merenda, 
+            round(cor(vl_Licitacao, nu_Propostas), 2))
+
+ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), data = licitacoes_merenda) +
+  geom_jitter(alpha = 0.2) +
+  labs(title = 'Número de propostas por valor total de licitação',
+       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
+  scale_x_continuous() +
+  geom_label(aes(7.5, 15, label = paste('r = ', as.character(cor1)))) +
+  theme_minimal()
+```
+
+Observando a figura acima observamos que aparentemente não há relação linear entre as duas variáveis. Isso pode ser comprovado pelo valor do coeficiente de correlação linear entre elas, que é de 0.23.  
+
+É possível, ainda, aproximar o gráfico da área que contém a maior concentração de pontos e recalcular a correlação entre as variáveis.  
+
+```{r fig.cap='Figura 17'}
+cor2 = with(filter(licitacoes_merenda, 
+                   vl_Licitacao <= quantile(licitacoes_merenda$vl_Licitacao, .975) & 
+                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .975)), 
+            round(cor(vl_Licitacao, nu_Propostas), 2))
+
+ggplot(aes(x = vl_Licitacao/1e+06, y = nu_Propostas), 
+       data = filter(licitacoes_merenda, vl_Licitacao <= 3e+06)) +
+  geom_jitter(alpha = 0.2) +
+  scale_x_continuous(limits = c(0, quantile(licitacoes_merenda$vl_Licitacao, .975)/1e+06)) + 
+  scale_y_continuous(limits = c(0, quantile(licitacoes_merenda$nu_Propostas, .975))) +
+  labs(title = 'Número de propostas por valor total de licitação',
+       x = 'Valor de licitação (em milhões de reais)', y = 'Número de propostas') +
+  geom_label(aes(0.45, 6.5, label = paste('r = ', as.character(cor2))))  +
+  theme_minimal()
+
+```
+
+Agora observamos que há ainda menos indícios de uma correlação linear entre as duas variáveis. Isso pode ser comprovado, mais uma vez, pelo valor do coeficiente de correlação linear entre elas, que diminuiu e passou a ser de -0.1.  
+
+<br>
+
+### 2.17 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
+Para responder a essa pergunta iremos considerar, inicialmente, os anos de 2010 até 2016. A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo(1:6) contém 96% dos dados de merenda. O 96º percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.956))`.
+
+```{r fig.cap='Figura 18'}
+ggplot(aes(nu_Propostas), data = licitacoes_merenda) +
+  geom_bar(aes(fill = tp_Licitacao), position = 'dodge') +
+  scale_x_continuous(limits = c(0, 6.5), breaks = seq(0, 6, 1)) +
+  scale_y_continuous(breaks = seq(0, 1200, 100)) +
+  labs(x = 'Número de propostas', y = 'Número de licitações', fill = 'Modalidade', title = 'Total de licitações por número de propostas por modalidade') +
+  theme_minimal()
+```
+
+Observou-se que a modalidade que mais possui licitações é Convite, e a maioria das licitações dessa modalidade possuem 3 propostas, isso ocorre devido ao número mínimo de participantes de uma licitação dessa modalidade que é 3, estabelecido pela Lei Nº 8666.
+
+A interpretação do gráfico nos levou a outra pergunta: existem licitações de merenda da modalidade convite com número de propostas inferior ao número mínimo(3) exigido por Lei?
+Encontramos `r count(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & nu_Propostas < 3))` licitações de merenda que são da modalidade Convite e possuem menos de 3 propostas, o que não é permitido por Lei.
+
+No ano de 2010, `r sprintf("%.1f %%", count(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & dt_Ano == 2010)) / count(subset(licitacoes_merenda, dt_Ano == 2010))*100)` das licitações de merenda são da modalidade convite, totalizando `r nrow(subset(licitacoes_merenda, tp_Licitacao == 'Convite' & dt_Ano == 2010))` licitações. Se retirarmos esse ano da nossa análise podemos melhor identificar que outras modalidades, com relação ao número de propostas, são mais frequentes.
+
+```{r fig.cap='Figura 19'}
+ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
+  geom_bar(aes(fill = tp_Licitacao), position = 'dodge') +
+  scale_x_continuous(limits = c(0, 6.5), breaks = seq(0, 6, 1)) +
+  scale_y_continuous(breaks = seq(0, 400, 50)) +
+  labs(x = 'Número de propostas', y = 'Número de licitações', fill = 'Modalidade', title = 'Total de licitações por número de propostas por modalidade (a partir de 2011)')  +
+  theme_minimal()
+```
+
+Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite diminui bastante, mas permanece sendo mais frequente quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta. Pelos dados não é possível concluir a razão pela qual o número de licitações de convite é tão superior em 2010 em relação a outros anos.  
+
+<br>
+
+## 3 - Analisando Fornecedores
+Um ponto do processo licitatório em que também pode ocorrer um número considerável de irregularidades diz respeito à contratação dos fornecedores de alimentação escolar. Com base nisso, foi avaliada a forma como 
+
+### 3.1 - Quantos são os fornecedores de merenda de cada município?
+
+A questão foi respondida através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016. O objetivo da questão é prover um panorama da distribuição e diversidade de fornecedores no estado da Paraíba.
+
+```{r, results='hide'}
+#mapa_paraiba <- readOGR('mapa/Municipios.shp')
+```
+
+```{r}
+levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels_mapa[200] = "Sao Vicente do Serido"
+levels_mapa[173] = "Joca Claudino"
+levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
+
+merenda_pb <- left_join(fornecedores, municipios, 'cd_Municipio')
+
+# Join entre a tabela de fornecedores e a lista de municípios do mapa
+mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
+paraiba = merenda_pb %>% inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
+
+# Sumarização dos dados por município
+paraiba_sumarizado = paraiba %>%
+  group_by(de_Municipio) %>%
+  summarize(total = n())
+
+# Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
+data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido', 'Mogeiro', 'Alagoa Grande'),
+                       total = c(0, 0, 0, 9, 0, 0))
+paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
+
+# Dividindo em faixas
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
+                                breaks = c(0,10,20,40,60,110), 
+                                include.lowest = T)
+
+# Criando um data frame com os municípios na ordem do mapa
+levels_mapa = mapa_paraiba@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
+paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
+
+# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
+colors = brewer.pal(5,"YlOrRd")
+
+# A variável Y recebe os valores em ordem que devem apontar para cada municipio
+mapa_paraiba@data$Y <- paraiba_municipios$total
+spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Número de fornecedores de merenda por município")
+```
+
+Com a visualização observa-se que a diversidade de competidores é baixa, uma vez que 159 (71.3%) cidades tiveram menos de 20 fornecedores diferentes no período observado.
+Apenas a cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 110 fornecedores e a segunda cidade com mais fornecedores (Santa Rita) teve apenas 65.
+
+### 3.2 - Quantos fornecedores, em média, competem nas licitações?
+
+```{r}
+mean(licitacoes_fornecedor$nu_Propostas)
+a <- subset(licitacoes_fornecedor, nu_Propostas <= 1)
+```
+
+Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que 573 (`r round(length(a$cd_Municipio)/length(licitacoes_fornecedor$cd_Municipio)*100, 2)`%) licitações receberam 0 ou 1 proposta, ou seja, não tiveveram concorrência.
+
+### 3.3 - Existem fornecedores que dominem a distribuição de merenda?
+
+Para responder essa questão foi calculado o número de contratos celebrados por cada fornecedor de merenda no período de 2010 a 2016, com o intuito de identificar a possível existência de fornecedores que vençam muito mais licitações que os demais.
+
+```{r}
+fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
+data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
+
+media <- mean(data_fornecedores_groups$n)
+ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
+  geom_histogram(stat = 'count', color = '#5CA171') + 
+  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
+  geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
+  geom_text(aes(0, media, label = 'Média', vjust = -0.5, hjust = -0.1), size = 4) +
+  scale_y_continuous(breaks = seq(0, 80, 5))
+```
+
+Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa, no entanto, um pequeno grupo de 88 (9.8%) dos fornecedores conseguiu fechar mais de 5 contratos no período estudado.
+
+### 3.4 - Quantos tipos diferentes de alimento cada fornecedor vende?
 
 Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas. Isso é ruim, pois indica que as classificações escolhidas têm ocorrência baixa demais para serem relevantes.
 
@@ -823,7 +842,7 @@ variedade %>%
     y = 'Fornecedores')
 ```
 
-## 7 - Os contratos de licitações são bem distribuidos entre os fornecedores?
+### 3.5 - Os contratos de licitações são bem distribuidos entre os fornecedores?
 
 Os gráficos abaixo mostram que a maior parte dos fornecedores participaram apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes, mas não o mostramos no gráfico.
 
@@ -900,43 +919,43 @@ lucros %>%
         axis.ticks.x=element_blank())
 ```
 
-## 8 - Quanto cada município já gastou com licitações?
+<!-- ### 8 - Quanto cada município já gastou com licitações? -->
 
-```{r}
-gastos <- contratos %>%
-  group_by(de_Municipio = get.municipio(cd_UGestora), dt_Ano) %>%
-  summarise(total = sum(vl_TotalContrato), freq = n())
+<!-- ```{r} -->
+<!-- gastos <- contratos %>% -->
+<!--   group_by(de_Municipio = get.municipio(cd_UGestora), dt_Ano) %>% -->
+<!--   summarise(total = sum(vl_TotalContrato), freq = n()) -->
 
-gastos_cidades <- gastos %>% group_by(de_Municipio) %>% summarise(total = sum(total))
+<!-- gastos_cidades <- gastos %>% group_by(de_Municipio) %>% summarise(total = sum(total)) -->
 
-anti <- anti_join(municipios, gastos_cidades, by = 'de_Municipio')
+<!-- anti <- anti_join(municipios, gastos_cidades, by = 'de_Municipio') -->
 
-data_temp = data.frame(de_Municipio = c(
-  'Sossêgo', 'Soledade', 'São José dos Cordeiros', 'Santana dos Garrotes', 'Salgadinho', 'Riacho de Santo Antônio', 'Riachão do Bacamarte', 'Nova Floresta', 'Mogeiro', 'Mato Grosso', 'Mamanguape', 'Juripiranga', 'João Pessoa', 'Ibiara', 'Gurjão', 'Cuité', 'Amparo', 'Alagoa Grande'), total = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+<!-- data_temp = data.frame(de_Municipio = c( -->
+<!--   'Sossêgo', 'Soledade', 'São José dos Cordeiros', 'Santana dos Garrotes', 'Salgadinho', 'Riacho de Santo Antônio', 'Riachão do Bacamarte', 'Nova Floresta', 'Mogeiro', 'Mato Grosso', 'Mamanguape', 'Juripiranga', 'João Pessoa', 'Ibiara', 'Gurjão', 'Cuité', 'Amparo', 'Alagoa Grande'), total = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)) -->
 
-paraiba_sumarizado = rbind(gastos_cidades, data_temp)
+<!-- paraiba_sumarizado = rbind(gastos_cidades, data_temp) -->
 
-paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
-                                breaks = c(0,100000,1000000,10000000,100000000),
-                                include.lowest = T)
+<!-- paraiba_sumarizado$total = cut(paraiba_sumarizado$total,  -->
+<!--                                 breaks = c(0,100000,1000000,10000000,100000000), -->
+<!--                                 include.lowest = T) -->
 
-levels_mapa = mapa_paraiba@data$Nome_Munic
-paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
-paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
+<!-- levels_mapa = mapa_paraiba@data$Nome_Munic -->
+<!-- paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID) -->
+<!-- paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa) -->
 
-# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
-paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
-
-
-colors = brewer.pal(5,"YlOrRd")
-
-# A variável Y recebe os valores em ordem que devem apontar para cada municipio
-mapa_paraiba@data$Y <- paraiba_municipios$total
-spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Total gasto em merenda por município")
-```
+<!-- # Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização -->
+<!-- paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio')) -->
 
 
-## 9 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
+<!-- colors = brewer.pal(5,"YlOrRd") -->
+
+<!-- # A variável Y recebe os valores em ordem que devem apontar para cada municipio -->
+<!-- mapa_paraiba@data$Y <- paraiba_municipios$total -->
+<!-- spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Total gasto em merenda por município") -->
+<!-- ``` -->
+
+
+### 3.6 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
 
 A fim de verificar a influência que o tamanho de um município tem em sua quantidade de fornecedores, de licitações, no seu gasto total e mediano em licitações, assim como no número mediano de propostas por licitação, é importante primeiro ver como é a distribuição dessa variáveis. Para isso, vamos primeiro remover Campina Grande e João Pessoa, pois suas grandes populações dificultam a comparação com os demais municípios.
 
