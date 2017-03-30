@@ -1,0 +1,516 @@
+---
+title: "Licitações de Merenda - Fornecedor"
+author: "Hugo Gabriel Bezerra da Silva, Victor Andrade de Almeida"
+date: "22 de março de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE,
+  fig.align = 'center', fig.width = 10)
+```
+
+```{r}
+library(corrplot)
+library(ggplot2)
+
+library(RColorBrewer)
+library(scales)
+
+library(tidyr)
+library(plyr)
+library(dplyr)
+
+library(tm)
+library(wordcloud)
+library(stringr)
+
+library(maps)   # mapas simples, eixos, escala, cidades 
+library(ggmap)  # Gmaps, OSM + mapas baseados em ggplot2
+library(rgdal)
+```
+
+```{r}
+sagres <- src_mysql('sagres', group='ministerio-publico', password=NULL)
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT *
+  FROM licitacao
+  WHERE de_Obs REGEXP "merenda"
+')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+query <- sql('
+  SELECT c.*
+  FROM contratos c
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+contratos <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM participantes p
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+participantes <- tbl(sagres, query) %>%
+  compute(name = 'pm') %>%
+  collect()
+
+query <- sql('
+  SELECT DISTINCT f.*
+  FROM fornecedores f
+  INNER JOIN pm
+  USING (cd_UGestora, nu_CPFCNPJ)
+')
+
+fornecedores <- tbl(sagres, query) %>%
+  collect()
+
+municipios <- tbl(utils, 'municipio') %>%
+  collect()
+```
+
+```{r}
+get.municipio <- function(cd_UGestora) {
+  result <- data.frame(
+      cd_Municipio = str_sub(cd_UGestora, -3)) %>%
+    join(municipios)
+  return(result$de_Municipio)
+}
+```
+
+```{r}
+# Adicionando o nome dos municípios nos dados de fornecedores
+fornecedores$cd_Municipio <- substr(as.character(fornecedores$cd_UGestora), 4, 6)
+fornecedores <- merge(fornecedores, municipios, by = 'cd_Municipio')
+
+fornecedores$Nome_Munic <- fornecedores$de_Municipio.y
+fornecedores$de_Municipio.y <- NULL
+
+# Adicionando o nome dos municipios nos dados de licitacoes
+licitacoes$cd_Municipio <- substr(as.character(licitacoes$cd_UGestora), 4, 6)
+licitacoes <- merge(licitacoes, municipios, by = 'cd_Municipio')
+
+licitacoes$Nome_Munic <- licitacoes$de_Muninipio.y
+licitacoes$de_Municipio.y <- NULL
+```
+
+## 1 - Quantos são os fornecedores de merenda de cada município?
+
+A questão foi respondida através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016. O objetivo da questão é prover um panorama da distribuição e diversidade de fornecedores no estado da Paraíba.
+
+```{r, results='hide'}
+mapa_pb <- readOGR('mapa/Municipios.shp')
+```
+
+```{r}
+levels_mapa = levels(mapa_pb@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels_mapa[200] = "Sao Vicente do Serido"
+levels_mapa[173] = "Joca Claudino"
+levels(mapa_pb@data$Nome_Munic) = levels_mapa
+
+merenda_pb <- left_join(fornecedores, municipios, 'cd_Municipio')
+
+# Join entre a tabela de fornecedores e a lista de municípios do mapa
+mapa_pb@data$Nome_Munic = as.character(mapa_pb@data$Nome_Munic)
+paraiba = merenda_pb %>% inner_join(mapa_pb@data, c('de_Municipio' = 'Nome_Munic'))
+
+# Sumarização dos dados por município
+paraiba_sumarizado = paraiba %>%
+  group_by(de_Municipio) %>%
+  summarize(total = n())
+
+# Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
+data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape', 'Sao Vicente do Serido', 'Mogeiro', 'Alagoa Grande'),
+                       total = c(0, 0, 0, 9, 0, 0))
+paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
+
+# Dividindo em faixas
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
+                                breaks = c(0,10,20,40,60,110), 
+                                include.lowest = T)
+
+# Criando um data frame com os municípios na ordem do mapa
+levels_mapa = mapa_pb@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_pb@data$OBJECTID)
+paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
+
+# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
+colors = brewer.pal(5,"YlOrRd")
+
+# A variável Y recebe os valores em ordem que devem apontar para cada municipio
+mapa_pb@data$Y <- paraiba_municipios$total
+spplot(mapa_pb, 'Y',  col.regions = colors, main = "Número de fornecedores de merenda por município")
+```
+
+Com a visualização observa-se que a diversidade de competidores é baixa, uma vez que 159 (71.3%) cidades tiveram menos de 20 fornecedores diferentes no período observado.
+Apenas a cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 110 fornecedores e a segunda cidade com mais fornecedores (Santa Rita) teve apenas 65.
+
+## 2 - Quantos fornecedores, em média, competem nas licitações?
+
+```{r}
+mean(licitacoes$nu_Propostas)
+a <- subset(licitacoes, nu_Propostas <= 1)
+```
+
+Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que 573 (`r round(length(a$cd_Municipio)/length(licitacoes$cd_Municipio)*100, 2)`%) licitações receberam 0 ou 1 proposta, ou seja, não tiveveram concorrência.
+
+## 3 - Existem fornecedores que dominem a distribuição de merenda?
+
+Para responder essa questão foi calculado o número de contratos celebrados por cada fornecedor de merenda no período de 2010 a 2016, com o intuito de identificar a possível existência de fornecedores que vençam muito mais licitações que os demais.
+
+```{r}
+fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
+data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
+
+media <- mean(data_fornecedores_groups$n)
+ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
+  geom_histogram(stat = 'count', color = '#5CA171') + 
+  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
+  geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
+  geom_text(aes(0, media, label = 'Média', vjust = -0.5, hjust = -0.1), size = 4) +
+  scale_y_continuous(breaks = seq(0, 80, 5))
+```
+
+Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa, no entanto, um pequeno grupo de 88 (9.8%) dos fornecedores conseguiu fechar mais de 5 contratos no período estudado.
+
+## 4 - Como é o padrão para descrição de licitações de merenda?
+
+Um primeiro passo para analisar o comportamento das licitações de merenda pode ser subdividí-las em categorias menores. Para isso, podemos fazer uma word cloud com as descrições das licitações, de modo que seja possível observar quais os termos mais recorrentes que sejam úteis para nosso propósito.
+
+```{r}
+termos.irrelevantes <- c(
+  'merenda', 'escolar', 'aquisição', 'aquisicao', 'destinados', 'destinado',
+  'secretarias', 'secretaria', 'alimenticios', 'alimentícios', 'generos', 'gêneros',
+  'empresa', 'ensino', 'rede', 'municipal', 'municipio', 'município', 'escolas',
+  'programa', 'fornecimento', 'alunos', 'deste', 'demais', 'municipais', 'atender'
+)
+
+descricao <- VectorSource(licitacoes$de_Obs) %>% Corpus %>%
+  tm_map(removeNumbers) %>%
+  tm_map(tolower) %>%
+  tm_map(stripWhitespace) %>%
+  tm_map(removeWords, stopwords('portuguese')) %>%
+  tm_map(removeWords, termos.irrelevantes)
+
+dtm <- DocumentTermMatrix(descricao)
+freq <- colSums(as.matrix(dtm))   
+
+wf <- data.frame(word=names(freq), freq=freq)  
+wordcloud(names(freq), freq)
+```
+
+É notavel que muitas dos termos que mais aparecem não tem real relevância para nosso propósito, mesmo vários desses já tendo sido filtrados. Entretanto, alguns tipos de alimentos são recorrentes nas descrições e são candidatos a classificadores. Estes são: carnes, frutas, bolos, iogurte, hortaliças, cereais, legumes, bolachas, leite, queijo, ovos, polpa e pães.
+
+## 5 - Quanto se gasta com cada tipo de alimento?
+
+Agrupando as licitações por ocorrência dos termos encontrados anteriormente, podemos comparar o quanto é gasto, em sua totalidade e por ano, com cada tipo de alimento. Isso pode ser um indicativo de certo mercado pode ser mais lucrativo que outros e, por consequência, apresentar uma maior concorrência.
+
+```{r}
+alimentos.base <- licitacoes %>%
+  select(dt_Ano, cd_UGestora, nu_Licitacao, tp_Licitacao, de_Obs, vl_Licitacao) %>%
+  mutate(
+    Bolachas = grepl('bolacha', de_Obs, ignore.case=T),
+    Bolos = grepl('bolo', de_Obs, ignore.case=T),
+    Carnes = grepl('carne', de_Obs, ignore.case=T),
+    Cereais = grepl('cerea', de_Obs, ignore.case=T),
+    Frutas = grepl('frut', de_Obs, ignore.case=T),
+    Hortalicas = grepl('hort', de_Obs, ignore.case=T),
+    Iogurte = grepl('iogurte', de_Obs, ignore.case=T),
+    Legumes = grepl('legume', de_Obs, ignore.case=T),
+    Leite = grepl('leite', de_Obs, ignore.case=T),
+    Ovos = grepl('ovo', de_Obs, ignore.case=T),
+    Pães = grepl('pão|pães|pao|paes', de_Obs, ignore.case=T),
+    Polpa = grepl('polpa|poupa', de_Obs, ignore.case=T),
+    Queijo = grepl('queijo', de_Obs, ignore.case=T))
+
+alimentos <- alimentos.base %>%
+  gather(alimento, presente, Bolachas:Queijo) %>%
+  filter(presente) %>%
+  select(
+    cd_UGestora,
+    nu_Licitacao,
+    tp_Licitacao,
+    ano=dt_Ano,
+    alimento,
+    total=vl_Licitacao)
+
+alimentos.resumo <- alimentos %>%
+  group_by(ano, alimento) %>%
+  summarise(total = sum(total))
+
+alimentos.resumo %>%
+  ggplot(aes(x=alimento, y=total, fill=alimento)) +
+  geom_bar(stat = 'identity') +
+  scale_y_continuous(label=comma) +
+  guides(fill=FALSE) +
+  labs(
+    title = 'Gastos em licitações',
+    x = 'Tipo de alimento',
+    y = 'Total gasto (reais)',
+    fill = 'Alimento') +
+  theme(
+    axis.text.x=element_text(angle=45, hjust=1))
+
+alimentos.resumo %>%
+  ggplot(aes(x=ano, y=total, group=alimento, color=alimento)) +
+  geom_path(na.rm=T) +
+  scale_y_continuous(label=comma) +
+  labs(
+    title = 'Gastos em licitações por ano',
+    x = 'Ano',
+    y = 'Total gasto (reais)',
+    color = 'Alimento')
+```
+
+É interessante perceber que a quantidade gasta em licitações de carne, hortaliças, frutas e pães para merenda é nitidamente maior do que a gasta com outros tipos de alimentos, principalmente no ano de 2010. Um dos motivos para isso pode ser que não há uma preocupação tão grande em explicitar a compra dos tipos menos recorrente.
+
+Outra hipótese é que carne tem um preço elevado e, muitas das vezes que aparece em uma licitação, também aparecem hortifrutigranjeiros e pães, o que faz com que haja uma distorção de seus preços aparentes.
+
+## 6 - Quantos tipos diferentes de alimento cada fornecedor vende?
+
+Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas. Isso é ruim, pois indica que as classificações escolhidas têm ocorrência baixa demais para serem relevantes.
+
+```{r}
+variedade <- alimentos %>%
+  merge(participantes) %>%
+  distinct(nu_CPFCNPJ, alimento) %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(variedade = n()) %>%
+  merge(fornecedores, all=T) %>%
+  select(nu_CPFCNPJ, variedade) %>%
+  distinct()
+
+variedade[is.na(variedade)] <- 0
+
+variedade %>%
+  ggplot(aes(x=variedade)) +
+  geom_bar() +
+  labs(
+    title = 'Tipos de alimentos vendidos por fornecedor',
+    x = 'Tipos vendidos',
+    y = 'Fornecedores')
+```
+
+## 7 - Os contratos de licitações são bem distribuidos entre os fornecedores?
+
+Os gráficos abaixo mostram que a maior parte dos fornecedores participaram apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes, mas não o mostramos no gráfico.
+
+```{r}
+participacoes <- participantes %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(participou = n())
+
+vitorias <- contratos %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(
+    ganhou = n(),
+    valor = sum(vl_TotalContrato))
+
+lucros <- fornecedores %>%
+  distinct(nu_CPFCNPJ) %>%
+  merge(participacoes, all=T) %>%
+  merge(vitorias, all=T) %>%
+  filter(nu_CPFCNPJ != '00000000000000')
+
+lucros[is.na(lucros)] <- 0
+
+lucros <- lucros %>%
+  mutate(perdeu = participou-ganhou)
+
+lucros %>%
+  filter(participou < 30) %>%
+  group_by(participou, ganhou) %>%
+  summarise(freq = n()) %>% 
+  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    geom_abline(slope=1, intercept=0, color='grey') +
+    geom_point() +
+    scale_x_continuous(breaks=pretty_breaks(10)) +
+    scale_y_continuous(breaks=pretty_breaks(10)) +
+    labs(
+      title = 'Participações em licitações versus vitórias por fornecedor',
+      x = 'Participações',
+      y = 'Vitórias',
+      size = 'Ocorrências')
+
+lucros %>%
+  group_by(participou, ganhou) %>%
+  summarise(freq = n()) %>% 
+  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    geom_abline(slope=1, intercept=0, color='grey') +
+    geom_point() +
+    scale_x_continuous(breaks=pretty_breaks(10)) +
+    scale_y_continuous(breaks=pretty_breaks(10)) +
+    labs(
+      title = 'Participações em licitações versus vitórias por fornecedor',
+      x = 'Participações',
+      y = 'Vitórias',
+      size = 'Ocorrências')
+```
+
+Outra coisa relevante a se observar, é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
+
+```{r}
+lucros %>%
+  arrange(-valor) %>%
+  mutate(ordem=nrow(lucros) %>% seq) %>%
+  head(400) %>%
+  ggplot(aes(x=ordem, y=valor)) +
+    geom_bar(width=1, stat='identity') +
+    scale_y_continuous(
+      breaks=pretty_breaks(5),
+      label=comma) +
+    labs(
+      title = 'Distribuição de licitações por fornecedor',
+      x = 'Fornecedor',
+      y = 'Total ganho (reais)') +
+    theme(
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
+
+## 8 - Quanto cada município já gastou com licitações?
+
+```{r}
+gastos <- contratos %>%
+  group_by(de_Municipio = get.municipio(cd_UGestora), dt_Ano) %>%
+  summarise(total = sum(vl_TotalContrato), freq = n())
+
+gastos_cidades <- gastos %>% group_by(de_Municipio) %>% summarise(total = sum(total))
+
+anti <- anti_join(municipios, gastos_cidades, by = 'de_Municipio')
+
+data_temp = data.frame(de_Municipio = c(
+  'Sossêgo', 'Soledade', 'São José dos Cordeiros', 'Santana dos Garrotes', 'Salgadinho', 'Riacho de Santo Antônio', 'Riachão do Bacamarte', 'Nova Floresta', 'Mogeiro', 'Mato Grosso', 'Mamanguape', 'Juripiranga', 'João Pessoa', 'Ibiara', 'Gurjão', 'Cuité', 'Amparo', 'Alagoa Grande'), total = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+
+paraiba_sumarizado = rbind(gastos_cidades, data_temp)
+
+paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
+                                breaks = c(0,100000,1000000,10000000,100000000),
+                                include.lowest = T)
+
+levels_mapa = mapa_pb@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_pb@data$OBJECTID)
+paraiba_municipios$levels_mapa <- as.character(paraiba_municipios$levels_mapa)
+
+# Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
+
+colors = brewer.pal(5,"YlOrRd")
+
+# A variável Y recebe os valores em ordem que devem apontar para cada municipio
+mapa_pb@data$Y <- paraiba_municipios$total
+spplot(mapa_pb, 'Y',  col.regions = colors, main = "Total gasto em merenda por município")
+```
+
+## 9 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
+
+A fim de verificar a influência que o tamanho de um município tem em sua quantidade de fornecedores, de licitações, no seu gasto total e mediano em licitações, assim como no número mediano de propostas por licitação, é importante primeiro ver como é a distribuição dessa variáveis. Para isso, vamos primeiro remover Campina Grande e João Pessoa, pois suas grandes populações dificultam a comparação com os demais municípios.
+
+```{r}
+metricas <- participantes %>%
+  group_by(
+    de_Municipio = get.municipio(cd_UGestora),
+    nu_Licitacao, tp_Licitacao, cd_UGestora) %>%
+  summarise(nu_Participantes = n()) %>%
+  group_by(de_Municipio) %>%
+  summarise(nu_Propostas = median(nu_Participantes))
+
+metricas <- participantes %>%
+  group_by(de_Municipio = get.municipio(cd_UGestora)) %>%
+  summarise(nu_Fornecedores = n()) %>%
+  merge(metricas, all=T)
+
+metricas <- licitacoes %>%
+  group_by(de_Municipio = get.municipio(cd_UGestora)) %>%
+  summarise(
+    vl_Total = sum(vl_Licitacao),
+    vl_Medio = median(vl_Licitacao),
+    nu_Licitacoes = n()) %>%
+  merge(metricas, all=T)
+
+metricas <- municipios %>%
+  merge(metricas, all=T) %>%
+  filter(!de_Municipio %in% c('Campina Grande', 'João Pessoa')) %>%
+  select(-cd_Municipio, -de_Municipio) %>%
+  rename(
+    `Fornecedores` = nu_Fornecedores,
+    `Licitações` = nu_Licitacoes,
+    `Mediana de propostas` = nu_Propostas,
+    `Gasto total` = vl_Total,
+    `Gasto mediano` = vl_Medio,
+    `População` = vl_Populacao)
+
+metricas %>%
+  gather() %>%
+  ggplot(aes(x = value)) +
+    facet_wrap(~ key, scale='free') +
+    geom_histogram() +
+    labs (
+      title = 'Distribuição de métricas por município',
+      x = 'Valor',
+      y = 'Ocorrências') +
+    theme(
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+Como mostram os histogramas acima, há uma tendência para a direita em todas as variáveis, o que dificulta a análise. Por isso, vamos aplicar a operação de logarítmo em cada uma delas, tornando-as mais próximas de distribuições normais.
+
+```{r}
+metricas <- log(metricas)
+
+metricas %>%
+  gather() %>%
+  ggplot(aes(x = value)) +
+    facet_wrap(~ key, scale='free') +
+    geom_histogram() +
+    labs (
+      title = 'Distribuição de métricas por município (log)',
+      x = 'Valor',
+      y = 'Ocorrências') +
+    theme(
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+```
+
+Então, ao observar a curva de regressão desconsiderando as cidades de porte menos recorrente, não parece haver uma relação forte entre o tamanho da população e nenhuma das variáveis, a não ser o gasto total com licitações. Isso é ainda mais perceptível com a matriz de correlações. Entretanto, outras relações podem ser encontradas, como entre o número de licitações, de fornecedores e o gasto total.
+
+```{r}
+metricas %>%
+  gather(metrica, valor, -População) %>%
+  ggplot(aes(x=População, y=valor)) +
+    geom_point(na.rm=T) +
+    geom_smooth(method='loess', na.rm=T) +
+    facet_wrap(~metrica, scales='free') +
+    labs (
+      title = 'Métricas de licitação por município',
+      y = 'Valor') +
+    theme(
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank())
+
+metricas %>%
+  cor(use = 'pairwise.complete.obs') %>%
+  corrplot(method = 'number', type = 'lower')
+```
