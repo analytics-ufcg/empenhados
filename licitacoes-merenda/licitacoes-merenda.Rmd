@@ -63,6 +63,7 @@ licitacoes_fornecedor <- tbl(sagres, query) %>%
   compute(name = 'lm') %>%
   collect()
 
+
 query <- sql('
   SELECT c.*
   FROM contratos c
@@ -268,7 +269,7 @@ municipios = tbl(utils, 'municipio') %>%
   collect()
 ```
 
-```{r configuracao dos mapas}
+```{r configuracao dos mapas, results='hide'}
 # Encontrado em: http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html
 mapa_paraiba <- readOGR("./Municipios/Municipios.shp")
 
