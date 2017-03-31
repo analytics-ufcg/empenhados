@@ -179,7 +179,7 @@ licitacoes_fornecedor$de_Municipio.y <- NULL
 # Introdução
 A licitação é um processo utilizado pela administração pública como meio de contratar obras e serviços, adquirir produtos e realizar locações selecionando a proposta mais vantajosa e de maior qualidade entre diversas propostas oferecidas. Definido pela lei 8666/1993, o processo licitatório deve seguir os princípios de isonomia, transparência e impessoalidade.  
 Uma das utilizações dos processos licitatórios diz respeito à compra de alimentação escolar, ou merenda. No passado recente, diversas irregularidades foram encontradas nessa área, que vem se mostrando como uma das favoritas para a realização de desvios e superfaturamentos. {[1](http://paraibaonline.com.br/balanco-da-cgu-revela-desvios-de-r-2-bilhoes-da-merenda-escolar/)}{[2](http://www.paraiba.com.br/2017/02/25/12605-ministerio-da-transparencia-fiscaliza-prefeituras-da-pb-e-constata-superfaturamento-de-merenda-escolar)}  
-O objetivo dessa análise é descrever como se dá a realização de licitações para compra de merenda no estado da Paraíba, observando tendências e discrepâncias que possam surgir. Ao final, espera-se ainda obter um panorama que auxilie os cidadãos a perceber a forma como o dinheiro público está sendo investido, aumentando seus poderes fiscalizadores.
+O objetivo dessa análise é extrair informações acerca da realização de licitações para compra de merenda no estado da Paraíba, observando tendências e discrepâncias que possam surgir. Ao final, espera-se ainda obter um panorama que auxilie os cidadãos a perceber a forma como o dinheiro público está sendo investido, aumentando seus poderes de fiscalização
 
 <br>
 
@@ -199,7 +199,7 @@ ggplot(aes(dt_Ano), data = licitacoes) +
   theme_minimal()
 ```
 
-Segundo o gráfico acima percebe-se que no ano de 2010 cerca de `r count(subset(licitacoes, licitacoes$dt_Ano == 2010))` licitações foram realizadas, esse valor é bem superior se comparado com os anos seguintes. No ano de 2016 é observado uma queda do número de licitações, isso se deve ao fato de que os dados observados possuem licitações até maio de 2016, ao contrário dos outros anos em que os dados possuem todos os meses.
+Segundo o gráfico acima percebe-se que no ano de 2010 cerca de `r count(subset(licitacoes, licitacoes$dt_Ano == 2010))` licitações foram realizadas, esse valor é bem superior se comparado com os anos seguintes. Já no ano de 2016 observamos uma queda do número de licitações, isso se deve ao fato de que os dados observados possuem licitações até maio de 2016, ao contrário dos outros anos em que os dados possuem as licitações referentes a todos os meses.
 
 <br>
 
@@ -220,13 +220,13 @@ ggplot(NULL, aes(dt_Ano)) +
   theme_minimal()
 ```
 
-Pelo gráfico fica claro que entre 2011 e 2014 o número de licitações feitas em João Pessoa possui um valor semelhante, mas em 2015 esse valor em relação ao total de licitações no estado aumenta muito. Inicialmente, somente por este gráfico não é possível saber a causa dessa diferença entre 2015 e os outros anos.
+Pelo gráfico fica claro que entre 2011 e 2014 o número de licitações feitas em João Pessoa possui um valor semelhante, mas em 2015 esse valor em relação ao total de licitações no estado aumenta muito. Somente por este gráfico não é possível saber a causa dessa diferença entre 2015 e os outros anos.
 
 <br>
 
 ## 2 - Análise de Licitações
 ### 2.1 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
-Agora que já entendemos um pouco sobre como o número de licitações se comportam ao longo do ano, e algumas tendências e anomalias, buscamos responder essa pergunta filtrando apenas as licitações que possuem em sua descrição as seguintes sentenças: "Merenda" e "Alimentação escolar". O filtro foi feito ignorando acentos e caixa alta.
+Agora que já entendemos um pouco sobre como o número de licitações se comporta ao longo do ano, e encontramos algumas tendências e anomalias, buscamos responder essa pergunta filtrando apenas as licitações que possuem em sua descrição as seguintes sentenças: "Merenda" e "Alimentação escolar". O filtro foi feito ignorando acentos e caixa alta.
 
 ```{r}
 ggplot(aes(dt_Ano), data = licitacoes_merenda) +
@@ -336,7 +336,7 @@ mapa_paraiba@data$Y <- paraiba_municipios$total
 spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações de merenda por município")
 ```
 
-Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais municípios. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios citados a pouco, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns municípios possuem um total de licitações próximo, e inclusive são municípios vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar.
+Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns possuem um total de licitações próximo, e inclusive são vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar.
 
 <br>
 
@@ -354,7 +354,7 @@ mean(licitacoes_merenda$vl_Licitacao)
 median(licitacoes_merenda$vl_Licitacao)
 ```
 
-Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licitacoes_merenda$vl_Licitacao) - median(licitacoes_merenda$vl_Licitacao), scientific=FALSE)` reais, isso pode indicar que a média não é uma boa medida para representar os dados de licitações quando estamos trabalhando com merenda. A causa disso é que alguns valores de licitação muito altos estão influenciando a média causando essa diferença.
+Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licitacoes_merenda$vl_Licitacao) - median(licitacoes_merenda$vl_Licitacao), scientific=FALSE)` reais, isso pode indicar que a média não é uma boa medida para representar os dados de licitações quando estamos trabalhando com merenda. A causa disso é que alguns valores de licitação muito altos estão influenciando a média, causando então essa diferença.
 
 <br>
 
@@ -373,7 +373,7 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000), data = licitacoes_merenda) +
   theme_minimal()
 ```
 
-Observamos que a média sempre está acima da mediana. No ano de 2010 elas estavam bem próximas, mas nos anos seguintes a tendência foi a diferença aumentar, principalmente em 2014. Nesse ano algumas licitações de alto valor foram realizadas, o que afetou a média. Outra coisa que é possível perceber a partir desse gráfico é que, em geral, o valor das licitações que envolvem merenda aumentaram com o tempo.
+Podemos ver que a média sempre está acima da mediana. No ano de 2010 elas estavam bem próximas, mas nos anos seguintes a tendência foi a diferença aumentar, principalmente em 2014. Nesse ano algumas licitações de alto valor foram realizadas, o que afetou a média. Outra coisa que é possível perceber a partir desse gráfico é que, em geral, o valor das licitações que envolvem merenda aumentou com o tempo.
 
 <br>
 
@@ -395,7 +395,7 @@ ggplot(aes(x = dt_Mes),
 <br>
 
 ### 2.7 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
-Analisando novamente vez os dados do período entre 2011 e 2015, foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido na pergunta anterior, é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
+Analisando novamente os dados do período entre 2011 e 2015, foi percebido que as licitações mais caras estão concentradas nos primeiros seis meses do ano, possuindo distribuição semelhante à do total de licitações realizadas. Interligando o resultado dessa pergunta com o obtido na pergunta anterior, é possível dizer que nos primeiros seis meses do ano são realizados mais processos licitatórios, que geralmente vem a ser os mais caros também.  
 
 ```{r}
 mediana_total = median(licitacoes_merenda$vl_Licitacao)/1000
@@ -432,7 +432,7 @@ mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_lic
 spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio(em milhares de reais) de licitações de merenda por município")
 ```
 
-É notado que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
+É notório que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
 
 <br>
 
@@ -535,7 +535,7 @@ Outra hipótese é que carne tem um preço elevado e, muitas das vezes que apare
 <br>
 
 ### 2.12 - Que modalidade de licitação é mais comum na compra de merenda?
-A seguir, buscamos entender se há alguma modalidade de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observar a maior parte das licitações de merenda fazem parte das modalidades convite e pregão presencial. Outras modalidades como concorrência, tomada de preços e chamada pública também são amplamente utilizadas. Um número expressivo de licitações, ainda, é considerado dispensável.  
+A seguir, buscamos entender se há alguma modalidade de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observarque a maior parte das licitações de merenda faz parte das modalidades convite ou pregão presencial. Outras modalidades como concorrência, tomada de preços e chamada pública também são amplamente utilizadas. Um número expressivo de licitações, ainda, é considerado dispensável.  
 
 ```{r}
 niveis = levels(licitacoes_merenda$tp_Licitacao)
