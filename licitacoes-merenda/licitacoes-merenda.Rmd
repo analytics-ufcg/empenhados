@@ -735,7 +735,7 @@ Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos q
 Um ponto do processo licitatório em que também pode ocorrer um número considerável de irregularidades diz respeito à contratação dos fornecedores de alimentação escolar. Com base nisso, foi avaliada a forma como os fornecedores de merenda estão distribuídos.  
 
 ### 3.1 - Quantos são os fornecedores de merenda de cada município?
-A questão foi respondida através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016. O objetivo da questão é prover um panorama da distribuição e diversidade de fornecedores no estado da Paraíba.
+Através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016, foi possível traçar um panorama da distribuição e diversidade de fornecedores no estado da Paraíba. A seguir, é possível visualizar qual o total de fornecedores de merenda em cada um dos municípios do estado.
 
 ```{r}
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
@@ -781,7 +781,7 @@ spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Número de fornecedores
 ```
 
 Com a visualização observa-se que a diversidade de competidores é baixa, uma vez que 159 (71.3%) cidades tiveram menos de 20 fornecedores diferentes no período observado.
-Apenas a cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 110 fornecedores e a segunda cidade com mais fornecedores (Santa Rita) teve apenas 65.
+Apenas a cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 110 fornecedores. A segunda cidade com mais fornecedores foi Santa Rita com um total de 65 fornecedores, cerca de 40% a menos que Monteiro.
 
 <br>
 
@@ -791,12 +791,12 @@ mean(licitacoes_fornecedor$nu_Propostas)
 a <- subset(licitacoes_fornecedor, nu_Propostas <= 1)
 ```
 
-Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que 573 (`r round(length(a$cd_Municipio)/length(licitacoes_fornecedor$cd_Municipio)*100, 2)`%) licitações receberam 0 ou 1 proposta, ou seja, não tiveveram concorrência.
+Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que 573 (`r round(length(a$cd_Municipio)/length(licitacoes_fornecedor$cd_Municipio)*100, 2)`%) licitações receberam nenhuma ou apenas uma proposta, ou seja, não tiveram concorrência.
 
 <br>
 
 ### 3.3 - Existem fornecedores que dominam a distribuição de merenda?
-Para responder essa questão foi calculado o número de contratos celebrados por cada fornecedor de merenda no período de 2010 a 2016, com o intuito de identificar a possível existência de fornecedores que vençam muito mais licitações que os demais.
+Para responder essa questão foi calculado o número de contratos celebrados por cada fornecedor de merenda no período de 2010 a 2016, com o intuito de identificar uma possível existência de fornecedores que vençam muito mais licitações que os demais.
 
 ```{r}
 fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
@@ -811,12 +811,12 @@ ggplot(aes(x = nu_CPFCNPJ), data = contratos) +
   scale_y_continuous(breaks = seq(0, 80, 5))
 ```
 
-Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa, no entanto, um pequeno grupo de 88 (9.8%) dos fornecedores conseguiu fechar mais de 5 contratos no período estudado.
+Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa. Apesar disso, um pequeno grupo de 88 fornecedores - menos de 10% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
 
 <br>
 
 ### 3.4 - Quantos tipos diferentes de alimento cada fornecedor vende?
-Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas. Isso é ruim, pois indica que as classificações escolhidas têm ocorrência baixa demais para serem relevantes.
+Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas.  
 
 ```{r}
 variedade <- alimentos %>%
@@ -842,7 +842,7 @@ variedade %>%
 <br>
 
 ### 3.5 - Os contratos de licitações são bem distribuidos entre os fornecedores?
-Os gráficos abaixo mostram que a maior parte dos fornecedores participaram apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes, mas não o mostramos no gráfico.
+Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes e como distorceria a visualização não foi inserido no gráfico.  
 
 ```{r}
 participacoes <- participantes %>%
@@ -896,7 +896,7 @@ lucros %>%
       size = 'Ocorrências')
 ```
 
-Outra coisa relevante a se observar, é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
+Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
 
 ```{r}
 lucros %>%
@@ -955,7 +955,7 @@ lucros %>%
 <br>
 
 ### 3.6 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
-A fim de verificar a influência que o tamanho de um município tem em sua quantidade de fornecedores, de licitações, no seu gasto total e mediano em licitações, assim como no número mediano de propostas por licitação, é importante primeiro ver como é a distribuição dessa variáveis. Para isso, vamos primeiro remover Campina Grande e João Pessoa, pois suas grandes populações dificultam a comparação com os demais municípios.
+A fim de verificar a influência que o tamanho de um município tem em sua quantidade de fornecedores, de licitações, no seu gasto total e mediano em licitações, assim como no número mediano de propostas por licitação, é importante primeiro ver como é a distribuição dessa variáveis. Nessa análise, as cidades de Campina Grande e João Pessoa foram ocultadas, pois suas grandes populações dificultariam a comparação com os demais municípios.
 
 ```{r}
 metricas <- participantes %>%
@@ -1007,7 +1007,7 @@ metricas %>%
         axis.ticks.y=element_blank())
 ```
 
-Como mostram os histogramas acima, há uma tendência para a direita em todas as variáveis, o que dificulta a análise. Por isso, vamos aplicar a operação de logarítmo em cada uma delas, tornando-as mais próximas de distribuições normais.
+Como mostram os histogramas acima, há uma aglomeração de valores à direita em todas as variáveis, o que dificulta a análise. É possível cotornar essa situação aplicando uma transformação logarítmica em cada uma delas, fazendo com que os valores passem a se concentrar no centro da distribuição.  
 
 ```{r}
 metricas <- log(metricas)
@@ -1028,7 +1028,7 @@ metricas %>%
         axis.ticks.y=element_blank())
 ```
 
-Então, ao observar a curva de regressão desconsiderando as cidades de porte menos recorrente, não parece haver uma relação forte entre o tamanho da população e nenhuma das variáveis, a não ser o gasto total com licitações. Isso é ainda mais perceptível com a matriz de correlações. Entretanto, outras relações podem ser encontradas, como entre o número de licitações, de fornecedores e o gasto total.
+Por fim, ao observar a curva de regressão acima e desconsiderando as cidades de porte menos recorrente, não parece haver uma relação forte entre o tamanho da população e nenhuma das variáveis, a não ser o gasto total com licitações. Isso é ainda mais perceptível utilizando uma matriz de correlação. Por meio dessa matriz, é possível ainda encontrar outras correlações como as existentes entre o número de licitações, de fornecedores e o gasto total.  
 
 ```{r}
 metricas %>%
