@@ -732,7 +732,8 @@ Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos q
 <br>
 
 ## 3 - Analisando Fornecedores
-Um ponto do processo licitatório em que também pode ocorrer um número considerável de irregularidades diz respeito à contratação dos fornecedores de alimentação escolar. Com base nisso, foi avaliada a forma como os fornecedores de merenda estão distribuídos.  
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que se candidatou para concorrer em alguma licitação no estado da paraíba no período estudado.
+Um ponto do processo licitatório em que também pode ocorrer um número considerável de irregularidades diz respeito à contratação dos fornecedores de alimentação escolar. Com base nisso, foi avaliada a forma como os fornecedores de merenda estão distribuídos.
 
 ### 3.1 - Quantos são os fornecedores de merenda de cada município?
 Através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2010 a 2016, foi possível traçar um panorama da distribuição e diversidade de fornecedores no estado da Paraíba. A seguir, é possível visualizar qual o total de fornecedores de merenda em cada um dos municípios do estado.
