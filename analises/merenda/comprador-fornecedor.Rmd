@@ -35,6 +35,8 @@ library(stringr)
 library(maps)   # mapas simples, eixos, escala, cidades 
 library(ggmap)  # Gmaps, OSM + mapas baseados em ggplot2
 library(rgdal)
+
+library(knitr)
 ```
 
 ```{r instancia tabelas do bd}
@@ -288,11 +290,12 @@ paraiba_sumarizado = paraiba %>%
   group_by(de_Municipio) %>%
   summarize(total = n(),
             valor_medio_lic = mean(vl_Licitacao),
-            valor_total_lic = sum(vl_Licitacao))
+            valor_total_lic = sum(vl_Licitacao),
+            total_num = n())
 
 # Imputação de dados (municípios que não tiveram licitações de merenda) e mais Sao Vicente do Serido que nao foi inserido no join
 data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamanguape'),
-                       total = c(0, 0, 0), valor_medio_lic = c(0, 0, 0), valor_total_lic = c(0,0,0))
+                       total = c(0, 0, 0), valor_medio_lic = c(0, 0, 0), valor_total_lic = c(0,0,0), total_num = c(0,0,0))
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
 # Dividindo em faixas
@@ -335,6 +338,21 @@ colors = brewer.pal(8,"YlOrRd")
 mapa_paraiba@data$Y <- paraiba_municipios$total
 spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações de merenda por município")
 ```
+
+Os 10 municípios que mais realizaram licitações no período analisado foram:  
+
+<br> 
+
+```{r}
+  kable(
+    x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num)), desc(total_num)), 10),
+    col.names = c('Município', 'Número de Licitações'),
+    align = c('c')
+    )
+```
+
+<br>
+
 
 Observou-se que alguns municípios, como Santa Rita e Monteiro realizaram um maior número de licitações no período do que os demais. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns possuem um total de licitações próximo, e inclusive são vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar.
 
