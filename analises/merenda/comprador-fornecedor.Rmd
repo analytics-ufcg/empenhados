@@ -429,6 +429,16 @@ ggplot(aes(x = dt_Ano, y = vl_Licitacao/1000), data = licitacoes_merenda) +
 
 Podemos ver que a média sempre está acima da mediana. No ano de 2010 elas estavam bem próximas, mas nos anos seguintes a tendência foi a diferença aumentar, principalmente em 2014. Nesse ano algumas licitações de alto valor foram realizadas, o que afetou a média. Outra coisa que é possível perceber a partir desse gráfico é que, em geral, o valor das licitações que envolvem merenda aumentou com o tempo.
 
+As três maiores licitações de merenda que foram abertas em 2014 e que afetaram a média fazendo com que a diferença entre a média e a mediana disparasse tanto, como observado no gráfico, está listada a seguir:
+```{r}
+  kable(
+    x = head(arrange(select(subset(licitacoes_merenda, licitacoes_merenda$dt_Ano == 2014), 
+                            c(de_Municipio, vl_Licitacao)), desc(vl_Licitacao)), 3),
+    col.names = c('Município', 'Valor da licitação(R$)'),
+    align = c('c')
+    )
+```
+ 
 <br>
 
 ### 2.6 - Em que período do ano ocorrem mais licitações de merenda?
