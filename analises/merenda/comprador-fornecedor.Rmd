@@ -365,11 +365,47 @@ Inicialmente, determinamos a média e a mediana do valor (em reais) de licitaç�
 mean(licitacoes_merenda$vl_Licitacao)
 ```
 
+```{r}
+media_total = mean(licitacoes_merenda$vl_Licitacao)/1000
+
+licitacoes_merenda %>%
+  group_by(dt_Ano) %>%
+  summarize(vl_mean = mean(vl_Licitacao)) %>%
+  ggplot(aes(x = dt_Ano, y = vl_mean/1000)) +
+  geom_histogram(stat = "identity", fill = '#CF6360') +
+  geom_hline(yintercept = media_total, 
+             color = 'blue', linetype = 'dashed') +
+  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  geom_text(aes(2009.5, media_total, label = 'Média geral', vjust = -1, hjust = -0.1), size = 4) +
+  xlab("Ano") +
+  ylab("Valor médio") +
+  ggtitle("Distribuição dos valores médios de licitação de merenda por ano") +
+  theme_minimal()
+```
+
 <br>
 
 ### 2.4 - Qual a mediana do valor da licitação por merenda?
 ```{r}
 median(licitacoes_merenda$vl_Licitacao)
+```
+
+```{r}
+mediana_total = median(licitacoes_merenda$vl_Licitacao)/1000
+
+licitacoes_merenda %>%
+  group_by(dt_Ano) %>%
+  summarize(vl_median = median(vl_Licitacao)) %>%
+  ggplot(aes(x = dt_Ano, y = vl_median/1000)) +
+  geom_histogram(stat = "identity", fill = '#CF6360') +
+  geom_hline(yintercept = mediana_total, 
+             color = 'blue', linetype = 'dashed') +
+  scale_x_continuous(breaks = seq(2010, 2016, 1)) +
+  geom_text(aes(2009.5, mediana_total, label = 'Mediana geral', vjust = -1, hjust = -0.1), size = 4) +
+  xlab("Ano") +
+  ylab("Valor mediano") +
+  ggtitle("Distribuição dos valores medianos de licitação de merenda por ano") +
+  theme_minimal()
 ```
 
 Nota-se que a diferença entre a média e a mediana é de `r  format(mean(licitacoes_merenda$vl_Licitacao) - median(licitacoes_merenda$vl_Licitacao), scientific=FALSE)` reais, isso pode indicar que a média não é uma boa medida para representar os dados de licitações quando estamos trabalhando com merenda. A causa disso é que alguns valores de licitação muito altos estão influenciando a média, causando então essa diferença.
