@@ -298,6 +298,10 @@ data_temp = data.frame(de_Municipio = c('Mato Grosso', 'Nova Floresta', 'Mamangu
                        total = c(0, 0, 0), valor_medio_lic = c(0, 0, 0), valor_total_lic = c(0,0,0), total_num = c(0,0,0))
 paraiba_sumarizado = rbind(paraiba_sumarizado, data_temp)
 
+paraiba_sumarizado = paraiba_sumarizado %>% 
+  mutate(valor_medio_lic_original = valor_medio_lic) %>% 
+  mutate(valor_total_lic_original = valor_total_lic)
+
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total, 
                                 breaks = c(0,5,10,15,20,25,30,40,70), 
@@ -483,7 +487,16 @@ ggplot(aes(x = dt_Mes, y = vl_Licitacao/1000),
 
 ```{r}
 mapa_paraiba@data$Y <- paraiba_municipios$valor_total_lic
-spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor total(em milhares de reais) de licitações de merenda por município")
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor total de licitações de merenda por município", xlab = "Valor em milhares de reais")
+```
+
+Os 5 municípios que possuem maior valor total de licitações de merenda são:
+```{r}
+  kable(
+    x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_total_lic_original)), desc(valor_total_lic_original)), 5),
+    col.names = c('Município', 'Valor total da licitação (R$)'),
+    align = c('c')
+    )
 ```
 
 <br>
@@ -493,10 +506,19 @@ Para responder a essa pergunta consideramos todas as licitações que envolvem m
 
 ```{r}
 mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_lic
-spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio(em milhares de reais) de licitações de merenda por município")
+spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Valor médio de licitações de merenda por município", xlab = "Valor em milhares de reais")
 ```
 
 É notório que João Pessoa foi a cidade que obteve o maior valor médio de licitação de merenda em todo o estado. Em geral, poucas cidades gastam mais de 1 milhão por licitação de merenda. E a maior parte deles tem valor médio de licitação entre 50 e 500 mil reais.
+
+Os 5 municípios que possuem maior valor médio de licitações de merenda são:
+```{r}
+  kable(
+    x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_medio_lic_original)), desc(valor_medio_lic_original)), 5),
+    col.names = c('Município', 'Valor médio da licitação (R$)'),
+    align = c('c')
+    )
+```
 
 <br>
 
