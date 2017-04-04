@@ -260,7 +260,7 @@ Se compararmos os dois gráficos (o número total de licitações por ano e o n�
 
 <br>
 
-### 2.2 - Qual a distribuição do número de licitações que envolvem merenda nos municípios da Paraíba?
+### 2.2 - Qual a distribuição do número de licitações relacionadas à merenda nos municípios da Paraíba?
 
 ```{r}
 utils = src_mysql('utils', group='ministerio-publico', password=NULL)
@@ -320,7 +320,7 @@ paraiba_sumarizado$valor_total_lic = cut(paraiba_sumarizado$valor_total_lic,
 
 ```
 
-Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba par obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados(2011-2015). O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
+Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba para obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados(2011-2015). O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
 
 ```{r}
 # Criando um data frame com os municípios na ordem do mapa
@@ -337,6 +337,7 @@ mapa_paraiba@data$Y <- paraiba_municipios$total
 spplot(mapa_paraiba, 'Y',  col.regions= colors, main = "Número de licitações de merenda por município")
 ```
 
+<!-- DÚVIDA 1: QUE DOIS MUNICÍPIOS? -->
 Observou-se que poucos municípios, realizaram um número de licitações superior a 15 licitações. A capital João Pessoa apresentou um número baixo de licitações relacionadas a merenda se comparada a esses dois municípios, apenas `r nrow(subset(licitacoes_merenda, cd_Municipio == '095'))` licitações. Ao olhar o mapa vemos que alguns possuem um total de licitações próximo, e inclusive são vizinhos. Só por esse mapa não é possível concluir se o tamanho, população e outras características podem influenciar na forma com que os municípios lidam com as licitações de merenda, nem se municípios com características parecidas lidam também de forma parecida com a merenda escolar.
 
 <br>
