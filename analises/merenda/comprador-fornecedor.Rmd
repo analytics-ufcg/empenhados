@@ -571,25 +571,28 @@ alimentos.resumo <- alimentos %>%
 alimentos.resumo %>%
   ggplot(aes(x=alimento, y=total, fill=alimento)) +
   geom_bar(stat = 'identity') +
-  scale_y_continuous(label=comma) +
+    scale_y_continuous(label=comma) +
   guides(fill=FALSE) +
   labs(
     title = 'Gastos em licitações',
     x = 'Tipo de alimento',
     y = 'Total gasto (reais)',
     fill = 'Alimento') +
-  theme(
+  theme_bw() +
+  theme(panel.border = element_blank(),
     axis.text.x=element_text(angle=45, hjust=1))
 
 alimentos.resumo %>%
   ggplot(aes(x=ano, y=total, group=alimento, color=alimento)) +
-  geom_path(na.rm=T) +
+  geom_path(na.rm=T) + 
   scale_y_continuous(label=comma) +
   labs(
     title = 'Gastos em licitações por ano',
     x = 'Ano',
     y = 'Total gasto (reais)',
-    color = 'Alimento')
+    color = 'Alimento') +
+  theme_bw() + 
+  theme(panel.border = element_blank())
 ```
 
 É interessante perceber que a quantidade gasta em licitações de carne, hortaliças, frutas e pães para merenda é nitidamente maior do que a gasta com outros tipos de alimentos, principalmente no ano de 2010. Um dos motivos para isso pode ser que não há uma preocupação tão grande em explicitar a compra dos tipos menos recorrente.
@@ -905,7 +908,11 @@ variedade %>%
   labs(
     title = 'Tipos de alimentos vendidos por fornecedor',
     x = 'Tipos vendidos',
-    y = 'Fornecedores')
+    y = 'Fornecedores') +
+  theme_bw() +
+  theme(panel.border = element_blank())
+
+?theme_bw
 ```
 
 <br>
@@ -948,7 +955,9 @@ lucros %>%
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências')
+      size = 'Ocorrências') +
+  theme_bw() +
+  theme(panel.border = element_blank())
 
 lucros %>%
   group_by(participou, ganhou) %>%
@@ -962,7 +971,10 @@ lucros %>%
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências')
+      size = 'Ocorrências') +
+  theme_bw() +
+  theme(panel.border = element_blank())
+
 ```
 
 Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
@@ -973,7 +985,7 @@ lucros %>%
   mutate(ordem=nrow(lucros) %>% seq) %>%
   head(400) %>%
   ggplot(aes(x=ordem, y=valor)) +
-    geom_bar(width=1, stat='identity') +
+    geom_bar(width=1, stat='identity') + 
     scale_y_continuous(
       breaks=pretty_breaks(5),
       label=comma) +
@@ -981,7 +993,8 @@ lucros %>%
       title = 'Distribuição de licitações por fornecedor',
       x = 'Fornecedor',
       y = 'Total ganho (reais)') +
-    theme(
+  theme_bw() +   
+  theme(panel.border = element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 ```
@@ -1073,7 +1086,8 @@ metricas %>%
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+        axis.ticks.y=element_blank()) +
+  theme_bw()
 ```
 
 Como mostram os histogramas acima, há uma aglomeração de valores à direita em todas as variáveis, o que dificulta a análise. É possível cotornar essa situação aplicando uma transformação logarítmica em cada uma delas, fazendo com que os valores passem a se concentrar no centro da distribuição.  
@@ -1085,7 +1099,7 @@ metricas %>%
   gather() %>%
   ggplot(aes(x = value)) +
     facet_wrap(~ key, scale='free') +
-    geom_histogram() +
+    geom_histogram() + 
     labs (
       title = 'Distribuição de métricas por município (log)',
       x = 'Valor',
@@ -1094,7 +1108,8 @@ metricas %>%
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank(),
         axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+        axis.ticks.y=element_blank()) +
+  theme_bw()
 ```
 
 Por fim, ao observar a curva de regressão abaixo e desconsiderando as cidades de maior porte, não parece haver uma relação forte entre o tamanho da população e nenhuma das variáveis, a não ser o gasto total com licitações. Isso é ainda mais perceptível utilizando uma matriz de correlação. Por meio dessa matriz, é possível ainda encontrar outras correlações como as existentes entre o número de licitações, de fornecedores e o gasto total.  
@@ -1103,7 +1118,7 @@ Por fim, ao observar a curva de regressão abaixo e desconsiderando as cidades d
 metricas %>%
   gather(metrica, valor, -População) %>%
   ggplot(aes(x=População, y=valor)) +
-    geom_point(na.rm=T) +
+    geom_point(na.rm=T) + 
     geom_smooth(method='loess', na.rm=T) +
     facet_wrap(~metrica, scales='free') +
     labs (
@@ -1113,7 +1128,8 @@ metricas %>%
       axis.text.x=element_blank(),
       axis.ticks.x=element_blank(),
       axis.text.y=element_blank(),
-      axis.ticks.y=element_blank())
+      axis.ticks.y=element_blank()) +
+  theme_bw()
 
 metricas %>%
   cor(use = 'pairwise.complete.obs') %>%
