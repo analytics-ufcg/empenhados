@@ -17,6 +17,7 @@ unzip utils.zip -d tmp
 cd tmp
 
 mysql -p$password < SAGRES.sql
+mysql -p$password < SAGRES-keys.sql
 mysql -p$password < utils.sql
 
 mysqlimport -p$password \
