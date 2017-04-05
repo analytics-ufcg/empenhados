@@ -200,14 +200,14 @@ ggplot(aes(dt_Ano), data = licitacoes_total) +
   theme_minimal()
 ```
 
-Segundo o gráfico acima percebe-se que no ano de 2010 cerca de `r count(subset(licitacoes_total, licitacoes_total$dt_Ano == 2010))` licitações foram realizadas, esse valor é bem superior se comparado com os anos seguintes. Já no ano de 2016 observamos uma queda do número de licitações, isso se deve ao fato de que os dados observados possuem licitações até maio de 2016, ao contrário dos outros anos em que os dados possuem as licitações referentes a todos os meses.
+Segundo o gráfico acima percebe-se que `r count(subset(licitacoes_total, licitacoes_total$dt_Ano == 2010))` licitações foram realizadas no ano de 2010, esse valor é bem superior se comparado com os anos seguintes. Já no ano de 2016 observamos uma queda do número de licitações, isso se deve ao fato de que os dados observados possuem licitações até maio de 2016, ao contrário dos outros anos em que os dados possuem as licitações referentes a todos os meses.
 
+A partir desse ponto vamos analisar apenas os anos entre 2011 e 2015, desconsiderando 2010 por causa da disparidade no número de licitações em relação ao outros, o que pode ser um indício de que algo esteja errado com esse ano, e também 2016, uma vez que não temos os dados de todos os meses desse ano.
 <br>
 
 ### 1.2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
-A partir desse ponto vamos analisar apenas os anos entre 2011 e 2015, desconsiderando 2010 por causa da disparidade no número de licitações em relação ao outros, o que pode ser um indício de que algo esteja errado com esse ano, e também 2016, uma vez que não temos os dados de todos os meses desse ano.
 
-Em seguida, buscamos verificar como a capital e maior cidade da Paraíba aparece nos dados de licitação. Buscou-se verificar se a mesma possui uma parcela significativa no número de licitações com relação a todo o Estado.
+Buscamos verificar como a capital e maior cidade da Paraíba aparece nos dados de licitação. Buscou-se verificar se a mesma possui uma parcela significativa no número de licitações com relação a todo o Estado.
 
 ```{r}
 # Código do Município de João Pessoa é "095"
@@ -321,7 +321,7 @@ paraiba_sumarizado$valor_total_lic = cut(paraiba_sumarizado$valor_total_lic,
 
 ```
 
-Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba para obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados(2011-2015). O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
+Para responder a essa pergunta iremos utilizar o mapa de municípios da paraíba para obter a distribuição geográfica dos municípios da Paraíba e o número total de licitações relacionadas a merenda realizadas em todos os anos investigados [2011-2015]. O mapa com os municípios foi retirado do site da AESA{[3](http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html)}.
 
 ```{r}
 # Criando um data frame com os municípios na ordem do mapa
@@ -539,7 +539,7 @@ Outra hipótese é que carne tem um preço elevado e, muitas das vezes que apare
 <br>
 
 ### 2.12 - Que modalidade de licitação é mais comum na compra de merenda?
-A seguir, buscamos entender se há alguma modalidade de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observarque a maior parte das licitações de merenda faz parte das modalidades convite ou pregão presencial. Outras modalidades como concorrência, tomada de preços e chamada pública também são amplamente utilizadas. Um número expressivo de licitações, ainda, é considerado dispensável.  
+A seguir, buscamos entender se há alguma modalidade de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observar que a maior parte das licitações de merenda faz parte das modalidades convite ou pregão presencial. Outras modalidades como concorrência, tomada de preços e chamada pública também são amplamente utilizadas. Um número expressivo de licitações, ainda, é considerado dispensável.  
 
 ```{r}
 niveis = levels(licitacoes_merenda$tp_Licitacao)
@@ -692,7 +692,7 @@ ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
 
 ```
 
-Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite aumenta quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta.
+Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite aumenta quando o número de propostas é igual a 3. A modalidade de Pregão (eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta.
 
 A modalidade Convite tem a maioria das licitações com 3 propostas, isso ocorre devido ao número mínimo de participantes de uma licitação dessa modalidade que é 3, estabelecido pela Lei Nº 8666/1993.
 
@@ -756,7 +756,8 @@ mapa_paraiba@data$Y <- paraiba_municipios$total
 spplot(mapa_paraiba, 'Y',  col.regions = colors, main = "Número de fornecedores de merenda por município")
 ```
 
-Observa-se que o número de fornecedores é, em geral, baixo, uma vez que 75% das cidades tem no máximo `r unname(quartis_pb)[4]` fornecedores e 48 das cidades não apresentaram nenhum fornecedor (demarcadar em branco no mapa).
+Observa-se que o número de fornecedores é, em geral, baixo, uma vez que 75% das cidades tem no máximo `r unname(quartis_pb)[4]` fornecedores e 48 das cidades não apresentaram nenhum fornecedor (demarcadas em branco no mapa).
+
 A cidade de Monteiro apresentou valor extremo se comparada as demais, visto que esta cidade teve 83 fornecedores. A segunda cidade com mais fornecedores foi João Pessoa com um total de 35 fornecedores, cerca de 60% a menos que Monteiro.
 <br>
 
@@ -790,7 +791,7 @@ ggplot(aes(x = nu_CPFCNPJ), data = contratos) +
       axis.ticks.x=element_blank())
 ```
 
-Observa-se uma média de `r round(mean(data_fornecedores_groups$n), 2)` contratos celebrados por fornecedor, com 75% dos fornecedores com até `r unname(quartis_fornc)[4]` contratos, o que justifica a média baixa. Apesar disso, um pequeno grupo de `r length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)` fornecedores - `r round(length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)/length(data_fornecedores_groups$nu_CPFCNPJ)*100, 2)`% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
+Observa-se uma média de `r round(mean(data_fornecedores_groups$n), 2)` contratos celebrados por fornecedor, com 75% dos fornecedores com até `r unname(quartis_fornc)[4]` contratos, o que justifica a média baixa. Apesar disso, um pequeno grupo de `r length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)` fornecedores (`r round(length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)/length(data_fornecedores_groups$nu_CPFCNPJ)*100, 2)`% do total) conseguiu fechar mais de 5 contratos durante o período estudado.
 
 <br>
 
