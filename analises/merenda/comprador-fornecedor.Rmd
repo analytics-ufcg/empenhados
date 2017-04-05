@@ -815,17 +815,18 @@ variedade %>%
     title = 'Tipos de alimentos vendidos por fornecedor',
     x = 'Tipos vendidos',
     y = 'Fornecedores')
+
+participacoes <- participantes %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(participou = n())
 ```
 
 <br>
 
 ### 3.5 - Os contratos de licitações são bem distribuidos entre os fornecedores?
-Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes e como distorceria a visualização não foi inserido no gráfico.  
+Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou `r max(participacoes$participou)` vezes e como distorceria a visualização não foi inserido no gráfico.  
 
 ```{r}
-participacoes <- participantes %>%
-  group_by(nu_CPFCNPJ) %>%
-  summarise(participou = n())
 
 vitorias <- contratos %>%
   group_by(nu_CPFCNPJ) %>%
