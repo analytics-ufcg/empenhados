@@ -776,6 +776,7 @@ Para responder essa questão foi calculado o número de contratos celebrados por
 fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
 data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
 
+quartis_fornc <- quantile(data_fornecedores_groups$n)
 media <- mean(data_fornecedores_groups$n)
 ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
   geom_histogram(stat = 'count', color = '#5CA171') + 
@@ -788,7 +789,7 @@ ggplot(aes(x = nu_CPFCNPJ), data = contratos) +
       axis.ticks.x=element_blank())
 ```
 
-Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa. Apesar disso, um pequeno grupo de 88 fornecedores - menos de 10% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
+Observa-se uma média de `r round(mean(data_fornecedores_groups$n), 2)` contratos celebrados por fornecedor, com 75% dos fornecedores com até `r unname(quartis_fornc)[4]` contratos, o que justifica a média baixa. Apesar disso, um pequeno grupo de `r length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)` fornecedores - `r round(length(subset(data_fornecedores_groups, n > 5)$nu_CPFCNPJ)/length(data_fornecedores_groups$nu_CPFCNPJ)*100, 2)`% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
 
 <br>
 
