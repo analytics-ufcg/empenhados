@@ -532,7 +532,7 @@ alimentos.resumo %>%
     color = 'Alimento')
 ```
 
-É interessante perceber que a quantidade gasta em licitações de carne, hortaliças, frutas e pães para merenda é nitidamente maior do que a gasta com outros tipos de alimentos, principalmente no ano de 2010. Um dos motivos para isso pode ser que não há uma preocupação tão grande em explicitar a compra dos tipos menos recorrente.
+É interessante perceber que a quantidade gasta em licitações de carne, hortaliças, frutas e pães para merenda é nitidamente maior do que a gasta com outros tipos de alimentos. Um dos motivos para isso pode ser que não há uma preocupação tão grande em explicitar a compra dos tipos menos recorrente.
 
 Outra hipótese é que carne tem um preço elevado e, muitas das vezes que aparece em uma licitação, também aparecem hortifrutigranjeiros e pães, o que faz com que haja uma distorção de seus preços aparentes.
 
@@ -680,7 +680,7 @@ Agora observamos que há ainda menos indícios de uma correlação linear entre 
 <br>
 
 ### 2.17 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
-Para responder a essa pergunta iremos considerar os anos de 2011 até 2016. A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo(1:6) contém 95% dos dados de merenda. O 95-percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.95))`.
+A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo [1:6] contém 95% dos dados de merenda. O 95-percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.95))`.
 
 ```{r}
 ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
@@ -689,6 +689,7 @@ ggplot(aes(nu_Propostas), data = subset(licitacoes_merenda, dt_Ano > 2010)) +
   scale_y_continuous(breaks = seq(0, 400, 50)) +
   labs(x = 'Número de propostas', y = 'Número de licitações', fill = 'Modalidade', title = 'Total de licitações por número de propostas por modalidade (a partir de 2011)')  +
   theme_minimal()
+
 ```
 
 Ao considerarmos as licitações de merenda feitas a partir de 2011 percebemos que a frequência de licitações da modalidade Convite aumenta quando o número de propostas é igual a 3. A modalidade de Pregão(Eletrônico e presencial) em grande parte das licitações possui apenas 1 proposta.
