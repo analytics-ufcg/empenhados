@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   message = FALSE,
   fig.align = 'center',
   fig.width = 10)
+
+options(scipen = 999)
 ```
 
 ```{r adicao de bibliotecas}
@@ -606,9 +608,8 @@ alimentos.resumo %>%
     x = 'Tipo de alimento',
     y = 'Total gasto (reais)',
     fill = 'Alimento') +
-  theme_bw() +
-  theme(panel.border = element_blank(),
-    axis.text.x=element_text(angle=45, hjust=1))
+  theme_minimal() +
+  theme(axis.text.x=element_text(angle=45, hjust=1))
 
 alimentos.resumo %>%
   ggplot(aes(x=ano, y=total, group=alimento, color=alimento)) +
@@ -619,8 +620,7 @@ alimentos.resumo %>%
     x = 'Ano',
     y = 'Total gasto (reais)',
     color = 'Alimento') +
-  theme_bw() + 
-  theme(panel.border = element_blank())
+  theme_minimal()
 ```
 
 É interessante perceber que a quantidade gasta em licitações de carne, hortaliças, frutas e pães para merenda é nitidamente maior do que a gasta com outros tipos de alimentos, principalmente no ano de 2010. Um dos motivos para isso pode ser que não há uma preocupação tão grande em explicitar a compra dos tipos menos recorrente.
@@ -629,7 +629,34 @@ Outra hipótese é que carne tem um preço elevado e, muitas das vezes que apare
 
 <br>
 
-### 2.12 - Que modalidade de licitação é mais comum na compra de merenda?
+### 2.12 - Quantos tipos diferentes de alimento cada fornecedor vende?
+Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas.  
+
+```{r}
+variedade <- alimentos %>%
+  merge(participantes) %>%
+  distinct(nu_CPFCNPJ, alimento) %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(variedade = n()) %>%
+  merge(fornecedores, all=T) %>%
+  select(nu_CPFCNPJ, variedade) %>%
+  distinct()
+
+variedade[is.na(variedade)] <- 0
+
+variedade %>%
+  ggplot(aes(x=variedade)) +
+  geom_bar() +
+  labs(
+    title = 'Tipos de alimentos vendidos por fornecedor',
+    x = 'Tipos vendidos',
+    y = 'Fornecedores') +
+  theme_minimal()
+```
+
+<br>
+
+### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
 A seguir, buscamos entender se há alguma modalidade de licitação mais comum ou padrão a ser utilizado na compra de alimentação escolar. Aqui, foi possível observarque a maior parte das licitações de merenda faz parte das modalidades convite ou pregão presencial. Outras modalidades como concorrência, tomada de preços e chamada pública também são amplamente utilizadas. Um número expressivo de licitações, ainda, é considerado dispensável.  
 
 ```{r}
@@ -652,7 +679,7 @@ ggplot(aes(x = tp_Licitacao), data = licitacoes_merenda) +
 
 <br>
 
-### 2.13 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
+### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
 Outra variável interessante de se analisar nos dados é a modalidade de licitação. Será que o valor médio (em reais) de licitação varia de acordo com sua modalidade ou esse valor também sofre influência do ano em que a licitação foi realizada? Essas são algumas questões que o gráfico a seguir pode responder.
 
 ```{r}
@@ -670,7 +697,7 @@ A partir dessa resposta faz-se necessário saber se existem licitações de mere
 
 <br>
 
-### 2.14 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
+### 2.15 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
 Dando prosseguimento à análise, foi verificado quais modalidades de licitação foram mais utilizadas para a obtenção de merenda entre os anos 2010 e 2015. Os resultados podem ser observados na figura a seguir.  
 
 ```{r}
@@ -716,7 +743,7 @@ Ainda há outros pontos importantes a serem ressaltados nesse tópico. É possí
 
 <br>
 
-### 2.15 - Geralmente, quantas propostas são recebidas para licitações de merenda?
+### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
 Aqui, busca-se compreender como está distribuído o total de propostas para as licitações de merenda. A partir dessa análise é possível perceber se há muitos interessados nesse tipo de licitação e se algum valor mais comum ou discrepante.
 Conforme descrito na figura abaixo, é possível observar que grande parte das licitações de merenda (`r round(nrow(filter(licitacoes_merenda, nu_Propostas < 5))/nrow(licitacoes_merenda) * 100, 2)`%) recebeu menos de 5 propostas.
 
@@ -752,7 +779,7 @@ Os detalhes desses dois processos podem ser observados na tabela abaixo.
 
 <br>
 
-### 2.16 - O valor da licitação está relacionado com o total de propostas recebidas?
+### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
 Para tentar responder essa pergunta, foi criado um gráfico de dispersão do valor das licitações pelo total de propostas. Além disso, o coeficiente de correlação linear entre as variáveis foi calculado.  
 
 ```{r}
@@ -794,7 +821,7 @@ Agora observamos que há ainda menos indícios de uma correlação linear entre 
 
 <br>
 
-### 2.17 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
+### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
 Para responder a essa pergunta iremos considerar, inicialmente, os anos de 2010 até 2016. A figura abaixo mostra a frequência de licitações de acordo com o número de propostas. Limitamos o número de propostas para no máximo 6 já que esse intervalo(1:6) contém 96% dos dados de merenda. O 96-percentil é `r quantile(licitacoes_merenda$nu_Propostas, probs = c(.956))`.
 
 ```{r}
@@ -915,38 +942,8 @@ Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grand
 
 <br>
 
-### 3.4 - Quantos tipos diferentes de alimento cada fornecedor vende?
-Uma coisa a se observar é que a quantidade de tipos de alimentos que um mesmo fornecedor vende é, em geral, baixa. Não somente isso, como a grande maioria não se enquadra na venda de nenhum tipo específico, provavelmente participando apenas de licitações genéricas.  
-
-```{r}
-variedade <- alimentos %>%
-  merge(participantes) %>%
-  distinct(nu_CPFCNPJ, alimento) %>%
-  group_by(nu_CPFCNPJ) %>%
-  summarise(variedade = n()) %>%
-  merge(fornecedores, all=T) %>%
-  select(nu_CPFCNPJ, variedade) %>%
-  distinct()
-
-variedade[is.na(variedade)] <- 0
-
-variedade %>%
-  ggplot(aes(x=variedade)) +
-  geom_bar() +
-  labs(
-    title = 'Tipos de alimentos vendidos por fornecedor',
-    x = 'Tipos vendidos',
-    y = 'Fornecedores') +
-  theme_bw() +
-  theme(panel.border = element_blank())
-
-?theme_bw
-```
-
-<br>
-
 ### 3.5 - Os contratos de licitações são bem distribuidos entre os fornecedores?
-Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes e como distorceria a visualização não foi inserido no gráfico.  
+O gráfico abaixo mostra que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes e como distorceria a visualização não foi inserido no gráfico.  
 
 ```{r}
 participacoes <- participantes %>%
@@ -971,6 +968,25 @@ lucros <- lucros %>%
   mutate(perdeu = participou-ganhou)
 
 lucros %>%
+  group_by(participou, ganhou) %>%
+  summarise(freq = n()) %>% 
+  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    geom_abline(slope=1, intercept=0, color='grey') +
+    geom_point() +
+    scale_x_continuous(breaks=pretty_breaks(10)) +
+    scale_y_continuous(breaks=pretty_breaks(10)) +
+    labs(
+      title = 'Participações em licitações versus vitórias por fornecedor',
+      x = 'Participações',
+      y = 'Vitórias',
+      size = 'Ocorrências') +
+    theme_minimal()
+```
+
+Como existem alguns valores extremos que tornam a escala difícil de visualizar, também pode ser vista abaixo uma versão do gráfico com apenas a parte que corresponde a maior parte dos fornecedores.
+
+```{r}
+lucros %>%
   filter(participou < 30) %>%
   group_by(participou, ganhou) %>%
   summarise(freq = n()) %>% 
@@ -984,25 +1000,7 @@ lucros %>%
       x = 'Participações',
       y = 'Vitórias',
       size = 'Ocorrências') +
-  theme_bw() +
-  theme(panel.border = element_blank())
-
-lucros %>%
-  group_by(participou, ganhou) %>%
-  summarise(freq = n()) %>% 
-  ggplot(aes(x=participou, y=ganhou, size=freq)) +
-    geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point() +
-    scale_x_continuous(breaks=pretty_breaks(10)) +
-    scale_y_continuous(breaks=pretty_breaks(10)) +
-    labs(
-      title = 'Participações em licitações versus vitórias por fornecedor',
-      x = 'Participações',
-      y = 'Vitórias',
-      size = 'Ocorrências') +
-  theme_bw() +
-  theme(panel.border = element_blank())
-
+    theme_minimal()
 ```
 
 Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
@@ -1021,10 +1019,8 @@ lucros %>%
       title = 'Distribuição de licitações por fornecedor',
       x = 'Fornecedor',
       y = 'Total ganho (reais)') +
-  theme_bw() +   
-  theme(panel.border = element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+  theme_minimal() +
+  theme(axis.text.x=element_blank())
 ```
 
 <!-- ### 8 - Quanto cada município já gastou com licitações? -->
@@ -1105,17 +1101,12 @@ metricas %>%
   gather() %>%
   ggplot(aes(x = value)) +
     facet_wrap(~ key, scale='free') +
-    geom_histogram() +
+    geom_histogram(bins=30, na.rm=T) +
     labs (
       title = 'Distribuição de métricas por município',
       x = 'Valor',
       y = 'Ocorrências') +
-    theme(
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  theme_bw()
+    theme_minimal()
 ```
 
 Como mostram os histogramas acima, há uma aglomeração de valores à direita em todas as variáveis, o que dificulta a análise. É possível cotornar essa situação aplicando uma transformação logarítmica em cada uma delas, fazendo com que os valores passem a se concentrar no centro da distribuição.  
@@ -1127,17 +1118,12 @@ metricas %>%
   gather() %>%
   ggplot(aes(x = value)) +
     facet_wrap(~ key, scale='free') +
-    geom_histogram() + 
+    geom_histogram(bins=30, na.rm=T) +
     labs (
-      title = 'Distribuição de métricas por município (log)',
-      x = 'Valor',
+      title = 'Distribuição de métricas por município',
+      x = 'Valor (log)',
       y = 'Ocorrências') +
-    theme(
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank()) +
-  theme_bw()
+    theme_minimal()
 ```
 
 Por fim, ao observar a curva de regressão abaixo e desconsiderando as cidades de maior porte, não parece haver uma relação forte entre o tamanho da população e nenhuma das variáveis, a não ser o gasto total com licitações. Isso é ainda mais perceptível utilizando uma matriz de correlação. Por meio dessa matriz, é possível ainda encontrar outras correlações como as existentes entre o número de licitações, de fornecedores e o gasto total.  
@@ -1151,13 +1137,9 @@ metricas %>%
     facet_wrap(~metrica, scales='free') +
     labs (
       title = 'Métricas de licitação por município',
-      y = 'Valor') +
-    theme(
-      axis.text.x=element_blank(),
-      axis.ticks.x=element_blank(),
-      axis.text.y=element_blank(),
-      axis.ticks.y=element_blank()) +
-  theme_bw()
+      x = 'População (log)',
+      y = 'Valor (log)') +
+    theme_minimal()
 
 metricas %>%
   cor(use = 'pairwise.complete.obs') %>%
