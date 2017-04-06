@@ -104,6 +104,14 @@ get.municipio <- function(cd_UGestora) {
     join(municipios)
   return(result$de_Municipio)
 }
+
+get.fornecedor <- function(nu_CPFCNPJ){
+  result <- data.frame(
+    nu_CPFCNPJ) %>%
+    join(fornecedores)
+  return(select(result, nu_CPFCNPJ, no_Fornecedor))
+    
+}
 ```
 
 ```{r preparacao de dados}
@@ -821,10 +829,12 @@ Para responder essa questão foi calculado o número de contratos celebrados por
 ```{r}
 fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
 data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
-#data_fornecedores_groups <- data_fornecedores_groups[order(data_fornecedores_groups$nu_CPFCNPJ),factor(data_fornecedores_groups$nu_CPFCNPJ)]
-#View(data_fornecedores_groups)
+contratos_ordenados <- within(contratos,
+                              nu_CPFCNPJ <- factor(nu_CPFCNPJ, levels = names(sort(table(nu_CPFCNPJ), decreasing = TRUE))))
 
-ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
+media <- mean(data_fornecedores_groups$n)
+
+ggplot(aes(x = nu_CPFCNPJ), data = contratos_ordenados) + 
   geom_histogram(stat = 'count', color = '#5CA171') + 
   labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
   geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
@@ -834,19 +844,45 @@ ggplot(aes(x = nu_CPFCNPJ), data = contratos) +
       axis.text.x=element_blank(),
       axis.ticks.x=element_blank())
 
-ggplot(aes(x = reorder(nu_CPFCNPJ, n)), data = data_fornecedores_groups) + 
-  geom_histogram(stat = 'count', color = '#5CA171') + 
-  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
-  geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
-  geom_text(aes(0, media, label = 'Média', vjust = -0.5, hjust = -0.1), size = 4) +
-  scale_y_continuous(breaks = seq(0, 80, 5)) +
-  theme(
-      axis.text.x=element_blank(),
-      axis.ticks.x=element_blank())
+rm(contratos_ordenados)
+
 ```
 
 Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa. Apesar disso, um pequeno grupo de 88 fornecedores - menos de 10% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
 
+Abaixo, observaremos estes vencedores, divididos em alguns grupos.
+
+```{r}
+get.grandes.vencedores <- function(lower_bound, upper_bound){
+  if(missing(upper_bound)){upper_bound <- max(data_fornecedores_groups$n)}
+  if(missing(lower_bound)){lower_bound <- min(data_fornecedores_groups$n)}
+  
+  vencedores <- subset(data_fornecedores_groups, n > lower_bound & n <= upper_bound, c("nu_CPFCNPJ", "n"))
+  nomes_vencedores <- get.fornecedor(vencedores)
+  unique_nomes_vencedores <- subset(nomes_vencedores,
+                                     !duplicated(nomes_vencedores$nu_CPFCNPJ))
+  
+  # Adiciona colunas adicionais para ajudar na identificação dos fornecedores
+  unique_nomes_vencedores = merge(unique_nomes_vencedores, vencedores, by = "nu_CPFCNPJ")
+  return(unique_nomes_vencedores)
+}
+
+vencedores1 <- get.grandes.vencedores(5,10)
+kable(vencedores1[order(vencedores1$n),], caption = "Fornecedores que fecharam entre 6 e 10 contratos",
+      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+
+vencedores2 <- get.grandes.vencedores(10,20)
+kable(vencedores2[order(vencedores2$n),], caption = "Fornecedores que fecharam entre 11 e 20 contratos",
+      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+
+```
+
+Uma atenção especial para os seguintes fornecedores, todos eles fecharam <strong>mais de 20 contratos</strong>, um número muito superior à media.
+
+```{r}
+vencedores3 <- get.grandes.vencedores(20)
+kable(vencedores3[order(vencedores3$n),], col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+```
 <br>
 
 ### 3.4 - Quantos tipos diferentes de alimento cada fornecedor vende?
