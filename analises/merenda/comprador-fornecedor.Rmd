@@ -106,6 +106,14 @@ get.municipio <- function(cd_UGestora) {
     join(municipios)
   return(result$de_Municipio)
 }
+
+get.fornecedor <- function(nu_CPFCNPJ){
+  result <- data.frame(
+    nu_CPFCNPJ) %>%
+    join(fornecedores)
+  return(select(result, nu_CPFCNPJ, no_Fornecedor))
+    
+}
 ```
 
 ```{r preparacao de dados}
@@ -410,11 +418,8 @@ Os 5 municípios que possuem maior valor médio de licitações de merenda são:
 
 <br>
 
-### 2.5 - Qual a média do valor da licitação por merenda?
+### 2.5 - Qual a distribuição da média do valor da licitação por merenda por ano?
 Em seguida, determinamos a média e a mediana do valor (em reais) de licitações envolvendo merenda, como mostrado a seguir.
-```{r}
-mean(licitacoes_merenda$vl_Licitacao)
-```
 
 ```{r}
 media_total = mean(licitacoes_merenda$vl_Licitacao)/1000
@@ -436,10 +441,7 @@ licitacoes_merenda %>%
 
 <br>
 
-### 2.6 - Qual a mediana do valor da licitação por merenda?
-```{r}
-median(licitacoes_merenda$vl_Licitacao)
-```
+### 2.6 - Qual a distribuição da mediana do valor da licitação por merenda por ano?
 
 ```{r}
 mediana_total = median(licitacoes_merenda$vl_Licitacao)/1000
@@ -925,9 +927,12 @@ Para responder essa questão foi calculado o número de contratos celebrados por
 ```{r}
 fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
 data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
+contratos_ordenados <- within(contratos,
+                              nu_CPFCNPJ <- factor(nu_CPFCNPJ, levels = names(sort(table(nu_CPFCNPJ), decreasing = TRUE))))
 
 media <- mean(data_fornecedores_groups$n)
-ggplot(aes(x = nu_CPFCNPJ), data = contratos) + 
+
+ggplot(aes(x = nu_CPFCNPJ), data = contratos_ordenados) + 
   geom_histogram(stat = 'count', color = '#5CA171') + 
   labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
   geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
@@ -936,13 +941,49 @@ ggplot(aes(x = nu_CPFCNPJ), data = contratos) +
   theme(
       axis.text.x=element_blank(),
       axis.ticks.x=element_blank())
+
+rm(contratos_ordenados)
+
 ```
 
 Observa-se uma média de 2.88 contratos celebrados por fornecedor, com uma grande concentração de valores abaixo de 5, o que justifica a média baixa. Apesar disso, um pequeno grupo de 88 fornecedores - menos de 10% do total - conseguiu fechar mais de 5 contratos durante o período estudado.
 
+Abaixo, observaremos estes vencedores, divididos em alguns grupos.
+
+```{r}
+get.grandes.vencedores <- function(lower_bound, upper_bound){
+  if(missing(upper_bound)){upper_bound <- max(data_fornecedores_groups$n)}
+  if(missing(lower_bound)){lower_bound <- min(data_fornecedores_groups$n)}
+  
+  vencedores <- subset(data_fornecedores_groups, n > lower_bound & n <= upper_bound, c("nu_CPFCNPJ", "n"))
+  nomes_vencedores <- get.fornecedor(vencedores)
+  unique_nomes_vencedores <- subset(nomes_vencedores,
+                                     !duplicated(nomes_vencedores$nu_CPFCNPJ))
+  
+  # Adiciona colunas adicionais para ajudar na identificação dos fornecedores
+  unique_nomes_vencedores = merge(unique_nomes_vencedores, vencedores, by = "nu_CPFCNPJ")
+  return(unique_nomes_vencedores)
+}
+
+vencedores1 <- get.grandes.vencedores(5,10)
+kable(vencedores1[order(vencedores1$n),], caption = "Fornecedores que fecharam entre 6 e 10 contratos",
+      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+
+vencedores2 <- get.grandes.vencedores(10,20)
+kable(vencedores2[order(vencedores2$n),], caption = "Fornecedores que fecharam entre 11 e 20 contratos",
+      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+
+```
+
+Uma atenção especial para os seguintes fornecedores, todos eles fecharam <strong>mais de 20 contratos</strong>, um número muito superior à media.
+
+```{r}
+vencedores3 <- get.grandes.vencedores(20)
+kable(vencedores3[order(vencedores3$n),], col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+```
 <br>
 
-### 3.5 - Os contratos de licitações são bem distribuidos entre os fornecedores?
+### 3.4 - Os contratos de licitações são bem distribuidos entre os fornecedores?
 O gráfico abaixo mostra que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou 2272 vezes e como distorceria a visualização não foi inserido no gráfico.  
 
 ```{r}
@@ -1060,7 +1101,7 @@ lucros %>%
 
 <br>
 
-### 3.6 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
+### 3.5 - O tamanho da população da cidade influencia na quantidade e no valor das licitações?
 A fim de verificar a influência que o tamanho de um município tem em sua quantidade de fornecedores, de licitações, no seu gasto total e mediano em licitações, assim como no número mediano de propostas por licitação, é importante primeiro ver como é a distribuição dessa variáveis. Nessa análise, as cidades de Campina Grande e João Pessoa foram ocultadas, pois suas grandes populações dificultariam a comparação com os demais municípios.
 
 ```{r}
