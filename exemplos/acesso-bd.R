@@ -15,13 +15,25 @@ head(licitacao)
 # Descreve as colunas e seus valores
 glimpse(licitacao)
 
-# Prepara uma query em cima dos dados, mas não a executa
-query <- licitacao %>%
+# Prepara queries em cima dos dados, mas não as executa
+q1 <- licitacao %>%
   filter(dt_Ano >= 2016) %>%
   select(cd_UGestora, vl_Licitacao)
 
-# Imprime o código SQL que foi preparado, caso necessário
-explain(query)
+q2 <- sql('
+  SELECT c.*
+  FROM contratos c
+  INNER JOIN tmp
+  USING (cd_UGestora)
+  WHERE dt_Ano >= 2016
+')
 
-# Efetivamente executa a query
-result <- collect(query)
+# Imprime o código SQL que foi preparado, caso necessário
+explain(q1)
+
+# Cria uma tabela temporária a partir da query
+q1 <- compute(q1, name = 'tmp')
+
+# Efetivamente executa as queries
+r1 <- collect(q1)
+r2 <- tbl(sagres, q2) %>% collect()
