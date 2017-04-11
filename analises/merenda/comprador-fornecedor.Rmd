@@ -42,7 +42,6 @@ library(knitr)
 ```
 
 ```{r instancia tabelas do bd}
-# Instancia conexão com o BD usando as configurações em ~/.my.cnf
 sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
 
 licitacoes_total = tbl(sagres, 'licitacao') %>%
@@ -59,8 +58,8 @@ municipios$de_Municipio[199] = 'Sao Vicente do Serido'
 query <- sql('
   SELECT *
   FROM licitacao
-  WHERE de_Obs REGEXP "merenda" AND 
-  dt_Ano >= 2011 AND dt_Ano <= 2015
+  WHERE de_Obs REGEXP "merenda"
+  AND dt_Ano BETWEEN 2011 AND 2015
 ')
 
 licitacoes_fornecedor <- tbl(sagres, query) %>%
