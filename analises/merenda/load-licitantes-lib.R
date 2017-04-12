@@ -28,7 +28,24 @@ load_licitantes <- function() {
   ')
   
   contratos <- tbl(sagres, query) %>%
+    compute(name = 'cm') %>%
     collect()
+  
+  query <- sql('
+    SELECT DISTINCT a.*
+    FROM aditivos a
+    INNER JOIN cm
+    USING (cd_UGestora, nu_Contrato)
+  ')
+  
+  aditivos <- tbl(sagres, query) %>%
+    collect()
+  
+  contratos <- contratos %>% 
+      merge(aditivos %>% 
+              select_('cd_UGestora', 'nu_Contrato', 'vl_Aditivo'), 
+          by=c('cd_UGestora', 'nu_Contrato'), all.x=T) %>%
+    mutate(aditivo = !is.na(vl_Aditivo))
   
   query <- sql('
     SELECT p.*
@@ -74,7 +91,8 @@ load_licitantes <- function() {
     group_by(nu_CPFCNPJ) %>%
     summarise(
       ganhou = n(),
-      total_ganho = sum(vl_TotalContrato))
+      total_ganho = sum(vl_TotalContrato),
+      total_aditivos = sum(aditivo))
   
   licitantes <- fornecedores %>%
     distinct(nu_CPFCNPJ) %>%
