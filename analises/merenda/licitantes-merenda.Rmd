@@ -1,0 +1,81 @@
+---
+title: "Análise dos licitantes de merenda"
+author: "Laboratório Analytics"
+date: "10 de abril de 2017"
+output: html_document
+---
+
+<div style='text-align:justify'>
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
+
+options(scipen = 999)
+```
+
+## Agrupamento de Licitantes
+
+```{r}
+library(ggplot2)
+require(GGally, quietly = TRUE)
+require(reshape2, quietly = TRUE)
+library(cluster)
+library(ggdendro)
+library(plotly)
+theme_set(theme_bw())
+source("load-licitantes-lib.R")
+```
+
+```{r}
+licitantes <- load_licitantes()
+
+summary(licitantes)
+ggpairs(select(licitantes, -nu_CPFCNPJ))
+```
+
+```{r}
+licitantes2 = licitantes[2:8]
+
+licitantes2 = licitantes2 %>%
+  mutate(nu_CPFCNPJ = licitantes$nu_CPFCNPJ)
+
+licitantes2.scaled = select(licitantes2, -nu_CPFCNPJ) %>% 
+  mutate_each(funs(scale))
+```
+
+```{r}
+dists = dist(licitantes2.scaled, method = "euclidean")
+hc = hclust(dists, method = "ward.D")
+
+plot(hc, cex = .1)
+plot(hc, hang = 0)
+rect.hclust(hc, k=6)
+
+licitantes2.scaled$cluster = factor(cutree(hc, k=6))
+licitantes2.scaled$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
+
+licitantes2.long = melt(licitantes2.scaled, id.vars = c("nu_CPFCNPJ", "cluster"))
+```
+
+```{r}
+ggplot(licitantes2.long, aes(x = variable, y = value, colour = variable)) + 
+  geom_boxplot() + 
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
+  facet_wrap(~ cluster)
+```
+
+```{r}
+p1 = ggplot(licitantes2.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(alpha = .3) + 
+  facet_wrap(~ cluster) 
+
+ggplotly(p1)
+```
+
+</div>
