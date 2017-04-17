@@ -103,8 +103,7 @@ load_licitantes <- function() {
   
   licitantes <- licitantes %>%
     mutate(ganhou = ganhou/participou) %>%
-    filter(is.finite(ganhou)) %>%
-    filter(nu_CPFCNPJ != '00000000000000')
+    filter(nu_CPFCNPJ != '00000000000000', is.finite(ganhou))
   
   return(licitantes)
 }

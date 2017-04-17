@@ -5,20 +5,15 @@ date: "10 de abril de 2017"
 output: html_document
 ---
 
-<div style='text-align:justify'>
-
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE,
-  fig.align = 'center',
-  fig.width = 10)
+  fig.align = 'center')
 
 options(scipen = 999)
 ```
-
-## Agrupamento de Licitantes
 
 ```{r}
 library(ggplot2)
@@ -27,19 +22,40 @@ require(reshape2, quietly = TRUE)
 library(cluster)
 library(ggdendro)
 library(plotly)
+library(RColorBrewer)
 theme_set(theme_bw())
 source("load-licitantes-lib.R")
 ```
 
+# Agrupamento de licitantes
+O objetivo inicial é traçar o perfil desses fornecedores através do agrupamento dos mesmos considerando características semelhantes.
+
+## Descrição da amostra
+Na amostra foram analisados 758 licitantes que fizeram pelo menos uma proposta em licitações de merenda no estado da Paraíba entre os anos de 2011 e 2015.
+
 ```{r}
 licitantes <- load_licitantes()
-
-summary(licitantes)
-ggpairs(select(licitantes, -nu_CPFCNPJ))
 ```
+A priori, consideraremos os seguintes critérios para o agrupamento: 
+
+* Número de participações: Número de licitações nas quais o licitante fez proposta.
+
+* Total: Valor em reais da soma de todas as licitações nas quais o licitante fez proposta.
+
+* Mediana: Valor em reais da mediana das licitações nas quais o licitante fez proposta.
+
+* Municípios: Número de municípios distintos onde o licitante fez pelo menos uma proposta.
+
+* Ganhou: Razão entre o número de participações e o número de vitórias(número de contratos do licitante com a Administração Pública).
+
+* Total ganho: Valor em reais da soma de todos os contratos nos quais o licitante faz parte.
+
+* Total de aditivos: Total de aditivos que o licitante conseguiu adicionar ao contrato.
+
+## Agrupamento
 
 ```{r}
-licitantes2 = licitantes[2:8]
+licitantes2 = log(licitantes[2:8] + 1)
 
 licitantes2 = licitantes2 %>%
   mutate(nu_CPFCNPJ = licitantes$nu_CPFCNPJ)
@@ -48,34 +64,83 @@ licitantes2.scaled = select(licitantes2, -nu_CPFCNPJ) %>%
   mutate_each(funs(scale))
 ```
 
+Foram aplicadas técnicas de padronização nos dados a fim de facilitar a visualização e análise dos mesmos.
+
+### Número de grupos
+Observamos abaixo o dendograma com a divisão dos grupos de licitantes. A divisão foi feita em sete grupos com o objetivo de diminuir a heterogeneidade entre membros de um mesmo grupo e aumentar a heterogeneidade entre grupos diferentes.
+
 ```{r}
 dists = dist(licitantes2.scaled, method = "euclidean")
 hc = hclust(dists, method = "ward.D")
 
-plot(hc, cex = .1)
-plot(hc, hang = 0)
-rect.hclust(hc, k=6)
+plot(hc, hang = 0, labels=FALSE)
+rect.hclust(hc, k=7)
 
-licitantes2.scaled$cluster = factor(cutree(hc, k=6))
+licitantes2.scaled$cluster = factor(cutree(hc, k=7))
 licitantes2.scaled$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
 
 licitantes2.long = melt(licitantes2.scaled, id.vars = c("nu_CPFCNPJ", "cluster"))
 ```
 
-```{r}
+### Divisão dos grupos
+A seguir observamos os 7 grupos e suas características de acordo com as variáveis analisadas.
+
+```{r fig.width = 10, fig.height=10}
 ggplot(licitantes2.long, aes(x = variable, y = value, colour = variable)) + 
   geom_boxplot() + 
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
-  facet_wrap(~ cluster)
+  facet_wrap(~ cluster, ncol = 2) +
+  theme(axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()) +
+  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
 ```
 
-```{r}
+#### Grupo 1
+Em geral, os licitantes desse grupo tem um porcentagem de vitórias abaixo da média. Por conta disso o valor total ganho em contratos também é abaixo da média. 
+
+#### Grupo 2
+Caracteriza os licitantes que participam de licitações com valor abaixo da média, mas que possuem alta porcentagem de vitórias com relação aos demais participantes e o valor do contrato é um pouco acima da média.
+
+#### Grupo 3
+Grupo dos licitantes que possuem contratos com aditivos acima da média, em geral são licitantes que ganham acima da média e assima contratos com valor acima da média.
+
+#### Grupo 4
+Ao contrário do grupo 2, os licitantes desse grupo participam de licitações com valores pouco acima da média e também tem uma alta porcentagem de vitórias
+
+#### Grupo 5
+Esse grupo é o que apresenta as variáveis com valores mais próximos a média sem nenhuma variação que se sobressaia.
+
+#### Grupo 6
+São licitantes que participam de licitações de alto valor mas que raramente ganham e quando ganham o valor de contrato é abaixo da média. Podem ser considerados os grandes perdedores da amostra analisada.
+
+#### Grupo 7
+Os integrantes desse grupo são ativos e participam de muitas licitações em diferentes municípios, as licitações possuem um valor total acima da média, mas um valor mediano dentro do esperado.
+
+### Gráfico de coordenadas paralelas
+```{r fig.width = 10, fig.height=10}
 p1 = ggplot(licitantes2.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
   geom_point(alpha = 0.2) + 
   geom_line(alpha = .3) + 
-  facet_wrap(~ cluster) 
+  facet_wrap(~ cluster, ncol = 2) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  labs(x= "", y = "")
 
 ggplotly(p1)
 ```
 
-</div>
+Nota-se que no grupo 3, considerado o grupos dos licitantes que mais aditivam seus contratos existe uma variação alta com relação a variável número de municípios entre os licitantes desse grupo. Em geral no grupo 5, como dito anteriormente, os valores se mantém próximo a média para todos os licitantes do grupo, tornando-se o grupo com características mais lineares. Com exceção do grupo 3, os demais grupos apresentam praticamente a mesma média de aditivos entre todos os seus componentes.
+
+
+```{r}
+colors = brewer.pal(7,"Set3")
+plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA)
+```
+
+O gráfico apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
+
+Outro fator relevante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a existência de dois grupos grandes, que juntos comportam mais da metade das observações. Existem ainda dois grupos intermediários e mais 3 grupos pequenos, com menos de 50 licitantes em cada.
+
+
+
+
+
