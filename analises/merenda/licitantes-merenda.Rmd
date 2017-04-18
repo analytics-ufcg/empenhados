@@ -17,14 +17,16 @@ options(scipen = 999)
 
 ```{r}
 library(ggplot2)
-require(GGally, quietly = TRUE)
-require(reshape2, quietly = TRUE)
+library(GGally)
+library(reshape2)
 library(cluster)
 library(ggdendro)
 library(plotly)
 library(RColorBrewer)
-theme_set(theme_bw())
+
 source("load-licitantes-lib.R")
+
+theme_set(theme_bw())
 ```
 
 # Agrupamento de licitantes
@@ -130,7 +132,6 @@ ggplotly(p1)
 
 Nota-se que no grupo 3, considerado o grupos dos licitantes que mais aditivam seus contratos existe uma variação alta com relação a variável número de municípios entre os licitantes desse grupo. Em geral no grupo 5, como dito anteriormente, os valores se mantém próximo a média para todos os licitantes do grupo, tornando-se o grupo com características mais lineares. Com exceção do grupo 3, os demais grupos apresentam praticamente a mesma média de aditivos entre todos os seus componentes.
 
-
 ```{r}
 colors = brewer.pal(7,"Set3")
 plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA)
@@ -139,8 +140,3 @@ plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA)
 O gráfico apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
 
 Outro fator relevante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a existência de dois grupos grandes, que juntos comportam mais da metade das observações. Existem ainda dois grupos intermediários e mais 3 grupos pequenos, com menos de 50 licitantes em cada.
-
-
-
-
-
