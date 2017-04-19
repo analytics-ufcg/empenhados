@@ -1,0 +1,94 @@
+---
+title: "Realinhamento de Preços"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r instancia tabelas do bd}
+
+sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT *
+  FROM licitacao
+  WHERE de_Obs REGEXP "merenda"
+  AND dt_Ano BETWEEN 2011 AND 2015
+')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e, lm
+  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
+  e.cd_UGestora = lm.cd_UGestora AND
+  e.tp_Licitacao = lm.tp_Licitacao AND 
+  e.dt_Ano = 2015
+')
+
+empenhos_2015 <- tbl(sagres, query) %>%
+  compute(name = 'em15') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e, lm
+  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
+  e.cd_UGestora = lm.cd_UGestora AND
+  e.tp_Licitacao = lm.tp_Licitacao AND 
+  e.dt_Ano = 2014
+')
+
+empenhos_2014 <- tbl(sagres, query) %>%
+  compute(name = 'em14') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e, lm
+  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
+  e.cd_UGestora = lm.cd_UGestora AND
+  e.tp_Licitacao = lm.tp_Licitacao AND 
+  e.dt_Ano = 2013
+')
+
+empenhos_2013 <- tbl(sagres, query) %>%
+  compute(name = 'em13') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e, lm
+  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
+  e.cd_UGestora = lm.cd_UGestora AND
+  e.tp_Licitacao = lm.tp_Licitacao AND 
+  e.dt_Ano = 2012
+')
+
+empenhos_2012 <- tbl(sagres, query) %>%
+  compute(name = 'em12') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e, lm
+  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
+  e.cd_UGestora = lm.cd_UGestora AND
+  e.tp_Licitacao = lm.tp_Licitacao AND 
+  e.dt_Ano = 2011
+')
+
+empenhos_2011 <- tbl(sagres, query) %>%
+  compute(name = 'em11') %>%
+  collect()
+
+empenhos <- rbind(empenhos_2011, empenhos_2012, empenhos_2013, empenhos_2014, empenhos_2015)
+
+```
+
