@@ -23,6 +23,7 @@ library(cluster)
 library(ggdendro)
 library(plotly)
 library(RColorBrewer)
+library(ggfortify)
 
 source("load-licitantes-lib.R")
 
@@ -140,3 +141,51 @@ plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA)
 O gráfico apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
 
 Outro fator relevante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a existência de dois grupos grandes, que juntos comportam mais da metade das observações. Existem ainda dois grupos intermediários e mais 3 grupos pequenos, com menos de 50 licitantes em cada.
+
+### Utilizando o K-means
+
+```{r}
+licitantes2.scaled.kmeans = select(licitantes2, -nu_CPFCNPJ) %>% 
+  mutate_each(funs(scale))
+
+licitantes2.scaled.kmeans$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
+
+toclust = select(licitantes2.scaled.kmeans, 1:7)
+
+row.names(toclust) = licitantes2.scaled$nuCPFCNPJ
+dists = dist(toclust)
+
+km <- kmeans(toclust, centers = 7, nstart = 10)
+
+autoplot(km, data = licitantes2.scaled.kmeans, size = 2)
+
+licitantes2.scaled.kmeans$kmcluster = factor(km$cluster)
+licitantes2.long.kmeans = melt(licitantes2.scaled.kmeans, id.vars = c("nu_CPFCNPJ", "kmcluster"))
+```
+
+``` {r fig.width = 10, fig.height=10}
+ggplot(licitantes2.long.kmeans, aes(x = variable, y = value, colour = variable)) + 
+  geom_boxplot() + 
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
+  facet_wrap(~ kmcluster) +
+  theme(axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()) +
+  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
+```
+
+```{r fig.width = 10, fig.height=10}
+p2 = ggplot(licitantes2.long.kmeans, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = kmcluster)) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(alpha = .3) + 
+  facet_wrap(~ kmcluster, ncol = 2) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  labs(x= "", y = "")
+
+ggplotly(p2)
+```
+
+```{r}
+plot(silhouette(km$cluster, dists), col=colors, border=NA)
+```
+
+
