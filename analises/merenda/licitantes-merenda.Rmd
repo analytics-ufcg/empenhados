@@ -10,7 +10,10 @@ knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE,
-  fig.align = 'center')
+  fig.align = 'center',
+  fig.width = 10, 
+  fig.height=10
+)
 
 options(scipen = 999)
 ```
@@ -88,7 +91,7 @@ licitantes2.long = melt(licitantes2.scaled, id.vars = c("nu_CPFCNPJ", "cluster")
 ### Divisão dos grupos
 A seguir observamos os 7 grupos e suas características de acordo com as variáveis analisadas.
 
-```{r fig.width = 10, fig.height=10}
+```{r}
 ggplot(licitantes2.long, aes(x = variable, y = value, colour = variable)) + 
   geom_boxplot() + 
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
@@ -120,7 +123,7 @@ São licitantes que participam de licitações de alto valor mas que raramente g
 Os integrantes desse grupo são ativos e participam de muitas licitações em diferentes municípios, as licitações possuem um valor total acima da média, mas um valor mediano dentro do esperado.
 
 ### Gráfico de coordenadas paralelas
-```{r fig.width = 10, fig.height=10}
+```{r}
 p1 = ggplot(licitantes2.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
   geom_point(alpha = 0.2) + 
   geom_line(alpha = .3) + 
@@ -163,7 +166,7 @@ licitantes2.scaled.kmeans$kmcluster = factor(km$cluster)
 licitantes2.long.kmeans = melt(licitantes2.scaled.kmeans, id.vars = c("nu_CPFCNPJ", "kmcluster"))
 ```
 
-``` {r fig.width = 10, fig.height=10}
+``` {r}
 ggplot(licitantes2.long.kmeans, aes(x = variable, y = value, colour = variable)) + 
   geom_boxplot() + 
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
@@ -187,5 +190,67 @@ ggplotly(p2)
 ```{r}
 plot(silhouette(km$cluster, dists), col=colors, border=NA)
 ```
+
+
+### Utilizando o DBScan
+```{r}
+library(dbscan)
+
+dbs = dbscan(dists, eps = 1.1, minPts = 13)
+licitantes2.scaled.dbscan = licitantes2.scaled
+licitantes2.scaled.dbscan$cluster = factor(dbs$cluster)
+
+colors = brewer.pal(8,"Set2")
+hullplot(licitantes2.scaled[1:7], dbs, col = colors)
+```
+
+```{r}
+pr.out = prcomp(select(licitantes2.scaled.dbscan, - c(cluster, nu_CPFCNPJ)), scale = FALSE) 
+biplot(pr.out, scale = 0)
+
+autoplot(pr.out, label = TRUE, shape = FALSE, color = )
+
+autoplot(pr.out, label = TRUE, label.size = 3, shape = FALSE, 
+         loadings = TRUE, loadings.colour = 'blue',
+         loadings.label = TRUE, loadings.label.size = 3)
+
+ggplot(licitantes2.scaled[1:7], aes(color = cluster)) +
+  geom_point()
+
+```
+
+```{r}
+licitantes2.long.dbscan = melt(licitantes2.scaled.dbscan, id.vars = c("nu_CPFCNPJ", "cluster"))
+```
+
+
+``` {r}
+ggplot(licitantes2.long.dbscan, aes(x = variable, y = value, colour = variable)) + 
+  geom_boxplot() + 
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
+  facet_wrap(~ cluster) +
+  theme(axis.text.x=element_blank(), 
+        axis.ticks.x=element_blank()) +
+  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
+```
+
+
+```{r}
+p2 = ggplot(licitantes2.long.dbscan, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
+  geom_point(alpha = 0.2) + 
+  geom_line(alpha = .3) + 
+  facet_wrap(~ cluster, ncol = 2) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  labs(x= "", y = "")
+
+ggplotly(p2)
+```
+
+
+```{r}
+dbs2 = dbs[dbs$cluster == 0]
+plot(silhouette(dbs2$cluster, dists), border = NA)
+```
+
 
 
