@@ -187,6 +187,80 @@ liquidacao_2015 <- tbl(sagres, query) %>%
 
 
 liquidacoes <- rbind(liquidacao_2011, liquidacao_2012, liquidacao_2013, liquidacao_2014, liquidacao_2015)
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p, em15 e
+  WHERE p.nu_Empenho = e.nu_Empenho AND
+        p.cd_UGestora = e.cd_UGestora AND
+        p.dt_Ano = e.dt_Ano AND
+        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
+        
+  ')
+
+pagamentos_2015 <- tbl(sagres, query) %>%
+  compute(name = 'pg15') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p, em14 e
+  WHERE p.nu_Empenho = e.nu_Empenho AND
+        p.cd_UGestora = e.cd_UGestora AND
+        p.dt_Ano = e.dt_Ano AND
+        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
+        
+  ')
+
+pagamentos_2014 <- tbl(sagres, query) %>%
+  compute(name = 'pg14') %>%
+  collect()
+
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p, em13 e
+  WHERE p.nu_Empenho = e.nu_Empenho AND
+        p.cd_UGestora = e.cd_UGestora AND
+        p.dt_Ano = e.dt_Ano AND
+        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
+        
+  ')
+
+pagamentos_2013 <- tbl(sagres, query) %>%
+  compute(name = 'pg13') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p, em12 e
+  WHERE p.nu_Empenho = e.nu_Empenho AND
+        p.cd_UGestora = e.cd_UGestora AND
+        p.dt_Ano = e.dt_Ano AND
+        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
+        
+  ')
+
+pagamentos_2012 <- tbl(sagres, query) %>%
+  compute(name = 'pg12') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p, em11 e
+  WHERE p.nu_Empenho = e.nu_Empenho AND
+        p.cd_UGestora = e.cd_UGestora AND
+        p.dt_Ano = e.dt_Ano AND
+        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
+        
+  ')
+
+pagamentos_2011 <- tbl(sagres, query) %>%
+  compute(name = 'pg11') %>%
+  collect()
+
+
+pagamentos <- rbind(pagamentos_2011, pagamentos_2012, pagamentos_2013, pagamentos_2014, pagamentos_2015)
 ```
 
 ```{r contratos vs. empenhos}
@@ -239,5 +313,30 @@ ggplot(aes(x=log_empenho, y=log_liquidacao), data = empXliquid) +
       x = 'Valor do Empenho',
       y = 'Valor da Liquidação') +
     theme_minimal()
+```
+
+```{r liquidacões vs. pagamentos}
+
+liquidXpg <- merge(liquidacoes, pagamentos, by = c('nu_Empenho', 'cd_UGestora', 'dt_Ano', 'cd_UnidOrcamentaria')) %>%
+  group_by(nu_Empenho) %>%
+  summarize(total = n(),
+            valor_liquidacao = sum(vl_Liquidacao),
+            valor_pagamento = sum(vl_Pagamento)) %>%
+  mutate(dif = valor_liquidacao - valor_pagamento) %>%
+  mutate(log_liquidacao = log10(valor_liquidacao)) %>%
+  mutate(log_pagamento = log10(valor_pagamento))
+  
+
+ggplot(aes(x=log_liquidacao, y=log_pagamento), data = liquidXpg) +
+    geom_abline(slope=1, intercept=0, color='grey') +
+    geom_point() +
+    scale_x_continuous(breaks=pretty_breaks(10)) +
+    scale_y_continuous(breaks=pretty_breaks(10)) +
+    labs(
+      title = 'Valor do empenho versus valor da liquidação',
+      x = 'Valor da Liquidação',
+      y = 'Valor do Pagamento') +
+    theme_minimal()
+
 ```
 
