@@ -1,7 +1,7 @@
 ---
-title: "Análise dos licitantes de merenda"
-author: "Laboratório Analytics"
-date: "10 de abril de 2017"
+title: 'Análise dos licitantes de merenda'
+author: 'Laboratório Analytics'
+date: '10 de abril de 2017'
 output: html_document
 ---
 
@@ -11,25 +11,26 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  fig.width = 10, 
-  fig.height=10
+  fig.width = 10,
+  fig.height = 10
 )
 
 options(scipen = 999)
 ```
 
 ```{r}
-library(ggplot2)
-library(GGally)
-library(reshape2)
-library(cluster)
-library(ggdendro)
-library(plotly)
 library(RColorBrewer)
+
 library(ggfortify)
+library(ggplot2)
+library(plotly)
 library(knitr)
 
-source("load-licitantes-lib.R")
+library(cluster)
+library(dbscan)
+library(tidyr)
+
+source('load-licitantes-lib.R')
 
 theme_set(theme_bw())
 ```
@@ -43,7 +44,8 @@ Na amostra foram analisados 758 licitantes que fizeram pelo menos uma proposta e
 ```{r}
 licitantes <- load_licitantes()
 ```
-A priori, consideraremos os seguintes critérios para o agrupamento: 
+
+A priori, consideraremos os seguintes critérios para o agrupamento:
 
 * Número de participações: Número de licitações nas quais o licitante fez proposta.
 
@@ -62,13 +64,13 @@ A priori, consideraremos os seguintes critérios para o agrupamento:
 ## Agrupamento
 
 ```{r}
-licitantes2 = log(licitantes[2:8] + 1)
+licitantes.log <- licitantes %>%
+  mutate_each(funs(log(. + 1)), -nu_CPFCNPJ)
 
-licitantes2 = licitantes2 %>%
-  mutate(nu_CPFCNPJ = licitantes$nu_CPFCNPJ)
+licitantes.scaled <- licitantes.log %>%
+  mutate_each(funs(scale(.) %>% c), -nu_CPFCNPJ)
 
-licitantes2.scaled = select(licitantes2, -nu_CPFCNPJ) %>% 
-  mutate_each(funs(scale))
+dists <- dist(select(licitantes.scaled, -nu_CPFCNPJ), method = 'euclidean')
 ```
 
 Foram aplicadas técnicas de padronização nos dados a fim de facilitar a visualização e análise dos mesmos.
@@ -77,33 +79,33 @@ Foram aplicadas técnicas de padronização nos dados a fim de facilitar a visua
 Observamos abaixo o dendograma com a divisão dos grupos de licitantes. A divisão foi feita em sete grupos com o objetivo de diminuir a heterogeneidade entre membros de um mesmo grupo e aumentar a heterogeneidade entre grupos diferentes.
 
 ```{r}
-dists = dist(licitantes2.scaled, method = "euclidean")
-hc = hclust(dists, method = "ward.D")
+hc <- hclust(dists, method = 'ward.D')
 
-plot(hc, hang = 0, labels=FALSE)
+plot(hc, hang=0, labels=FALSE)
 rect.hclust(hc, k=7)
 
-licitantes2.scaled$cluster = factor(cutree(hc, k=7))
-licitantes2.scaled$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
+licitantes.hc <- licitantes.scaled %>%
+  mutate(cluster = cutree(hc, k=7) %>% as.factor)
 
-licitantes2.long = melt(licitantes2.scaled, id.vars = c("nu_CPFCNPJ", "cluster"))
+licitantes.hc.long <- licitantes.hc %>%
+  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
 
 ### Divisão dos grupos
 A seguir observamos os 7 grupos e suas características de acordo com as variáveis analisadas.
 
 ```{r}
-ggplot(licitantes2.long, aes(x = variable, y = value, colour = variable)) + 
-  geom_boxplot() + 
-  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
+ggplot(licitantes.hc.long, aes(x = variable, y = value, colour = variable)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
   facet_wrap(~ cluster, ncol = 2) +
-  theme(axis.text.x=element_blank(), 
+  theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
+  labs(title = 'Agrupamento de licitantes de merenda da Paraíba', x = '', y = '')
 ```
 
 #### Grupo 1
-Em geral, os licitantes desse grupo tem um porcentagem de vitórias abaixo da média. Por conta disso o valor total ganho em contratos também é abaixo da média. 
+Em geral, os licitantes desse grupo tem um porcentagem de vitórias abaixo da média. Por conta disso o valor total ganho em contratos também é abaixo da média.
 
 #### Grupo 2
 Caracteriza os licitantes que participam de licitações com valor abaixo da média, mas que possuem alta porcentagem de vitórias com relação aos demais participantes e o valor do contrato é um pouco acima da média.
@@ -125,12 +127,12 @@ Os integrantes desse grupo são ativos e participam de muitas licitações em di
 
 ### Gráfico de coordenadas paralelas
 ```{r}
-p1 = ggplot(licitantes2.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
-  geom_point(alpha = 0.2) + 
-  geom_line(alpha = .3) + 
+p1 <- ggplot(licitantes.hc.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) +
+  geom_point(alpha = 0.2) +
+  geom_line(alpha = .3) +
   facet_wrap(~ cluster, ncol = 2) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
-  labs(x= "", y = "")
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x= '', y = '')
 
 ggplotly(p1)
 ```
@@ -138,8 +140,8 @@ ggplotly(p1)
 Nota-se que no grupo 3, considerado o grupos dos licitantes que mais aditivam seus contratos existe uma variação alta com relação a variável número de municípios entre os licitantes desse grupo. Em geral no grupo 5, como dito anteriormente, os valores se mantém próximo a média para todos os licitantes do grupo, tornando-se o grupo com características mais lineares. Com exceção do grupo 3, os demais grupos apresentam praticamente a mesma média de aditivos entre todos os seus componentes.
 
 ```{r}
-colors = brewer.pal(7,"Set3")
-plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA, main = "Silhouette dos grupos utilizando o hclust")
+colors <- brewer.pal(7, 'Set3')
+plot(silhouette(cutree(hc, k=7), dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o hclust')
 ```
 
 O gráfico apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
@@ -149,130 +151,125 @@ Outro fator relevante que pode ser observado através desta visualização é o 
 ### Utilizando o K-means
 
 ```{r}
-licitantes2.scaled.kmeans = select(licitantes2, -nu_CPFCNPJ) %>% 
-  mutate_each(funs(scale))
-
-licitantes2.scaled.kmeans$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
-
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
-km <- kmeans(select(licitantes2.scaled.kmeans, 1:7), centers = 7, nstart = 10)
+km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
 
-autoplot(km, data = licitantes2.scaled.kmeans, size = 2, main = "Grupos obtidos utilizando o k-means") + 
-  labs(colour = "Grupos") 
+autoplot(km, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+  labs(colour = 'Grupos')
 
-licitantes2.scaled.kmeans$kmcluster = factor(km$cluster)
-licitantes2.long.kmeans = melt(licitantes2.scaled.kmeans, id.vars = c("nu_CPFCNPJ", "kmcluster"))
+licitantes.km <- licitantes.scaled %>%
+  mutate(cluster = km$cluster %>% as.factor)
+
+licitantes.km.long <- licitantes.km %>%
+  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
 
-``` {r}
-ggplot(licitantes2.long.kmeans, aes(x = variable, y = value, colour = variable)) + 
-  geom_boxplot() + 
-  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
-  facet_wrap(~ kmcluster) +
-  theme(axis.text.x=element_blank(), 
+```{r}
+ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
+  facet_wrap(~ cluster) +
+  theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
+  labs(title = 'Agrupamento de licitantes de merenda da Paraíba', x = '', y = '')
 ```
 
-```{r fig.width = 10, fig.height=10}
-p2 = ggplot(licitantes2.long.kmeans, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = kmcluster)) + 
-  geom_point(alpha = 0.2) + 
-  geom_line(alpha = .3) + 
-  facet_wrap(~ kmcluster, ncol = 2) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
-  labs(x= "", y = "")
+```{r}
+p2 <- ggplot(licitantes.km.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) +
+  geom_point(alpha = 0.2) +
+  geom_line(alpha = .3) +
+  facet_wrap(~ cluster, ncol = 2) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x= '', y = '')
 
 ggplotly(p2)
 ```
 
 ```{r}
-plot(silhouette(km$cluster, dist(select(licitantes2.scaled.kmeans, 1:7))), col=colors, border=NA, main = "Silhouette dos grupos utilizando o k-means")
+plot(silhouette(km$cluster, dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o k-means')
 ```
 
 
 ### Agrupamento com DBScan
 #### O algoritmo
-O DBScan (Ester et al. 1996) é um algoritmo de agrupamento que tem como principal diferença dos algoritmos utilizados anteriormente, o fato de que é possível obter pontos que não façam parte de nenhum grupo, considerados como ruído.  
-Nesse algoritmo, um ponto inicial é escolhido aleatoriamente e verifica-se se há um determinado número de pontos na vizinhança deste. Caso isso ocorra, há um grupo que contem o ponto inicial e todos os pontos da sua vizinhança.  
-Esse processo é repetido para todos os pontos do grupo recém encontrado com a finalidade de aumentar o número de elementos desse grupo. Quando não é mais possível encontrar pontos pertencentes a esse grupo, o algoritmo tenta criar novos grupos utilizando pontos que ainda não tenham sido agrupados.  
-É possível que alguns pontos não tenham o número de pontos mínimo necessário para se formar um grupo em sua vizinhança. Nesse caso, o ponto é considerado como um ponto de ruído e não pertence a nenhum grupo. Em nossa análise abaixo, os ruídos foram representados pelo grupo 1, embora não sejam formalmente um grupo.  
+O DBScan (Ester et al. 1996) é um algoritmo de agrupamento que tem como principal diferença dos algoritmos utilizados anteriormente, o fato de que é possível obter pontos que não façam parte de nenhum grupo, considerados como ruído.
+Nesse algoritmo, um ponto inicial é escolhido aleatoriamente e verifica-se se há um determinado número de pontos na vizinhança deste. Caso isso ocorra, há um grupo que contem o ponto inicial e todos os pontos da sua vizinhança.
+Esse processo é repetido para todos os pontos do grupo recém encontrado com a finalidade de aumentar o número de elementos desse grupo. Quando não é mais possível encontrar pontos pertencentes a esse grupo, o algoritmo tenta criar novos grupos utilizando pontos que ainda não tenham sido agrupados.
+É possível que alguns pontos não tenham o número de pontos mínimo necessário para se formar um grupo em sua vizinhança. Nesse caso, o ponto é considerado como um ponto de ruído e não pertence a nenhum grupo. Em nossa análise abaixo, os ruídos foram representados pelo grupo 1, embora não sejam formalmente um grupo.
 
 #### Obtendo agrupamento
 ```{r}
-library(dbscan)
+dbs <- dbscan(dists, eps = 1.1, minPts = 13)
+dbs$cluster <- dbs$cluster + 1
 
-dbs = dbscan(dists, eps = 1.1, minPts = 13)
-dbs$cluster = dbs$cluster + 1
+licitantes.dbs <- licitantes.scaled %>%
+  mutate(cluster = dbs$cluster %>% as.factor)
 
-licitantes2.scaled.dbscan = licitantes2.scaled
-licitantes2.scaled.dbscan$cluster = factor(dbs$cluster)
+licitantes.dbs.long <- licitantes.dbs %>%
+  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 
-pr.out = prcomp(select(licitantes2.scaled.dbscan, - c(cluster, nu_CPFCNPJ)), scale = FALSE) 
-
-autoplot(pr.out, data = licitantes2.scaled.dbscan, colour = 'cluster', scale = 0, main = "Clusters obtidos usando o algoritmo DBScan")
+pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
+autoplot(pr.out, data = licitantes.dbs, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo DBScan')
 ```
 
-A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Esse número de grupos é um pouco menor que o número que gerou os melhores resultados nos algoritmos anteriores. Uma análise mais detalhada sobre eles é realizada a seguir.  
+A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Esse número de grupos é um pouco menor que o número que gerou os melhores resultados nos algoritmos anteriores. Uma análise mais detalhada sobre eles é realizada a seguir.
 
 #### Análise dos resultados
 ```{r}
-licitantes2.long.dbscan = melt(licitantes2.scaled.dbscan, id.vars = c("nu_CPFCNPJ", "cluster"))
-
-ggplot(licitantes2.long.dbscan, aes(x = variable, y = value, colour = variable)) + 
-  geom_boxplot() + 
-  geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
+ggplot(licitantes.dbs.long, aes(x = variable, y = value, colour = variable)) +
+  geom_boxplot() +
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
   facet_wrap(~ cluster) +
-  theme(axis.text.x=element_blank(), 
+  theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "", colour = "Variável")
+  labs(title = 'Agrupamento de licitantes de merenda da Paraíba', x = '', y = '', colour = 'Variável')
 ```
 
 ```{r}
-p2 = ggplot(licitantes2.long.dbscan, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) + 
-  geom_point(alpha = 0.2) + 
-  geom_line(alpha = .3) + 
+p3 <- ggplot(licitantes.dbs.long, aes(x = variable, y = value, group = nu_CPFCNPJ, colour = cluster)) +
+  geom_point(alpha = 0.2) +
+  geom_line(alpha = .3) +
   facet_wrap(~ cluster, ncol = 2) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
-  labs(x= "", y = "")
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x= '', y = '')
 
-ggplotly(p2)
+ggplotly(p3)
 ```
 
-Os grupos gerados pelo algoritmo apresentam grande heterogeneidade internamente, o que pode indicar que a divisão realizada pelo algoritmo para encontrar os grupos não foi tão eficiente quando a realizada pelos algoritmos testados anteriormente.  
-A seguir, é possível observar a variância interna de cada atributo nos grupos utilizando os três algoritmos aqui testados.  
+Os grupos gerados pelo algoritmo apresentam grande heterogeneidade internamente, o que pode indicar que a divisão realizada pelo algoritmo para encontrar os grupos não foi tão eficiente quando a realizada pelos algoritmos testados anteriormente.
+A seguir, é possível observar a variância interna de cada atributo nos grupos utilizando os três algoritmos aqui testados.
 
 ```{r}
-licitantes.hcvariance = licitantes2 %>%
+hc.var <- licitantes.log %>%
   select(-nu_CPFCNPJ) %>%
-  mutate(cluster = licitantes2.scaled$cluster) %>%
+  mutate(cluster = licitantes.hc$cluster) %>%
   group_by(cluster) %>%
   summarise_each(funs(var)) %>%
+  select(-cluster) %>%
   summarise_each(funs(mean)) %>%
-  rename(metodo = cluster) %>%
   mutate(metodo = 'HC')
 
-licitantes.kmvariance = licitantes2 %>%
+km.var <- licitantes.log %>%
   select(-nu_CPFCNPJ) %>%
-  mutate(cluster = licitantes2.scaled.kmeans$kmcluster) %>%
+  mutate(cluster = licitantes.km$cluster) %>%
   group_by(cluster) %>%
   summarise_each(funs(var)) %>%
-  summarise_each(funs(mean))%>%
-  rename(metodo = cluster) %>%
+  select(-cluster) %>%
+  summarise_each(funs(mean)) %>%
   mutate(metodo = 'Kmeans')
 
-licitantes.dbsvariance = licitantes2 %>%
+dbs.var <- licitantes.log %>%
   select(-nu_CPFCNPJ) %>%
-  mutate(cluster = licitantes2.scaled.dbscan$cluster) %>%
+  mutate(cluster = licitantes.dbs$cluster) %>%
   filter(cluster != 1) %>%
   group_by(cluster) %>%
   summarise_each(funs(var)) %>%
+  select(-cluster) %>%
   summarise_each(funs(mean)) %>%
-  rename(metodo = cluster) %>%
   mutate(metodo = 'DBScan')
 
-licitantes.mvariance = rbind(licitantes.hcvariance,
-                            licitantes.kmvariance,
-                            licitantes.dbsvariance)
+m.var <- rbind(hc.var, km.var, dbs.var) %>%
+  select(metodo, participou:aditivos)
 
-kable(licitantes.mvariance, align = 'c')
+kable(m.var, align = 'c')
 ```
