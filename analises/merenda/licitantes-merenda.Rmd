@@ -139,7 +139,7 @@ Nota-se que no grupo 3, considerado o grupos dos licitantes que mais aditivam se
 
 ```{r}
 colors = brewer.pal(7,"Set3")
-plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA)
+plot(silhouette(cutree(hc, k = 7), dists), col=colors, border=NA, main = "Silhouette dos grupos utilizando o hclust")
 ```
 
 O gráfico apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
@@ -154,14 +154,11 @@ licitantes2.scaled.kmeans = select(licitantes2, -nu_CPFCNPJ) %>%
 
 licitantes2.scaled.kmeans$nu_CPFCNPJ = licitantes2$nu_CPFCNPJ
 
-toclust = select(licitantes2.scaled.kmeans, 1:7)
+set.seed(12346) # Garantir que o k-means gere o mesmo resultado
+km <- kmeans(select(licitantes2.scaled.kmeans, 1:7), centers = 7, nstart = 10)
 
-row.names(toclust) = licitantes2.scaled$nuCPFCNPJ
-dists = dist(toclust)
-
-km <- kmeans(toclust, centers = 7, nstart = 10)
-
-autoplot(km, data = licitantes2.scaled.kmeans, size = 2)
+autoplot(km, data = licitantes2.scaled.kmeans, size = 2, main = "Grupos obtidos utilizando o k-means") + 
+  labs(colour = "Grupos") 
 
 licitantes2.scaled.kmeans$kmcluster = factor(km$cluster)
 licitantes2.long.kmeans = melt(licitantes2.scaled.kmeans, id.vars = c("nu_CPFCNPJ", "kmcluster"))
@@ -189,7 +186,7 @@ ggplotly(p2)
 ```
 
 ```{r}
-plot(silhouette(km$cluster, dists), col=colors, border=NA)
+plot(silhouette(km$cluster, dist(select(licitantes2.scaled.kmeans, 1:7))), col=colors, border=NA, main = "Silhouette dos grupos utilizando o k-means")
 ```
 
 
