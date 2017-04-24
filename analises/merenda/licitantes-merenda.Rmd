@@ -212,11 +212,7 @@ pr.out = prcomp(select(licitantes2.scaled.dbscan, - c(cluster, nu_CPFCNPJ)), sca
 autoplot(pr.out, data = licitantes2.scaled.dbscan, colour = 'cluster', scale = 0, main = "Clusters obtidos usando o algoritmo DBScan")
 ```
 
-<<<<<<< HEAD
 A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Esse número de grupos é um pouco menor que o número que gerou os melhores resultados nos algoritmos anteriores. Uma análise mais detalhada sobre eles é realizada a seguir.  
-=======
-A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Uma análise mais detalhada sobre eles é realizada a seguir.  
->>>>>>> f4f36a7d8dd63939a8bc2b50aef50a2ed7696196
 
 #### Análise dos resultados
 ```{r}
