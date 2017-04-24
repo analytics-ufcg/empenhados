@@ -192,46 +192,41 @@ plot(silhouette(km$cluster, dists), col=colors, border=NA)
 ```
 
 
-### Utilizando o DBScan
+### Agrupamento com DBScan
+#### O algoritmo
+O DBScan (Ester et al. 1996) é um algoritmo de agrupamento que tem como principal diferença dos algoritmos utilizados anteriormente, o fato de que é possível obter pontos que não façam parte de nenhum grupo, considerados como ruído.  
+Nesse algoritmo, um ponto inicial é escolhido aleatoriamente e verifica-se se há um determinado número de pontos na vizinhança deste. Caso isso ocorra, há um grupo que contem o ponto inicial e todos os pontos da sua vizinhança.  
+Esse processo é repetido para todos os pontos do grupo recém encontrado com a finalidade de aumentar o número de elementos desse grupo. Quando não é mais possível encontrar pontos pertencentes a esse grupo, o algoritmo tenta criar novos grupos utilizando pontos que ainda não tenham sido agrupados.  
+É possível que alguns pontos não tenham o número de pontos mínimo necessário para se formar um grupo em sua vizinhança. Nesse caso, o ponto é considerado como um ponto de ruído e não pertence a nenhum grupo. Em nossa análise abaixo, os ruídos foram representados pelo grupo 1, embora não sejam formalmente um grupo.  
+
+#### Obtendo agrupamento
 ```{r}
 library(dbscan)
 
 dbs = dbscan(dists, eps = 1.1, minPts = 13)
+dbs$cluster = dbs$cluster + 1
+
 licitantes2.scaled.dbscan = licitantes2.scaled
 licitantes2.scaled.dbscan$cluster = factor(dbs$cluster)
 
-colors = brewer.pal(8,"Set2")
-hullplot(licitantes2.scaled[1:7], dbs, col = colors)
-```
-
-```{r}
 pr.out = prcomp(select(licitantes2.scaled.dbscan, - c(cluster, nu_CPFCNPJ)), scale = FALSE) 
-biplot(pr.out, scale = 0)
 
-autoplot(pr.out, label = TRUE, shape = FALSE, color = )
-
-autoplot(pr.out, label = TRUE, label.size = 3, shape = FALSE, 
-         loadings = TRUE, loadings.colour = 'blue',
-         loadings.label = TRUE, loadings.label.size = 3)
-
-ggplot(licitantes2.scaled[1:7], aes(color = cluster)) +
-  geom_point()
-
+autoplot(pr.out, data = licitantes2.scaled.dbscan, colour = 'cluster', scale = 0, main = "Clusters obtidos usando o algoritmo DBScan")
 ```
 
+A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Uma análise mais detalhada sobre eles é realizada a seguir.  
+
+#### Análise dos resultados
 ```{r}
 licitantes2.long.dbscan = melt(licitantes2.scaled.dbscan, id.vars = c("nu_CPFCNPJ", "cluster"))
-```
 
-
-``` {r}
 ggplot(licitantes2.long.dbscan, aes(x = variable, y = value, colour = variable)) + 
   geom_boxplot() + 
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) + 
   facet_wrap(~ cluster) +
   theme(axis.text.x=element_blank(), 
         axis.ticks.x=element_blank()) +
-  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "")
+  labs(title = "Agrupamento de licitantes de merenda da Paraíba", x = "", y = "", colour = "Variável")
 ```
 
 
@@ -248,9 +243,7 @@ ggplotly(p2)
 
 
 ```{r}
-dbs2 = dbs[dbs$cluster == 0]
-plot(silhouette(dbs2$cluster, dists), border = NA)
+colors = brewer.pal(5,"Set3")
+
+plot(silhouette(dbs$cluster, dists), border = NA, col = colors)
 ```
-
-
-
