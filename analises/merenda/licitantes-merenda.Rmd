@@ -94,7 +94,7 @@ licitantes.hc.long <- licitantes.hc %>%
 
 ```{r}
 pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
-autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo hcluster') +
+autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo hclust') +
   scale_color_brewer(palette='Set2') 
 ```
 
@@ -108,6 +108,8 @@ plot(silhouette(cutree(hc, k=7), dists), col = colors, border = NA, main = 'Silh
 ```
 
 ### Utilizando o K-means
+O k-means é um dos algoritmos mais usados para agrupamento. Para usá-lo é necessário definir a quantidade de grupos que devem ser formados como também os critérios para que elementos sejam agrupados. Nessa análise, utilizou-se 7 grupos e esse número foi baseado no dendograma gerado pelo hclust, de forma que os elementos sejam parecidos dentro de um mesmo grupo e diferentes entre grupos.
+
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
@@ -122,6 +124,8 @@ licitantes.km <- licitantes.scaled %>%
 licitantes.km.long <- licitantes.km %>%
   gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
+
+Observando o gráfico abaixo nota-se que os grupos estão mais adequadamente definidos no k-means, de forma que os elementos de um mesmo grupo são mais parecidos com elementos do próprio grupo do que com os de outro grupo. Na comparação com a largura média da silhouette do hclust, é perceptível uma melhora de 0.35 (hclust) para 0.42 (kmeans), o que é um indício que os grupos estão melhores definidos usando o k-means.
 
 ```{r}
 plot(silhouette(km$cluster, dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o k-means')
@@ -161,9 +165,10 @@ A partir da análise dos gráficos da silhueta e da adequação de cada técnica
 ## Análise de agrupamento 
 A seguir observamos os 7 grupos e suas características de acordo com as variáveis analisadas.
 
-```{r fig.width = 8, fig.height = 8}
+```{r fig.width = 10, fig.height = 10}
 ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
+  geom_hline(alpha = 0.3, yintercept = 0) + 
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
   facet_wrap(~ cluster, ncol = 3) +
   theme(axis.text.x=element_blank(),
@@ -172,26 +177,26 @@ ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   scale_color_brewer(palette='Dark2') 
 ```
 
-#### Grupo 1
-Em geral, os licitantes desse grupo tem um porcentagem de vitórias abaixo da média. Por conta disso o valor total ganho em contratos também é abaixo da média.
-
-#### Grupo 2
-Caracteriza os licitantes que participam de licitações com valor abaixo da média, mas que possuem alta porcentagem de vitórias com relação aos demais participantes e o valor do contrato é um pouco acima da média.
-
-#### Grupo 3
+#### Grupo 1 - Insaciáveis
 Grupo dos licitantes que possuem contratos com aditivos acima da média, em geral são licitantes que ganham acima da média e assima contratos com valor acima da média.
 
-#### Grupo 4
-Ao contrário do grupo 2, os licitantes desse grupo participam de licitações com valores pouco acima da média e também tem uma alta porcentagem de vitórias
+#### Grupo 2 - Gulosos
+Os integrantes desse grupo participam de muitas licitações em diferentes municípios. Em consequência disso, valor total das licitações é acima da média. Entretanto, o valor mediano mantém-se dentro do esperado.
 
-#### Grupo 5
+#### Grupo 3 - Saudáveis
 Esse grupo é o que apresenta as variáveis com valores mais próximos a média sem nenhuma variação que se sobressaia.
 
-#### Grupo 6
+#### Grupo 4 - Gourmet
 São licitantes que participam de licitações de alto valor mas que raramente ganham e quando ganham o valor de contrato é abaixo da média. Podem ser considerados os grandes perdedores da amostra analisada.
 
-#### Grupo 7
-Os integrantes desse grupo são ativos e participam de muitas licitações em diferentes municípios, as licitações possuem um valor total acima da média, mas um valor mediano dentro do esperado.
+#### Grupo 5 - Famintos
+Em geral, os licitantes desse grupo tem um porcentagem de vitórias abaixo da média. Por conta disso o valor total ganho em contratos também é abaixo da média.
+
+#### Grupo 6 - Fitness
+Os licitantes desse grupo participam de licitações com valores pouco acima da média e também tem uma alta porcentagem de vitórias.
+
+#### Grupo 7 - Em dieta
+Caracteriza os licitantes que participam de licitações com valor abaixo da média, mas que possuem alta porcentagem de vitórias com relação aos demais participantes e o valor do contrato é um pouco acima da média.
 
 ### Gráfico de coordenadas paralelas
 ```{r}
