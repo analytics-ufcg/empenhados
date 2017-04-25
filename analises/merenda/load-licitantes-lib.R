@@ -104,7 +104,7 @@ load_licitantes <- function() {
 
   licitantes <- licitantes %>%
     mutate(
-      aditivos = aditivos/ganhou,
+      aditivos = ifelse(is.nan(aditivos/ganhou), 0, aditivos/ganhou),
       ganhou = ganhou/participou) %>%
     filter(
       is.finite(ganhou),
