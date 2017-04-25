@@ -92,12 +92,21 @@ licitantes.hc.long <- licitantes.hc %>%
   gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
 
+
+```{r}
+pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
+autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo HClust') +
+  scale_color_brewer(palette='Set2') 
+```
+
+
 O gráfico abaixo apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
 
 Outro fator relevante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a existência de dois grupos grandes, que juntos comportam mais da metade das observações. Existem ainda dois grupos intermediários e mais 3 grupos pequenos, com menos de 50 licitantes em cada.
 
 ```{r}
-colors <- brewer.pal(7, 'Set3')
+
+colors <- brewer.pal(7, 'Set2')
 plot(silhouette(cutree(hc, k=7), dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o hclust')
 ```
 
@@ -107,6 +116,7 @@ set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
 
 autoplot(km, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+  scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
 
 licitantes.km <- licitantes.scaled %>%
@@ -137,7 +147,8 @@ licitantes.dbs.long <- licitantes.dbs %>%
   gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 
 pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
-autoplot(pr.out, data = licitantes.dbs, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo DBScan')
+autoplot(pr.out, data = licitantes.dbs, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo DBScan') +
+  scale_color_brewer(palette='Set2') 
 ```
 
 A utilização desse algoritmo possibilitou a descoberta de 4 grupos de licitantes. Esse número de grupos é um pouco menor que o número que gerou os melhores resultados nos algoritmos anteriores. Uma análise mais detalhada sobre eles é realizada a seguir.
@@ -150,14 +161,15 @@ A partir da análise dos gráficos da silhueta e da adequação de cada técnica
 ## Análise de agrupamento 
 A seguir observamos os 7 grupos e suas características de acordo com as variáveis analisadas.
 
-```{r}
+```{r fig.width = 8, fig.height = 8}
 ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
   geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
   facet_wrap(~ cluster, ncol = 3) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  labs(title = 'Agrupamento de licitantes de merenda da Paraíba', x = '', y = '') 
+  labs(title = 'Agrupamento de licitantes de merenda da Paraíba', x = '', y = '') +
+  scale_color_brewer(palette='Dark2') 
 ```
 
 #### Grupo 1
@@ -188,7 +200,8 @@ p1 <- ggplot(licitantes.km.long, aes(x = variable, y = value, group = nu_CPFCNPJ
   geom_line(alpha = .3) +
   facet_wrap(~ cluster, ncol = 2) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(x= '', y = '')
+  labs(x= '', y = '') +
+  scale_color_brewer(palette='Set2') 
 
 ggplotly(p1)
 ```
