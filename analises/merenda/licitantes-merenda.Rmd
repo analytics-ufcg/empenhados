@@ -111,6 +111,7 @@ plot(silhouette(cutree(hc, k=7), dists), col = colors, border = NA, main = 'Silh
 ```
 
 ### Utilizando o K-means
+O k-means é um dos algoritmos mais usados para agrupamento. Para usá-lo é necessário definir a quantidade de grupos que devem ser formados como também os critérios para que elementos sejam agrupados. Nessa análise, utilizou-se 7 grupos e esse número foi baseado no dendograma gerado pelo hclust, de forma que os elementos sejam parecidos dentro de um mesmo grupo e diferentes entre grupos.
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
@@ -126,6 +127,7 @@ licitantes.km.long <- licitantes.km %>%
   gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
 
+Observando o gráfico abaixo nota-se que os grupos estão mais adequadamente definidos no k-means, de forma que os elementos de um mesmo grupo são mais parecidos com elementos do próprio grupo do que com os de outro grupo. Na comparação com a largura média da silhouette do hclust, é perceptível uma melhora de 0.35 (hclust) para 0.42 (kmeans), o que é um indício que os grupos estão melhores definidos usando o k-means.
 ```{r}
 plot(silhouette(km$cluster, dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o k-means')
 ```
