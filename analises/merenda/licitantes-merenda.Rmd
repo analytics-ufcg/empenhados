@@ -92,20 +92,17 @@ licitantes.hc.long <- licitantes.hc %>%
   gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
 ```
 
-
 ```{r}
 pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
-autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo HClust') +
+autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Clusters obtidos usando o algoritmo hcluster') +
   scale_color_brewer(palette='Set2') 
 ```
-
 
 O gráfico abaixo apresenta a visualização da aplicação da técnica Silhouette que tem o objetivo de medir o quão parecidos são os componentes dentro de um grupo. O ideal é que todos os componentes tenham um valor Silhouette elevado, no entanto observa-se que alguns licitantes estão em grupos mas que possuem caratecrísticas diferentes do grupo. Uma das explicações seria que esses licitantes estão muito próximos a outros grupos, ou seja eles não se encaixam muito bem em nenhum dos grupos propostos.
 
 Outro fator relevante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a existência de dois grupos grandes, que juntos comportam mais da metade das observações. Existem ainda dois grupos intermediários e mais 3 grupos pequenos, com menos de 50 licitantes em cada.
 
 ```{r}
-
 colors <- brewer.pal(7, 'Set2')
 plot(silhouette(cutree(hc, k=7), dists), col = colors, border = NA, main = 'Silhouette dos grupos utilizando o hclust')
 ```
@@ -132,8 +129,11 @@ plot(silhouette(km$cluster, dists), col = colors, border = NA, main = 'Silhouett
 
 ### Utilizando o DBScan
 O DBScan (Ester et al. 1996) é um algoritmo de agrupamento que tem como principal diferença dos algoritmos utilizados anteriormente, o fato de que é possível obter pontos que não façam parte de nenhum grupo, considerados como ruído.
+
 Nesse algoritmo, um ponto inicial é escolhido aleatoriamente e verifica-se se há um determinado número de pontos na vizinhança deste. Caso isso ocorra, há um grupo que contem o ponto inicial e todos os pontos da sua vizinhança.
+
 Esse processo é repetido para todos os pontos do grupo recém encontrado com a finalidade de aumentar o número de elementos desse grupo. Quando não é mais possível encontrar pontos pertencentes a esse grupo, o algoritmo tenta criar novos grupos utilizando pontos que ainda não tenham sido agrupados.
+
 É possível que alguns pontos não tenham o número de pontos mínimo necessário para se formar um grupo em sua vizinhança. Nesse caso, o ponto é considerado como um ponto de ruído e não pertence a nenhum grupo. Em nossa análise abaixo, os ruídos foram representados pelo grupo 1, embora não sejam formalmente um grupo.
 
 ```{r}
@@ -199,7 +199,7 @@ p1 <- ggplot(licitantes.km.long, aes(x = variable, y = value, group = nu_CPFCNPJ
   geom_point(alpha = 0.2) +
   geom_line(alpha = .3) +
   facet_wrap(~ cluster, ncol = 2) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(x= '', y = '') +
   scale_color_brewer(palette='Set2') 
 
