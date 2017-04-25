@@ -35,8 +35,8 @@ source('load-licitantes-lib.R')
 theme_set(theme_bw())
 ```
 
-# Agrupamento de licitantes
-O objetivo inicial é traçar o perfil desses fornecedores através do agrupamento dos mesmos considerando características semelhantes.
+# Introdução
+Ao analisar as licitações de merenda na Paraíba, faz-se necessário entender o comportamento dos licitantes como aqueles que participam da licitação apresentando uma proposta a Administração Pública. Para isso o objetivo inicial desse relatório é traçar o perfil desses licitantes através do agrupamento dos mesmos considerando características semelhantes entre membros de um grupo e distintas entre grupos.
 
 ## Descrição da amostra
 Na amostra foram analisados 758 licitantes que fizeram pelo menos uma proposta em licitações de merenda no estado da Paraíba entre os anos de 2011 e 2015.
@@ -47,7 +47,7 @@ licitantes <- load_licitantes()
 
 A priori, consideraremos os seguintes critérios para o agrupamento:
 
-* Número de participações: Número de licitações nas quais o licitante fez proposta.
+* Número de participações (Participou): Número de licitações nas quais o licitante fez proposta.
 
 * Total: Valor em reais da soma de todas as licitações nas quais o licitante fez proposta.
 
@@ -55,13 +55,16 @@ A priori, consideraremos os seguintes critérios para o agrupamento:
 
 * Municípios: Número de municípios distintos onde o licitante fez pelo menos uma proposta.
 
-* Ganhou: Razão entre o número de participações e o número de vitórias(número de contratos do licitante com a Administração Pública).
+* Razão entre participações e vitórias (Ganhou): Razão entre o número de participações e o número de vitórias(número de contratos do licitante com a Administração Pública).
 
 * Total ganho: Valor em reais da soma de todos os contratos nos quais o licitante faz parte.
 
-* Total de aditivos: Total de aditivos que o licitante conseguiu adicionar ao contrato.
+* Aditivos: Razão entre o número de aditivos que o licitante adicionou aos seus contratos e o número de vitórias(contratos) que ele obteve.
 
-## Agrupamento
+Foram aplicadas técnicas de transformação e padronização nos dados a fim de obter os melhores resultados e visualizações possíveis.
+
+## Agrupamento utilizando o hclust
+O hclust é um método de análise de clusters que procura construir uma hierarquia de grupos. Nesse caso, a hierarquia é dita aglomerativa pois começa de baixo para cima (bottom up), ou seja, cada observação começa com seu próprio grupo e os pares de grupos começam a se juntar a medida que sobem na hierarquia.
 
 ```{r}
 licitantes.log <- licitantes %>%
@@ -73,10 +76,8 @@ licitantes.scaled <- licitantes.log %>%
 dists <- dist(select(licitantes.scaled, -nu_CPFCNPJ), method = 'euclidean')
 ```
 
-Foram aplicadas técnicas de padronização nos dados a fim de facilitar a visualização e análise dos mesmos.
-
 ### Número de grupos
-Observamos abaixo o dendograma com a divisão dos grupos de licitantes. A divisão foi feita em sete grupos com o objetivo de diminuir a heterogeneidade entre membros de um mesmo grupo e aumentar a heterogeneidade entre grupos diferentes.
+Observamos abaixo o dendograma com a divisão dos grupos de licitantes. A divisão foi feita em 7 grupos visando obter um corte que não apresentasse tanta heterogeneidade entre membros de um mesmo grupo. Ou seja, elementos de um mesmo grupo devem ser parecidos entre si e elementos de grupos distintos devem ser diferentes entre si.
 
 ```{r}
 hc <- hclust(dists, method = 'ward.D')
