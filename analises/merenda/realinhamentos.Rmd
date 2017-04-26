@@ -65,7 +65,7 @@ query <- sql('
   USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
 ')
 
-liquidacao <- tbl(sagres, query) %>%
+liquidacoes <- tbl(sagres, query) %>%
   collect()
 
 query <- sql('
@@ -80,73 +80,72 @@ pagamentos <- tbl(sagres, query) %>%
 ```
 
 ```{r contratos vs. empenhos}
-contrXemp <- merge(empenhos, contratos, by = c('tp_Licitacao', 'nu_Licitacao', 'cd_UGestora')) %>%
-  group_by(nu_Empenho) %>%
-  summarise(total = n(),
-            valor_contrato = sum(vl_TotalContrato),
-            valor_empenho = sum(vl_Empenho)) %>%
-  mutate(dif = valor_contrato - valor_empenho) %>%
-  mutate(log_contrato = log10(valor_contrato)) %>%
-  mutate(log_empenho = log10(valor_empenho))
+contratos.empenhos <- merge(
+  empenhos %>%
+    group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+    summarise(empenho = sum(vl_Empenho)),
+  contratos %>%
+    group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+    summarise(contrato = sum(vl_TotalContrato)),
+  all = TRUE)
 
-ggplot(aes(x=log_contrato, y=log_empenho), data = contrXemp) +
+contratos.empenhos[is.na(contratos.empenhos)] <- 0
+
+ggplot(aes(x=log(contrato+1), y=log(empenho+1)), data = contratos.empenhos) +
     geom_abline(slope=1, intercept=0, color='grey') +
     geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Valor do contrato versus valor do empenho',
-      x = 'Valor do Contrato',
-      y = 'Valor do Empenho') +
+      x = 'Valor do contrato',
+      y = 'Valor do empenho') +
     theme_minimal()
-
-
-empenhoSemLici <- anti_join(empenhos, licitacoes, by= c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
-liciSemEmpenho <- anti_join(licitacoes, empenhos, by= c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
 ```
 
 ```{r empenhos vs. liquidações}
-empXliquid <- merge(empenhos, liquidacoes, by = c('nu_Empenho', 'cd_UGestora', 'dt_Ano', 'cd_UnidOrcamentaria')) %>%
-  group_by(nu_Empenho) %>%
-  summarise(total = n(),
-            valor_empenho = sum(vl_Empenho),
-            valor_liquidacao = sum(vl_Liquidacao)) %>%
-  mutate(dif = valor_empenho - valor_liquidacao) %>%
-  mutate(log_liquidacao = log10(valor_liquidacao)) %>%
-  mutate(log_empenho = log10(valor_empenho))
+empenhos.liquidacoes <- merge(
+  empenhos %>%
+    select(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, empenho = vl_Empenho),
+  liquidacoes %>%
+    group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+    summarise(liquidacao = sum(vl_Liquidacao)),
+  all = TRUE)
 
+empenhos.liquidacoes[is.na(empenhos.liquidacoes)] <- 0
 
-ggplot(aes(x=log_empenho, y=log_liquidacao), data = empXliquid) +
+ggplot(aes(x=log(empenho+1), y=log(liquidacao+1)), data = empenhos.liquidacoes) +
     geom_abline(slope=1, intercept=0, color='grey') +
     geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Valor do empenho versus valor da liquidação',
-      x = 'Valor do Empenho',
-      y = 'Valor da Liquidação') +
+      x = 'Valor do empenho',
+      y = 'Valor da liquidação') +
     theme_minimal()
 ```
 
 ```{r liquidacões vs. pagamentos}
-liquidXpg <- merge(liquidacoes, pagamentos, by = c('nu_Empenho', 'cd_UGestora', 'dt_Ano', 'cd_UnidOrcamentaria')) %>%
-  group_by(nu_Empenho) %>%
-  summarize(total = n(),
-            valor_liquidacao = sum(vl_Liquidacao),
-            valor_pagamento = sum(vl_Pagamento)) %>%
-  mutate(dif = valor_liquidacao - valor_pagamento) %>%
-  mutate(log_liquidacao = log10(valor_liquidacao)) %>%
-  mutate(log_pagamento = log10(valor_pagamento))
+liquidacoes.pagamentos <- merge(
+  liquidacoes %>%
+    group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+    summarise(liquidacao = sum(vl_Liquidacao)),
+  pagamentos %>%
+    group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+    summarise(pagamento = sum(vl_Pagamento)),
+  all = TRUE)
 
+liquidacoes.pagamentos[is.na(liquidacoes.pagamentos)] <- 0
 
-ggplot(aes(x=log_liquidacao, y=log_pagamento), data = liquidXpg) +
+ggplot(aes(x=log(liquidacao+1), y=log(pagamento+1)), data = liquidacoes.pagamentos) +
     geom_abline(slope=1, intercept=0, color='grey') +
     geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Valor do empenho versus valor da liquidação',
-      x = 'Valor da Liquidação',
-      y = 'Valor do Pagamento') +
+      x = 'Valor da liquidação',
+      y = 'Valor do pagamento') +
     theme_minimal()
 ```
