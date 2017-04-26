@@ -1,0 +1,137 @@
+/*
+CSS Customizado
+*/
+
+@import url("//fonts.googleapis.com/css?family=Lato:400,300,400italic,700");
+
+.post-content {
+    text-align: justify
+}
+
+.post-container {
+    background-color: #fff
+}
+
+.container {
+    max-width: -webkit-calc(1200px - (30px * 2));
+    max-width: calc(1200px - (30px * 2));
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 30px;
+    padding-left: 30px
+}
+
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: -webkit-calc(1200px - (30px));
+        max-width: calc(1200px - (30px));
+        padding-right: 15px;
+        padding-left: 15px
+    }
+}
+
+.social-icons a:hover i.fa-github {
+    background-color: #24292e;
+    color: #fff
+}
+
+p + h1,
+p + h2,
+p + h3 {
+    margin: 1em 0 1em 0
+}
+
+.navbar-nav {
+    font-family: "Lato", Helvetica, Arial, sans-serif;
+}
+
+.navbar-main {
+    float: left
+}
+
+.navbar-links {
+    float: right
+}
+
+.page-header {
+    display: block;
+    background-color: #303030;
+    border-bottom: 1px solid #e8e8e8;
+    border-top: 3px solid #58c93a;
+    min-height: 20px;
+    position: relative;
+    padding: 0 0 5px 0;
+    margin-bottom: 50px
+}
+
+
+a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none
+}
+
+a:active,
+a:hover,
+a:focus {
+    color: #7ad462;
+    text-decoration: none
+}
+
+.page-header li {
+    padding: 20px;
+    margin: 0;
+    float: left;
+    display: inline-block;
+    -moz-transition: background 0.2s linear;
+    -o-transition: background 0.2s linear;
+    -webkit-transition: background 0.2s linear;
+    transition: background 0.2s linear
+}
+
+.page-header li:last-child {
+    padding-right: 0
+}
+
+.page-header a {
+    color: #fff;
+    text-decoration: none
+}
+
+.page-header li a {
+    color: #bfbfbf;
+    text-decoration: none
+}
+
+.page-header li:active a,
+.page-header li:hover a,
+.page-header li:focus a {
+    color: #7ad462;
+}
+
+@media screen and (max-width: 480px) {
+    .page-header {
+        text-align: center
+    }
+}
+
+table {
+    max-width: 90%;
+    margin: 30px auto
+}
+
+td, th {
+    padding: 0 1em;
+    border: 1px solid;  
+    text-transform: uppercase;
+    text-align: center !important; 
+}
+
+th {
+    background-color: #EBEBEB
+}
+
+table .fornecedores {
+
+}
+
