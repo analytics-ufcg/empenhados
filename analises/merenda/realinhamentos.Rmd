@@ -19,15 +19,11 @@ library(dplyr)
 library(rgdal)
 library(scales)
 
-
 library(knitr)
 ```
 
-
 ```{r instancia tabelas do bd}
-
 sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
-utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 
 query <- sql('
   SELECT *
@@ -52,215 +48,35 @@ contratos <- tbl(sagres, query) %>%
 
 query <- sql('
   SELECT e.*
-  FROM empenhos e, lm
-  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
-  e.cd_UGestora = lm.cd_UGestora AND
-  e.tp_Licitacao = lm.tp_Licitacao AND 
-  e.dt_Ano = 2015
+  FROM empenhos e
+  USE INDEX (licitacao)
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
 ')
 
-empenhos_2015 <- tbl(sagres, query) %>%
-  compute(name = 'em15') %>%
-  collect()
-
-query <- sql('
-  SELECT e.*
-  FROM empenhos e, lm
-  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
-  e.cd_UGestora = lm.cd_UGestora AND
-  e.tp_Licitacao = lm.tp_Licitacao AND 
-  e.dt_Ano = 2014
-')
-
-empenhos_2014 <- tbl(sagres, query) %>%
-  compute(name = 'em14') %>%
-  collect()
-
-query <- sql('
-  SELECT e.*
-  FROM empenhos e, lm
-  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
-  e.cd_UGestora = lm.cd_UGestora AND
-  e.tp_Licitacao = lm.tp_Licitacao AND 
-  e.dt_Ano = 2013
-')
-
-empenhos_2013 <- tbl(sagres, query) %>%
-  compute(name = 'em13') %>%
-  collect()
-
-query <- sql('
-  SELECT e.*
-  FROM empenhos e, lm
-  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
-  e.cd_UGestora = lm.cd_UGestora AND
-  e.tp_Licitacao = lm.tp_Licitacao AND 
-  e.dt_Ano = 2012
-')
-
-empenhos_2012 <- tbl(sagres, query) %>%
-  compute(name = 'em12') %>%
-  collect()
-
-query <- sql('
-  SELECT e.*
-  FROM empenhos e, lm
-  WHERE e.nu_Licitacao = lm.nu_Licitacao AND
-  e.cd_UGestora = lm.cd_UGestora AND
-  e.tp_Licitacao = lm.tp_Licitacao AND 
-  e.dt_Ano = 2011
-')
-
-empenhos_2011 <- tbl(sagres, query) %>%
-  compute(name = 'em11') %>%
-  collect()
-
-empenhos <- rbind(empenhos_2011, empenhos_2012, empenhos_2013, empenhos_2014, empenhos_2015)
-
-query <- sql('
-  SELECT l.*
-  FROM liquidacao l, em11 e
-  WHERE l.nu_Empenho = e.nu_Empenho AND
-        l.cd_UGestora = e.cd_UGestora AND
-        l.dt_Ano = e.dt_Ano AND
-        l.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-  ')
-
-liquidacao_2011 <- tbl(sagres, query) %>%
-  compute(name = 'liq11') %>%
+empenhos <- tbl(sagres, query) %>%
+  compute(name = 'em') %>%
   collect()
 
 query <- sql('
   SELECT l.*
-  FROM liquidacao l, em12 e
-  WHERE l.nu_Empenho = e.nu_Empenho AND
-        l.cd_UGestora = e.cd_UGestora AND
-        l.dt_Ano = e.dt_Ano AND
-        l.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-  ')
+  FROM liquidacao l
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
 
-liquidacao_2012 <- tbl(sagres, query) %>%
-  compute(name = 'liq12') %>%
-  collect()
-
-  
-query <- sql('
-  SELECT l.*
-  FROM liquidacao l, em13 e
-  WHERE l.nu_Empenho = e.nu_Empenho AND
-        l.cd_UGestora = e.cd_UGestora AND
-        l.dt_Ano = e.dt_Ano AND
-        l.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-  ')
-
-liquidacao_2013 <- tbl(sagres, query) %>%
-  compute(name = 'liq13') %>%
-  collect()
-
-
-query <- sql('
-  SELECT l.*
-  FROM liquidacao l, em14 e
-  WHERE l.nu_Empenho = e.nu_Empenho AND
-        l.cd_UGestora = e.cd_UGestora AND
-        l.dt_Ano = e.dt_Ano AND
-        l.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-  ')
-
-liquidacao_2014 <- tbl(sagres, query) %>%
-  compute(name = 'liq14') %>%
-  collect()
-
-
-query <- sql('
-  SELECT l.*
-  FROM liquidacao l, em15 e
-  WHERE l.nu_Empenho = e.nu_Empenho AND
-        l.cd_UGestora = e.cd_UGestora AND
-        l.dt_Ano = e.dt_Ano AND
-        l.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-  ')
-
-liquidacao_2015 <- tbl(sagres, query) %>%
-  compute(name = 'liq15') %>%
-  collect()
-
-
-liquidacoes <- rbind(liquidacao_2011, liquidacao_2012, liquidacao_2013, liquidacao_2014, liquidacao_2015)
-
-query <- sql('
-  SELECT p.*
-  FROM pagamentos p, em15 e
-  WHERE p.nu_Empenho = e.nu_Empenho AND
-        p.cd_UGestora = e.cd_UGestora AND
-        p.dt_Ano = e.dt_Ano AND
-        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-        
-  ')
-
-pagamentos_2015 <- tbl(sagres, query) %>%
-  compute(name = 'pg15') %>%
+liquidacao <- tbl(sagres, query) %>%
   collect()
 
 query <- sql('
   SELECT p.*
-  FROM pagamentos p, em14 e
-  WHERE p.nu_Empenho = e.nu_Empenho AND
-        p.cd_UGestora = e.cd_UGestora AND
-        p.dt_Ano = e.dt_Ano AND
-        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-        
-  ')
+  FROM pagamentos p
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
 
-pagamentos_2014 <- tbl(sagres, query) %>%
-  compute(name = 'pg14') %>%
+pagamentos <- tbl(sagres, query) %>%
   collect()
-
-
-query <- sql('
-  SELECT p.*
-  FROM pagamentos p, em13 e
-  WHERE p.nu_Empenho = e.nu_Empenho AND
-        p.cd_UGestora = e.cd_UGestora AND
-        p.dt_Ano = e.dt_Ano AND
-        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-        
-  ')
-
-pagamentos_2013 <- tbl(sagres, query) %>%
-  compute(name = 'pg13') %>%
-  collect()
-
-query <- sql('
-  SELECT p.*
-  FROM pagamentos p, em12 e
-  WHERE p.nu_Empenho = e.nu_Empenho AND
-        p.cd_UGestora = e.cd_UGestora AND
-        p.dt_Ano = e.dt_Ano AND
-        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-        
-  ')
-
-pagamentos_2012 <- tbl(sagres, query) %>%
-  compute(name = 'pg12') %>%
-  collect()
-
-query <- sql('
-  SELECT p.*
-  FROM pagamentos p, em11 e
-  WHERE p.nu_Empenho = e.nu_Empenho AND
-        p.cd_UGestora = e.cd_UGestora AND
-        p.dt_Ano = e.dt_Ano AND
-        p.cd_UnidOrcamentaria = e.cd_UnidOrcamentaria
-        
-  ')
-
-pagamentos_2011 <- tbl(sagres, query) %>%
-  compute(name = 'pg11') %>%
-  collect()
-
-
-pagamentos <- rbind(pagamentos_2011, pagamentos_2012, pagamentos_2013, pagamentos_2014, pagamentos_2015)
 ```
 
 ```{r contratos vs. empenhos}
@@ -287,12 +103,9 @@ ggplot(aes(x=log_contrato, y=log_empenho), data = contrXemp) +
 
 empenhoSemLici <- anti_join(empenhos, licitacoes, by= c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
 liciSemEmpenho <- anti_join(licitacoes, empenhos, by= c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
-
-
 ```
 
 ```{r empenhos vs. liquidações}
-
 empXliquid <- merge(empenhos, liquidacoes, by = c('nu_Empenho', 'cd_UGestora', 'dt_Ano', 'cd_UnidOrcamentaria')) %>%
   group_by(nu_Empenho) %>%
   summarise(total = n(),
@@ -316,7 +129,6 @@ ggplot(aes(x=log_empenho, y=log_liquidacao), data = empXliquid) +
 ```
 
 ```{r liquidacões vs. pagamentos}
-
 liquidXpg <- merge(liquidacoes, pagamentos, by = c('nu_Empenho', 'cd_UGestora', 'dt_Ano', 'cd_UnidOrcamentaria')) %>%
   group_by(nu_Empenho) %>%
   summarize(total = n(),
@@ -325,7 +137,7 @@ liquidXpg <- merge(liquidacoes, pagamentos, by = c('nu_Empenho', 'cd_UGestora', 
   mutate(dif = valor_liquidacao - valor_pagamento) %>%
   mutate(log_liquidacao = log10(valor_liquidacao)) %>%
   mutate(log_pagamento = log10(valor_pagamento))
-  
+
 
 ggplot(aes(x=log_liquidacao, y=log_pagamento), data = liquidXpg) +
     geom_abline(slope=1, intercept=0, color='grey') +
@@ -337,6 +149,4 @@ ggplot(aes(x=log_liquidacao, y=log_pagamento), data = liquidXpg) +
       x = 'Valor da Liquidação',
       y = 'Valor do Pagamento') +
     theme_minimal()
-
 ```
-
