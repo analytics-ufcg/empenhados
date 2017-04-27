@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
+library(dplyr)
+library(stringr)
 library(ggplot2)
 ```
 
@@ -22,4 +24,38 @@ library(ggplot2)
 dados_escolares <- read.csv("matriculas-municipios.csv")
 ```
 
+# Introdução
 
+Quanto cada município gasta por aluno em média? Interessados na resposta, o relatório a seguir busca identificar quais os municípios que mais gastam com merenda por aluno e como ocorre a distribuição de municípios no estado com relação a esse gasto por aluno. Os dados de quantos alunos estão matriculados em cada município foram obtidos do [site](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) Cidades do IBGE. Foram analisados todos os 223 municípios no estado da Paraíba, e os dados escolares correspondem ao ano de 2015.
+
+```{r}
+sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT *
+  FROM licitacao
+  WHERE de_Obs REGEXP "merenda"
+  AND dt_Ano = 2015
+')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+municipios = tbl(utils, 'municipio') %>%
+  collect()
+
+```
+
+```{r}
+get.municipio <- function(cd_UGestora) {
+  result <- data.frame(
+      cd_Municipio = str_sub(cd_UGestora, -3)) %>%
+    left_join(municipios)
+  return(result$de_Municipio)
+}
+
+licitacoes <- licitacoes %>%
+  mutate(de_Municipio = get.municipio(cd_UGestora))
+```
