@@ -4,7 +4,14 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.width = 6,
+  fig.height = 6
+)
 ```
 
 ```{r}
@@ -21,6 +28,7 @@ library(rgdal)
 library(scales)
 
 library(knitr)
+library(reshape2)
 ```
 
 ```{r instancia tabelas do bd}
@@ -245,5 +253,23 @@ licitacoes.alt %>%
   select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
   mutate_each(funs(log(.+1))) %>% 
   ggpairs()
+```
+
+
+```{r coordenadas paralelas}
+
+licitacoes.alt <- licitacoes.alt %>%
+  select(cd_UGestora, nu_Licitacao, tp_Licitacao, vl_Licitacao, vl_Empenho, vl_Contrato, vl_Liquidacao, vl_Pagamento)
+
+licitacoes.alt.long <- melt(licitacoes.alt, id.vars = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
+
+licitacoes.alt.long$value <- log(licitacoes.alt.long$value + 1)
+
+licitacoes.alt.long$id <- paste(licitacoes.alt.long$cd_UGestora, licitacoes.alt.long$nu_Licitacao, licitacoes.alt.long$tp_Licitacao, sep = "-")
+
+
+ggplot(data = subset.data.frame(licitacoes.alt.long, value > 0), aes(x = variable, y = value, group = id)) + 
+  geom_line(alpha = 0.3)
+
 ```
 
