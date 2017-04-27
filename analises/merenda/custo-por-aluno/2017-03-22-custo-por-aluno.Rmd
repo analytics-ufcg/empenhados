@@ -1,0 +1,25 @@
+---
+title: "Custo de alimentação por aluno"
+author: "Laboratório Analytics"
+date: "27 de abril de 2017"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+dados_escolares <- read.csv("matriculas-municipios.csv")
+```
+
+
