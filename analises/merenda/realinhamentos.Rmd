@@ -45,6 +45,17 @@ query <- sql('
 ')
 
 contratos <- tbl(sagres, query) %>%
+  compute(name = 'cm') %>%
+  collect()
+
+query <- sql('
+  SELECT a.*
+  FROM aditivos a
+  INNER JOIN cm
+  USING (cd_UGestora, nu_Contrato)
+')
+
+aditivos <- tbl(sagres, query) %>%
   collect()
 
 query <- sql('
@@ -67,6 +78,7 @@ query <- sql('
 ')
 
 liquidacoes <- tbl(sagres, query) %>%
+  compute(name = 'lqm') %>%
   collect()
 
 query <- sql('
@@ -77,6 +89,43 @@ query <- sql('
 ')
 
 pagamentos <- tbl(sagres, query) %>%
+  compute(name = 'pm') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM estorno e
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+estornos <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT el.*
+  FROM estornoliquidacao el
+  INNER JOIN lqm
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, nu_Liquidacao)
+')
+
+estornos.liquidacoes <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT ep.*
+  FROM estornopagamento ep
+  INNER JOIN pm
+  ON
+    ep.cd_UGestora = pm.cd_UGestora AND
+    ep.nu_EmpenhoEstorno = pm.nu_Empenho AND
+    ep.cd_UnidOrcamentaria = pm.cd_UnidOrcamentaria AND
+    ep.dt_Ano = pm.dt_Ano AND
+    ep.nu_ParcelaEstorno = pm.nu_Parcela AND
+    ep.tp_Lancamento = pm.tp_Lancamento
+')
+
+estornos.pagamentos <- tbl(sagres, query) %>%
   collect()
 ```
 
@@ -94,25 +143,55 @@ empenhos.alt <- pagamentos %>%
   summarise(vl_Pagamento = sum(vl_Pagamento, na.rm=T)) %>%
   merge(empenhos.alt, all=T)
 
+empenhos.alt <- estornos %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_Estorno = sum(vl_Estorno, na.rm=T)) %>%
+  merge(empenhos.alt, all=T)
+
+empenhos.alt <- estornos.liquidacoes %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_EstornoLiquidacao = sum(vl_EstornoLiquidacao, na.rm=T)) %>%
+  merge(empenhos.alt, all=T)
+
+empenhos.alt <- estornos.pagamentos %>%
+  group_by(cd_UGestora, nu_Empenho = nu_EmpenhoEstorno, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_EstornoPagamento = sum(vl_Estorno, na.rm=T)) %>%
+  merge(empenhos.alt, all=T)
+
 empenhos.alt[is.na(empenhos.alt)] <- 0
+
+empenhos.alt <- empenhos.alt %>%
+  mutate(
+    vl_Empenho = vl_Empenho - vl_Estorno,
+    vl_Liquidacao = vl_Liquidacao - vl_EstornoLiquidacao,
+    vl_Pagamento = vl_Pagamento - vl_EstornoPagamento) %>%
+  select(-vl_Estorno, -vl_EstornoLiquidacao, -vl_EstornoPagamento)
 ```
 
 ```{r}
 licitacoes.alt <- licitacoes %>%
   select(cd_UGestora, nu_Licitacao, tp_Licitacao, vl_Licitacao)
 
-licitacoes.alt <- contratos %>%
+licitacoes.alt <- aditivos %>%
+  group_by(cd_UGestora, nu_Contrato) %>%
+  summarise(vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
+  merge(contratos, all=T) %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise(vl_Contrato = sum(vl_TotalContrato, na.rm=T)) %>%
+  summarise(
+    vl_Contrato = sum(vl_TotalContrato, na.rm=T),
+    vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
   merge(licitacoes.alt, all=T)
 
 licitacoes.alt <- empenhos.alt %>%
-  select(-nu_Empenho, -cd_UnidOrcamentaria, -dt_Ano) %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise_each(funs(sum(., na.rm=T))) %>%
+  summarise_each(funs(sum(., na.rm=T)), vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
   merge(licitacoes.alt, all=T)
 
 licitacoes.alt[is.na(licitacoes.alt)] <- 0
+
+licitacoes.alt <- licitacoes.alt %>%
+  mutate(vl_Contrato = vl_Contrato + vl_Aditivo) %>%
+  select(-vl_Aditivo)
 ```
 
 ```{r contratos vs. empenhos}
