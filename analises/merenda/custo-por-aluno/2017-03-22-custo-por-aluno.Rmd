@@ -18,10 +18,13 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(stringr)
 library(ggplot2)
+library(dplyr)
+
+source('load-matriculas-lib.R')
 ```
 
 ```{r}
-dados_escolares <- read.csv("matriculas-municipios.csv")
+dados_escolares <- load_dados_escolares()
 ```
 
 # Introdução
