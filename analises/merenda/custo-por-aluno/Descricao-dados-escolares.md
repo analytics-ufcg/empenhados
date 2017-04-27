@@ -17,22 +17,20 @@ Cada observação na tabela corresponde a um município no estado da Paraíba to
 *Todos os dados se referem a escolas públicas municipais.*
 
 * cidade - Nome da cidade correspondente aos dados escolares.
+* codcidade - Código da cidade utilizado pelo IBGE
 * ano - Ano correspondente aos dados escolares.
 
 * docfund - Número de docentes no ensino fundamental.
 * docmed - Número de docentes no ensino médio.
 * docpre - Número de docentes no ensino pré-escolar.
+* doctotal - Número total de docentes.
 
 * escfund - Número de escolas no ensino fundamental.
 * escmed - Número de escolas no ensino médio.
 * escpre - Número de escolas no ensino pré-escolar.
+* esctotal - Número total de escolas.
 
 * matrifund - Número de matrículas no ensino fundamental.
 * matrimed - Número de matrículas no ensino médio.
 * matripre - Número de matrículas no ensino pré-escolar.
-
-* doctotal - Número total de docentes.
-* esctotal - Número total de escolas.
 * matritotal - Número total de matrículas.
-
-* codcidade - Código da cidade utilizado pelo IBGE
