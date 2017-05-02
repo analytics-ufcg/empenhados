@@ -85,31 +85,29 @@ get.municipio <- function(cd_UGestora) {
     left_join(municipios)
   return(result$de_Municipio)
 }
+```
 
 ```{r}
-gasto.municipios <- pagamentos %>%
+gasto_municipios <- pagamentos %>%
   select(cd_UGestora, vl_Pagamento) %>%
   group_by(cd_UGestora) %>%
-  summarise(total = sum(vl_Pagamento)) %>%
-  mutate(de_Municipio = get.municipio(cd_UGestora))
-
-valores_por_aluno <- licitacoes %>%
-  group_by(de_Municipio) %>%
-  summarise(Total_Licitacoes = sum(vl_Licitacao)) %>%
+  summarise(Total_Pagamentos = sum(vl_Pagamento)) %>%
+  mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
   right_join(dados_escolares, by = c('de_Municipio' = 'cidade')) %>%
-  mutate(Valor_Aluno = round(Total_Licitacoes / matritotal, 2)) %>%
-  select(c(de_Municipio, Total_Licitacoes, Valor_Aluno))
+  mutate(Valor_Aluno = round(Total_Pagamentos / matritotal, 2)) %>%
+  select(c(de_Municipio, Total_Pagamentos, Valor_Aluno))
 
-valores_por_aluno$Valor_Aluno_Lvl <- cut(valores_por_aluno$Valor_Aluno, 
-                                              breaks = c(0, 150, 300, 450, 600, 750, 2000),
-                                              labels = c('0 a 149', '150 a 299', '300 a 449', '450 a 599', '600 a 749', 'Mais de 750'),
+gasto_municipios$Valor_Aluno_Lvl <- cut(gasto_municipios$Valor_Aluno, 
+                                              breaks = c(0, 50, 100, 150, 200, 250, 500),
+                                              labels = c('0 a 49', '50 a 99', '100 a 149', '150 a 199', '200 a 249', '250 ou mais'),
                                               include.lowest = TRUE,
                                               ordered_result = TRUE)
 
 ```
 
+## Distribuição do valor gasto em merenda por aluno
 ```{r}
-plot_ly(data = valores_por_aluno) %>%
+plot_ly(data = gasto_municipios) %>%
   add_histogram(x = ~Valor_Aluno) %>%
   layout(
     title = 'Distribuição do valor por aluno',
@@ -120,10 +118,12 @@ plot_ly(data = valores_por_aluno) %>%
 
 
 ```{r}
+#Está fora de ordem
+#gasto_municipios tem 224 observações, o máximo seria 223
 mapa_paraiba <- readOGR("./mapa/Municipios.shp")
 
 mapa_paraiba@data <- mapa_paraiba@data %>%
-  left_join(valores_por_aluno, by = c('Nome_Munic' = 'de_Municipio'))
+  left_join(gasto_municipios, by = c('Nome_Munic' = 'de_Municipio'))
 
 colors <- colorFactor('OrRd', mapa_paraiba@data$Valor_Aluno_Lvl)
 
@@ -140,19 +140,36 @@ leaflet(data = mapa_paraiba) %>%
             title = "Custo médio por aluno no ano 2015</br>(Em Reais)</span>",
             opacity = 1
   )
+
 ```
 
+## Os municípios que mais gastaram no período
 ```{r}
-valores_extremos <- valores_por_aluno %>% 
-  filter(Valor_Aluno > 750) %>%
+valores_grandes <- gasto_municipios %>% 
+  filter(Valor_Aluno >= quantile(gasto_municipios$Valor_Aluno, .9, na.rm = TRUE)) %>%
   arrange(desc(Valor_Aluno)) %>%
   mutate(de_Municipio = factor(de_Municipio, levels = de_Municipio))
 
-plot_ly(data = valores_extremos) %>%
+plot_ly(data = valores_grandes) %>%
   add_bars(x = ~de_Municipio, y = ~Valor_Aluno) %>%
-  layout(title = 'Municípios com custo por aluno acima de 750 Reais',
+  layout(title = 'Os municípios que mais gastaram por aluno',
          xaxis = list(title = 'Município'),
-         yaxis = list(title = 'Custo por Aluno', fixedrange = TRUE))
+         yaxis = list(title = 'Custo por Aluno (Em Reais)', fixedrange = TRUE))
 ```
+
+## Os municípios que menos gastaram no período
+```{r}
+valores_pequenos <- gasto_municipios %>% 
+  filter(Valor_Aluno <= quantile(gasto_municipios$Valor_Aluno, .1, na.rm = TRUE)) %>%
+  arrange(Valor_Aluno) %>%
+  mutate(de_Municipio = factor(de_Municipio, levels = de_Municipio))
+
+plot_ly(data = valores_pequenos) %>%
+  add_bars(x = ~de_Municipio, y = ~Valor_Aluno) %>%
+  layout(title = 'Os municípios que menos gastaram por aluno',
+         xaxis = list(title = 'Município'),
+         yaxis = list(title = 'Custo por Aluno (Em Reais)', fixedrange = TRUE))
+```
+
 
 
