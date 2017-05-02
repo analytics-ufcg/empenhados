@@ -1,34 +1,27 @@
 ---
-title: "Realinhamento de Preços"
+title: 'Realinhamento de Preços'
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
+options(scipen = 999)
+
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
-  fig.width = 6,
-  fig.height = 6
-)
+  fig.height = 8,
+  fig.width = 8)
 ```
 
 ```{r}
-library(ggthemes)
-library(corrplot)
 library(ggplot2)
+library(scales)
 library(GGally)
 
 library(tidyr)
-library(plyr)
 library(dplyr)
-
-library(rgdal)
-library(scales)
-
-library(knitr)
-library(reshape2)
 ```
 
 ```{r instancia tabelas do bd}
@@ -138,49 +131,46 @@ estornos.pagamentos <- tbl(sagres, query) %>%
 ```
 
 ```{r}
-empenhos.alt <- empenhos %>%
+empenhos.full <- empenhos %>%
   select(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, vl_Empenho, nu_Licitacao, tp_Licitacao)
 
-empenhos.alt <- liquidacoes %>%
+empenhos.full <- liquidacoes %>%
   group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
   summarise(vl_Liquidacao = sum(vl_Liquidacao, na.rm=T)) %>%
-  merge(empenhos.alt, all=T)
+  merge(empenhos.full, all=T)
 
-empenhos.alt <- pagamentos %>%
+empenhos.full <- pagamentos %>%
   group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
   summarise(vl_Pagamento = sum(vl_Pagamento, na.rm=T)) %>%
-  merge(empenhos.alt, all=T)
+  merge(empenhos.full, all=T)
 
-empenhos.alt <- estornos %>%
+empenhos.full <- estornos %>%
   group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
   summarise(vl_Estorno = sum(vl_Estorno, na.rm=T)) %>%
-  merge(empenhos.alt, all=T)
+  merge(empenhos.full, all=T)
 
-empenhos.alt <- estornos.liquidacoes %>%
+empenhos.full <- estornos.liquidacoes %>%
   group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
   summarise(vl_EstornoLiquidacao = sum(vl_EstornoLiquidacao, na.rm=T)) %>%
-  merge(empenhos.alt, all=T)
+  merge(empenhos.full, all=T)
 
-empenhos.alt <- estornos.pagamentos %>%
+empenhos.full <- estornos.pagamentos %>%
   group_by(cd_UGestora, nu_Empenho = nu_EmpenhoEstorno, cd_UnidOrcamentaria, dt_Ano) %>%
   summarise(vl_EstornoPagamento = sum(vl_Estorno, na.rm=T)) %>%
-  merge(empenhos.alt, all=T)
+  merge(empenhos.full, all=T)
 
-empenhos.alt[is.na(empenhos.alt)] <- 0
+empenhos.full <- empenhos.full %>%
+  select(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, nu_Licitacao, tp_Licitacao,
+         vl_Empenho, vl_Estorno, vl_Liquidacao, vl_EstornoLiquidacao, vl_Pagamento, vl_EstornoPagamento)
 
-empenhos.alt <- empenhos.alt %>%
-  mutate(
-    vl_Empenho = vl_Empenho - vl_Estorno,
-    vl_Liquidacao = vl_Liquidacao - vl_EstornoLiquidacao,
-    vl_Pagamento = vl_Pagamento - vl_EstornoPagamento) %>%
-  select(-vl_Estorno, -vl_EstornoLiquidacao, -vl_EstornoPagamento)
+empenhos.full[is.na(empenhos.full)] <- 0
 ```
 
 ```{r}
-licitacoes.alt <- licitacoes %>%
+licitacoes.full <- licitacoes %>%
   select(cd_UGestora, nu_Licitacao, tp_Licitacao, vl_Licitacao)
 
-licitacoes.alt <- aditivos %>%
+licitacoes.full <- aditivos %>%
   group_by(cd_UGestora, nu_Contrato) %>%
   summarise(vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
   merge(contratos, all=T) %>%
@@ -188,64 +178,81 @@ licitacoes.alt <- aditivos %>%
   summarise(
     vl_Contrato = sum(vl_TotalContrato, na.rm=T),
     vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
-  merge(licitacoes.alt, all=T)
+  merge(licitacoes.full, all=T)
 
-licitacoes.alt <- empenhos.alt %>%
+licitacoes.full <- empenhos.full %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise_each(funs(sum(., na.rm=T)), vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
-  merge(licitacoes.alt, all=T)
+  summarise_each(funs(sum(., na.rm=T)), -nu_Empenho, -cd_UnidOrcamentaria, -dt_Ano) %>%
+  merge(licitacoes.full, all=T)
 
-licitacoes.alt[is.na(licitacoes.alt)] <- 0
+licitacoes.full <- licitacoes.full %>%
+  select(cd_UGestora, nu_Licitacao, tp_Licitacao,
+         vl_Licitacao, vl_Empenho, vl_Estorno, vl_Contrato, vl_Aditivo,
+         vl_Liquidacao, vl_EstornoLiquidacao, vl_Pagamento, vl_EstornoPagamento)
 
-licitacoes.alt <- licitacoes.alt %>%
-  mutate(vl_Contrato = vl_Contrato + vl_Aditivo) %>%
-  select(-vl_Aditivo)
+licitacoes.full[is.na(licitacoes.full)] <- 0
+```
+
+```{r}
+licitacoes.alt <- licitacoes.full %>%
+  mutate(
+    vl_Contrato = vl_Contrato + vl_Aditivo,
+    vl_Empenho = vl_Empenho - vl_Estorno,
+    vl_Liquidacao = vl_Liquidacao - vl_EstornoLiquidacao,
+    vl_Pagamento = vl_Pagamento - vl_EstornoPagamento) %>%
+  select(-vl_Aditivo, -vl_Estorno, -vl_EstornoLiquidacao, -vl_EstornoPagamento)
+```
+
+```{r licitacao vs. contratos}
+ggplot(aes(x=log(vl_Licitacao+1), y=log(vl_Contrato+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    title = 'Valor da licitação versus valor do contrato',
+    x = 'Valor da licitação',
+    y = 'Valor do contrato') +
+  theme_minimal()
 ```
 
 ```{r contratos vs. empenhos}
 ggplot(aes(x=log(vl_Contrato+1), y=log(vl_Empenho+1)), data = licitacoes.alt) +
-    geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point() +
-    scale_x_continuous(breaks=pretty_breaks(10)) +
-    scale_y_continuous(breaks=pretty_breaks(10)) +
-    labs(
-      title = 'Valor do contrato versus valor do empenho',
-      x = 'Valor do contrato',
-      y = 'Valor do empenho') +
-    theme_minimal()
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    title = 'Valor do contrato versus valor do empenho',
+    x = 'Valor do contrato',
+    y = 'Valor do empenho') +
+  theme_minimal()
 ```
 
 ```{r empenhos vs. liquidações}
-ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Liquidacao+1)), data = empenhos.alt) +
-    geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point() +
-    scale_x_continuous(breaks=pretty_breaks(10)) +
-    scale_y_continuous(breaks=pretty_breaks(10)) +
-    labs(
-      title = 'Valor do empenho versus valor da liquidação',
-      x = 'Valor do empenho',
-      y = 'Valor da liquidação') +
-    theme_minimal()
+ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Liquidacao+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    title = 'Valor do empenho versus valor da liquidação',
+    x = 'Valor do empenho',
+    y = 'Valor da liquidação') +
+  theme_minimal()
 ```
 
 ```{r liquidacões vs. pagamentos}
-ggplot(aes(x=log(vl_Liquidacao+1), y=log(vl_Pagamento+1)), data = empenhos.alt) +
-    geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point() +
-    scale_x_continuous(breaks=pretty_breaks(10)) +
-    scale_y_continuous(breaks=pretty_breaks(10)) +
-    labs(
-      title = 'Valor do empenho versus valor da liquidação',
-      x = 'Valor da liquidação',
-      y = 'Valor do pagamento') +
-    theme_minimal()
-```
-
-```{r}
-empenhos.alt %>%
-  select(vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
-  mutate_each(funs(log(.+1))) %>% 
-  ggpairs()
+ggplot(aes(x=log(vl_Liquidacao+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    title = 'Valor da liquidação versus valor do pagamento',
+    x = 'Valor da liquidação',
+    y = 'Valor do pagamento') +
+  theme_minimal()
 ```
 
 ```{r}
@@ -255,21 +262,17 @@ licitacoes.alt %>%
   ggpairs()
 ```
 
-
 ```{r coordenadas paralelas}
+licitacoes.alt.long <- licitacoes.alt %>%
+  select(vl_Licitacao, vl_Empenho, vl_Contrato, vl_Liquidacao, vl_Pagamento) %>%
+  mutate(id = 1:nrow(licitacoes.alt)) %>%
+  gather('atributo', 'valor', -id, factor_key = T) %>%
+  mutate(valor = log(valor+1)) %>%
+  group_by(id) %>%
+  filter(all(valor > 0))
 
-licitacoes.alt <- licitacoes.alt %>%
-  select(cd_UGestora, nu_Licitacao, tp_Licitacao, vl_Licitacao, vl_Empenho, vl_Contrato, vl_Liquidacao, vl_Pagamento)
-
-licitacoes.alt.long <- melt(licitacoes.alt, id.vars = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
-
-licitacoes.alt.long$value <- log(licitacoes.alt.long$value + 1)
-
-licitacoes.alt.long$id <- paste(licitacoes.alt.long$cd_UGestora, licitacoes.alt.long$nu_Licitacao, licitacoes.alt.long$tp_Licitacao, sep = "-")
-
-
-ggplot(data = subset.data.frame(licitacoes.alt.long, value > 0), aes(x = variable, y = value, group = id)) + 
-  geom_line(alpha = 0.3)
-
+ggplot(aes(x=atributo, y=valor, group=id, color=id), data = licitacoes.alt.long) + 
+  geom_line(alpha = 0.3) +
+  guides(color = F) +
+  theme_minimal()
 ```
-
