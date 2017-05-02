@@ -15,9 +15,14 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
-library(dplyr)
 library(stringr)
-library(ggplot2)
+library(maps)
+library(ggmap)
+library(rgdal)
+library(htmltools)
+library(leaflet)
+library(plotly)
+
 library(dplyr)
 
 source('load-matriculas-lib.R')
@@ -29,11 +34,11 @@ dados_escolares <- load_dados_escolares()
 
 # Introdução
 
-Quanto cada município gasta por aluno em média? Interessados na resposta, o relatório a seguir busca identificar quais os municípios que mais gastam com merenda por aluno e como ocorre a distribuição de municípios no estado com relação a esse gasto por aluno. Os dados de quantos alunos estão matriculados em cada município foram obtidos do [site](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) Cidades do IBGE. Foram analisados todos os 223 municípios no estado da Paraíba, e os dados escolares correspondem ao ano de 2015.
+Quanto cada município gasta por aluno em média? Interessados na resposta, o relatório a seguir busca identificar quais os municípios que mais gastam com merenda por aluno e como ocorre a distribuição de municípios no estado com relação a esse gasto por aluno. Os dados relacionados à quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. Foram analisados 116 municípios do estado da Paraíba que lançaram licitação de merenda no ano 2015.
 
 ```{r}
-sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
-utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+sagres <- src_mysql('sagres', group='ministerio-publico', password=NULL)
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
 query <- sql('
   SELECT *
@@ -46,7 +51,7 @@ licitacoes <- tbl(sagres, query) %>%
   compute(name = 'lm') %>%
   collect()
 
-municipios = tbl(utils, 'municipio') %>%
+municipios <- tbl(utils, 'municipio') %>%
   collect()
 
 ```
@@ -61,4 +66,67 @@ get.municipio <- function(cd_UGestora) {
 
 licitacoes <- licitacoes %>%
   mutate(de_Municipio = get.municipio(cd_UGestora))
+
+valores_por_aluno <- licitacoes %>%
+  group_by(de_Municipio) %>%
+  summarise(Total_Licitacoes = sum(vl_Licitacao)) %>%
+  right_join(dados_escolares, by = c('de_Municipio' = 'cidade')) %>%
+  mutate(Valor_Aluno = round(Total_Licitacoes / matritotal, 2)) %>%
+  select(c(de_Municipio, Total_Licitacoes, Valor_Aluno))
+
+valores_por_aluno$Valor_Aluno_Lvl <- cut(valores_por_aluno$Valor_Aluno, 
+                                              breaks = c(0, 150, 300, 450, 600, 750, 2000),
+                                              labels = c('0 a 149', '150 a 299', '300 a 449', '450 a 599', '600 a 749', 'Mais de 750'),
+                                              include.lowest = TRUE,
+                                              ordered_result = TRUE)
+
 ```
+
+```{r}
+plot_ly(data = valores_por_aluno) %>%
+  add_histogram(x = ~Valor_Aluno) %>%
+  layout(
+    title = 'Distribuição do valor por aluno',
+    xaxis = list(title = 'Valor por Aluno', dtick = 100),
+    yaxis = list(title = 'Total de Ocorrências', fixedrange = TRUE)
+  )
+```
+
+
+```{r}
+mapa_paraiba <- readOGR("./mapa/Municipios.shp")
+
+mapa_paraiba@data <- mapa_paraiba@data %>%
+  left_join(valores_por_aluno, by = c('Nome_Munic' = 'de_Municipio'))
+
+colors <- colorFactor('OrRd', mapa_paraiba@data$Valor_Aluno_Lvl)
+
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5, 
+              weight = 1, 
+              fillColor = colors(mapa_paraiba@data$Valor_Aluno_Lvl),
+              color = 'black', 
+              label = mapa_paraiba@data$Nome_Munic,
+              popup = paste('Município: ', mapa_paraiba@data$Nome_Munic, '</br>Custo anual por aluno: R$ ', mapa_paraiba@data$Valor_Aluno),
+              fillOpacity = 1) %>%
+  addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Valor_Aluno_Lvl,
+            title = "Custo médio por aluno no ano 2015</br>(Em Reais)</span>",
+            opacity = 1
+  )
+```
+
+```{r}
+valores_extremos <- valores_por_aluno %>% 
+  filter(Valor_Aluno > 750) %>%
+  arrange(desc(Valor_Aluno)) %>%
+  mutate(de_Municipio = factor(de_Municipio, levels = de_Municipio))
+
+plot_ly(data = valores_extremos) %>%
+  add_bars(x = ~de_Municipio, y = ~Valor_Aluno) %>%
+  layout(title = 'Municípios com custo por aluno acima de 750 Reais',
+         xaxis = list(title = 'Município'),
+         yaxis = list(title = 'Custo por Aluno', fixedrange = TRUE))
+```
+
+
