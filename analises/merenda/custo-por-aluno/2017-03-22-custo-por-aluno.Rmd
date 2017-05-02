@@ -54,6 +54,28 @@ licitacoes <- tbl(sagres, query) %>%
 municipios <- tbl(utils, 'municipio') %>%
   collect()
 
+query <- sql('
+  SELECT e.*
+  FROM empenhos e
+  USE INDEX (licitacao)
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+empenhos <- tbl(sagres, query) %>%
+  compute(name = 'em') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+pagamentos <- tbl(sagres, query) %>%
+  collect()
+
 ```
 
 ```{r}
@@ -64,7 +86,11 @@ get.municipio <- function(cd_UGestora) {
   return(result$de_Municipio)
 }
 
-licitacoes <- licitacoes %>%
+```{r}
+gasto.municipios <- pagamentos %>%
+  select(cd_UGestora, vl_Pagamento) %>%
+  group_by(cd_UGestora) %>%
+  summarise(total = sum(vl_Pagamento)) %>%
   mutate(de_Municipio = get.municipio(cd_UGestora))
 
 valores_por_aluno <- licitacoes %>%
