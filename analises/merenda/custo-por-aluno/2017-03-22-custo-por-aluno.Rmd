@@ -126,6 +126,11 @@ Abaixo podemos observar dentre todos os municípios da Paraíba quanto cada um g
 ```{r results = 'hide'}
 mapa_paraiba <- readOGR("./mapa/Municipios.shp")
 
+# O munícipio de Campo de Santana mudou de nome e agora se chama Tacima
+levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
+
 mapa_paraiba@data <- mapa_paraiba@data %>%
   left_join(gasto_municipios, by = c('Nome_Munic' = 'de_Municipio'))
 
