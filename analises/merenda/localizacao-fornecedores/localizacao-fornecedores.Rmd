@@ -1,0 +1,48 @@
+---
+title: "Distribuição Geográfica dos Licitantes"
+author: "Laboratório Analytics"
+date: "4 de maio de 2017"
+output: html_document
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
+```
+
+```{r}
+library(methods)
+library(dplyr)
+library(leaflet)
+source('../licitantes-merenda/load-licitantes-lib.R')
+```
+
+```{r}
+dados_licitantes <- read.csv("cnpjcepOk.csv", stringsAsFactors = FALSE)
+
+licitantes <- load_licitantes()
+```
+
+```{r}
+dados_licitantes.unique <- dados_licitantes %>%
+  distinct(nrcnpj, CEP)
+
+localizacao_licitantes <- licitantes %>%
+  left_join(dados_licitantes.unique, by = c('nu_CPFCNPJ' = 'nrcnpj'))
+```
+
+# Distribuição geográfica dos licitantes de merenda
+
+```{r}
+m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>% addTiles()
+m
+```
+
+
+
+
+
