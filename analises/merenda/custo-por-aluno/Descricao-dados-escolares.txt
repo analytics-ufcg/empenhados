@@ -1,20 +1,20 @@
-# Descrição dos dados escolares
+-Descrição dos dados escolares
 
 Este documento apresenta uma descrição dos dados escolares utilizados na análise do custo por aluno de merenda na Paraíba.
 
-### Fonte
+--Fonte
 
-Os dados foram obtidos através do [site](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) Cidades do IBGE. Foram obtidos 223 arquivos no formato csv, cada arquivo corresponde aos dados de um município da Paraíba.
+Os dados foram obtidos através do site Cidades do IBGE (http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba). Foram obtidos 223 arquivos no formato csv, cada arquivo corresponde aos dados de um município da Paraíba.
 
-### Manipulação
+---Manipulação
 
 Uma função foi aplicada aos dados(todos os arquivos) para extrair as variáveis necessárias para a análise e as informações forams concatenadas em uma única tabela(no formato csv). A função utilizada encontra-se no repositório do github do projeto.
 
-### Descrição das variáveis
+---Descrição das variáveis
 
 Cada observação na tabela corresponde a um município no estado da Paraíba totalizando 223 municípios. Os dados são referentes apenas ao ano de 2015 que é o mais recente disponibilizado pelo IBGE.
 
-*Todos os dados se referem a escolas públicas municipais.*
+Todos os dados se referem a escolas públicas municipais.
 
 * cidade - Nome da cidade correspondente aos dados escolares.
 * codcidade - Código da cidade utilizado pelo IBGE
