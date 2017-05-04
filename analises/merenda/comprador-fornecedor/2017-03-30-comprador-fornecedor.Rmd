@@ -1,5 +1,5 @@
 ---
-title: "Análise das Licitações de Merenda na Paraíba"
+title: "Descrição dos compradores e fornecedores de merenda"
 author: "Laboratório Analytics"
 date: "30 de março de 2017"
 output: html_document

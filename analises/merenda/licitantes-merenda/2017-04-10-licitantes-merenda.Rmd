@@ -1,5 +1,5 @@
 ---
-title: 'Análise dos Licitantes de Merenda'
+title: 'Classificação os licitantes de merenda'
 author: 'Laboratório Analytics'
 date: '10 de abril de 2017'
 output: html_document
