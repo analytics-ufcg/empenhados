@@ -1,5 +1,6 @@
 load_licitantes <- function() {
   
+  library(methods)
   library(dplyr)
   library(stringr)
   
@@ -101,6 +102,13 @@ load_licitantes <- function() {
     merge(aditivacoes, all=T)
 
   licitantes[is.na(licitantes)] <- 0
+  
+  nomefornecedores <- fornecedores %>%
+    select(c(nu_CPFCNPJ, no_Fornecedor)) %>%
+    distinct(nu_CPFCNPJ, .keep_all = TRUE)
+  
+  licitantes <- licitantes %>%
+    left_join(nomefornecedores, by = c("nu_CPFCNPJ" = "nu_CPFCNPJ"))
 
   licitantes <- licitantes %>%
     mutate(

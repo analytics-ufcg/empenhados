@@ -1,8 +1,8 @@
 ---
 title: "Distribuição Geográfica dos Licitantes"
 author: "Laboratório Analytics"
-date: "4 de maio de 2017"
-output: html_document
+layout: post
+published: false
 ---
 
 ```{r global_options, include=FALSE}
@@ -11,13 +11,14 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.align = 'center',
+  screenshot.force = FALSE,
   fig.width = 10)
 ```
 
 ```{r}
-library(methods)
 library(dplyr)
 library(leaflet)
+library(stringr)
 source('load-licitantes-lib.R')
 ```
 
@@ -40,6 +41,10 @@ localizacao_licitantes <- licitantes %>%
 
 localizacao_licitantes <- localizacao_licitantes %>%
   bind_cols(dados_cep.selected)
+
+# Endereço incorreto retornado pela API de busca
+localizacao_licitantes <- localizacao_licitantes %>%
+  filter(nu_CPFCNPJ != '07150557000158')
 ```
 
 # Distribuição geográfica dos licitantes de merenda
@@ -47,7 +52,15 @@ localizacao_licitantes <- localizacao_licitantes %>%
 ```{r}
 m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
   addTiles() %>%
-  addMarkers(data = localizacao_licitantes, label = ~nu_CPFCNPJ)
+  addMarkers(data = localizacao_licitantes,
+             label = ~str_to_upper(no_Fornecedor), 
+             popup = paste(
+               "Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), "</br>",
+               "CNPJ:", localizacao_licitantes$nu_CPFCNPJ, "</br>",
+               "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
+               "Participações:", localizacao_licitantes$participou, "</br>",
+               "Total Ganho: R$", localizacao_licitantes$total_ganho
+             ))
   
 m
 ```
