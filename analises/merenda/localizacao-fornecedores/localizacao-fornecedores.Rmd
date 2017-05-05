@@ -17,15 +17,37 @@ knitr::opts_chunk$set(
 ```{r}
 library(methods)
 library(dplyr)
+library(ggfortify)
 library(leaflet)
+library(tidyr)
 source('load-licitantes-lib.R')
 ```
+
+# Introdução
+
+Praticamente todo fornecedor que se dispõe a participar de uma licitação de merenda deve estar apto a ganhar e para tal precisa ser consolidado e portanto precisa possuir um endereço físico que pode ser consultado pela população. Diante disso o objetivo desse relatório é apresentar como estão distribuídos os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações da maioria dos licitantes, alguns deles não conseguiram ter seus CEPs identificados. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes.
 
 ```{r}
 dados_licitantes <- read.csv("cnpjcepOk.csv", stringsAsFactors = FALSE, na.strings = '')
 dados_cep <- read.csv("dados-cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
 
 licitantes <- load_licitantes()
+```
+
+```{r}
+licitantes.log <- licitantes %>%
+  mutate_each(funs(log(. + 1)), -nu_CPFCNPJ)
+
+licitantes.scaled <- licitantes.log %>%
+  mutate_each(funs(scale(.) %>% c), -nu_CPFCNPJ)
+```
+
+```{r}
+set.seed(12346) # Garantir que o k-means gere o mesmo resultado
+km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
+
+licitantes <- licitantes %>%
+  mutate(cluster = km$cluster %>% as.factor)
 ```
 
 ```{r}
@@ -42,14 +64,46 @@ localizacao_licitantes <- localizacao_licitantes %>%
   bind_cols(dados_cep.selected)
 ```
 
-# Distribuição geográfica dos licitantes de merenda
+# Distribuição geográfica dos licitantes de merenda por grupo
+
+Em um dos relatórios disponíveis nesse [site](https://analytics-ufcg.github.io/licitacoes-pb//2017/04/licitantes-merenda.html) é possível identificar grupos de licitantes que possuem características parecidas entre si e que diferem entre grupos. A partir desse agrupamento é possível verificar abaixo como estão distribuídos os licitantes de merenda de acordo com seu grupo. Cada cor representa um grupo e há um total de 7 grupos conforme descrito no relatório de agrupamento.
 
 ```{r}
-m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
+getColor <- function(df) {
+  sapply(df$cluster, function(cluster) {
+  if(cluster == 1) {
+    "darkgreen"
+  } else if(cluster == 2) {
+    "orange"
+  } else if(cluster == 3) {
+    "blue"
+  } else if(cluster == 4) {
+    "purple"
+  } else if(cluster == 5) {
+    "green"
+  } else if(cluster == 6) {
+    "red"
+  } else if(cluster == 7) {
+    "darkred"
+  } else {
+    "cadetblue"
+  } })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = getColor(licitantes)
+)
+```
+
+```{r}
+mapa_grupos <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
   addTiles() %>%
-  addMarkers(data = localizacao_licitantes, label = ~nu_CPFCNPJ)
-  
-m
+  addAwesomeMarkers(data = localizacao_licitantes, icon = icons, label = paste("Grupo: ", licitantes$cluster,
+                                                                               "CNPJ: ", licitantes$nu_CPFCNPJ))
+mapa_grupos
 ```
 
 
