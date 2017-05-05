@@ -18,27 +18,37 @@ knitr::opts_chunk$set(
 library(methods)
 library(dplyr)
 library(leaflet)
-source('../licitantes-merenda/load-licitantes-lib.R')
+source('load-licitantes-lib.R')
 ```
 
 ```{r}
-dados_licitantes <- read.csv("cnpjcepOk.csv", stringsAsFactors = FALSE)
+dados_licitantes <- read.csv("cnpjcepOk.csv", stringsAsFactors = FALSE, na.strings = '')
+dados_cep <- read.csv("dados-cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
 
 licitantes <- load_licitantes()
 ```
 
 ```{r}
+dados_cep.selected <- dados_cep %>%
+  select(c(latitude, longitude, estado, cidade))
+
 dados_licitantes.unique <- dados_licitantes %>%
   distinct(nrcnpj, CEP)
 
 localizacao_licitantes <- licitantes %>%
   left_join(dados_licitantes.unique, by = c('nu_CPFCNPJ' = 'nrcnpj'))
+
+localizacao_licitantes <- localizacao_licitantes %>%
+  bind_cols(dados_cep.selected)
 ```
 
 # Distribuição geográfica dos licitantes de merenda
 
 ```{r}
-m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>% addTiles()
+m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
+  addTiles() %>%
+  addMarkers(data = localizacao_licitantes, label = ~nu_CPFCNPJ)
+  
 m
 ```
 
