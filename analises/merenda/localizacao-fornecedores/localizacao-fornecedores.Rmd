@@ -25,9 +25,7 @@ library(stringr)
 source('load-licitantes-lib.R')
 ```
 
-# Introdução
-
-Praticamente todo fornecedor que se dispõe a participar de uma licitação de merenda deve estar apto a ganhar e para tal precisa ser consolidado e portanto precisa possuir um endereço físico que pode ser consultado pela população. Diante disso o objetivo desse relatório é apresentar como estão distribuídos os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações da maioria dos licitantes, alguns deles não conseguiram ter seus CEPs identificados. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes.
+Todo fornecedor que se dispõe a participar de uma licitação deve possuir um endereço físico que possa ser consultado pela população. O objetivo desse relatório é apresentar como estão distribuídos geograficamente os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações aproximadas da maioria dos licitantes analisados em relatórios anteriores. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes.
 
 ```{r}
 dados_licitantes <- read.csv("cnpjcepOk.csv", stringsAsFactors = FALSE, na.strings = '')
@@ -38,15 +36,15 @@ licitantes <- load_licitantes()
 
 ```{r}
 licitantes.log <- licitantes %>%
-  mutate_each(funs(log(. + 1)), -nu_CPFCNPJ)
+  mutate_each(funs(log(. + 1)), -c(nu_CPFCNPJ, no_Fornecedor))
 
 licitantes.scaled <- licitantes.log %>%
-  mutate_each(funs(scale(.) %>% c), -nu_CPFCNPJ)
+  mutate_each(funs(scale(.) %>% c), -c(nu_CPFCNPJ, no_Fornecedor))
 ```
 
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
-km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
+km <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 7, nstart = 10)
 
 licitantes <- licitantes %>%
   mutate(cluster = km$cluster %>% as.factor)
@@ -67,10 +65,9 @@ localizacao_licitantes <- localizacao_licitantes %>%
 
 # Endereço incorreto retornado pela API de busca
 localizacao_licitantes <- localizacao_licitantes %>%
-  filter(nu_CPFCNPJ != '07150557000158')
+  filter(nu_CPFCNPJ != '07150557000158' &
+           nu_CPFCNPJ != '07129849000109')
 ```
-
-# Distribuição geográfica dos licitantes de merenda
 
 ```{r}
 m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
@@ -88,9 +85,12 @@ m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
 m
 ```
 
-# Distribuição geográfica dos licitantes de merenda por grupo
+Como talvez já pudesse ser esperado, a maioria dos licitantes de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos licitantes.  
 
-Em um dos relatórios disponíveis nesse [site](https://analytics-ufcg.github.io/licitacoes-pb//2017/04/licitantes-merenda.html) é possível identificar grupos de licitantes que possuem características parecidas entre si e que diferem entre grupos. A partir desse agrupamento é possível verificar abaixo como estão distribuídos os licitantes de merenda de acordo com seu grupo. Cada cor representa um grupo e há um total de 7 grupos conforme descrito no relatório de agrupamento.
+Um número considerável, ainda, está localizado em estados vizinhos. Chamam a atenção, a localização de apenas 3 licitantes que se encontram fora da região Nordeste. Sendo que, destes, apenas um licitante localizado em Diadema-SP apresentou ganhos.  
+
+## Distribuição geográfica dos licitantes de merenda por grupo
+Em um dos [relatórios](https://analytics-ufcg.github.io/licitacoes-pb//2017/04/licitantes-merenda.html) disponíveis no site, é possível identificar grupos de licitantes que possuem características parecidas entre si. Tomando como base a análise realizada previamente, é possível verificar como estão distribuídos geograficamente os licitantes de merenda de acordo com seu grupo no mapa abaixo. Cada cor representa um grupo e há um total de 7 grupos.
 
 ```{r}
 getColor <- function(df) {
@@ -115,9 +115,9 @@ getColor <- function(df) {
 }
 
 icons <- awesomeIcons(
-  icon = 'ios-close',
+  icon = 'circle-o',
   iconColor = 'black',
-  library = 'ion',
+  library = 'fa',
   markerColor = getColor(licitantes)
 )
 ```
@@ -125,10 +125,21 @@ icons <- awesomeIcons(
 ```{r}
 mapa_grupos <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
   addTiles() %>%
-  addAwesomeMarkers(data = localizacao_licitantes, icon = icons, label = paste("Grupo: ", licitantes$cluster,
-                                                                               "CNPJ: ", licitantes$nu_CPFCNPJ))
+  addAwesomeMarkers(data = localizacao_licitantes, icon = icons, 
+                    label = paste("Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), 
+                      "Grupo:", licitantes$cluster),
+                    popup = paste(
+               "Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), "</br>",
+               "CNPJ:", localizacao_licitantes$nu_CPFCNPJ, "</br>",
+               "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
+               "Participações:", localizacao_licitantes$participou, "</br>",
+               "Total Ganho: R$", localizacao_licitantes$total_ganho
+             ))
 mapa_grupos
 ```
 
+De acordo com a análise do mapa, não parece haver correlação entre o grupo em que cada licitante é classificado e sua localização geográfica.
 
+## Verificando a existência de grandes fornecedores em cidades improváveis.
+Como última parte na análise, foi verificada a existência de grandes fornecedores em cidades com população pequena.  
 
