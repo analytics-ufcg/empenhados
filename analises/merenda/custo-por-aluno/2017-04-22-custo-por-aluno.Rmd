@@ -1,0 +1,198 @@
+---
+title: "Custo de alimentação por aluno"
+author: "Laboratório Analytics"
+layout: post
+published: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  screenshot.force = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
+```
+
+```{r}
+library(stringr)
+library(maps)
+library(ggmap)
+library(rgdal)
+library(htmltools)
+library(leaflet)
+library(plotly)
+
+library(dplyr)
+
+source('load-matriculas-lib.R')
+```
+
+```{r}
+dados_escolares <- load_dados_escolares()
+```
+
+# Introdução
+Em média, quanto cada município gasta com merenda por aluno? Interessados nessa resposta, o relatório a seguir busca identificar quais os municípios que mais e menos gastam com merenda por aluno e como ocorre a distribuição do gasto por aluno no estado da Paraíba. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. Foram analisados 116 municípios do estado da Paraíba que lançaram licitação de merenda no ano 2015.
+
+```{r}
+sagres <- src_mysql('sagres', group='ministerio-publico', password=NULL)
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT *
+  FROM licitacao
+  WHERE de_Obs REGEXP "merenda"
+  AND dt_Ano = 2015
+')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+municipios <- tbl(utils, 'municipio') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e
+  USE INDEX (licitacao)
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+empenhos <- tbl(sagres, query) %>%
+  compute(name = 'em') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+pagamentos <- tbl(sagres, query) %>%
+  collect()
+
+```
+
+```{r}
+get.municipio <- function(cd_UGestora) {
+  result <- data.frame(
+      cd_Municipio = str_sub(cd_UGestora, -3)) %>%
+    left_join(municipios)
+  return(result$de_Municipio)
+}
+```
+
+```{r}
+gasto_municipios <- pagamentos %>%
+  select(cd_UGestora, vl_Pagamento) %>%
+  mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
+  group_by(de_Municipio) %>%
+  summarise(Total_Pagamentos = sum(vl_Pagamento)) %>%
+  right_join(dados_escolares, by = c('de_Municipio' = 'cidade')) %>%
+  mutate(Valor_Aluno = round(Total_Pagamentos / matritotal, 2)) %>%
+  select(c(de_Municipio, Total_Pagamentos, Valor_Aluno))
+
+gasto_municipios$Valor_Aluno_Lvl <- cut(gasto_municipios$Valor_Aluno, 
+                                              breaks = c(0, 50, 100, 150, 200, 250, 500),
+                                              labels = c('R$ 0 a R$ 49', 'R$ 50 a R$ 99', 'R$ 100 a R$ 149', 'R$ 150 a R$ 199', 'R$ 200 a R$ 249', 'R$ 250 ou mais'),
+                                              include.lowest = TRUE,
+                                              ordered_result = TRUE)
+
+```
+
+## Distribuição do valor gasto em merenda por aluno
+A partir das licitações no ano de 2015 que envolvem a palavra merenda em sua descrição, foi calculada a razão entre o valor pago aos licitantes nesse ano e o número de alunos matriculados em escolas da rede municipal de ensino (pré-escolar, fundamental e médio). A distribuição desses valores pode ser vista a seguir.  
+
+```{r}
+plot_ly(data = gasto_municipios) %>%
+  add_histogram(x = ~Valor_Aluno) %>%
+  layout(
+    title = 'Distribuição do valor por aluno',
+    xaxis = list(title = 'Valor por Aluno', dtick = 100),
+    yaxis = list(title = 'Total de Ocorrências', fixedrange = TRUE)
+  )
+```
+
+A média do gasto por aluno, no ano de 2015, é de R\$ `r round(mean(gasto_municipios$Valor_Aluno, na.rm = TRUE), digits = 2)`. Esse valor pode ser considerado baixo levando em consideração que o aluno passa praticamente o ano todo na escola e deveria se alimentar todos os dias.
+
+A mediana obtida para esse tipo de gasto foi de R\$ `r round(median(gasto_municipios$Valor_Aluno, na.rm = TRUE), digits = 2)`. Um valor que não é afetado por valores extremos e que terminou por ser ainda mais baixo que a média.  
+
+No mapa abaixo podemos observar quanto cada um dos municípios da Paraíba gastou com merenda no ano de 2015. Os municípios na cor cinza são aqueles que não tiveram licitações em 2015 que envolvessem em sua descrição a palavra "merenda". Observa-se que um número considerável de municípios não realizou licitação nesse ano.
+
+```{r results = 'hide'}
+mapa_paraiba <- readOGR("./mapa/Municipios.shp")
+
+# O munícipio de Campo de Santana mudou de nome e agora se chama Tacima
+levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
+levels_mapa[51] = "Tacima"
+levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
+
+mapa_paraiba@data <- mapa_paraiba@data %>%
+  left_join(gasto_municipios, by = c('Nome_Munic' = 'de_Municipio'))
+```
+
+```{r}
+colors <- colorFactor('OrRd', mapa_paraiba@data$Valor_Aluno_Lvl)
+
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5, 
+              weight = 1, 
+              fillColor = colors(mapa_paraiba@data$Valor_Aluno_Lvl),
+              color = 'black', 
+              label = mapa_paraiba@data$Nome_Munic,
+              popup = paste('Município: ', mapa_paraiba@data$Nome_Munic, '</br>Custo anual por aluno: R$ ', mapa_paraiba@data$Valor_Aluno),
+              fillOpacity = 1) %>%
+  addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Valor_Aluno_Lvl,
+            title = "Custo com alimentação por aluno no ano 2015",
+            opacity = 1
+  )
+
+```
+
+A partir da análise do mapa observa-se que a maioria dos municípios gasta entre R\$ 50,00 e R\$ 149,00 por aluno. 
+
+### Os municípios que mais gastaram no período
+Realizada a análise geral, resta agora observar com mais detalhes os munícipios que apresentam valores extremos. O gráfico a seguir apresenta os 10% dos municípios que mais gastaram com merenda por aluno no estado da Paraíba.
+
+```{r}
+valores_grandes <- gasto_municipios %>% 
+  filter(Valor_Aluno >= quantile(gasto_municipios$Valor_Aluno, .9, na.rm = TRUE)) %>%
+  arrange(desc(Valor_Aluno)) %>%
+  mutate(de_Municipio = factor(de_Municipio, levels = de_Municipio))
+
+plot_ly(data = valores_grandes) %>%
+  add_bars(x = ~de_Municipio, y = ~Valor_Aluno) %>%
+  layout(title = 'Os municípios que mais gastaram por aluno',
+         xaxis = list(title = 'Município', tickangle = 45),
+         yaxis = list(title = 'Custo por Aluno (Em Reais)', fixedrange = TRUE), 
+         margin = list(b = 150))
+```
+
+Observa-se que Santa Inês e Curral Velho são os dois municípios que mais gastaram com merenda e são os que mais se diferem com relação aos demais. Foi notada a falta nessa lista dos dois munícipios mais populosos da Paraíba: Campina Grande (`r subset(gasto_municipios, gasto_municipios$de_Municipio == 'Campina Grande')$Valor_Aluno` reais) e João Pessoa (`r subset(gasto_municipios, gasto_municipios$de_Municipio == 'João Pessoa')$Valor_Aluno` reais).
+
+### Os municípios que menos gastaram no período
+Detalhando o outro extremo, o gráfico a seguir apresenta os 10% dos municípios que menos gastaram com merenda por aluno.
+
+```{r}
+valores_pequenos <- gasto_municipios %>% 
+  filter(Valor_Aluno <= quantile(gasto_municipios$Valor_Aluno, .1, na.rm = TRUE)) %>%
+  arrange(Valor_Aluno) %>%
+  mutate(de_Municipio = factor(de_Municipio, levels = de_Municipio))
+
+plot_ly(data = valores_pequenos) %>%
+  add_bars(x = ~de_Municipio, y = ~Valor_Aluno) %>%
+  layout(title = 'Os municípios que menos gastaram por aluno',
+         xaxis = list(title = 'Município', tickangle = 45),
+         yaxis = list(title = 'Custo por Aluno (Em Reais)', fixedrange = TRUE), 
+         margin = list(b = 150))
+```
+
+Observa-se alguns valores bem abaixo do que se espera no gasto por aluno anual. Por exemplo, 3 municípios gastaram abaixo de 10 reais por aluno em 2015, são eles Aroeiras, Rio Tinto e Belém. A presença de Campina Grande nessa lista é passível de observação uma vez que ela possuem características bem diferentes das demais desse grupo, por possuir a segunda maior população da paraíba e também um alto número de alunos matriculados na rede municipal de ensino.
+
+
