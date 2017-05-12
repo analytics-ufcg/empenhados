@@ -1,0 +1,388 @@
+---
+title: 'Realinhamento de Preços'
+author: 'Laboratório Analytics'
+layout: post
+published: true
+---
+
+```{r setup, include=FALSE}
+options(scipen = 999)
+
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  fig.cap = '',
+  fig.height = 6,
+  fig.width = 6,
+  screenshot.force = FALSE)
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+library(scales)
+library(GGally)
+
+library(tidyr)
+library(dplyr)
+```
+
+```{r}
+sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT *
+  FROM licitacao
+  WHERE de_Obs REGEXP "merenda"
+  AND dt_Ano BETWEEN 2011 AND 2015
+')
+
+licitacoes <- tbl(sagres, query) %>%
+  compute(name = 'lm') %>%
+  collect()
+
+query <- sql('
+  SELECT c.*
+  FROM contratos c
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+contratos <- tbl(sagres, query) %>%
+  compute(name = 'cm') %>%
+  collect()
+
+query <- sql('
+  SELECT a.*
+  FROM aditivos a
+  INNER JOIN cm
+  USING (cd_UGestora, nu_Contrato)
+')
+
+aditivos <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM empenhos e
+  USE INDEX (licitacao)
+  INNER JOIN lm
+  USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
+')
+
+empenhos <- tbl(sagres, query) %>%
+  compute(name = 'em') %>%
+  collect()
+
+query <- sql('
+  SELECT l.*
+  FROM liquidacao l
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+liquidacoes <- tbl(sagres, query) %>%
+  compute(name = 'lqm') %>%
+  collect()
+
+query <- sql('
+  SELECT p.*
+  FROM pagamentos p
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+pagamentos <- tbl(sagres, query) %>%
+  compute(name = 'pm') %>%
+  collect()
+
+query <- sql('
+  SELECT e.*
+  FROM estorno e
+  INNER JOIN em
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano)
+')
+
+estornos <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT el.*
+  FROM estornoliquidacao el
+  INNER JOIN lqm
+  USING (cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, nu_Liquidacao)
+')
+
+estornos.liquidacoes <- tbl(sagres, query) %>%
+  collect()
+
+query <- sql('
+  SELECT ep.*
+  FROM estornopagamento ep
+  INNER JOIN pm
+  ON
+    ep.cd_UGestora = pm.cd_UGestora AND
+    ep.nu_EmpenhoEstorno = pm.nu_Empenho AND
+    ep.cd_UnidOrcamentaria = pm.cd_UnidOrcamentaria AND
+    ep.dt_Ano = pm.dt_Ano AND
+    ep.nu_ParcelaEstorno = pm.nu_Parcela AND
+    ep.tp_Lancamento = pm.tp_Lancamento
+')
+
+estornos.pagamentos <- tbl(sagres, query) %>%
+  collect()
+```
+
+```{r}
+empenhos.full <- empenhos %>%
+  select(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, vl_Empenho, nu_Licitacao, tp_Licitacao)
+
+empenhos.full <- liquidacoes %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_Liquidacao = sum(vl_Liquidacao, na.rm=T)) %>%
+  merge(empenhos.full, all=T)
+
+empenhos.full <- pagamentos %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_Pagamento = sum(vl_Pagamento, na.rm=T)) %>%
+  merge(empenhos.full, all=T)
+
+empenhos.full <- estornos %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_Estorno = sum(vl_Estorno, na.rm=T)) %>%
+  merge(empenhos.full, all=T)
+
+empenhos.full <- estornos.liquidacoes %>%
+  group_by(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_EstornoLiquidacao = sum(vl_EstornoLiquidacao, na.rm=T)) %>%
+  merge(empenhos.full, all=T)
+
+empenhos.full <- estornos.pagamentos %>%
+  group_by(cd_UGestora, nu_Empenho = nu_EmpenhoEstorno, cd_UnidOrcamentaria, dt_Ano) %>%
+  summarise(vl_EstornoPagamento = sum(vl_Estorno, na.rm=T)) %>%
+  merge(empenhos.full, all=T)
+
+empenhos.full <- empenhos.full %>%
+  select(cd_UGestora, nu_Empenho, cd_UnidOrcamentaria, dt_Ano, nu_Licitacao, tp_Licitacao,
+         vl_Empenho, vl_Estorno, vl_Liquidacao, vl_EstornoLiquidacao, vl_Pagamento, vl_EstornoPagamento)
+
+empenhos.full[is.na(empenhos.full)] <- 0
+```
+
+```{r}
+licitacoes.full <- licitacoes %>%
+  select(cd_UGestora, nu_Licitacao, tp_Licitacao, vl_Licitacao)
+
+licitacoes.full <- aditivos %>%
+  group_by(cd_UGestora, nu_Contrato) %>%
+  summarise(vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
+  merge(contratos, all=T) %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(
+    vl_Contrato = sum(vl_TotalContrato, na.rm=T),
+    vl_Aditivo = sum(vl_Aditivo, na.rm=T)) %>%
+  merge(licitacoes.full, all=T)
+
+licitacoes.full <- empenhos.full %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise_each(funs(sum(., na.rm=T)), -nu_Empenho, -cd_UnidOrcamentaria, -dt_Ano) %>%
+  merge(licitacoes.full, all=T)
+
+licitacoes.full <- licitacoes.full %>%
+  select(cd_UGestora, nu_Licitacao, tp_Licitacao,
+         vl_Licitacao, vl_Empenho, vl_Estorno, vl_Contrato, vl_Aditivo,
+         vl_Liquidacao, vl_EstornoLiquidacao, vl_Pagamento, vl_EstornoPagamento)
+
+licitacoes.full[is.na(licitacoes.full)] <- 0
+```
+
+```{r}
+licitacoes.alt <- licitacoes.full %>%
+  mutate(
+    vl_Contrato = vl_Contrato + vl_Aditivo,
+    vl_Empenho = vl_Empenho - vl_Estorno,
+    vl_Liquidacao = vl_Liquidacao - vl_EstornoLiquidacao,
+    vl_Pagamento = vl_Pagamento - vl_EstornoPagamento) %>%
+  select(-vl_Aditivo, -vl_Estorno, -vl_EstornoLiquidacao, -vl_EstornoPagamento)
+```
+
+O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
+
+Este relátório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda? O quanto variam os valores entre os estágios consecutivos do processo de execução orçamentária?
+
+Para tal, decidimos estudar as compras de merenda na Paraíba no período de 2011 à 2015. Foram analisados dados de 872 licitações, em conjunto com os dados de interesse de seus respectivos empenhos, contratos, liquidações, pagamentos, além dos valores de aditivos e de estorno de cada um dos estágios citados.
+
+## Execução Orçamentária
+
+De acordo com o site do Tesouro Nacional [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)] a execução orçamerntária ocorre paralelamente à execução financeira e compreende na utilização dos créditos consignados na Lei Orçamentária Anual (LOA). Executar o orçamento é, portanto, realizar as despesas públicas nele previstas, seguindo à risca os três estágios da execução de despesas previstos na Lei nº 4320/64: empenho, liquidação e pagamento.
+
+### Empenho
+
+O empenho é o primeiro estágio da despesa e pode ser conceituado como sendo o ato emanado de autoridade competente que cria para o Estado a obrigação de pagamento, pendente ou não, de implemento de condição, ou seja, é a garantia de que foi feita a reserva orçamentária necessária para o pagamento do que esta sendo contratado. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)], [[2](https://www.pjf.mg.gov.br/subsecretarias/controle_interno/documentos/treinamento/05_execucao_ABRIL_2013.pdf)]
+
+O empenho deve sempre anteceder a realização de qualquer despesa, o que implica que este deve ser feito antes ou contemporâneo à assinatura do contrato. [[3](http://www.zenite.blog.br/quando-deve-ser-realizado-o-empenho/)]
+
+### Liquidação
+
+O segundo estágio da despesa pública é a liquidação, que consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e documentos comprobatórios do respectivo crédito, ou seja, é a comprovação de que o credor cumpriu todas as obrigações constantes do empenho. A finalidade é reconhecer ou apurar a origem e o objeto do que se deve pagar, a importância exata a pagar e a quem se deve pagar para extinguir a obrigação. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)]
+
+### Pagamento
+
+O último estágio da despesa é o pagamento e consiste na entrega de numerário ao credor do Estado, extinguindo dessa forma o débito ou obrigação. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)]
+
+## Comparando os valores entre os estágios da execução orçamentária
+
+A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, para facilitar a visualização dos dados foi aplicado a função logarítmo em todos os valores. Nos gráficos de dispersão, cada ponto representa uma das 872 licitações estudadas.
+
+### Valor da licitação versus valor do contrato
+
+```{r licitacao vs contratos}
+
+g <- ggplot(aes(x=log(vl_Licitacao+1), y=log(vl_Contrato+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    x = 'Valor da licitação',
+    y = 'Valor do contrato') +
+  theme_minimal()
+ggplotly(g)
+```
+<br/>
+
+A partir do gráfico, é possível observar que, em geral, os valores estipulados nas licitações e nos contratos são bastante parecidos. Note que a grande quantidade de pontos no eixo horizontal representa as licitações que não estão relacionadas a nenhum contrato, seja porque não foi bem sucedida ou porque há dados faltando.
+
+### Valor do contrato versus valor do empenho
+
+```{r contratos vs empenhos}
+
+g <- ggplot(aes(x=log(vl_Contrato+1), y=log(vl_Empenho+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    x = 'Valor do contrato',
+    y = 'Valor do empenho') +
+  theme_minimal()
+ggplotly(g)
+```
+<br/>
+
+Podemos perceber que na maioria dos casos o valor contratado é superior ao valor empenhado, isso indica que está sendo reservado menos dinheiro do que seria, a príncípio, necessário para fazer face à despesa contratada.
+
+Assim como no caso acima, há muitos pontos sobre os eixos do gráfico. Esses ocorrem porque os empenhos em questão não estão relacionados a nenhum contrato ou vice versa.
+
+### Valor do empenho versus valor da liquidação
+
+```{r empenhos vs liquidações}
+
+g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Liquidacao+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    x = 'Valor do empenho',
+    y = 'Valor da liquidação') +
+  theme_minimal()
+ggplotly(g)
+```
+<br/>
+
+Comparativamente à relação anterior, esta apresenta mais dados em conformidade com o esperado, visto que há uma concentração maior de observações sobre a reta traçada. Essa identifica os casos em que o valor do empenho é exatamente igual ao valor da liquidação.
+
+Existem ainda assim valores que não estão sobre a reta, quer seja abaixo dela, implicando que o valor empenhado foi maior que o liquidado, quer seja acima, significando exatamente o oposto. No entanto, existem poucas observações com este comportamento e as que o apresentam estão próximas à reta, indicando que as diferenças entre as variáveis são pequenas.
+
+### Valor da liquidação versus valor do pagamento
+
+```{r liquidacões vs pagamentos}
+
+g <- ggplot(aes(x=log(vl_Liquidacao+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
+  geom_abline(slope=1, intercept=0, color='grey') +
+  geom_point() +
+  scale_x_continuous(breaks=pretty_breaks(10)) +
+  scale_y_continuous(breaks=pretty_breaks(10)) +
+  labs(
+    x = 'Valor da liquidação',
+    y = 'Valor do pagamento') +
+  theme_minimal()
+ggplotly(g)
+```
+<br/>
+
+Verificamos aqui que os valores de liquidação e pagamento são, em sua maioria, bem parecidos. Contudo, ao contrário do caso anterior, neste a distribuição em torno da reta não é balanceada, sendo mais comum que o valor do pagamento seja menor que o da liquidação do que o inverso.
+
+Com isso, compreende-se que na grande maioria das vezes está sendo liquidado exatamente o necessário para realizar o pagamento ao fornecedor e, quando isso não é verdade, ocorre que é liquidado um valor maior que do que é realmente pago.
+
+### Outras relações
+
+Abaixo, pode-se ver os gráficos de dispersão entre as variáveis estudadas e o valor da correlação entre elas, assim como suas distribuições isoladas na diagonal.
+
+```{r}
+licitacoes.alt %>%
+  select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
+  mutate_each(funs(log(.+1))) %>% 
+  ggpairs()
+```
+
+Observando os gráficos de dispersão, é possível identificar dois grupos com valores internos relativamente parecidos: os valores da licitação e do contrato, e os valores do empenho, da liquidação e do pagamento. Essa conclusão parte do fato de que tais gráficos se aproximam de uma reta entre as variáveis de cada grupo.
+
+A alta correlação entre as variáveis do segundo grupo corrobora com o que foi dito. Porém, no primeiro grupo isso não acontece, pois há muitas licitações que não estão associadas a contratos por motivos diversos, o que impacta no valor da correlação.
+
+### Visão geral
+
+O gráfico abaixo apresenta um panorama de como se comportam as licitações ao longo de todo o processo de execução da despesa,  considerando também o valor licitado e o valor contratado.
+
+```{r coordenadas paralelas}
+
+licitacoes.alt.long <- licitacoes.alt %>%
+  select(vl_Licitacao, vl_Empenho, vl_Contrato, vl_Liquidacao, vl_Pagamento) %>%
+  mutate(id = 1:nrow(licitacoes.alt)) %>%
+  gather('atributo', 'valor', -id, factor_key = T) %>%
+  mutate(valor = log(valor+1)) %>%
+  group_by(id) %>%
+  filter(all(valor > 0))
+
+g <- ggplot(aes(x=atributo, y=valor, group=id, color=id), data = licitacoes.alt.long) +
+  geom_path(alpha = 0.3) +
+  geom_point(alpha = 0.3) +
+  guides(color = F) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_line(color = 'black'))
+ggplotly(g)
+```
+<br/>
+
+A visualização nos permite observar variações constantes entre as fases do processo em análise, tanto de aumento quanto de redução de valor.
+
+Uma variável que influencia essa variação é o valor do contrato, pois ao contrário do esperado ele é bem diferente do valor empenhado. Por outro lado os valores observados de empenho, liquidação e pagamento variam bem menos entre si.
+
+Para compreendermos melhor o resultado deste "sobe e desce" de valores decidimos comparamos o valor de empenhos, que representa o valor que o governo pretendia e estava preparado para gastar, com o valor dos pagamentos, que refletem o valor efetivamente pago ao fornecedor.
+
+### Valor do empenho versus valor da pagamento
+
+```{r empenho vs pagamento}
+
+g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
+    geom_abline(slope=1, intercept=0, color='grey') +
+    geom_point() +
+    scale_x_continuous(breaks=pretty_breaks(10)) +
+    scale_y_continuous(breaks=pretty_breaks(10)) +
+    labs(
+      x = 'Valor da Empenho',
+      y = 'Valor do Pagamento') +
+    theme_minimal()
+ggplotly(g)
+```
+<br/>
+
+Nota-se que todos os valores estão sobre ou abaixo da reta, ou seja, apesar das variações observadas no processo o valor empenhado é o mesmo ou pouco menor que o valor pago para as licitações de merenda.
+
+## Conclusão
+
+Concluímos através da análise que ao fim do processo de execução orçamentária o valor pago ao fornecedor é menor ou igual ao valor empenhado para a execução da respectiva despesa, ou seja, há uma diminuição do gasto de dinheiro público.
+Foram encontradas ainda, variações de preços entre os estágios intermediários da execução orçamentária, variações estas que carecem de informações para que sejam devidamente compreendidas e justificadas.
