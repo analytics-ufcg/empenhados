@@ -25,7 +25,9 @@ mysqlimport -p$password \
   --fields-enclosed-by='"' \
   --fields-terminated-by=',' \
   --lines-terminated-by='\n' \
-  --local utils municipio.csv
+  --local utils \
+    empresa.csv \
+    municipio.csv
 
 cd ..
 rm -r tmp
