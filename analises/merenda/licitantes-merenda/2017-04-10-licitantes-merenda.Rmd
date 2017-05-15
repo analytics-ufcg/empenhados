@@ -1,8 +1,8 @@
 ---
-title: 'Análise dos Licitantes de Merenda'
+title: 'Classificação dos licitantes de merenda'
 author: 'Laboratório Analytics'
-date: '10 de abril de 2017'
-output: html_document
+layout: post
+published: true
 ---
 
 ```{r global_options, include=FALSE}
@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE,
+  screenshot.force = FALSE,
   fig.align = 'center',
   fig.width = 6,
   fig.height = 6
@@ -30,6 +31,7 @@ library(cluster)
 library(dbscan)
 library(tidyr)
 
+library(methods)
 source('load-licitantes-lib.R')
 
 theme_set(theme_bw())
@@ -177,7 +179,7 @@ ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
 ```
 
 #### Grupo 1 - Insaciáveis
-Os licitantes desse grupo costumam pedir mais prazo ou mais dinheiro durante o cumprimento dos contratos com uam frequência bem maior do que licitantes de outros grupos. Esses licitantes ganham muitas licitações e assinam contratos com valor acima da média.  
+Os licitantes desse grupo costumam pedir mais prazo ou mais dinheiro durante o cumprimento dos contratos com uma frequência bem maior do que licitantes de outros grupos. Esses licitantes ganham muitas licitações e assinam contratos com valor acima da média.  
 
 #### Grupo 2 - Gourmet
 Os integrantes desse grupo participam de muitas licitações em vários municípios, gerando a impressão que estão sempre experimentando novas formas de participação. Em consequência disso, o valor total das licitações é acima da média. Ao contrário do que se poderia esperar, porém, o valor mediano das licitações em que participam mantém-se dentro do esperado.  
