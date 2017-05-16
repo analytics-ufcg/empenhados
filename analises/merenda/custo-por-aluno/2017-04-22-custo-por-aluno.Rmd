@@ -26,6 +26,7 @@ library(plotly)
 library(knitr)
 
 library(dplyr)
+options(scipen = 999)
 
 source('load-matriculas-lib.R')
 ```
@@ -211,7 +212,7 @@ Os dados escolares de Boa Ventura são:
     )
 ```
 
-Sabendo algumas características sobre Boa Ventura nota-se que é uma cidade relativamente pequena, com número de matrículas totais de `r subset(dados_escolares, dados_escolares$cidade == 'Boa Ventura')$matritotal` alunos, inferior a média da Paraíba por município que é de `r mean(dados_escolares$matritotal)` e a mediana `r median(dados_escolares$matritotal)` alunos.
+Sabendo algumas características sobre Boa Ventura nota-se que é uma cidade relativamente pequena, com número de matrículas totais de `r subset(dados_escolares, dados_escolares$cidade == 'Boa Ventura')$matritotal` alunos, inferior a média da Paraíba por município que é de `r round(mean(dados_escolares$matritotal), 2)` e a mediana de `r round(median(dados_escolares$matritotal), 2)` alunos.
 
 Boa Ventura, como citado acima foi uma das cidades que menos gastaram por aluno em 2015. Olhando mais a fundo as licitações que envolvem a palavra merenda realizadas por essa cidade em 2015 chega-se a seguinte lista.
 
@@ -298,10 +299,65 @@ No entanto, talvez existam mais licitações que envolvem merenda e que não for
     )
 ```
 
-Como aconteceu com Boa Ventura, Rio Tinto também possui licitações que parecem envolver merenda mas que não especificam suas descrições e não são capturadas pelo filtro inicial. 
+Como aconteceu com Boa Ventura, Rio Tinto também possui licitações que parecem envolver merenda mas que não especificam suas descrições e não são capturadas pelo filtro inicial.
 
+### Características de Santa Helena
 
+Ao contrário dos dois últimos municípios apresentados acima, Santa Helena, com `r subset(municipios, municipios$de_Municipio == 'Santa Helena')$vl_Populacao` habitantes,  encontra-se na lista de municípios que mais gastaram por aluno em 2015. Os dados escolares desse município são:
 
+```{r}
+ kable(
+    x = subset(dados_escolares, dados_escolares$cidade == 'Santa Helena') %>% select(cidade, doctotal, esctotal, matritotal),
+    col.names = c('Município', 'Número de Docentes', 'Número de escolas', 'Número de Matrículas'),
+    align = c('c'),
+    row.names = FALSE
+    )
+```
 
+As licitações realizadas pelo município em 2015 e que foram caputradas pelo filtro são:
 
+```{r}
+  kable(
+    x = subset(licitacoes, licitacoes$de_Municipio == 'Santa Helena') %>% select(de_Municipio, vl_Licitacao, de_Obs),
+    col.names = c('Município', 'Valor da licitação', "Descrição"),
+    align = c('c'),
+    row.names = FALSE
+    )
+```
+
+Tal licitação fez com que o município de Santa Helena gastasse em 2015 cerca de `r subset(gasto_municipios, gasto_municipios$de_Municipio == 'Santa Helena')$Total_Pagamentos` com merenda escolar. Dentre todas a licitações realizadas em 2015 essa foi a única que trata do fornecimento de merenda à rede municipal de ensino.
+
+### Características de Santa Inês
+
+Santa Inês com `r subset(municipios, municipios$de_Municipio == 'Santa Inês')$vl_Populacao` foi o município que mais gastou por aluno em 2015, seus dados escolares são:
+
+```{r}
+ kable(
+    x = subset(dados_escolares, dados_escolares$cidade == 'Santa Inês') %>% select(cidade, doctotal, esctotal, matritotal),
+    col.names = c('Município', 'Número de Docentes', 'Número de escolas', 'Número de Matrículas'),
+    align = c('c'),
+    row.names = FALSE
+    )
+```
+
+A única licitação que foi capturada pelo filtro de merenda é descrita a seguir. 
+
+```{r}
+  kable(
+    x = subset(licitacoes, licitacoes$de_Municipio == 'Santa Inês') %>% select(de_Municipio, vl_Licitacao, de_Obs),
+    col.names = c('Município', 'Valor da licitação', "Descrição"),
+    align = c('c'),
+    row.names = FALSE
+    )
+```
+
+Esse valor da licitação não significa necessariamente o que o município gastou no total. As análises foram feitas seguindo a execução orçamentária dos empenhos e pagamentos associados a respectiva licitação. De todas as licitações em 2015 a única que faz referência a aquisição de gêneros alimentícios destinados a merenda é a apresentada acima, ou seja, nesse caso o filtro conseguiu capturar todas as licitações de merenda.
+
+## Considerações
+
+De acordo com as histórias acima é possível dizer que o filtro utilizado até então, que captura todas as licitações que possuem merenda em sua descrição, fez sentido e obteve sucesso nas cidades que mais gastaram por aluno em 2015, uma vez que tais cidades geralmente realizaram apenas uma licitação de merenda para todo o ano. Em geral, as cidades que menos gastaram por aluno em 2015 não tiveram todas as suas licitações capturadas pelo filtro. 
+
+As descrições dessas cidades são genéricas e não tratam especificamente da palavra merenda, embora possivelmente sejam sobre merenda, como por exemplo "AQUISICAO DE GENEROS ALIMENTICIOS DIVERSOS, DESTINADO A SECRETARIA DE EDUCACAO DESTE MUNICIPIO". Outras licitações possuem descrições como: "AQUISICAO PARCELADA E DIARIA DE GENEROS ALIMENTICIOS, DESTINADOS A MERENDA ESCOLAR E DIVERSAS SECRETARIA DESTE MUNICIPIO" - a descrição fala sobre a aquisição de merenda escolar, mas também sobre aquisição de gêneros alimentícios para **diversas** secretarias do munícipio (a licitação tem muitos propósitos), para a análise isso é ruim pois não se consegue identificar com clareza o que foi investido em merenda escolar.
+
+Ou seja, a análise de custo por aluno é válida, no entanto o filtro que captura as licitações de merenda não consegue ser suficientemente preciso ao ponto de capturar a maioria das licitações de alimentação escolar. Portanto, algumas cidades tem seus índices de gasto por aluno alterados devido a essa deficiência no filtro.
 
