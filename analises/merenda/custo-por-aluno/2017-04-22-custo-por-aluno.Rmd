@@ -1,6 +1,7 @@
 ---
 title: "Custo de alimentação por aluno"
 author: "Laboratório Analytics"
+subtitle: 'Merenda Escolar'
 layout: post
 published: true
 ---
@@ -212,7 +213,7 @@ Os dados escolares de Boa Ventura são:
     )
 ```
 
-Sabendo algumas características sobre Boa Ventura nota-se que é uma cidade relativamente pequena, com número de matrículas totais de `r subset(dados_escolares, dados_escolares$cidade == 'Boa Ventura')$matritotal` alunos, inferior a média da Paraíba por município que é de `r round(mean(dados_escolares$matritotal), 2)` e a mediana de `r round(median(dados_escolares$matritotal), 2)` alunos.
+Sabendo algumas características sobre Boa Ventura nota-se que é uma cidade relativamente pequena, com número de matrículas totais de `r subset(dados_escolares, dados_escolares$cidade == 'Boa Ventura')$matritotal` alunos, inferior a média da Paraíba por município que é de `r round(mean(dados_escolares$matritotal), 2)` alunos e a mediana de `r round(median(dados_escolares$matritotal), 2)` alunos.
 
 Boa Ventura, como citado acima foi uma das cidades que menos gastaram por aluno em 2015. Olhando mais a fundo as licitações que envolvem a palavra merenda realizadas por essa cidade em 2015 chega-se a seguinte lista.
 
@@ -230,7 +231,7 @@ licitacoes <- licitacoes %>%
     )
 ```
 
-A descrição da licitação está incompleta pois o SAGRES determina um limite de 120 caracteres, mesmo assim é possível identificar que a mesma se refere a agricultura familiar enquanto complemento para a merenda. Ou seja, talvez outras licitações para alimentação escolar tenham sido feitas nesse município mas não foram coletadas no filtro de merenda.
+O valor da licitação mostrado não corresponde necessariamente ao valor empenhado e pago pela Administração Pública. A descrição da licitação está incompleta pois o SAGRES determina um limite de 120 caracteres e alguns municípios ultrapassam indevidamente esse limite, mesmo assim é possível identificar que a mesma se refere a agricultura familiar enquanto complemento para a merenda. Ou seja, talvez outras licitações para alimentação escolar tenham sido feitas nesse município mas não foram coletadas no filtro de merenda.
 
 ```{r}
 sagres <- src_mysql('sagres', group='ministerio-publico', password=NULL)
@@ -329,7 +330,7 @@ Tal licitação fez com que o município de Santa Helena gastasse em 2015 cerca 
 
 ### Características de Santa Inês
 
-Santa Inês com `r subset(municipios, municipios$de_Municipio == 'Santa Inês')$vl_Populacao` foi o município que mais gastou por aluno em 2015, seus dados escolares são:
+Santa Inês com `r subset(municipios, municipios$de_Municipio == 'Santa Inês')$vl_Populacao` habitantes foi o município que mais gastou por aluno em 2015, seus dados escolares são:
 
 ```{r}
  kable(
@@ -355,9 +356,9 @@ Esse valor da licitação não significa necessariamente o que o município gast
 
 ## Considerações
 
-De acordo com as histórias acima é possível dizer que o filtro utilizado até então, que captura todas as licitações que possuem merenda em sua descrição, fez sentido e obteve sucesso nas cidades que mais gastaram por aluno em 2015, uma vez que tais cidades geralmente realizaram apenas uma licitação de merenda para todo o ano. Em geral, as cidades que menos gastaram por aluno em 2015 não tiveram todas as suas licitações capturadas pelo filtro. 
+De acordo com as histórias acima é possível dizer que o filtro utilizado até então, que captura todas as licitações que possuem merenda em sua descrição, fez sentido e obteve sucesso em algumas cidades que mais gastaram por aluno em 2015, uma vez que tais cidades geralmente realizaram apenas uma licitação de merenda para todo o ano. Em geral, as cidades que menos gastaram por aluno em 2015 não tiveram todas as suas licitações capturadas pelo filtro. 
 
 As descrições dessas cidades são genéricas e não tratam especificamente da palavra merenda, embora possivelmente sejam sobre merenda, como por exemplo "AQUISICAO DE GENEROS ALIMENTICIOS DIVERSOS, DESTINADO A SECRETARIA DE EDUCACAO DESTE MUNICIPIO". Outras licitações possuem descrições como: "AQUISICAO PARCELADA E DIARIA DE GENEROS ALIMENTICIOS, DESTINADOS A MERENDA ESCOLAR E DIVERSAS SECRETARIA DESTE MUNICIPIO" - a descrição fala sobre a aquisição de merenda escolar, mas também sobre aquisição de gêneros alimentícios para **diversas** secretarias do munícipio (a licitação tem muitos propósitos), para a análise isso é ruim pois não se consegue identificar com clareza o que foi investido em merenda escolar.
 
-Ou seja, a análise de custo por aluno é válida, no entanto o filtro que captura as licitações de merenda não consegue ser suficientemente preciso ao ponto de capturar a maioria das licitações de alimentação escolar. Portanto, algumas cidades tem seus índices de gasto por aluno alterados devido a essa deficiência no filtro.
+Ou seja, a análise de custo por aluno é válida, no entanto o filtro que captura as licitações de merenda não consegue ser suficientemente preciso ao ponto de capturar a maioria das licitações de alimentação escolar ou merenda. Portanto, algumas cidades tem seus índices de gasto por aluno alterados devido a essa limitação do filtro.
 
