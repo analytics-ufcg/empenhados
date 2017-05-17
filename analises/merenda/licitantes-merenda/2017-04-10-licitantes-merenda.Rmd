@@ -32,7 +32,7 @@ library(dbscan)
 library(tidyr)
 
 library(methods)
-source('load-licitantes-lib.R')
+source('../lib/load_licitantes_merenda.R')
 
 theme_set(theme_bw())
 ```
@@ -44,17 +44,17 @@ Ao analisar as licitações de merenda ocorridas na Paraíba entre os anos de 20
 Foram analisados 758 licitantes que fizeram pelo menos uma proposta em licitações de merenda no estado da Paraíba entre os anos de 2011 e 2015.
 
 ```{r}
-licitantes <- load_licitantes()
+licitantes <- load_licitantes_merenda()
 ```
 
 ```{r}
 licitantes.log <- licitantes %>%
-  mutate_each(funs(log(. + 1)), -nu_CPFCNPJ)
+  mutate_each(funs(log(. + 1)), -c(nu_CPFCNPJ, no_Fornecedor))
 
 licitantes.scaled <- licitantes.log %>%
-  mutate_each(funs(scale(.) %>% c), -nu_CPFCNPJ)
+  mutate_each(funs(scale(.) %>% c), -c(nu_CPFCNPJ, no_Fornecedor))
 
-dists <- dist(select(licitantes.scaled, -nu_CPFCNPJ), method = 'euclidean')
+dists <- dist(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), method = 'euclidean')
 
 colors <- brewer.pal(7, 'Set2')
 ```
@@ -95,11 +95,11 @@ licitantes.hc <- licitantes.scaled %>%
   mutate(cluster = cutree(hc, k=7) %>% as.factor)
 
 licitantes.hc.long <- licitantes.hc %>%
-  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
+  gather('variable', 'value', -nu_CPFCNPJ, -no_Fornecedor, -cluster, factor_key=T)
 ```
 
 ```{r}
-pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
+pr.out <- prcomp(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), scale = FALSE)
 autoplot(pr.out, data = licitantes.hc, colour = 'cluster', scale = 0, main = 'Grupos obtidos usando agrupamento hierárquico') +
   scale_color_brewer(palette='Set2') 
 ```
@@ -117,7 +117,7 @@ O k-means é um dos algoritmos mais usados para agrupamento. De forma similar ao
 
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
-km <- kmeans(select(licitantes.scaled, -nu_CPFCNPJ), centers = 7, nstart = 10)
+km <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 7, nstart = 10)
 
 autoplot(km, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
   scale_color_brewer(palette='Set2') + 
@@ -127,7 +127,7 @@ licitantes.km <- licitantes.scaled %>%
   mutate(cluster = km$cluster %>% as.factor)
 
 licitantes.km.long <- licitantes.km %>%
-  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
+  gather('variable', 'value', -nu_CPFCNPJ, -no_Fornecedor, -cluster, factor_key=T)
 ```
 
 Ao comparar a largura média da silhueta gerada pela técnica anterior com a gerada pelo k-means, é perceptível uma melhora significativa de 0.35 para 0.42. Isso pode ser considerado um indício de que os grupos estão melhores definidos usando o k-means.  
@@ -151,9 +151,9 @@ licitantes.dbs <- licitantes.scaled %>%
   mutate(cluster = dbs$cluster %>% as.factor)
 
 licitantes.dbs.long <- licitantes.dbs %>%
-  gather('variable', 'value', -nu_CPFCNPJ, -cluster, factor_key=T)
+  gather('variable', 'value', -nu_CPFCNPJ, -no_Fornecedor, -cluster, factor_key=T)
 
-pr.out <- prcomp(select(licitantes.scaled, -nu_CPFCNPJ), scale = FALSE)
+pr.out <- prcomp(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), scale = FALSE)
 autoplot(pr.out, data = licitantes.dbs, colour = 'cluster', scale = 0, main = 'Grupos obtidos usando o DBScan') +
   scale_color_brewer(palette='Set2') 
 ```

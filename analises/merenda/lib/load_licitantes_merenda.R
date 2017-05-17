@@ -1,8 +1,9 @@
-library(plyr)
-library(dplyr)
-library(stringr)
-
-load_licitantes <- function() {
+load_licitantes_merenda <- function() {
+  
+  library(methods)
+  library(dplyr)
+  library(stringr)
+  
   sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
   utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 
@@ -65,7 +66,7 @@ load_licitantes <- function() {
   get.municipio <- function(cd_UGestora) {
     result <- data.frame(
       cd_Municipio = str_sub(cd_UGestora, -3)) %>%
-      join(municipios)
+      left_join(municipios)
     return(result$de_Municipio)
   }
 
@@ -101,6 +102,13 @@ load_licitantes <- function() {
     merge(aditivacoes, all=T)
 
   licitantes[is.na(licitantes)] <- 0
+  
+  nomefornecedores <- fornecedores %>%
+    select(c(nu_CPFCNPJ, no_Fornecedor)) %>%
+    distinct(nu_CPFCNPJ, .keep_all = TRUE)
+  
+  licitantes <- licitantes %>%
+    left_join(nomefornecedores, by = c("nu_CPFCNPJ" = "nu_CPFCNPJ"))
 
   licitantes <- licitantes %>%
     mutate(

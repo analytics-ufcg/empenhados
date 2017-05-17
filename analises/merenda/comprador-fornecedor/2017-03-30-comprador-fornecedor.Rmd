@@ -171,7 +171,7 @@ rm(unidades_gestoras)
 
 ```{r filtrando merendas}
 licitacoes_merenda = licitacoes %>%
-  filter(grepl('alimentacao[[:space:]]escolar|merenda', licitacoes$de_Obs, ignore.case = T))
+  filter(grepl('merenda', licitacoes$de_Obs, ignore.case = T))
 ```
 
 ```{r}
@@ -275,7 +275,7 @@ municipios = tbl(utils, 'municipio') %>%
 
 ```{r configuracao dos mapas, results='hide'}
 # Encontrado em: http://www.aesa.pb.gov.br/geoprocessamento/geoportal/shapes.html
-mapa_paraiba <- readOGR("./mapa/Municipios.shp")
+mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
 # Atualizando nome de municípios que mudaram de nome nos últimos anos
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)

@@ -22,17 +22,17 @@ library(ggfortify)
 library(leaflet)
 library(tidyr)
 library(stringr)
-source('load-licitantes-lib.R')
+source('../lib/load_licitantes_merenda.R')
 ```
 
 Todo fornecedor que se dispõe a participar de uma licitação deve possuir um endereço físico que possa ser consultado pela população. O objetivo desse relatório é apresentar como estão distribuídos geograficamente os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações aproximadas da maioria dos licitantes analisados em relatórios anteriores. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes. É possível obter mais detalhes sobre eles ao clicar sobr eum marcador.   
 
 ```{r}
-licitantes <- load_licitantes()
+licitantes <- load_licitantes_merenda()
 
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
-cep_licitantes <- tbl(utils, 'endereco_licitantes') %>%
+cep_licitantes <- tbl(utils, 'empresa') %>%
   collect(n = Inf)
 
 dados_cep <- read.csv("dados-cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
@@ -59,7 +59,7 @@ dados_cep.selected <- dados_cep %>%
   select(c(latitude, longitude, estado, cidade))
 
 localizacao_licitantes <- licitantes %>%
-  left_join(cep_licitantes, by = c('nu_CPFCNPJ' = 'cd_cnpj'))
+  left_join(cep_licitantes, 'nu_CPFCNPJ')
 
 localizacao_licitantes <- localizacao_licitantes %>%
   bind_cols(dados_cep.selected)
@@ -68,7 +68,7 @@ localizacao_licitantes <- localizacao_licitantes %>%
 localizacao_licitantes <- localizacao_licitantes %>%
   filter(nu_CPFCNPJ != '07150557000158' &
            nu_CPFCNPJ != '07129849000109') %>%
-  filter(!(!is.na(cd_cep) & is.na(latitude)))
+  filter(!(!is.na(nu_CEP) & is.na(latitude)))
 ```
 
 ```{r}
