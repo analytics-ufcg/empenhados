@@ -29,7 +29,7 @@ library(knitr)
 library(dplyr)
 options(scipen = 999)
 
-source('load-matriculas-lib.R')
+source('../lib/load_dados_escolares.R')
 ```
 
 ```{r}
@@ -128,7 +128,7 @@ A mediana obtida para esse tipo de gasto foi de R\$ `r round(median(gasto_munici
 No mapa abaixo podemos observar quanto cada um dos municípios da Paraíba gastou com merenda no ano de 2015. Os municípios na cor cinza são aqueles que não tiveram licitações em 2015 que envolvessem em sua descrição a palavra "merenda". Observa-se que um número considerável de municípios não realizou licitação nesse ano.
 
 ```{r results = 'hide'}
-mapa_paraiba <- readOGR("./mapa/Municipios.shp")
+mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
 # O munícipio de Campo de Santana mudou de nome e agora se chama Tacima
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)

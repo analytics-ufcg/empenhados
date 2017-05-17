@@ -1,4 +1,4 @@
-# Função utilizada para criar csv com dados escolares de todas as cidades da Paraíba
+# Carrega os dados escolares de todas as cidades da Paraíba
 load_dados_escolares <- function() {
   
   library(dplyr)
@@ -6,7 +6,7 @@ load_dados_escolares <- function() {
   library(stringr)
   
   #Pasta de origem dos arquivos csv deve ser modificada aqui
-  file_names <- Sys.glob("dados_escolares_2015/*.csv")
+  file_names <- Sys.glob("../dados/dados_escolares_2015/*.csv")
   
   dados <- data.frame()
   
