@@ -42,4 +42,25 @@ INSERT INTO classificacao_licitacao (cd_UGestora, nu_Licitacao, tp_Licitacao)
 	from e;
 
 UPDATE classificacao_licitacao c
-	SET pr_EmpenhosMerenda = (select pr_EmpenhosMerenda from e1 where c.cd_ugestora = e1.cd_ugestora AND c.nu_licitacao = e1.nu_licitacao AND c.tp_licitacao = e1.tp_licitacao);
+	LEFT JOIN e1 on (c.cd_ugestora = e1.cd_ugestora AND c.nu_licitacao = e1.nu_licitacao AND c.tp_licitacao = e1.tp_licitacao)
+	SET c.pr_EmpenhosMerenda = e1.pr_EmpenhosMerenda;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
