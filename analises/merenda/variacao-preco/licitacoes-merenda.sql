@@ -46,5 +46,9 @@ insert into classificacao_licitacao (cd_UGestora, nu_Licitacao, tp_Licitacao, dt
 update classificacao_licitacao c
 	left join e1 on (c.cd_ugestora = e1.cd_ugestora and c.nu_licitacao = e1.nu_licitacao and c.tp_licitacao = e1.tp_licitacao)
 	set c.pr_EmpenhosMerenda = e1.pr_EmpenhosMerenda;
+
+update classificacao_licitacao
+    set pr_EmpenhosMerenda = 0
+    where pr_EmpenhosMerenda is null;
     
 	
