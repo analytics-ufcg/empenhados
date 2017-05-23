@@ -1,0 +1,127 @@
+---
+title: "Variação do preço de um produto nas Notas Fiscais"
+author: "Laboratório Analytics"
+layout: post
+published: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  screenshot.force = FALSE,
+  fig.width = 10)
+```
+
+```{r}
+library(methods)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+theme_set(theme_bw())
+```
+
+```{r}
+## Precisa colocar essa tabela no BD
+dados_nfe <- read.csv("dados_nf.csv", stringsAsFactors = FALSE, fileEncoding = "latin1",  colClasses = c("Chave_de_acesso" = "character", "Cod_EAN" = "character"))
+```
+
+Superfaturamento, infelizmente, é algo noticiado constantemente nas aquisições da Administração Pública. De maneira mais direta, se refere a comprar um produto por um preço bem acima do mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
+
+*Art. 3o  A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.*
+
+**A seleção da proposta mais vantajosa para a administração**, se algo é comprado com superfaturamento, geralmente, não será a proposta mais vantajosa.
+
+Com os dados de notas fiscais de compras feitas pela Adminstração Pública de municípios e diversas secretarias da Paraíba, é possível identificar até que ponto houve superfaturamento na aquisição de produtos.
+
+Como são muitos produtos, inicialmente será escolhido **cuscuz** para uma pesquisa mais específica.
+
+As notas fiscais obrigatoriamente precisam apresentar um código chamado **NCM** (Nomenclatura Comum do Mercosul). O NCM foi proposto pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional. A partir do [serviço](https://www4.receita.fazenda.gov.br/simulador/PesquisarNCM.jsp) da Receita Federal, o código NCM relacionado a **cuscuz** é 19024000.
+
+Dentro de um universo de mais de 2 milhões de notas fiscais, 49 notas fiscais possuem o código NCM referente a cuscuz.
+
+```{r}
+nfe_cuscuz = dados_nfe %>%
+  filter(NCM_prod == "19024000")
+```
+
+```{r}
+nfe_cuscuz %>%
+  ggplot(aes(Valor_unit_prod, Descricao_do_Produto_ou_servicos)) +
+  geom_jitter(width = .2) +
+  labs(x = "Valor Unitário (Em Reais)", y = "")
+```
+
+Como observado, alguns valores estão bem acima dos demais.
+
+```{r}
+kable(
+  x = head(arrange(select(nfe_cuscuz, c(Nome_razao_social_dest, Nome_razao_social_emit, Descricao_do_Produto_ou_servicos, Unid_prod, Valor_unit_prod)), desc(Valor_unit_prod)), 5),
+  col.names = c('Comprador', 'Fornecedor', 'Descrição do produto', 'Unidade','Valor unitário (em Reais)'),
+  align = c('c'))
+```
+
+Se as três primeiras notas fiscais forem retiradas do conjunto das demais, a média do valor unitário é de `r round(mean(subset(nfe_cuscuz, Valor_unit_prod < 20)$Valor_unit_prod), 2)` reais. Uma formação importante é a unidade do produto. Nas duas primeiras a unidade é de fardo (em geral, é uma unidade para vários kilogramas), já na terceira, a unidade é de kg e mesmo assim o valor é muito elevado considerando o preço das demais.
+
+```{r}
+dados_nfe = dados_nfe %>%
+  mutate(NCM_prod = as.character(NCM_prod))
+```
+
+## Arroz
+
+Outro produto comumente utilizado em merendas escolares e presente na mesa de todos os brasileiros é o arroz. O código NCM para arroz inicia com "1006", isso inclui vários tipos de arroz.
+
+```{r}
+nfe_arroz = dados_nfe %>%
+  filter(substr(NCM_prod, 1, 4) == "1006") %>%
+  mutate(NCM_prod = as.character(NCM_prod))
+```
+
+```{r}
+nfe_arroz = nfe_arroz %>%
+  filter(Unid_prod %in% c("KG"))
+```
+
+```{r}
+nfe_arroz = nfe_arroz %>%
+  filter(grepl("arroz", Descricao_do_Produto_ou_servicos, ignore.case = TRUE))
+```
+
+Como existem diversas unidades possíveis (kg, unidade, fardo) em notas fiscais de arroz, a priori, apenas as que possuem como unidade "KG" foram filtradas. Em seguida, observou-se que muitas notas fiscais apesar de terem o código NCM referente a arroz, não apresenta em sua descrição arroz. Para retirar tais observações inconsistentes foi feito um filtro utilizando apenas as observações que possuem "arroz" na descrição do produto. Foram encontradas `r nrow(nfe_arroz)` notas fiscais. A distribuição do valor unitário das mesmas é mostrado a seguir.
+
+```{r}
+nfe_arroz %>%
+  ggplot(aes(Valor_unit_prod, NCM_prod)) +
+  geom_point() +
+  labs(x = "Valor unitário do produto", y = "Código NCM", title = "Distribuição do valor unitário de arroz por código NCM")
+```
+
+Como observado, ainda existem alguns valores bem acima dos demais. As notas fiscais que possuem Valor unitário do produto acima dos 25 reais estão apresentadas a seguir.
+
+```{r}
+kable(
+  x = head(arrange(select(nfe_arroz, c(Nome_razao_social_dest, Nome_razao_social_emit, Descricao_do_Produto_ou_servicos, Unid_prod, Valor_unit_prod)), desc(Valor_unit_prod)), 6),
+  col.names = c('Comprador', 'Fornecedor', 'Descrição do produto', 'Unidade','Valor unitário (em Reais)'),
+  align = c('c'))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

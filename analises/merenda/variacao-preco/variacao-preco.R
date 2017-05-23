@@ -1,6 +1,6 @@
 library(dplyr)
 
-dados_nota <- read.table('analises/merenda/dados/notas_fiscais/dados_nf.txt', 
+dados_nota <- read.table('../dados/notas_fiscais/dados_nf.txt', 
                          sep = '|', header = TRUE, dec = ",",
                          quote = "", fill = TRUE, encoding = 'latin1', 
                          strip.white=T, stringsAsFactors = FALSE, na.strings = c(""),
