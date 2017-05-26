@@ -1,0 +1,19 @@
+---
+title: "Perguntas & Respostas"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### O que ocorre se o pagamento realizado ao credor for indevido ou maior do que o acordado?
+
+Se houver importância paga a maior ou indevidamente, sua reposição aos órgãos públicos deverá ocorrer dentro do próprio exercício, mediante crédito à conta bancária da unidade gestora que efetuou o pagamento. Quando a reposição se efetuar em outro exercício, o seu valor deverá ser restituído por DARF ao Tesouro Nacional.
+
+
+
+(Registro de preços: Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qual, os respectivos produtos ou serviços poderão ser adquiridos ou contratados pelos órgãos públicos gerenciadores e os órgãos participantes do SRP. Outros órgãos públicos também podem "pegar carona" nestes preços, bastando para isso, pertencer à mesma esfera administrativa. Regulamentado por este [decreto](https://www.licitacao.net/legislacao_detalhes.asp?id=101)).
+
+
+Em casos excepcionais pode haver a dispensa da licitação no processo de aquisição de bens ou serviços pela administração pública. Casos como: situações de emergência, contratação de pequeno valor, ausência de interessados, imóvel destinado a administração, gêneros perecíveis, dentre outros. Mais detalhes [aqui](http://www.cidadaniafiscal.com.br/backup/informativo/16.pdf).
