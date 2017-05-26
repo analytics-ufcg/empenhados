@@ -23,7 +23,16 @@ dados_nota <- dados_nota %>%
   mutate_at(variaveis_numericas, funs(gsub(',', '\\.', .))) %>%
   mutate_at(variaveis_numericas, funs(as.numeric(.)))
 
-str(dados_nota)
+notas <- dados_nota %>%
+  select(Chave_de_acesso, Nota_referenciada) %>%
+  mutate(Nota_referenciada = strsplit(Nota_referenciada, ';')) %>%
+  unnest(Nota_referenciada) %>%
+  filter(!is.na(Nota_referenciada))
 
-write.csv(dados_nota, file = "dados_nf.csv", na = "", col.names = TRUE, 
+dados_nota <- select(dados_nota, -Nota_referenciada)
+
+write.csv(dados_nota, file = "nota_fiscal.csv", na = "", col.names = TRUE, 
+          row.names = FALSE, fileEncoding = 'latin1')
+
+write.csv(notas, file = "nota_nota.csv", na = "", col.names = TRUE, 
           row.names = FALSE, fileEncoding = 'latin1')
