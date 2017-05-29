@@ -9,7 +9,8 @@ create table classificacao_licitacao(
         collate utf8_general_ci,
     tp_Licitacao smallint(6),
     dt_Ano smallint(6),
-    pr_EmpenhosMerenda decimal(4,3)
+    pr_EmpenhosMerenda decimal(4,3),
+    vl_EmpenhosMerenda decimal(19,4)
 );
 
 
@@ -34,7 +35,7 @@ create temporary table em as
 
 
 create temporary table e1 as
-    select e.cd_ugestora, e.nu_licitacao, e.tp_licitacao, e.dt_Ano, em.soma/e.soma as pr_EmpenhosMerenda
+    select e.cd_ugestora, e.nu_licitacao, e.tp_licitacao, e.dt_Ano, em.soma/e.soma as pr_EmpenhosMerenda, em.soma as soma
 	from e, em
 	where e.cd_ugestora = em.cd_ugestora and e.nu_licitacao = em.nu_licitacao and e.tp_licitacao = em.tp_licitacao;
 
@@ -45,7 +46,7 @@ insert into classificacao_licitacao (cd_UGestora, nu_Licitacao, tp_Licitacao, dt
 
 update classificacao_licitacao c
 	left join e1 on (c.cd_ugestora = e1.cd_ugestora and c.nu_licitacao = e1.nu_licitacao and c.tp_licitacao = e1.tp_licitacao)
-	set c.pr_EmpenhosMerenda = e1.pr_EmpenhosMerenda;
+	set c.pr_EmpenhosMerenda = e1.pr_EmpenhosMerenda, vl_EmpenhosMerenda = e1.soma;
 
 update classificacao_licitacao
     set pr_EmpenhosMerenda = 0
