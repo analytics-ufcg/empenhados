@@ -28,8 +28,7 @@ mysqlimport -p$password \
   --local utils \
     empresa.csv \
     municipio.csv \
-    nota_fiscal.csv \
-    nota_nota.csv
+    nota_fiscal.csv
 
 cd ..
 rm -r tmp
