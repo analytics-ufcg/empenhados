@@ -27,9 +27,9 @@ theme_set(theme_bw())
 ```
 
 ```{r}
-utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+notas = src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
 
-dados_nfe <- tbl(utils, 'nota_fiscal') %>%
+dados_nfe <- tbl(notas, 'nota_fiscal') %>%
   filter(substr(NCM_prod, 1, 4) == "1006") %>%
   collect(n = Inf)
 ```
@@ -68,7 +68,7 @@ Como existem diversas unidades possíveis (kg, unidade, fardo) em notas fiscais 
 ```{r}
 plot_ly(nfe_arroz, y = ~Valor_unit_prod, x = ~NCM_prod, type = 'scatter', mode = 'markers', 
         text = ~paste(Descricao_do_Produto_ou_servicos,
-                      '</br> Valor unitário: R$', Valor_unit_prod),
+                      '<br> Valor unitário: R$', Valor_unit_prod),
         hoverinfo = 'text') %>%
   layout(xaxis = list(title = 'Tipo de Arroz (Código NCM)'),
          yaxis = list(title = 'Valor unitário (em Reais)'),
@@ -115,7 +115,7 @@ A grande maioria das empresas emitiu menos de 50 notas fiscais de arroz. A media
 ```{r}
 plot_ly(nfe_arroz_empresas, x = ~CPF_CNPJ_emit, y = ~valor_total, type = 'bar', 
         text = ~paste(Nome_razao_social_emit,
-                      '</br> Valor Total: R$', valor_total
+                      '<br> Valor Total: R$', valor_total
                       ),
     hoverinfo = 'text') %>%
   layout(xaxis = list(showticklabels = FALSE, title = 'Empresas'),
@@ -150,8 +150,8 @@ nfe_arroz %>%
   filter(Valor_unit_prod < 20) %>%
   plot_ly(x = ~dt_MesEmissao, y = ~Valor_unit_prod, type = "scatter", mode = "markers", 
           text = ~paste('Valor Unitário: R$', Valor_unit_prod,
-                        '</br>Valor total da Nota: R$', Valor_total_da_nota,
-                        '</br>Empresa: ', Nome_razao_social_emit),
+                        '<br>Valor total da Nota: R$', Valor_total_da_nota,
+                        '<br>Empresa: ', Nome_razao_social_emit),
           hoverinfo = 'text', name = 'Valor Unitário') %>%
   add_trace(x = ~dt_MesEmissao, y = mediana_total, type = 'scatter', mode = 'lines', name = 'Mediana geral',
     text = ~paste('Mediana Geral: R$', round(mediana_total, 2)),
