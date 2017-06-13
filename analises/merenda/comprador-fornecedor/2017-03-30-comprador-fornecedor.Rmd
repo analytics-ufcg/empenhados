@@ -920,11 +920,7 @@ Um ponto do processo licitatório em que também pode ocorrer um número conside
 Através da análise dos dados dos fornecedores e sua participação nos contratos de merenda de cada município no período de 2011 a 2015, foi possível traçar um panorama da distribuição e diversidade de fornecedores no estado da Paraíba. A seguir, é possível visualizar qual o total de fornecedores de merenda em cada um dos municípios do estado.
 
 ```{r}
-levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
-
-levels_mapa[51] = "Tacima"
-levels_mapa[200] = "Sao Vicente do Serido"
-levels_mapa[173] = "Joca Claudino"
+levels_mapa = mapa_paraiba@data$Nome_Munic
 
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 
@@ -1114,7 +1110,7 @@ lucros %>%
 Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
 
 ```{r}
-lucros %>%
+ lucros %>%
   arrange(-valor) %>%
   mutate(ordem=nrow(lucros) %>% seq) %>%
   head(400) %>%
@@ -1164,14 +1160,17 @@ metricas <- municipios %>%
   select(-cd_Municipio, -de_Municipio) %>%
   rename(
     `Fornecedores` = nu_Fornecedores,
-    `Licitações` = nu_Licitacoes,
-    `Mediana de propostas` = nu_Propostas,
-    `Gasto total` = vl_Total,
-    `Gasto mediano` = vl_Medio,
-    `População` = vl_Populacao)
+    `Licitacoes` = nu_Licitacoes,
+    `Mediana_propostas` = nu_Propostas,
+    `Gasto_total` = vl_Total,
+    `Gasto_mediano` = vl_Medio,
+    `Populacao` = vl_Populacao) %>%
+  select(cd_IBGE, Fornecedores, Licitacoes, Mediana_propostas, Gasto_total, Gasto_mediano, Populacao)
 
 metricas %>%
+  select(-cd_IBGE) %>%
   gather() %>%
+  mutate(value = as.numeric(value)) %>% 
   ggplot(aes(x = value)) +
     facet_wrap(~ key, scale='free') +
     geom_histogram(bins=30, na.rm=T) +
@@ -1185,7 +1184,7 @@ metricas %>%
 Como mostram os histogramas acima, há uma aglomeração de valores à direita em todas as variáveis, o que dificulta a análise. É possível cotornar essa situação aplicando uma transformação logarítmica em cada uma delas, fazendo com que os valores passem a se concentrar no centro da distribuição.
 
 ```{r}
-metricas <- log(metricas)
+metricas <- log(select(metricas, -cd_IBGE))
 
 metricas %>%
   gather() %>%
@@ -1203,8 +1202,8 @@ Por fim, ao observar a curva de regressão abaixo e desconsiderando as cidades d
 
 ```{r}
 metricas %>%
-  gather(metrica, valor, -População) %>%
-  ggplot(aes(x=População, y=valor)) +
+  gather(metrica, valor, -Populacao) %>%
+  ggplot(aes(x=Populacao, y=valor)) +
     geom_point(na.rm=T) +
     geom_smooth(method='loess', na.rm=T) +
     facet_wrap(~metrica, scales='free') +
