@@ -1,9 +1,15 @@
 ---
 title: "Processo de Despesa Pública"
+subtitle: "Despesa Pública"
+author: "Laboratório Analytics"
+layout: post
+published: true
+comments: true
 output: 
   html_document:
     fig_width: 7
     fig_height: 6
+
 ---
 
 ```{r setup, include=FALSE}

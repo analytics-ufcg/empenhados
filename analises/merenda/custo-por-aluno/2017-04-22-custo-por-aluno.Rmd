@@ -1,9 +1,10 @@
 ---
 title: "Custo de alimentação por aluno"
+subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
-subtitle: 'Merenda Escolar'
 layout: post
 published: true
+comments: true
 ---
 
 ```{r global_options, include=FALSE}
@@ -36,7 +37,6 @@ source('../lib/load_dados_escolares.R')
 dados_escolares <- load_dados_escolares()
 ```
 
-# Introdução
 Em média, quanto cada município gasta com merenda por aluno? Interessados nessa resposta, o relatório a seguir busca identificar quais os municípios que mais e menos gastam com merenda por aluno e como ocorre a distribuição do gasto por aluno no estado da Paraíba. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. Foram analisados 116 municípios do estado da Paraíba que lançaram licitação de merenda no ano 2015.
 
 ```{r}

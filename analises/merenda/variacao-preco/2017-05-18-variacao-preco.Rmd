@@ -4,6 +4,7 @@ subtitle: "Notas Fiscais"
 author: "Laboratório Analytics"
 layout: post
 published: true
+comments: true
 ---
 
 ```{r global_options, include=FALSE}

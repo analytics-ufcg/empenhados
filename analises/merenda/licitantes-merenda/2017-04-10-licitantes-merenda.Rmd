@@ -1,8 +1,10 @@
 ---
 title: 'Classificação dos licitantes de merenda'
 author: 'Laboratório Analytics'
+subtitle: "Merenda Escolar"
 layout: post
 published: true
+comments: true
 ---
 
 ```{r global_options, include=FALSE}
@@ -37,7 +39,6 @@ source('../lib/load_licitantes_merenda.R')
 theme_set(theme_bw())
 ```
 
-# Introdução
 Ao analisar as licitações de merenda ocorridas na Paraíba entre os anos de 2011 e 2015, verificou-se a presença de similaridades no comportamento das pessoas jurídicas que apresentaram ao menos uma proposta para as licitações do período analisado, referidas daqui em diante como **licitantes**. Com o objetivo de analisar mais detalhadamente essas similaridades, surgiu a iniciativa de dividir os licitantes em grupos utilizando técnicas de agrupamento e em seguida, traçar o perfil de cada um desses grupos.  
 
 ## Descrição da amostra

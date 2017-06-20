@@ -1,8 +1,10 @@
 ---
 title: "Descrição dos compradores e fornecedores de merenda"
+subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
 published: true
+comments: true
 ---
 
 ```{r global_options, include=FALSE}

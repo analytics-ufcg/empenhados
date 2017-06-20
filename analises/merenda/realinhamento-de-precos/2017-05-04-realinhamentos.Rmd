@@ -1,8 +1,10 @@
 ---
 title: 'Realinhamento de Preços'
+subtitle: "Merenda Escolar"
 author: 'Laboratório Analytics'
 layout: post
 published: true
+comments: true
 ---
 
 ```{r setup, include=FALSE}

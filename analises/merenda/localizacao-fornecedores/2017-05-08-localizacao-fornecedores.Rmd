@@ -1,8 +1,10 @@
 ---
 title: "Distribuição Geográfica dos Licitantes"
+subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
 published: true
+comments: true
 ---
 
 ```{r global_options, include=FALSE}
