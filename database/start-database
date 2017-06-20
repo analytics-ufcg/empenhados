@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]
+  then
+    echo 'Volume parameter missing.'
+    echo 'Example: start-database /mnt/analytics1/volumes/database'
+    exit 1
+fi
+
+docker run \
+  --name database \
+  --volume $1:/var/lib/mysql \
+  --publish 3306:3306 \
+  --restart=always \
+  --detach mariadb

@@ -1,24 +1,34 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]
+  then
+    echo 'Volume parameter missing.'
+    echo 'Example: create-database /mnt/analytics1/volumes/database'
+    exit 1
+fi
+
 echo -n 'Enter password: '
 read -s password
 echo
 
+rm -fr $1
+
 docker run \
   --name database \
   --env MYSQL_ROOT_PASSWORD=$password \
+  --volume $1:/var/lib/mysql \
   --publish 3306:3306 \
   --restart=always \
   --detach mariadb
 
-unzip SAGRES.zip -d tmp
-unzip utils.zip -d tmp
-
+unzip 'data/*.zip' -d tmp
 cd tmp
 
 mysql -p$password < SAGRES.sql
 mysql -p$password < SAGRES-keys.sql
+mysql -p$password < SAGRES-novo.sql
 mysql -p$password < utils.sql
+mysql -p$password < notas_fiscais.sql
 
 mysqlimport -p$password \
   --ignore-lines=1 \
@@ -28,6 +38,14 @@ mysqlimport -p$password \
   --local utils \
     empresa.csv \
     municipio.csv
+
+mysqlimport -p$password \
+  --ignore-lines=1 \
+  --fields-enclosed-by='"' \
+  --fields-terminated-by=',' \
+  --lines-terminated-by='\n' \
+  --local notas_fiscais \
+    nota_fiscal.csv
 
 cd ..
 rm -r tmp
