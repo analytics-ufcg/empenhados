@@ -1,0 +1,103 @@
+---
+title: "Descrição dos compradores e fornecedores de merenda"
+subtitle: "Merenda Escolar"
+author: "Laboratório Analytics"
+layout: post
+published: true
+comments: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  screenshot.force = FALSE,
+  fig.cap = '',
+  fig.align = 'center',
+  fig.width = 10)
+
+options(scipen = 999)
+```
+
+```{r adicao de bibliotecas}
+library(ggthemes)
+library(corrplot)
+library(ggplot2)
+library(plotly)
+
+library(RColorBrewer)
+library(scales)
+
+library(tidyr)
+library(plyr)
+library(dplyr)
+
+library(tm)
+library(wordcloud)
+library(stringr)
+
+library(maps)   # mapas simples, eixos, escala, cidades
+library(ggmap)  # Gmaps, OSM + mapas baseados em ggplot2
+library(rgdal)
+library(leaflet)
+library(htmltools)
+
+library(knitr)
+library(methods)
+
+library(rsagrespb)
+```
+
+```{r}
+sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+
+empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = 2) %>%
+  collect(n = Inf)
+
+licitacoes <- tbl(sagres, 'Licitacao') %>%
+  collect(n = Inf)
+
+empenhos_merenda_group <- empenhos_merenda %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(valor_merenda = sum(vl_Empenho))
+
+licitacoes_merenda <- licitacoes %>% 
+  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
+
+```
+
+Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro que recebem? 
+Se sua resposta para a pergunta anterior foi sim, é possível que você tenha sentido dificuldades para reunir informações relevantes, que ajudassem a chegar numa conclusão bem fundamentada, ou que tenha até mesmo coletado tais informações, mas acabou por não saber o que fazer com elas. Problemas como esses são bem comuns ao se lidar com dados relacionados ao orçamento dos municípios e, muitas vezes, afastam o cidadão de seu papel de fiscalizador das ações do estado. Tentando trazer o cidadão de volta a esse papel, foi elaborado esse relatório, onde esperamos facilitar o entendimento sobre os gastos dos municípios da Paraíba, até mesmo se você tenha respondido não à questão anterior :)  
+
+Antes de iniciarmos, alguns pontos importantes precisam ser esclarecidos. Uma etapa muito importante no processo de gastos públicos é a licitação. É por meio dela que a administração pública contrata serviços, realiza obras e compra produtos, por exemplo. Ela é o ponto de inicial de quase todo processo de investimento de receitas públicas, salvo algumas exceções onde podem ser dispensadas ou não são aplicáveis. Para obter mais detalhes sobre tais exceções, é possível acessar as leis (8666/1993)[http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm] e (10520/2002)[http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm], onde estão definidas as regras para o processo licitatório.  
+
+Uma das maiores dificuldades em se trabalhar com licitações vem do fato de que é comum que as prefeituras realizem uma única licitação para a contratação de vários serviços ou para compras de materiais bem distintos. Grande parte das fontes de dados disponíveis não fornecem uma descrição dos itens presentes nas licitações, o que dificulta bastante a análise, pois faz com que itens extremamente diferentes sejam tratados da mesma forma.
+
+Os dados utilizados nesse relatório vem da plataforma (SAGRES)[https://sagres.tce.pb.gov.br/] do (TCE)[https://portal.tce.pb.gov.br/], 
+
+
+## 1 - Panorama
+### 1.1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
+### 1.2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
+
+## 2 - Análise de Licitações
+### 2.1 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
+### 2.2 - Qual a distribuição do número de licitações relacionadas à merenda nos municípios da Paraíba?
+### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
+### 2.4 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba?
+### 2.5 - Qual a distribuição da média do valor da licitação por merenda por ano?
+### 2.6 - Qual a distribuição da mediana do valor da licitação por merenda por ano?
+### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
+### 2.8 - Em que período do ano ocorrem mais licitações de merenda?
+### 2.9 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
+### 2.10 - Como é o padrão para descrição de licitações de merenda?
+### 2.11 - Quanto se gasta com cada tipo de alimento?
+### 2.12 - Quantos tipos diferentes de alimento cada fornecedor vende?
+### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
+### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
+### 2.15 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
+### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
+### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
+### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
+
