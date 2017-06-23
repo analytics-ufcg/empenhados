@@ -56,7 +56,6 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
   collect(n = Inf)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
-  filter(dt_Ano >= 2011 && dt_Ano <= 2015) %>%
   collect(n = Inf)
 
 empenhos_merenda_group <- empenhos_merenda %>%
@@ -135,6 +134,11 @@ Agora que entendemos melhor os nossos dados, podemos ir mais a fundo! Você sabe
 ### 2.1 - Qual o número de licitações que envolvem algum gasto de merenda?
 
 ```{r}
+licitacoes_merenda <- licitacoes_merenda %>%
+  filter(dt_Ano >= 2011 & dt_Ano <= 2015)
+```
+
+```{r}
 plot_ly(data = licitacoes_merenda, x = ~as.factor(dt_Ano), type='histogram') %>%
   layout(
     xaxis = list(title = "Ano"),
@@ -144,8 +148,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(dt_Ano), type='histogram') %>%
 Houve um "salto" no número de licitações entre 2012 e 2013, o que nos leva a acreditar que os municípios passaram fazer mais licitações envolvendo merenda. 
 
 ```{r}
-
-plot_ly(data = licitacoes) %>%
+plot_ly(data = licitacoes %>% filter(dt_Ano >= 2011 & dt_Ano <= 2015)) %>%
   add_histogram(x = ~as.factor(dt_Ano), name = "Outras as licitações") %>%
   add_histogram(data = licitacoes_merenda, ~as.factor(dt_Ano), name = "Merenda Escolar") %>%
   layout(title = "Total de licitações de merenda em relação ao total de licitações",
