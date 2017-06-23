@@ -65,6 +65,19 @@ empenhos_merenda_group <- empenhos_merenda %>%
 licitacoes_merenda <- licitacoes %>% 
   right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
 
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+municipios = tbl(utils, 'municipio') %>%
+  collect()
+
+```
+
+```{r}
+## Adicionando código do município a tabela de licitações
+licitacoes <- licitacoes %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  select(-cd_UnGestora)
 ```
 
 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro que recebem? 
@@ -79,7 +92,41 @@ Os dados utilizados nesse relatório vem da plataforma (SAGRES)[https://sagres.t
 
 ## 1 - Panorama
 ### 1.1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
+
+Considerando todas as licitações realizadas pelos municípios no Estado da Paraíba entre 2010 e 2016, podemos observar quantas licitações são feitas por ano nesses municípios.
+
+```{r}
+licitacoes %>%
+  filter(dt_Ano >= 2010) %>%
+  plot_ly() %>%
+    add_histogram(x = ~as.factor(dt_Ano)) %>%
+    layout(title = "Total de licitações por ano",
+           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f'),
+           xaxis = list(title = 'Ano'))
+```
+
+É estranho perceber que em 2010 o número de licitações é muito superior aos anos seguintes. Mais tarde iremos entender o que aconteceu aqui, mas já adiantamos que as licitações podem continuar gerando empenhos por vários anos, e além disso a base de dados do SAGRES acaba condensando anos de empenhos anteriores a 2010 para o ano 2010 nas licitações, o que faz com que essa diferença seja tão grande.
+
+Levando em consideração esse possível viés em 2010, a partir da seção 2 dessa análise consideraremos apenas os anos entre 2011 e 2015.
+
 ### 1.2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
+
+Já que João Pessoa é a capital e maior cidade da Paraíba, o objetivo é saber se a mesma possui parte significativa das licitações ou não.
+
+```{r}
+# Código do Município de João Pessoa é "095"
+licitacoes %>%
+  filter(dt_Ano >= 2010) %>%
+  plot_ly() %>%
+    add_histogram(x = ~as.factor(dt_Ano), name = 'Restante da Paraíba') %>%
+    add_histogram(data = subset(licitacoes, cd_Municipio == "095"), x = ~as.factor(dt_Ano), name = 'João Pessoa') %>%
+    layout(title = "Total de licitações feitas na Paraíba e em João Pessoa por ano",
+           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f'),
+           xaxis = list(title = 'Ano'),
+           barmode = 'overlay')
+```
+
+É possível observar que em 2015, as licitações feitas no município de João Pessoa atinge praticamente a metada do qeu é feito em todo o Estado, além disso é estranho que nos anos anteriores e posteriores, essa massa tão grande de licitações da capital não se repita. Não é possível, contudo, identificar qual a causa para tamanho aumento em 2015 apenas por essa visualização.
 
 ## 2 - Análise de Licitações
 ### 2.1 - Qual o número de licitações que envolvem as palavras merenda e alimentação escolar?
