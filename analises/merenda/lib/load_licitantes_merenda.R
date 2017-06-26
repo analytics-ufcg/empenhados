@@ -3,24 +3,51 @@ load_licitantes_merenda <- function() {
   library(methods)
   library(dplyr)
   library(stringr)
+  library(rsagrespb)
   
-  sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
+  sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
   utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 
   municipios = tbl(utils, 'municipio') %>%
     collect()
 
+  empenhos <- get_empenhos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = 02) %>%
+    collect(n = Inf)
+  
+  licitacoes <- empenhos %>%
+    group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+    summarise(total_empenhos = n())
+  
   query <- sql('
     SELECT *
-    FROM licitacao
-    WHERE de_Obs REGEXP "merenda"
-    AND dt_Ano BETWEEN 2011 AND 2015
+    FROM Participantes
   ')
-
-  licitacoes <- tbl(sagres, query) %>%
-    compute(name = 'lm') %>%
-    collect()
-
+  
+  participantes <- tbl(sagres, query) %>%
+    collect(n = Inf)
+  
+  licitacoes <- licitacoes %>%
+    mutate(de_Municipio = get.municipio(cd_UGestora))
+  
+  participacoes <- participantes %>%
+    merge(licitacoes, by=c('cd_UGestora', 'tp_Licitacao', 'nu_Licitacao'), all.x=T) %>%
+    group_by(nu_CPFCNPJ) %>%
+    summarise(
+      participou = n(),
+      municipios = n_distinct(de_Municipio))
+  
+  vitorias <- empenhos %>%
+    group_by(cd_Credor) %>%
+    summarise(ganhou = n_distinct(cd_UGestora, nu_Licitacao, tp_Licitacao),
+              valor_total_emp = sum(vl_Empenho),
+              mediana_total_emp = median(vl_Empenho))
+  
+  vitorias <- vitorias %>%
+    left_join(empenhos %>% select(cd_Credor, no_Credor), by = "cd_Credor")%>%
+    distinct(cd_Credor, .keep_all = TRUE)
+    
+  ### O código abaixo ainda não foi alterado considerando a nova base de dados ###
+    
   query <- sql('
     SELECT c.*
     FROM contratos c
@@ -44,7 +71,7 @@ load_licitantes_merenda <- function() {
 
   query <- sql('
     SELECT p.*
-    FROM participantes p
+    FROM Participantes p
     INNER JOIN lm
     USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
   ')
