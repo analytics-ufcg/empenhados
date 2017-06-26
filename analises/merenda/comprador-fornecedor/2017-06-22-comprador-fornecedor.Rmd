@@ -3,7 +3,7 @@ title: "Descrição dos compradores e fornecedores de merenda"
 subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
-published: true
+published: false
 comments: true
 ---
 
@@ -47,6 +47,8 @@ library(knitr)
 library(methods)
 
 library(rsagrespb)
+
+library(lubridate)
 ```
 
 ```{r}
@@ -56,7 +58,8 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
   collect(n = Inf)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
-  collect(n = Inf)
+  collect(n = Inf) %>%
+  mutate(dt_Homologacao = ymd_hms(dt_Homologacao))
 
 empenhos_merenda_group <- empenhos_merenda %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
@@ -84,20 +87,16 @@ Se sua resposta para a pergunta anterior foi sim, é possível que você tenha s
 
 Antes de iniciarmos, alguns pontos importantes precisam ser esclarecidos. Uma etapa muito importante no processo de gastos públicos é a licitação. É por meio dela que a administração pública contrata serviços, realiza obras e compra produtos, por exemplo. Ela é o ponto de inicial de quase todo processo de investimento de receitas públicas, salvo algumas exceções onde podem ser dispensadas ou não são aplicáveis. Para obter mais detalhes sobre tais exceções, é possível acessar as leis [8666/1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm) e [10520/2002](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm), onde estão definidas as regras para o processo licitatório.  
 
-Uma das maiores dificuldades em se trabalhar com licitações vem do fato de que é comum que as prefeituras realizem uma única licitação para a contratação de vários serviços ou para compras de materiais bem distintos. Grande parte das fontes de dados disponíveis não fornecem uma descrição dos itens presentes nas licitações, o que dificulta bastante a análise, pois faz com que itens extremamente diferentes sejam tratados da mesma forma.
-
-Os dados utilizados nesse relatório vem da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [TCE](https://portal.tce.pb.gov.br/), 
+Os dados utilizados nesse relatório foram obtidos a partir da plataforma (SAGRES)[https://sagres.tce.pb.gov.br/] do (Tribunal de Contas do Estado da Paraíba)[https://portal.tce.pb.gov.br/] e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2011 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
 
 ## 1 - Panorama
-### 1.1 - Qual o número total de licitações feitas por ano entre 2010 e 2016?
-
-Considerando todas as licitações realizadas pelos municípios no Estado da Paraíba entre 2010 e 2016, podemos observar quantas licitações são feitas por ano nesses municípios.
+### 1.1 - Qual o número total de licitações feitas por ano no período analisado?
+Considerando todas as licitações realizadas pelos municípios no Estado da Paraíba no período, podemos observar quantas licitações são feitas por ano nesses municípios.
 
 ```{r}
 licitacoes %>%
-  filter(dt_Ano >= 2010) %>%
   plot_ly() %>%
-    add_histogram(x = ~as.factor(dt_Ano)) %>%
+    add_histogram(x = ~as.factor(year(dt_Homologacao))) %>%
     layout(title = "Total de licitações por ano",
            yaxis = list(title = 'Número total de licitações', hoverformat= '.0f'),
            xaxis = list(title = 'Ano'))
