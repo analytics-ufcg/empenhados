@@ -34,9 +34,17 @@ load_licitantes_merenda <- function() {
   ')
   
   participantes <- tbl(sagres, query) %>%
-    collapse(name = "pm") %>%
     collect(n = Inf)
   
+  query <- sql('
+    SELECT nu_CPFCNPJ, no_Fornecedor
+    FROM Fornecedores
+  ')
+  
+  fornecedores <- tbl(sagres, query) %>%
+    collect(n = Inf) %>%
+    distinct(nu_CPFCNPJ, .keep_all = TRUE)
+    
   get.municipio <- function(cd_UGestora) {
     result <- data.frame(
       cd_Municipio = str_sub(cd_UGestora, -3)) %>%
@@ -61,10 +69,6 @@ load_licitantes_merenda <- function() {
               valor_mediana_emp = median(vl_Empenho),
               valor_total_pag = sum(total_pag, na.rm = TRUE))
   
-  vitorias <- vitorias %>%
-    left_join(empenhos %>% select(cd_Credor, no_Credor), by = "cd_Credor")%>%
-    distinct(cd_Credor, .keep_all = TRUE)
-  
   licitantes <- participacoes %>%
     left_join(vitorias, by = c('nu_CPFCNPJ' = 'cd_Credor'))
   
@@ -79,6 +83,10 @@ load_licitantes_merenda <- function() {
     filter(
       is.finite(ganhou),
       nu_CPFCNPJ != '00000000000000')
+  
+  licitantes <- licitantes %>%
+    left_join(fornecedores, by = c("nu_CPFCNPJ")) %>%
+    filter(!is.na(no_Fornecedor))
   
   return(licitantes)
 }
