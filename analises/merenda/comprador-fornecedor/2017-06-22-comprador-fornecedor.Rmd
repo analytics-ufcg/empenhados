@@ -58,6 +58,7 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
   collect(n = Inf)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
+  filter(year(dt_Homologacao) >= 2003 & year(dt_Homologacao) <= 2016) %>%
   collect(n = Inf) %>%
   mutate(dt_Homologacao = ymd_hms(dt_Homologacao))
 
@@ -87,43 +88,74 @@ Se sua resposta para a pergunta anterior foi sim, é possível que você tenha s
 
 Antes de iniciarmos, alguns pontos importantes precisam ser esclarecidos. Uma etapa muito importante no processo de gastos públicos é a licitação. É por meio dela que a administração pública contrata serviços, realiza obras e compra produtos, por exemplo. Ela é o ponto de inicial de quase todo processo de investimento de receitas públicas, salvo algumas exceções onde podem ser dispensadas ou não são aplicáveis. Para obter mais detalhes sobre tais exceções, é possível acessar as leis [8666/1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm) e [10520/2002](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm), onde estão definidas as regras para o processo licitatório.  
 
-Os dados utilizados nesse relatório foram obtidos a partir da plataforma (SAGRES)[https://sagres.tce.pb.gov.br/] do (Tribunal de Contas do Estado da Paraíba)[https://portal.tce.pb.gov.br/] e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2011 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
+Os dados utilizados nesse relatório foram obtidos a partir da plataforma (SAGRES)[https://sagres.tce.pb.gov.br/] do (Tribunal de Contas do Estado da Paraíba)[https://portal.tce.pb.gov.br/] e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2003 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
 
-## 1 - Panorama
-### 1.1 - Qual o número total de licitações feitas por ano no período analisado?
-Considerando todas as licitações realizadas pelos municípios no Estado da Paraíba no período, podemos observar quantas licitações são feitas por ano nesses municípios.
+## Panorama
+### Qual o número de licitações realizadas em cada ano do período analisado?
+Uma boa forma de obtermos uma visão geral de nossos dados, é verificar quantas licitações foram realizadas a cada ano durante o período analisado. Fazendo isso, uma coisa bastante interessante pode ser vista: há três 'saltos' no total de licitações realizadas. O primeiro desses saltos ocorre em 2005, quando há um aumento de 66% no número de licitações realizadas. Em seguida, há um novo salto em 2009, sendo de 33% o aumento no número de licitações. O último salto ocorre em 2013 e o aumento é de 52%. O que esses anos teriam em comum? Os três marcam o início dos mandatos municipais.
+
 
 ```{r}
 licitacoes %>%
   plot_ly() %>%
     add_histogram(x = ~as.factor(year(dt_Homologacao))) %>%
     layout(title = "Total de licitações por ano",
-           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f'),
-           xaxis = list(title = 'Ano'))
+           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Ano')) 
 ```
 
-É estranho perceber que em 2010 o número de licitações é muito superior aos anos seguintes. Mais tarde iremos entender o que aconteceu aqui, mas já adiantamos que as licitações podem continuar gerando empenhos por vários anos, e além disso a base de dados do SAGRES acaba condensando anos de empenhos anteriores a 2010 para o ano 2010 nas licitações, o que faz com que essa diferença seja tão grande.
 
-Levando em consideração esse possível viés em 2010, a partir da seção 2 dessa análise consideraremos apenas os anos entre 2011 e 2015.
-
-### 1.2 - Qual o número de licitações feitas por ano em João Pessoa em relação ao número de licitações feitas na Paraíba?
-
-Já que João Pessoa é a capital e maior cidade da Paraíba, o objetivo é saber se a mesma possui parte significativa das licitações ou não.
+### 
+Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais e menos realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
 
 ```{r}
-# Código do Município de João Pessoa é "095"
+dez_mais <- licitacoes %>%
+  group_by(de_Municipio) %>%
+  summarise(total_licitacoes = n()) %>%
+  arrange(desc(total_licitacoes)) %>%
+  head(10) %>%
+  select(de_Municipio)
+
 licitacoes %>%
-  filter(dt_Ano >= 2010) %>%
+  inner_join(dez_mais, by = "de_Municipio") %>%
+  group_by(de_Municipio) %>%
+  summarise(total_licitacoes = n()) %>%
   plot_ly() %>%
-    add_histogram(x = ~as.factor(dt_Ano), name = 'Restante da Paraíba') %>%
-    add_histogram(data = subset(licitacoes, cd_Municipio == "095"), x = ~as.factor(dt_Ano), name = 'João Pessoa') %>%
-    layout(title = "Total de licitações feitas na Paraíba e em João Pessoa por ano",
-           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f'),
-           xaxis = list(title = 'Ano'),
-           barmode = 'overlay')
+    add_bars(x = ~de_Municipio, y=~total_licitacoes) %>%
+    layout(title = "Municipios que mais licitaram",
+           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Município')) 
 ```
 
-É possível observar que em 2015, as licitações feitas no município de João Pessoa atinge praticamente a metada do qeu é feito em todo o Estado, além disso é estranho que nos anos anteriores e posteriores, essa massa tão grande de licitações da capital não se repita. Não é possível, contudo, identificar qual a causa para tamanho aumento em 2015 apenas por essa visualização.
+```{r}
+# licitacoes %>%
+#   inner_join(dez_mais, by = "de_Municipio") %>%
+#   group_by(de_Municipio, year(dt_Homologacao)) %>%
+#   summarise(total_por_ano = n()) %>%
+#   plotly() %>%
+#     add_trace(x=~year(dt_Homologacao), y=~total_por_ano, type = "scatter", mode="lines+markers")
+```
+
+```{r}
+dez_menos <- licitacoes %>%
+  group_by(de_Municipio) %>%
+  summarise(total_licitacoes = n()) %>%
+  arrange(desc(total_licitacoes)) %>%
+  tail(10) %>%
+  select(de_Municipio)
+
+licitacoes %>%
+  inner_join(dez_menos, by="de_Municipio") %>%
+  group_by(de_Municipio) %>%
+  summarise(total_licitacoes = n()) %>%
+  plot_ly() %>%
+    add_bars(x = ~de_Municipio, y=~total_licitacoes) %>%
+    layout(title = "Municipios que menos licitaram",
+           yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Município')) 
+```
+
+
 
 ## 2 - Análise de Licitações
 Agora que entendemos melhor os nossos dados, podemos ir mais a fundo! Você sabe __como os municípios da paraíba licitam merenda?__. As seções seguintes nos ajudaráo a responder a essa pergumta.
