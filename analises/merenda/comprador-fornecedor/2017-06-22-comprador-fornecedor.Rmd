@@ -52,6 +52,10 @@ library(lubridate)
 ```
 
 ```{r}
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+municipios = tbl(utils, 'municipio') %>%
+  collect()
+
 sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = 2) %>%
@@ -62,25 +66,19 @@ licitacoes <- tbl(sagres, 'Licitacao') %>%
   collect(n = Inf) %>%
   mutate(dt_Homologacao = ymd_hms(dt_Homologacao))
 
-empenhos_merenda_group <- empenhos_merenda %>%
-  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise(valor_merenda = sum(vl_Empenho))
-
-licitacoes_merenda <- licitacoes %>% 
-  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
-
-utils = src_mysql('utils', group='ministerio-publico', password=NULL)
-municipios = tbl(utils, 'municipio') %>%
-  collect()
-```
-
-```{r}
 ## Adicionando código do município a tabela de licitações
 licitacoes <- licitacoes %>%
   mutate(cd_UGestora_copy = cd_UGestora) %>%
   separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   select(-cd_UnGestora)
+
+empenhos_merenda_group <- empenhos_merenda %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(valor_merenda = sum(vl_Empenho))
+
+licitacoes_merenda <- licitacoes %>% 
+  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
 ```
 
 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro que recebem? 
@@ -88,7 +86,7 @@ Se sua resposta para a pergunta anterior foi sim, é possível que você tenha s
 
 Antes de iniciarmos, alguns pontos importantes precisam ser esclarecidos. Uma etapa muito importante no processo de gastos públicos é a licitação. É por meio dela que a administração pública contrata serviços, realiza obras e compra produtos, por exemplo. Ela é o ponto de inicial de quase todo processo de investimento de receitas públicas, salvo algumas exceções onde podem ser dispensadas ou não são aplicáveis. Para obter mais detalhes sobre tais exceções, é possível acessar as leis [8666/1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm) e [10520/2002](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm), onde estão definidas as regras para o processo licitatório.  
 
-Os dados utilizados nesse relatório foram obtidos a partir da plataforma (SAGRES)[https://sagres.tce.pb.gov.br/] do (Tribunal de Contas do Estado da Paraíba)[https://portal.tce.pb.gov.br/] e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2003 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
+Os dados utilizados nesse relatório foram obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2003 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
 
 ## Panorama
 ### Qual o número de licitações realizadas em cada ano do período analisado?
@@ -135,7 +133,7 @@ licitacoes %>%
 #   plotly() %>%
 #     add_trace(x=~year(dt_Homologacao), y=~total_por_ano, type = "scatter", mode="lines+markers")
 ```
-
+  
 ```{r}
 dez_menos <- licitacoes %>%
   group_by(de_Municipio) %>%
@@ -157,18 +155,19 @@ licitacoes %>%
 
 
 
+
 ## 2 - Análise de Licitações
-Agora que entendemos melhor os nossos dados, podemos ir mais a fundo! Você sabe __como os municípios da paraíba licitam merenda?__. As seções seguintes nos ajudaráo a responder a essa pergumta.
+Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo! Escolhemos trabalhar com dados relacionados com a __merenda escolar dos municípios da paraíba entre 2012 e 2016__.
 
 ### 2.1 - Quantas licitações de merenda são feitas por ano?
 
 ```{r}
 licitacoes_merenda <- licitacoes_merenda %>%
-  filter(dt_Ano >= 2011 & dt_Ano <= 2015)
+  filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)
 
-plot_ly(data = licitacoes %>% filter(dt_Ano >= 2011 & dt_Ano <= 2015)) %>%
-  add_histogram(x = ~as.factor(dt_Ano), name = "Outras as licitações") %>%
-  add_histogram(data = licitacoes_merenda, ~as.factor(dt_Ano), name = "Merenda Escolar") %>%
+plot_ly(data = licitacoes %>% filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)) %>%
+  add_histogram(x = ~as.factor(year(dt_Homologacao)), name = "Outras as licitações") %>%
+  add_histogram(data = licitacoes_merenda, ~as.factor(year(dt_Homologacao)), name = "Merenda Escolar") %>%
   layout(title = "Total de licitações de merenda em relação ao total de licitações",
          yaxis = list(title = 'Número de licitações', hoverformat= '.0f'),
          xaxis = list(title = 'Ano'),
@@ -177,7 +176,7 @@ plot_ly(data = licitacoes %>% filter(dt_Ano >= 2011 & dt_Ano <= 2015)) %>%
 Temos uma grande quantidade de licitações, envolvendo os mais diversos itens, mas neste trabalho estamos interessados nos dados que dizem respeito a merenda escolar, então a partir daqui nosso foco será sobre este subconjunto de informação. Emtão ficamos com o gráfico abaixo:
 
 ```{r}
-plot_ly(data = licitacoes_merenda, x = ~as.factor(dt_Ano), type='histogram') %>%
+plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='histogram') %>%
   layout(
     xaxis = list(title = "Ano"),
     yaxis = list(title = "Número total de licitações"),
@@ -186,16 +185,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(dt_Ano), type='histogram') %>%
 Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda. Infelizmente, com os dados que temos não somos capazes de justificar essa alteração.
  
 ### 2.2 Quais são os municípios que mais licitam merenda?
-```{r}
-
-municipios_nome <- municipios %>%
-  subset(select = c(cd_Municipio, de_Municipio))
-
-licitacoes_merenda <- licitacoes_merenda %>%
-  mutate(cd_UGestora_copy = cd_UGestora) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
-  left_join(municipios_nome, 'cd_Municipio')
-
+```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
 # Atualizando nome de municípios que mudaram de nome nos últimos anos
@@ -213,15 +203,11 @@ paraiba = licitacoes_merenda %>%
 paraiba_sumarizado = paraiba %>%
   group_by(de_Municipio) %>%
   summarize(total = n(),
-            valor_medio_lic = mean(vl_Licitacao),
             valor_medio_emp = mean(valor_merenda),
-            valor_total_lic = sum(vl_Licitacao),
             valor_total_emp = sum(valor_merenda),
-            total_num = n())
-
-paraiba_sumarizado = paraiba_sumarizado %>%
-  mutate(valor_medio_lic_original = valor_medio_lic) %>%
-  mutate(valor_total_lic_original = valor_total_lic)
+            total_num = n(),
+            valor_medio_emp_num = round(mean(valor_merenda), 2),
+            valor_total_emp_num = sum(valor_merenda))
 
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
@@ -229,20 +215,15 @@ paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
                                labels = c("de 1 a 3", "de 3 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50"),
                                 include.lowest = T)
 
-paraiba_sumarizado$valor_medio_lic = cut(paraiba_sumarizado$valor_medio_lic,
-                                         breaks = c(0, 50000, 100000, 200000, 300000, 500000, 1000000, 2000000, 21000000),
-                                         labels = c("De 0 a 50", "De 50 a 100", "De 100 a 200", "De 200 a 300",  "De 300 a 500",
-                                                    "De 500 a 1000", "De 1000 a 2000",  "Acima de 2000"),
-                                         include.lowest = T)
+paraiba_sumarizado$valor_medio_emp <- cut(paraiba_sumarizado$valor_medio_emp,
+                                         breaks = c(0, 3000, 10000, 30000, 50000,100000,200000,500000),
+                                         labels = c("De 0 a 3", "De 3 a 10", "De 10 a 30", "De 30 a 50", "De 50 a 100", "De 100 a 200", "De 200 a 500"),
+                                          include.lowest = T)
 
-paraiba_sumarizado$valor_total_lic = cut(paraiba_sumarizado$valor_total_lic,
-                                         breaks = c(0, 50000, 100000, 250000, 500000, 1000000, 5000000, 10000000,
-                                                    25000000, 50000000),
-                                         labels = c("De 0 a 50", "De 50 a 100", "De 100 a 500", "De 500 a 1000",
-                                                    "De 1000 a 2500", "De 1000 a 5000", "De 5000 a 10000", "De 10000 a 25000",
-                                                    "De 25000 a 50000"),
-                                         include.lowest = T
-                                         )
+paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp %>%
+                                         breaks = c(),
+                                         labels = c())
+
 
 # Criando um data frame com os municípios na ordem do mapa
 levels_mapa = mapa_paraiba@data$Nome_Munic
@@ -270,7 +251,6 @@ leaflet(data = mapa_paraiba) %>%
             title = "Licitações por município",
             opacity = 1
   )
-
 ```
 Os municípios que mais fizeram licitações envolevendo merenda foram:
 
@@ -285,8 +265,9 @@ kable(
 ### 2.2 - Quais os municípios que mais gastam com merenda?
 
 ```{r}
-colors = brewer.pal(9,"YlOrRd")
-mapa_paraiba@data$Y <- paraiba_municipios$valor_total_lic
+colors = brewer.pal(7,"YlOrRd")
+mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_emp
+mapa_paraiba@data$X <- paraiba_municipios$valor_medio_emp_num
 colors = colorFactor('OrRd', mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
