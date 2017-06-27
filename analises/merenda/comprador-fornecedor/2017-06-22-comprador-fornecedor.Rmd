@@ -58,7 +58,7 @@ municipios = tbl(utils, 'municipio') %>%
 
 sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
-empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = 2) %>%
+empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
   collect(n = Inf)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
@@ -153,9 +153,6 @@ licitacoes %>%
            xaxis = list(title = 'Município')) 
 ```
 
-
-
-
 ## 2 - Análise de Licitações
 Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo! Escolhemos trabalhar com dados relacionados com a __merenda escolar dos municípios da paraíba entre 2012 e 2016__.
 
@@ -185,6 +182,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
 Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda. Infelizmente, com os dados que temos não somos capazes de justificar essa alteração.
  
 ### 2.2 Quais são os municípios que mais licitam merenda?
+O mapa abaixo vai nos ajudar a responder a essa pergunta.
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
@@ -211,32 +209,35 @@ paraiba_sumarizado = paraiba %>%
 
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
-                                breaks = c(0,3,5,7,10,15,25,50),
-                               labels = c("de 1 a 3", "de 3 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50"),
-                                include.lowest = T)
+                                breaks = c(0,5,7,10,15,25,50, 120),
+                               labels = c("de 1 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50", "Acima de 50"),
+                                include.lowest = F)
 
 paraiba_sumarizado$valor_medio_emp <- cut(paraiba_sumarizado$valor_medio_emp,
-                                         breaks = c(0, 3000, 10000, 30000, 50000,100000,200000,500000),
-                                         labels = c("De 0 a 3", "De 3 a 10", "De 10 a 30", "De 30 a 50", "De 50 a 100", "De 100 a 200", "De 200 a 500"),
-                                          include.lowest = T)
+                                         breaks = c(0, 15000, 30000, 50000, 75000, 100000, 200000, 100000000),
+                                         labels = c("De 0 a 15", "De 15 a 30", "De 30 a 50", "De 50 a 75", "De 75 a 100", "De 100 a 200", "Acima de 200"),
+                                          include.lowest = F)
 
-paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp %>%
-                                         breaks = c(),
-                                         labels = c())
-
-
+paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp,
+                                         breaks = c(0, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
+                                         labels = c("De 0 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"))
+# max(paraiba_sumarizado$valor_total_emp_num)
+# ggplot(data = paraiba_sumarizado %>% filter(valor_total_emp_num < 5000000) , aes(x = valor_total_emp_num)) + 
+#   geom_histogram(binwidth = 50000)
 # Criando um data frame com os municípios na ordem do mapa
 levels_mapa = mapa_paraiba@data$Nome_Munic
 paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
 # Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
 paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+```
 
+```{r}
 colors = brewer.pal(6,"YlOrRd")
 
 # A variável Y recebe os valores em ordem que devem apontar para cada municipio
 mapa_paraiba@data$Y <- paraiba_municipios$total
-
+mapa_paraiba@data$X <- paraiba_municipios$total_num
 colors = colorFactor('OrRd', mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
@@ -245,13 +246,15 @@ leaflet(data = mapa_paraiba) %>%
               weight = 1,
               fillColor = colors(mapa_paraiba@data$Y),
               color = 'black',
-              label = mapa_paraiba@data$Nome_Munic,
+              label = paste(mapa_paraiba@data$Nome_Munic, "Número de licitações:", mapa_paraiba$X),
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
             title = "Licitações por município",
             opacity = 1
   )
 ```
+
+
 Os municípios que mais fizeram licitações envolevendo merenda foram:
 
 ```{r}
@@ -263,7 +266,8 @@ kable(
 
  
 ### 2.2 - Quais os municípios que mais gastam com merenda?
-
+Aqui, vamos analisar os municípios que mais gastam recursos com merenda escolar.
+Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar.
 ```{r}
 colors = brewer.pal(7,"YlOrRd")
 mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_emp
@@ -279,10 +283,45 @@ leaflet(data = mapa_paraiba) %>%
               label = mapa_paraiba@data$Nome_Munic,
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "Valor total de licitações",
+            title = "Valor médio dos empenhos de merenda",
             opacity = 1
   )
 ```
+
+```{r}
+kable(
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_medio_emp_num)), desc(valor_medio_emp_num)), 10),
+  col.names = c('Município', 'Valor médio dos empenhos de merenda'),
+  align = c('c'))
+```
+
+```{r}
+colors = brewer.pal(7,"YlOrRd")
+mapa_paraiba@data$Y <- paraiba_municipios$valor_total_emp
+colors = colorFactor('OrRd', mapa_paraiba@data$Y)
+
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5,
+              weight = 1,
+              fillColor = colors(mapa_paraiba@data$Y),
+              color = 'black',
+              label = mapa_paraiba@data$Nome_Munic,
+              fillOpacity = 1) %>%
+  addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
+            title = "Valor total dos empenhos de merenda",
+            opacity = 1
+  )
+```
+
+```{r}
+kable(
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_total_emp_num)), desc(valor_total_emp_num)), 10),
+  col.names = c('Município', 'Valor total dos empenhos de merenda'),
+  align = c('c'))
+```
+
+
 ### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
 ### 2.4 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba?
 ### 2.5 - Qual a distribuição da média do valor da licitação por merenda por ano?
