@@ -59,7 +59,11 @@ municipios = tbl(utils, 'municipio') %>%
 sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
-  collect(n = Inf)
+  collect(n = Inf) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  select(-cd_UnGestora)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
   filter(year(dt_Homologacao) >= 2003 & year(dt_Homologacao) <= 2016) %>%
@@ -76,6 +80,16 @@ licitacoes <- licitacoes %>%
 empenhos_merenda_group <- empenhos_merenda %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
   summarise(valor_merenda = sum(vl_Empenho))
+
+empenhos <- tbl(sagres, 'Empenhos') %>%
+  select(c(cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, vl_Empenho, dt_Empenho)) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  collect(n = Inf) %>%
+  mutate(dt_Empenho = ymd_hms(dt_Empenho)) %>%
+  filter(year(dt_Empenho) >= 2003 & year(dt_Empenho) <= 2016) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  select(-cd_UnGestora) 
 
 licitacoes_merenda <- licitacoes %>% 
   right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
@@ -104,18 +118,20 @@ licitacoes %>%
 
 
 ### 
-Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais e menos realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
+Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
+Feita essa análise, descobrimos que dos cinco municípios que mais realizam licitações, quatro também estão presentes na lista dos mais populosos do estado. São eles: João Pessoa, Campina Grande, Santa Rita e Patos. A exceção aqui fica por conta do município de Pombal, que não está entre os quinze municípios mais populosos do estado e é o quinto maior realizador de licitações.
+
 
 ```{r}
-dez_mais <- licitacoes %>%
+cinco_mais <- licitacoes %>%
   group_by(de_Municipio) %>%
   summarise(total_licitacoes = n()) %>%
   arrange(desc(total_licitacoes)) %>%
-  head(10) %>%
+  head(5) %>%
   select(de_Municipio)
 
 licitacoes %>%
-  inner_join(dez_mais, by = "de_Municipio") %>%
+  inner_join(cinco_mais, by = "de_Municipio") %>%
   group_by(de_Municipio) %>%
   summarise(total_licitacoes = n()) %>%
   plot_ly() %>%
@@ -125,33 +141,41 @@ licitacoes %>%
            xaxis = list(title = 'Município')) 
 ```
 
-```{r}
-# licitacoes %>%
-#   inner_join(dez_mais, by = "de_Municipio") %>%
-#   group_by(de_Municipio, year(dt_Homologacao)) %>%
-#   summarise(total_por_ano = n()) %>%
-#   plotly() %>%
-#     add_trace(x=~year(dt_Homologacao), y=~total_por_ano, type = "scatter", mode="lines+markers")
-```
-  
-```{r}
-dez_menos <- licitacoes %>%
-  group_by(de_Municipio) %>%
-  summarise(total_licitacoes = n()) %>%
-  arrange(desc(total_licitacoes)) %>%
-  tail(10) %>%
-  select(de_Municipio)
 
+Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chama atenção o caso de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016. 
+
+```{r}
 licitacoes %>%
-  inner_join(dez_menos, by="de_Municipio") %>%
-  group_by(de_Municipio) %>%
-  summarise(total_licitacoes = n()) %>%
+  inner_join(cinco_mais, by = "de_Municipio") %>%
+  mutate(dt_Ano_Homologacao = as.numeric(year(dt_Homologacao))) %>%
+  group_by(de_Municipio, dt_Ano_Homologacao) %>%
+  summarise(total_por_ano = n()) %>%
   plot_ly() %>%
-    add_bars(x = ~de_Municipio, y=~total_licitacoes) %>%
-    layout(title = "Municipios que menos licitaram",
+    add_trace(x=~dt_Ano_Homologacao, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
+    layout(title = "Total anual de licitações nos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Município')) 
+           xaxis = list(title = 'Ano')) 
 ```
+
+
+Aqui cabe uma explicação: Uma diminuição no total de licitações realizadas, não necessariamente implica que houveram menos compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**. Esse é o próximo passo que devemos tomar.
+
+
+```{r}
+empenhos %>%
+  inner_join(cinco_mais, by = "de_Municipio") %>%
+  mutate(dt_Ano) %>%
+  group_by(de_Municipio, dt_Ano) %>%
+  summarise(total_por_ano = n()) %>%
+  plot_ly() %>%
+     add_trace(x=~dt_Ano, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
+    layout(title = "Total anual de empenhos nos 5 municípios que mais licitaram",
+           yaxis = list(title = 'Número total de empenhos', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Ano')) 
+```
+
+
+
 
 ## 2 - Análise de Licitações
 Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo! Escolhemos trabalhar com dados relacionados com a __merenda escolar dos municípios da paraíba entre 2012 e 2016__.
@@ -289,18 +313,16 @@ kable(
 
 
 ### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.4 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.5 - Qual a distribuição da média do valor da licitação por merenda por ano?
-### 2.6 - Qual a distribuição da mediana do valor da licitação por merenda por ano?
+
 ### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
+
 ### 2.8 - Em que período do ano ocorrem mais licitações de merenda?
 ### 2.9 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
-### 2.10 - Como é o padrão para descrição de licitações de merenda?
-### 2.11 - Quanto se gasta com cada tipo de alimento?
-### 2.12 - Quantos tipos diferentes de alimento cada fornecedor vende?
+
 ### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
 ### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
 ### 2.15 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
+
 ### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
 ### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
 ### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
