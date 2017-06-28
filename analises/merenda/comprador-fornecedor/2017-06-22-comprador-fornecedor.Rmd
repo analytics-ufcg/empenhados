@@ -82,10 +82,14 @@ empenhos_merenda_group <- empenhos_merenda %>%
   summarise(valor_merenda = sum(vl_Empenho))
 
 empenhos <- tbl(sagres, 'Empenhos') %>%
-  select(c(cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, vl_Empenho)) %>%
+  select(c(cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, vl_Empenho, dt_Empenho)) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
   collect(n = Inf) %>%
   mutate(dt_Empenho = ymd_hms(dt_Empenho)) %>%
-  filter(year(dt_Empenho) >= 2003 & year(dt_Empenho) <= 2016)
+  filter(year(dt_Empenho) >= 2003 & year(dt_Empenho) <= 2016) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  select(-cd_UnGestora) 
 
 licitacoes_merenda <- licitacoes %>% 
   right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
@@ -140,7 +144,6 @@ licitacoes %>%
 
 Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chama atenção o caso de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016. 
 
-
 ```{r}
 licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
@@ -155,21 +158,23 @@ licitacoes %>%
 ```
 
 
-Aqui cabe uma explicação: Uma diminuição no total de licitações realizadas, não necessariamente implica que houveram menos compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando os diferentes contratos gerados pela licitação, representados geralmente na forma de **empenhos**. Esse é o próximo passo que devemos tomar.
+Aqui cabe uma explicação: Uma diminuição no total de licitações realizadas, não necessariamente implica que houveram menos compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**. Esse é o próximo passo que devemos tomar.
 
 
 ```{r}
-empenhos_merenda %>%
+empenhos %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
-  mutate(dt_Ano_Empenho = as.numeric(year(dt_Empenho))) %>%
-  group_by(de_Municipio, dt_Ano_Empenho) %>%
+  mutate(dt_Ano) %>%
+  group_by(de_Municipio, dt_Ano) %>%
   summarise(total_por_ano = n()) %>%
   plot_ly() %>%
-     add_trace(x=~dt_Ano_Empenho, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
+     add_trace(x=~dt_Ano, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
     layout(title = "Total anual de empenhos nos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de empenhos', hoverformat= '.0f', fixedrange = TRUE),
            xaxis = list(title = 'Ano')) 
 ```
+
+
 
 
 ## 2 - Análise de Licitações
@@ -201,6 +206,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
 Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda. Infelizmente, com os dados que temos não somos capazes de justificar essa alteração.
  
 ### 2.2 Quais são os municípios que mais licitam merenda?
+O mapa abaixo vai nos ajudar a responder a essa pergunta.
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
@@ -227,32 +233,35 @@ paraiba_sumarizado = paraiba %>%
 
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
-                                breaks = c(0,3,5,7,10,15,25,50),
-                               labels = c("de 1 a 3", "de 3 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50"),
-                                include.lowest = T)
+                                breaks = c(0,5,7,10,15,25,50, 120),
+                               labels = c("de 1 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50", "Acima de 50"),
+                                include.lowest = F)
 
 paraiba_sumarizado$valor_medio_emp <- cut(paraiba_sumarizado$valor_medio_emp,
-                                         breaks = c(0, 3000, 10000, 30000, 50000,100000,200000,500000),
-                                         labels = c("De 0 a 3", "De 3 a 10", "De 10 a 30", "De 30 a 50", "De 50 a 100", "De 100 a 200", "De 200 a 500"),
-                                          include.lowest = T)
+                                         breaks = c(0, 15000, 30000, 50000, 75000, 100000, 200000, 100000000),
+                                         labels = c("De 0 a 15", "De 15 a 30", "De 30 a 50", "De 50 a 75", "De 75 a 100", "De 100 a 200", "Acima de 200"),
+                                          include.lowest = F)
 
 paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp,
-                                         breaks = c(),
-                                         labels = c())
-
-
+                                         breaks = c(0, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
+                                         labels = c("De 0 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"))
+# max(paraiba_sumarizado$valor_total_emp_num)
+# ggplot(data = paraiba_sumarizado %>% filter(valor_total_emp_num < 5000000) , aes(x = valor_total_emp_num)) + 
+#   geom_histogram(binwidth = 50000)
 # Criando um data frame com os municípios na ordem do mapa
 levels_mapa = mapa_paraiba@data$Nome_Munic
 paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
 # Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
 paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+```
 
+```{r}
 colors = brewer.pal(6,"YlOrRd")
 
 # A variável Y recebe os valores em ordem que devem apontar para cada municipio
 mapa_paraiba@data$Y <- paraiba_municipios$total
-
+mapa_paraiba@data$X <- paraiba_municipios$total_num
 colors = colorFactor('OrRd', mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
@@ -261,13 +270,15 @@ leaflet(data = mapa_paraiba) %>%
               weight = 1,
               fillColor = colors(mapa_paraiba@data$Y),
               color = 'black',
-              label = mapa_paraiba@data$Nome_Munic,
+              label = paste(mapa_paraiba@data$Nome_Munic, "Número de licitações:", mapa_paraiba$X),
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
             title = "Licitações por município",
             opacity = 1
   )
 ```
+
+
 Os municípios que mais fizeram licitações envolevendo merenda foram:
 
 ```{r}
@@ -279,7 +290,8 @@ kable(
 
  
 ### 2.2 - Quais os municípios que mais gastam com merenda?
-
+Aqui, vamos analisar os municípios que mais gastam recursos com merenda escolar.
+Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar.
 ```{r}
 colors = brewer.pal(7,"YlOrRd")
 mapa_paraiba@data$Y <- paraiba_municipios$valor_medio_emp
@@ -295,23 +307,56 @@ leaflet(data = mapa_paraiba) %>%
               label = mapa_paraiba@data$Nome_Munic,
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "Valor total de licitações",
+            title = "Valor médio dos empenhos de merenda",
             opacity = 1
   )
 ```
+
+```{r}
+kable(
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_medio_emp_num)), desc(valor_medio_emp_num)), 10),
+  col.names = c('Município', 'Valor médio dos empenhos de merenda'),
+  align = c('c'))
+```
+
+```{r}
+colors = brewer.pal(7,"YlOrRd")
+mapa_paraiba@data$Y <- paraiba_municipios$valor_total_emp
+colors = colorFactor('OrRd', mapa_paraiba@data$Y)
+
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5,
+              weight = 1,
+              fillColor = colors(mapa_paraiba@data$Y),
+              color = 'black',
+              label = mapa_paraiba@data$Nome_Munic,
+              fillOpacity = 1) %>%
+  addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
+            title = "Valor total dos empenhos de merenda",
+            opacity = 1
+  )
+```
+
+```{r}
+kable(
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_total_emp_num)), desc(valor_total_emp_num)), 10),
+  col.names = c('Município', 'Valor total dos empenhos de merenda'),
+  align = c('c'))
+```
+
+
 ### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.4 - Qual a distribuição do valor médio de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.5 - Qual a distribuição da média do valor da licitação por merenda por ano?
-### 2.6 - Qual a distribuição da mediana do valor da licitação por merenda por ano?
+
 ### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
+
 ### 2.8 - Em que período do ano ocorrem mais licitações de merenda?
 ### 2.9 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
-### 2.10 - Como é o padrão para descrição de licitações de merenda?
-### 2.11 - Quanto se gasta com cada tipo de alimento?
-### 2.12 - Quantos tipos diferentes de alimento cada fornecedor vende?
+
 ### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
 ### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
 ### 2.15 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
+
 ### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
 ### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
 ### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
