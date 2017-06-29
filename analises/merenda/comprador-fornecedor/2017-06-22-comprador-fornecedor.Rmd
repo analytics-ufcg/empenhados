@@ -206,12 +206,11 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
     yaxis = list(title = "Número total de licitações"),
     title = "Total de licitações de merenda por ano")
 ```
-
-
-Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda.
+  
+    
+Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda, esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. E exceto por 2012, a quantidade de licitações varia pouco.
  
 ### Quem faz mais licitações?
-
 
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
@@ -282,16 +281,25 @@ leaflet(data = mapa_paraiba) %>%
 Os municípios que mais fizeram licitações envolevendo merenda foram:
 
 ```{r}
+
 kable(
-  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num)), desc(total_num)), 10),
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num)), desc(total_num)), 5),
+  col.names = c('Município', 'Número de Licitações'),
+  align = c('c'))
+```
+
+Os que menos licitaram:
+
+```{r}
+kable(
+  x = tail(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num)), desc(total_num)), 5),
   col.names = c('Município', 'Número de Licitações'),
   align = c('c'))
 ```
 
  
 ### Quem gasta mais?
-
-Aqui, vamos analisar os municípios que mais gastam recursos com merenda escolar.
+Vamos analisar os municípios que mais gastam recursos com merenda escolar.
 Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar. 
 
 ```{r}
@@ -311,20 +319,28 @@ leaflet(data = mapa_paraiba) %>%
                             "Valor empenhado para merenda: ", mapa_paraiba@data$X),
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "Valor total dos empenhos de merenda (em milhares)",
+            title = "Valor empenhos de merenda (em milhares)",
             opacity = 1, na.label = "0"
   )
+
 ```
+  
+É importante observar que a média geral de gastos com merenda na paraíba é de `r round(mean(paraiba_sumarizado$valor_total_emp_num), 2)` mas a mediana é de `r round(median(paraiba_sumarizado$valor_total_emp_num), 2)` o que significa que alguns municípios gastam muito mais que os outros e isto está deixando a média tão alta.
+
+Os 10 municípios que mais gastam são:
 
 ```{r}
+top10 <- head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_total_emp_num)), desc(valor_total_emp_num)), 10)
 kable(
-  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, valor_total_emp_num)), desc(valor_total_emp_num)), 10),
+  x = top10, 
   col.names = c('Município', 'Valor total dos empenhos de merenda'),
   align = c('c'))
+
+perc_top10 <- sum(top10$valor_total_emp_num) / sum(paraiba_sumarizado$valor_total_emp_num)
 ```
 
-
-### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
+Juntos, eles respresentam `r round(perc_top10*100, 1)`% do valor gasto por todos os municípios. Logo, os outros 213 municípios gastam a outra metade do dinheiro.  
+Como é de se esperar João Pessoa e Campina Grande são as que mais gastam, já que elas são as cidades com mais habitantes no estado. As demais cidades que mais gastam estão todas entre as 20 cidades com mais habitantes do estado (de acordo com a projeção do IBGE para 2016).  
 
 ### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
 
