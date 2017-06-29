@@ -118,7 +118,7 @@ licitacoes %>%
 ```
 
 
-### 
+## Como costuma ser o processo licitatório dos municípios do estado?
 Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
 Feita essa análise, descobrimos que dos cinco municípios que mais realizam licitações, quatro também estão presentes na lista dos mais populosos do estado. São eles: João Pessoa, Campina Grande, Santa Rita e Patos. A exceção aqui fica por conta do município de Pombal, que não está entre os quinze municípios mais populosos do estado e é o quinto maior realizador de licitações.
 
@@ -145,6 +145,7 @@ licitacoes %>%
 
 Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chama atenção o caso de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016. 
 
+
 ```{r}
 licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
@@ -159,7 +160,7 @@ licitacoes %>%
 ```
 
 
-Aqui cabe uma explicação: Uma diminuição no total de licitações realizadas, não necessariamente implica que houveram menos compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**. Esse é o próximo passo que devemos tomar.
+Aqui cabe uma explicação: Uma diminuição ou aumento no total de licitações realizadas, não necessariamente implica que houve menos ou mais compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**. Esse é o próximo passo que vamos tomar.
 
 
 ```{r}
@@ -176,6 +177,9 @@ empenhos %>%
 ```
 
 
+Um ponto que ilustra bem a diferença que pode ocorrer entre o número de licitações realizadas e o número de empenhos gerados é a situação de Campina Grande entre os anos de 2006 e 2008. Nesse período, o total de licitações realizados no município se manteve estável, mas a quantidade de empenhos realizados variou bastante, subindo quase 100% em 2007 e caindo cerca de 50% no ano seguinte.
+
+A partir do gráfico acima, podemos observar que, assim como a quantidade de licitações, a quantidade de empenhos realizados na cidade de João Pessoa diminuiu entre os anos de 2013 e 2016. Outro ponto que podemos observar é o crescimento constante no número de empenhos realizados no município de Pombal entre os anos 2009 e 2015, apesar da flutuação no número de licitações realizadas, principalmente nos últimos anos do período.
 
 
 ## 2 - Análise de Licitações
