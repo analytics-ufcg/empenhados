@@ -63,6 +63,7 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
   mutate(cd_UGestora_copy = cd_UGestora) %>%
   separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
   select(-cd_UnGestora)
 
 licitacoes <- tbl(sagres, 'Licitacao') %>%
@@ -179,14 +180,15 @@ empenhos %>%
 
 ## 2 - Análise de Licitações
 Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo! Escolhemos trabalhar com dados relacionados com a __merenda escolar dos municípios da paraíba entre 2012 e 2016__.
-
-### 2.1 - Quantas licitações de merenda são feitas por ano?
+Você sabe quanto o seu município gastou com merenda nos últimos anos? Será que ele está dentro da média da Paraíba? Quantas licitações são feitas para alimentação escolar? Quem gasta mais? Quem gasta menos? Essas e muitas outras perguntas podem ser respondidas pela análise abaixo.  
+### Quantas licitações de merenda são feitas por ano?
 
 ```{r}
 licitacoes_merenda <- licitacoes_merenda %>%
   filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)
 
-plot_ly(data = licitacoes %>% filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)) %>%
+plot_ly(data = licitacoes 
+        %>% filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)) %>%
   add_histogram(x = ~as.factor(year(dt_Homologacao)), name = "Outras as licitações") %>%
   add_histogram(data = licitacoes_merenda, ~as.factor(year(dt_Homologacao)), name = "Merenda Escolar") %>%
   layout(title = "Total de licitações de merenda em relação ao total de licitações",
@@ -194,7 +196,8 @@ plot_ly(data = licitacoes %>% filter(year(dt_Homologacao) >= 2012 & year(dt_Homo
          xaxis = list(title = 'Ano'),
          barmode = 'overlay')
 ```
-Temos uma grande quantidade de licitações, envolvendo os mais diversos itens, mas neste trabalho estamos interessados nos dados que dizem respeito a merenda escolar, então a partir daqui nosso foco será sobre este subconjunto de informação. Emtão ficamos com o gráfico abaixo:
+
+Temos uma grande quantidade de licitações, envolvendo os mais diversos itens, mas neste trabalho estamos interessados nos dados que dizem respeito a merenda escolar, então a partir daqui nosso foco será sobre este subconjunto de informação, assim os dados que vamos estudar estão dispostos nos gráfico abaixo.
 
 ```{r}
 plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='histogram') %>%
@@ -203,18 +206,22 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
     yaxis = list(title = "Número total de licitações"),
     title = "Total de licitações de merenda por ano")
 ```
-Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda. Infelizmente, com os dados que temos não somos capazes de justificar essa alteração.
+
+
+Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda.
  
-### 2.2 Quais são os municípios que mais licitam merenda?
-O mapa abaixo vai nos ajudar a responder a essa pergunta.
+### Quem faz mais licitações?
+
+
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
 
 # Atualizando nome de municípios que mudaram de nome nos últimos anos
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
 levels_mapa[51] = "Tacima"
-levels_mapa[200] = "Sao Vicente do Serido"
+levels_mapa[200] = "São Vicente do Seridó"
 levels_mapa[173] = "Joca Claudino"
+levels_mapa[156] = "Quixaba"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 
 # Join entre a tabela de licitações e a lista de municípios do mapa
@@ -232,19 +239,20 @@ paraiba_sumarizado = paraiba %>%
 
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
-                                breaks = c(0,5,7,10,15,25,50, 120),
+                                breaks = c(1,5,7,10,15,25,50, 120),
                                labels = c("de 1 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50", "Acima de 50"),
                                 include.lowest = F)
 
 paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp,
-                                         breaks = c(0, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
-                                         labels = c("De 0 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"))
+                                         breaks = c(1, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
+                                         labels = c("De 1 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"))
 
 levels_mapa = mapa_paraiba@data$Nome_Munic
 paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
 # Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
 paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
+
 ```
 
 ```{r}
@@ -267,7 +275,7 @@ leaflet(data = mapa_paraiba) %>%
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
             title = "Licitações por município",
-            opacity = 1
+            opacity = 1, na.label = "0"
   )
 ```
 
@@ -281,13 +289,15 @@ kable(
 ```
 
  
-### 2.2 - Quais os municípios que mais gastam com merenda?
+### Quem gasta mais?
+
 Aqui, vamos analisar os municípios que mais gastam recursos com merenda escolar.
-Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar.
+Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar. 
 
 ```{r}
 colors = brewer.pal(7,"YlOrRd")
 mapa_paraiba@data$Y <- paraiba_municipios$valor_total_emp
+mapa_paraiba@data$X <- paraiba_municipios$valor_total_emp_num
 colors = colorFactor('OrRd', mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
@@ -297,10 +307,12 @@ leaflet(data = mapa_paraiba) %>%
               fillColor = colors(mapa_paraiba@data$Y),
               color = 'black',
               label = mapa_paraiba@data$Nome_Munic,
+              popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
+                            "Valor empenhado para merenda: ", mapa_paraiba@data$X),
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "Valor total dos empenhos de merenda",
-            opacity = 1
+            title = "Valor total dos empenhos de merenda (em milhares)",
+            opacity = 1, na.label = "0"
   )
 ```
 
@@ -326,4 +338,3 @@ kable(
 ### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
 ### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
 ### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
-
