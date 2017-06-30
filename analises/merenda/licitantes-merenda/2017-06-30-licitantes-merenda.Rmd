@@ -1,0 +1,48 @@
+---
+title: 'Classificação dos licitantes de merenda'
+author: 'Laboratório Analytics'
+subtitle: "Merenda Escolar"
+layout: post
+published: true
+comments: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  screenshot.force = FALSE,
+  fig.align = 'center',
+  fig.width = 6,
+  fig.height = 6
+)
+
+options(scipen = 999)
+```
+
+```{r}
+library(RColorBrewer)
+
+library(ggfortify)
+library(ggplot2)
+library(plotly)
+library(knitr)
+
+library(cluster)
+library(dbscan)
+library(tidyr)
+
+library(methods)
+source('../lib/load_licitantes_merenda.R')
+
+theme_set(theme_bw())
+```
+
+```{r}
+dados <- load_licitantes_merenda()
+
+licitantes <- dados$licitantes
+ganhadores <- dados$vitorias
+```
+
