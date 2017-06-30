@@ -40,9 +40,94 @@ theme_set(theme_bw())
 ```
 
 ```{r}
+wssplot <- function(data, nc=15, seed=12346){
+               wss <- (nrow(data)-1)*sum(apply(data,2,var))
+               for (i in 2:nc){
+                    set.seed(seed)
+                    wss[i] <- sum(kmeans(data, centers=i)$withinss)}
+                plot(1:nc, wss, type="b", xlab="Número de grupos",
+                     ylab="Soma dos quadrados dos grupos")}
+```
+
+```{r}
 dados <- load_licitantes_merenda()
 
 licitantes <- dados$licitantes
 ganhadores <- dados$vitorias
 ```
+
+
+```{r}
+licitantes.log <- licitantes %>%
+  mutate_each(funs(log(. + 1)), -c(nu_CPFCNPJ, no_Fornecedor))
+licitantes.scaled <- licitantes.log %>%
+  mutate_each(funs(scale(.) %>% c), -c(nu_CPFCNPJ, no_Fornecedor))
+
+ganhadores.log <- ganhadores %>%
+  mutate_each(funs(log(. + 1)), -cd_Credor)
+ganhadores.scaled <- ganhadores.log %>%
+  mutate_each(funs(scale(.) %>% c), -cd_Credor)
+```
+
+## Licitantes
+
+```{r}
+wssplot(licitantes.scaled %>%
+  select(-nu_CPFCNPJ, -no_Fornecedor), 
+  nc = 20)
+```
+
+```{r}
+set.seed(12346) # Garantir que o k-means gere o mesmo resultado
+km_lic <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 6, nstart = 20)
+
+autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+  scale_color_brewer(palette='Set2') + 
+  labs(colour = 'Grupos')
+```
+
+## Ganhadores
+```{r}
+wssplot(ganhadores.scaled %>%
+  select(-cd_Credor), 
+  nc = 20)
+```
+
+```{r}
+set.seed(12346) # Garantir que o k-means gere o mesmo resultado
+km_gan <- kmeans(select(ganhadores.scaled, -cd_Credor), centers = 6, nstart = 20)
+
+autoplot(km_gan, data = ganhadores.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+  scale_color_brewer(palette='Set2') + 
+  labs(colour = 'Grupos')
+```
+
+```{r}
+dists <- dist(select(ganhadores.scaled, -cd_Credor), method = 'euclidean')
+
+colors <- brewer.pal(6, 'Set2')
+plot(silhouette(km_gan$cluster, dists), col = colors, border = NA, main = 'Silhueta dos grupos usando o K-means')
+
+```
+
+```{r}
+ganhadores.km <- ganhadores.scaled %>%
+  mutate(cluster = km_gan$cluster %>% as.factor)
+
+ganhadores.km.long <- ganhadores.km %>%
+  gather('variable', 'value', -cd_Credor, -cluster, factor_key=T)
+```
+
+```{r}
+ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
+  geom_boxplot() +
+  geom_hline(alpha = 0.3, yintercept = 0) + 
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
+  facet_wrap(~ cluster, ncol = 3) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  labs(title = 'Agrupamento de ganhadores de licitações de merenda da Paraíba', x = '', y = '') +
+  scale_color_brewer(palette='Dark2') 
+```
+
 
