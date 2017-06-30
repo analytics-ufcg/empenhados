@@ -33,7 +33,7 @@ options(scipen = 999)
 
 ```
 
-Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município estpa na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
+Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
 
 ```{r}
 sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
@@ -103,7 +103,7 @@ plot_ly(data = gasto_municipios) %>%
 
 A média do gasto por aluno, no ano de 2015, é de R\$ `r round(mean(gasto_municipios$Valor_Aluno, na.rm = TRUE), digits = 2)` reais. Esse é o valor gasto pelo município com um aluno durante todo o ano! Se levarmos em consideração que o ano tem 200 dias letivos, temos então que menos de um real é gasto em média por aluno por dia.
 
-A mediana obtida para esse tipo de gasto foi de R\$ `r round(median(gasto_municipios$Valor_Aluno, na.rm = TRUE), digits = 2)` reais. Valor ainda mais baixo que a média, pois esse tipo de medida não é tão afetada por aqueles municípios que gastam muito mais que a maioria.
+A mediana obtida para esse tipo de gasto foi de R\$ `r round(median(gasto_municipios$Valor_Aluno, na.rm = TRUE), digits = 2)` reais. Valor ainda mais baixo que a média, pois esse tipo de medida não é tão afetada por aqueles municípios que gastam muito mais que a maioria. A grande maioria dos municípios gastam entre 100 e 250 reais por aluno por ano.
 
 No mapa abaixo podemos observar quanto cada um dos municípios da Paraíba gastou com merenda no ano de 2015. Os municípios na cor cinza são aqueles que não tiveram pagamentos realizados em 2015 que se encaixassem no filtro utilizado para captar os pagamentos referentes a alimentação escolar.
 
@@ -167,7 +167,7 @@ plot_ly(data = head(valores_grandes, 6), orientation = 'h') %>%
 
 São José do Brejo do Cruz realizou pagamentos referentes a empenhos de merenda em 2015 que totalizaram quase 600 reais por aluno. Ao considerarmos um ano letivo com 200 dias, cerca de 3 reais por aluno por dia foi gasto nesse município. Na segunda colocação dos que mais gastam por aluno, temos São José da Lagoa Tapada com pouco mais de 500 reais por aluno ao ano. Vamos entender mais um pouco sobre o município de São José do Brejo do Cruz.
 
-Localizado no Sertão da Paraíba, São José do Brejo do Cruz possui `r subset(municipios, municipios$de_Municipio == 'São José do Brejo do Cruz')$vl_Populacao` habitantes. Algumas informações sobre esse município são apresentadas a seguir:
+Localizado na microrregião de Catolé do Rocha, São José do Brejo do Cruz possui `r subset(municipios, municipios$de_Municipio == 'São José do Brejo do Cruz')$vl_Populacao` habitantes. Algumas informações sobre esse município são apresentadas a seguir:
 
 ```{r}
   kable(
@@ -178,7 +178,28 @@ Localizado no Sertão da Paraíba, São José do Brejo do Cruz possui `r subset(
     )
 ```
 
-Os dados do IDEB apresentados acima estão disponíveis [aqui](http://www.qedu.org.br/estado/115-paraiba/ideb/ideb-por-municipios) e se referem ao Índice de Desenvolvimento da Educação Básica das escolas públicas do município (municipais e estaduais). São josé do Brejo do Cruz possui índices no IDEB nas séries iniciais maior que a mediana do restante dos municípios (`r median(municipios$vl_IDEB_Anos_Iniciais)`), o mesmo é observado com o IDEB das séries finais (`r median(municipios$vl_IDEB_Anos_Finais)`). 
+Os dados do IDEB apresentados acima estão disponíveis [aqui](http://www.qedu.org.br/estado/115-paraiba/ideb/ideb-por-municipios) e se referem ao Índice de Desenvolvimento da Educação Básica das escolas públicas do município (municipais e estaduais). São josé do Brejo do Cruz possui índices no IDEB nas séries iniciais maior que a mediana do restante dos municípios (`r median(municipios$vl_IDEB_Anos_Iniciais)`), o mesmo é observado com o IDEB das séries finais (`r median(municipios$vl_IDEB_Anos_Finais)`).
+
+Quanto será que São José do Brejo do Cruz gastou no total em outros anos?
+
+```{r}
+gasto_sao_jose <- pagamentos %>%
+  select(cd_UGestora, vl_Pagamento, dt_Ano) %>%
+  mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
+  filter(de_Municipio == "São José do Brejo do Cruz") %>%
+  group_by(dt_Ano) %>%
+  summarise(total_pago = sum(vl_Pagamento))
+```
+
+```{r}
+plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
+  add_trace(y = ~total_pago, type = 'scatter', name = 'Total', mode = 'lines+markers') %>%
+  layout(title = "Total Pago em São José do Brejo do Cruz",
+         yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
+         xaxis = list(title = 'Ano'))
+```
+
+Como não temos os dados sobre o número de matriculados em todos os anos, não é possível comprarar o custo por aluno. No entanto é possível comparar quanto foi pago no total de empenhos relacionados a alimentação escolar. Apesar de em 2015, São José do Brejo do Cruz ser o município que mais gastou por aluno na Paraíba, esse não é o ano que o município mais gastou com merenda, na verdade é 2016, seguido de 2014. O ano de 2017 está bem abaixo dos demais pois os dados analisados aqui vão até março de 2017.
 
 ### Os municípios que menos gastaram no período
 Sobre os municípios que menos gastaram por aluno em 2015, temos 5 municípios que realizaram pagamentos que totalizaram menos de 10 reais por aluno por ano. Valor este bem baixo se comparado a mediana do gasto nos municípios da Paraíba que é de `r median(gasto_municipios$Valor_Aluno, na.rm = TRUE)` reais.
@@ -209,6 +230,27 @@ Serra Branca gastou menos de 1 real por aluno durante todo o ano de 2015 em paga
 
 Não é comum que um município com 1359 alunos matriculados tenha gasto menos de 1 real por aluno durante todo o ano. Uma das causas possíveis é de que esse município não possui dados corretamente preenchidos no SAGRES - TCE o que faz com que o mesmo não seja capturado pelo filtro. Tal prática pode ser um indício de que algo de errado ocorreu no momento de inserir as informações referentes aos empenhos.
 
+Quanto será que Serra Branca gastou no total em outros anos?
+
+```{r}
+gasto_serra_branca <- pagamentos %>%
+  select(cd_UGestora, vl_Pagamento, dt_Ano) %>%
+  mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
+  filter(de_Municipio == "Serra Branca") %>%
+  group_by(dt_Ano) %>%
+  summarise(total_pago = sum(vl_Pagamento))
+```
+
+```{r}
+plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
+  add_trace(y = ~total_pago, type = 'scatter', name = 'Total', mode = 'lines+markers') %>%
+  layout(title = "Total Pago em Serra Branca",
+         yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
+         xaxis = list(title = 'Ano'))
+```
+
+Como já dito anteriormente, Serra Branca gastou menos de 1 real por aluno em 2015 e no total gastou 849.97 reais. Ao compararmos com anos vizinhos como 2014 e 2016 esse gasto foi 10 vezes maior nesses anos. Em 2016 foram gastos 8015.20 reais e em 2016 foram gastos 9117.70 reais. Ainda sim, o ano de 2009 apresenta o maior valo pago pelo município em empenhos relacionados a alimentação escolar.
+
 ### Os municípios que não realizaram pagamentos
 Como falado anteriormente alguns municípios que estão em cinza no mapa são aqueles que não possuem pagamentos atrelados a empenhos que são filtrados como Alimentação Escolar. Não cabe a essa análise afirmar que esses municípios não gastaram com merenda em 2015, apenas que não existem empenhos classificados como Alimentação Escolar ligados a esse município, o que não deixa de ser estranho.
 
@@ -223,3 +265,8 @@ Como falado anteriormente alguns municípios que estão em cinza no mapa são aq
 
 Conforme mostrado acima existem alunos matriculados nesses municípios e provavelmente os mesmos gastaram com merenda em 2015 mas não preencheram corretamente os dados dos empenhos referentes a alimentação escolar.
 
+## Considerações
+
+Conforme explicado acima, não cabe ao presente relatório afirmar que os valores apresentados são exatamente o total gasto com merenda em 2015 pelos municípios. Contudo, assumindo que **todos** os empenhos relacionados a alimentação escolar foram considerados, é alarmante que alguns municípios estejam gastando tão pouco com merenda ou ainda não informando corretamente todos os campos sobre a natureza dos gastos quando se trata de alimentação escolar. Foi constatado também municípios que embora tenham população e número de matrículas parecidas, não gastam de forma semelhante na alimentação escolar. Compartilhe nos comentários sobre o que você achou sobre a análise, e quais experiências com merenda no seu município você sabe ou já presenciou.
+    
+  
