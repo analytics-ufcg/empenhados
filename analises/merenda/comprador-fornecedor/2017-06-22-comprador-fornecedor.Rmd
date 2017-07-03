@@ -66,10 +66,16 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
   mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
   select(-cd_UnGestora)
 
+tipos_licitacao = tbl(sagres, 'Tipo_Modalidade_Licitacao') %>%
+  collect() %>%
+  mutate(de_TipoLicitacao = as.character(de_TipoLicitacao))
+
 licitacoes <- tbl(sagres, 'Licitacao') %>%
   filter(year(dt_Homologacao) >= 2003 & year(dt_Homologacao) <= 2016) %>%
   collect(n = Inf) %>%
-  mutate(dt_Homologacao = ymd_hms(dt_Homologacao))
+  mutate(dt_Homologacao = ymd_hms(dt_Homologacao)) %>%
+  left_join(tipos_licitacao, by = 'tp_Licitacao')
+
 
 ## Adicionando código do município a tabela de licitações
 licitacoes <- licitacoes %>%
@@ -149,7 +155,6 @@ licitacoes %>%
 
 Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chama atenção o caso de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016. 
 
-
 ```{r}
 licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
@@ -218,8 +223,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
     
 Podemos perceber que houve um "salto" no número de licitações entre 2012 e 2013, o que indica que os municípios passaram fazer mais licitações envolvendo merenda, esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. E exceto por 2012, a quantidade de licitações varia pouco.
  
-### Quem faz mais licitações?
-
+### Quem faz mais licitações de merenda?
 
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
@@ -307,7 +311,8 @@ kable(
 ```
 
  
-### Quem gasta mais?
+### Quem gasta mais com merenda?
+
 Vamos analisar os municípios que mais gastam recursos com merenda escolar.
 Para isso consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo que diz respeito a merenda escolar. 
 
@@ -354,12 +359,68 @@ Como é de se esperar João Pessoa e Campina Grande são as que mais gastam, já
 ### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
 ### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
 
+```{r}
+lic_merenda_sum <-licitacoes_merenda %>%
+  group_by(year(dt_Homologacao)) %>%
+  summarise(mean_vl = mean(valor_merenda),
+            median_vl = median(valor_merenda))
+
+colnames(lic_merenda_sum)[1] <- "ano"
+
+plot_ly(data = lic_merenda_sum, x = ~as.factor(ano)) %>%
+  add_trace(y = ~mean_vl/1000, type = 'scatter', name = 'Média', mode = 'lines+markers') %>%
+  add_trace(y = ~median_vl/1000, type = 'scatter', name = 'Mediana', mode = 'lines+markers') %>%
+  layout(title = "Valor médio e mediano das licitações de merenda por ano",
+         yaxis = list(title = 'Valor da licitação (em milhares de reais)', hoverformat= '.2f'),
+         xaxis = list(title = 'Ano'))
+```
+
+```{r}
+kable(
+  x = head(arrange(select(subset(licitacoes_merenda, year(licitacoes_merenda$dt_Homologacao) == 2014),
+                          c(de_Municipio, valor_merenda)), desc(valor_merenda)), 5),
+  col.names = c('Município', 'Valor da empenhado para merenda (R$)'),
+  align = c('c'))
+```
 
 
 ### 2.8 - Em que período do ano ocorrem mais licitações de merenda?
+
+```{r}
+plot_ly(data = licitacoes_merenda) %>%
+  add_histogram(x = ~month(dt_Homologacao)) %>%
+  layout(title = 'Total de licitações por mês entre os anos 2012 e 2016',
+         yaxis = list(title = 'Total', hoverformat= '.0f'),
+         xaxis = list(title = 'Mês', dtick = 1))
+```
+
 ### 2.9 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
 Uma coisa que pode chamar atenção diz respeito ao período do ano em que ocorrem mais licitações de merenda. Por senso comum, espera-se que a maioria das licitações desse tipo ocorram nos primeiros meses do ano, quando geralmente são firmados os contratos de fornecimento do ano inteiro.
 
+```{r}
+mediana_geral = median(licitacoes_merenda$valor_merenda)
+
+plot_ly(data = (licitacoes_merenda %>%
+                  mutate(mes = month(dt_Homologacao)) %>%
+                  group_by(mes) %>%
+                  summarize(mediana = median(valor_merenda)))) %>%
+  add_trace(x = ~as.factor(mes), y = ~mediana, type = 'scatter', mode = 'lines+markers',
+            name = 'Mediana mensal',
+            text = ~paste('Mês: ', mes, '', 'Mediana: R$', mediana),
+            hoverinfo = 'text') %>%
+  add_trace(x = ~as.factor(mes), y = mediana_geral, type = 'scatter', mode = 'lines',
+            name = 'Mediana geral',
+            text = ~paste('Mediana Geral: R$', mediana_geral),
+            hoverinfo = 'text',
+            line = list(dash = "dash"),
+            opacity = 0.75) %>%
+  layout(
+    title = 'Valor mediano de licitações por mês entre os anos 2012 e 2016',
+    xaxis = list(title = 'Mês'),
+    yaxis = list(title = 'Valor mediano', fixedrange = TRUE),
+    legend = list(x = 100, y = 0.5)
+  )
+```
 
 ### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
 ### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
@@ -383,8 +444,77 @@ Para responder essa pergunta, vamos utilizar apenas licitações onde todos os e
 
 
 ### 2.16 - Geralmente, quantas propostas são recebidas para licitações de merenda?
+
+```{r}
+plot_ly(data = licitacoes_merenda, x = ~nu_Propostas) %>%
+  add_histogram() %>%
+  layout(title = 'Total de propostas para licitações de merenda',
+         yaxis = list(title = 'Total', zeroline = FALSE, fixedrange = TRUE),
+         xaxis = list(title = 'Número de propostas', zeroline = FALSE))
+```
+
+É possível perceber que em geral as licitações recebem poucas prospostas, na verdade, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem até 3 propostas.  
+Mas existem alguns casos onde o número de fornecedores interessados na licitação é muito maior, chegando até a `r max(licitacoes_merenda$nu_Propostas)` em uma única licitação. Abaixo estão as 10 licitações com mais concorrentes.  
+```{r}
+kable(
+  x = head(arrange(select(licitacoes_merenda, c(de_Municipio, nu_Propostas, valor_merenda)), desc(nu_Propostas)), 5),
+  col.names = c('Município','Número de propostas', 'Valor da empenhado para merenda (R$)'),
+  align = c('c'))
+```
+
 ### 2.17 - O valor da licitação está relacionado com o total de propostas recebidas?
+```{r}
+cor1 = with(licitacoes_merenda,
+            round(cor(valor_merenda, nu_Propostas), 2))
+
+plot_ly(data = licitacoes_merenda,
+        x = ~valor_merenda,
+        y = ~nu_Propostas,
+        alpha = 0.5,
+        type = 'scatter',
+        mode = 'markers',
+        text = ~paste('Valor: R$', valor_merenda, 'Propostas: ', nu_Propostas),
+        hoverinfo = 'text') %>%
+  layout(title = 'Número de propostas por valor total de licitação',
+         xaxis = list(title = 'Valor da licitação'),
+         yaxis = list(title = 'Número de propostas'),
+         annotations = list(x = 1e+07, y = 30, showarrow = FALSE, text = paste('r = ', cor1)))
+```
+
+
+```{r}
+cor2 = with(filter(licitacoes_merenda,
+                   vl_Licitacao <= quantile(licitacoes_merenda$valor_merenda, .99) &
+                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
+            round(cor(valor_merenda, nu_Propostas), 2))
+
+plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoes_merenda$valor_merenda, .99) & nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
+        x = ~valor_merenda,
+        y = ~nu_Propostas,
+        alpha = 0.5,
+        type = 'scatter',
+        mode = 'markers',
+        text = ~paste('Valor: R$', valor_merenda, 'Propostas: ', nu_Propostas),
+        hoverinfo = 'text') %>%
+  layout(title = 'Número de propostas por valor total de licitação (99-percentil)',
+         xaxis = list(title = 'Valor da licitação'),
+         yaxis = list(title = 'Número de propostas'),
+         annotations = list(x = 1e+06, y = 6, showarrow = FALSE, text = paste('r = ', cor2)))
+```
+
+
 ### 2.18 - Qual a relação entre o total de licitações de merenda e o número de propostas por modalidade?
+```{r}
 
-
-
+plot_ly(data = licitacoes_merenda,
+        x = ~nu_Propostas,
+        color = ~as.factor(de_TipoLicitacao)) %>%
+  add_histogram() %>%
+  layout(title = 'Total de propostas recebidas por licitações de cada modalidade',
+         xaxis = list(title = 'Número de propostas',
+                      autotick = FALSE,
+                      range = list(0, 6),
+                      dtick = 1),
+         yaxis = list(title = 'Total de licitações'),
+         legend = list(x = 100, y = 0.5))
+```

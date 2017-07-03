@@ -34,5 +34,8 @@ vignettes/*.pdf
 .Rproj.user
 *~
 
+#Merge files
+*.orig
+
 .sass-cache/
 _site/
