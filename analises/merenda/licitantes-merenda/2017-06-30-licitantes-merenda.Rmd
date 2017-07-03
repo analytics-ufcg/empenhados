@@ -56,6 +56,31 @@ licitantes <- dados$licitantes
 ganhadores <- dados$vitorias
 ```
 
+Considerando a forma como a Administração Pública gasta o dinheiro, o objetivo desse relatório é identificar dentre as empresas/pessoas físicas, que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means. 
+
+O que você precisa saber para ler esse relatório é de que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela Administração Pública, conforme critérios estabelecidos no Edital da licitação. Então, as empresas vencedoras irão participar do processo de execução orçamentária do município. Nesse processo, o dinheiro destinado a empresa será empenhado, e a medida que a empresa vai executando corretamente o fornecimento do que foi acordado esse dinheiro é liquidado e pago. Mais sobre esse processo pode ser lido [aqui](https://analytics-ufcg.github.io/licitacoes-pb//2017/05/execucaoorcamentaria.html). 
+
+## Licitantes
+Nesse relatório estamos interessados em agrupar sob duas perspectivas. Na primeira delas, o conjunto de empresas/pessoas físicas que participaram de uma licitação que envolvia pelo menos *um item* de merenda. O critério estabelecido para determinar se existe um item de merenda é se pelo menos um empenho, que está associado a essa licitação, é destinado a Alimentação Escolar. 
+
+### Descrição das variáveis
+Foram analisados `r nrow(licitantes)` licitantes que participaram de uma licitação que gerou pelo menos um item de merenda. É importante dizer que não há garantia que o licitante tenha participado exclusivamente do item da licitação destinado a merenda, no entanto a sua participação é contada a partir do momento em que o mesmo fez alguma proposta a uma licitação que envolvia item de tal natureza. 
+
+Os critérios considerados para a realização do agrupamento foram:
+
+* Número de participações (participou): Número de licitações nas quais o licitante fez proposta.
+
+* Municípios: Número de municípios distintos onde o licitante fez pelo menos uma proposta.
+
+* Proporção de vitórias (Ganhou): Razão entre o número de participações em licitações e o número de vitórias (número de licitações relacionadas aos empenhos do licitante com a Administração Pública).
+
+* Valor total empenhado: Soma do valor em reais de todos os empenhos relacionados ao licitante.
+
+* Valor mediano empenhado: Mediana do valor em reais dos empenhos relacionados ao licitante .
+
+* Valor total pago: Soma do valor em reais efetivamente pago ao licitante mediante transferência bancária.
+
+Foram aplicadas técnicas de transformação e padronização nos dados a fim de obter os melhores resultados e visualizações possíveis.
 
 ```{r}
 licitantes.log <- licitantes %>%
@@ -64,9 +89,9 @@ licitantes.scaled <- licitantes.log %>%
   mutate_each(funs(scale(.) %>% c), -c(nu_CPFCNPJ, no_Fornecedor))
 
 ganhadores.log <- ganhadores %>%
-  mutate_each(funs(log(. + 1)), -cd_Credor)
+  mutate_each(funs(log(. + 1)), -c(cd_Credor, no_Credor))
 ganhadores.scaled <- ganhadores.log %>%
-  mutate_each(funs(scale(.) %>% c), -cd_Credor)
+  mutate_each(funs(scale(.) %>% c), -c(cd_Credor, no_Credor))
 ```
 
 ## Licitantes
