@@ -112,6 +112,26 @@ autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos util
 ```
 
 ## Ganhadores
+Na segunda perspectiva para o agrupamento, o interesse está em utilizar apenas quem possui empenhos de alimentação escolar associados. Ou seja, apenas os ganhadores dos itens das licitações que envolveram merenda. Sob essa perspectiva é possível afirmar com segurança de que os fornecedores aqui agrupados participaram efetivamente dos itens da licitação relacionados a merenda escolar. 
+### Descrição das variáveis
+Foram analisados `r nrow(ganhadores)` empresas/pessoas físicas que ganharam licitações e possuem empenhos associados a alimentação escolar.
+
+Os critérios considerados para a realização do agrupamento foram:
+
+* Número de empenhos (ganhou): Número de empenhos associados ao fornecedor relativos a alimentação e educação.
+
+* Municípios: Número de municípios distintos onde o fornecedor tem empenhos associados.
+
+* Valor total empenhado: Soma do valor em reais de todos os empenhos relacionados ao fornecedor.
+
+* Valor mediano empenhado: Mediana do valor em reais dos empenhos relacionados ao fornecedor.
+
+* Valor total pago: Soma do valor em reais efetivamente pago ao fornecedor mediante transferência bancária.
+
+Como o interesse é agrupar os fornecedores ganhadores de merenda, não foi considerada a participação desses fornecedores em outras licitações nas quais não ganharam.
+
+Foram aplicadas técnicas de transformação e padronização nos dados a fim de obter os melhores resultados e visualizações possíveis.
+
 ```{r}
 wssplot(ganhadores.scaled %>%
   select(-cd_Credor), 
