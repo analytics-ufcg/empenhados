@@ -108,7 +108,6 @@ A distribuição dos licitantes em cada grupo pode ser vista no gráfico de disp
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km_lic <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 6, nstart = 20)
-?kmeans
 autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
@@ -149,7 +148,6 @@ Come, come, come mas não engordam. Mesmo participando mais que a maioria, em ge
 #### Grupo 6 - Estudantes de Nutrição
 Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus luctros.
 
-
 ## Ganhadores
 Na segunda perspectiva para o agrupamento, o interesse está em utilizar apenas quem possui empenhos de alimentação escolar associados. Ou seja, apenas os ganhadores dos itens das licitações que envolveram merenda. Sob essa perspectiva é possível afirmar com segurança de que os fornecedores aqui agrupados participaram efetivamente dos itens da licitação relacionados a merenda escolar. 
 ### Descrição das variáveis
@@ -173,25 +171,32 @@ Foram aplicadas técnicas de transformação e padronização nos dados a fim de
 
 ```{r}
 wssplot(ganhadores.scaled %>%
-  select(-cd_Credor), 
+  select(-c(cd_Credor, no_Credor)), 
   nc = 20)
 ```
+Acima podemos observar uma métrica que pode ser utlizada para determinar o número de grupos escolhidos para a divisão dos fornecedores. A escolha ideal do número de grupos estaria entre 5 e 10.
 
+Considerando que quanto mais grupos maior será a dificuldade para interpretar como cada grupo consegue condensar o perfil de seus integrantes, a partir da visualização abaixo e da silhueta mais adiante, determinamos que o número de grupos como igual a 6.
+ 
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
-km_gan <- kmeans(select(ganhadores.scaled, -cd_Credor), centers = 6, nstart = 20)
+km_gan <- kmeans(select(ganhadores.scaled, -c(cd_Credor, no_Credor)), centers = 6, nstart = 20)
 
 autoplot(km_gan, data = ganhadores.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
 ```
+É possível observar a distribuição dos fornecedores considerando as 5 variáveis citadas acima condensadas em apenas duas utilizando uma técnica conhecida como PCA.
+
+Abaixo, está disponível o gráfico de silhueta desse agrupamento. Esse gráfico tem o objetivo de descrever quão parecidos são os componentes dentro de um grupo. O ideal é que todos os grupos tenham um valor de silhueta elevado, no entanto observa-se que alguns ganhadores estão em grupos mas caraterísticas diferentes do grupo. Uma das explicações para isso, seria o fato que esses ganhadores não se encaixam muito bem em nenhum dos grupos propostos.
+
+Outro fator importante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a de um grupo maior (1) com 3719 ganhadores, já o menor grupo (4) tem 205.
 
 ```{r}
-dists <- dist(select(ganhadores.scaled, -cd_Credor), method = 'euclidean')
+dists <- dist(select(ganhadores.scaled, -c(cd_Credor, no_Credor)), method = 'euclidean')
 
 colors <- brewer.pal(6, 'Set2')
 plot(silhouette(km_gan$cluster, dists), col = colors, border = NA, main = 'Silhueta dos grupos usando o K-means')
-
 ```
 
 ```{r}
@@ -199,9 +204,9 @@ ganhadores.km <- ganhadores.scaled %>%
   mutate(cluster = km_gan$cluster %>% as.factor)
 
 ganhadores.km.long <- ganhadores.km %>%
-  gather('variable', 'value', -cd_Credor, -cluster, factor_key=T)
+  gather('variable', 'value', -cd_Credor, -no_Credor, -cluster, factor_key=T)
 ```
-
+A seguir é apresentado o boxplot de cada variável por grupo com o objetivo de identificar as características de cada conjunto de ganhadores.
 ```{r}
 ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
@@ -213,5 +218,7 @@ ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
   labs(title = 'Agrupamento de ganhadores de licitações de merenda da Paraíba', x = '', y = '') +
   scale_color_brewer(palette='Dark2') 
 ```
+
+Os grupos podem ser rotulados e descritos como:
 
 
