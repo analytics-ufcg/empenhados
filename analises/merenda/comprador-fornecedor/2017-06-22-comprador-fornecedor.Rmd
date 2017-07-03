@@ -99,7 +99,8 @@ empenhos <- tbl(sagres, 'Empenhos') %>%
   select(-cd_UnGestora) 
 
 licitacoes_merenda <- licitacoes %>% 
-  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao'))
+  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao')) %>%
+  mutate(de_TipoLicitacao = factor(de_TipoLicitacao))
 ```
 
 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro que recebem? 
@@ -252,12 +253,13 @@ paraiba_sumarizado = paraiba %>%
 # Dividindo em faixas
 paraiba_sumarizado$total = cut(paraiba_sumarizado$total,
                                 breaks = c(1,5,7,10,15,25,50, 120),
-                               labels = c("de 1 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50", "Acima de 50"),
-                                include.lowest = F)
+                                labels = c("de 1 a 5", "de 5 a 7", "de 7 a 10", "de 10 a 15", "de 15 a 25", "de 25 a 50", "Acima de 50"),
+                                include.lowest = T)
 
 paraiba_sumarizado$valor_total_emp <- cut(paraiba_sumarizado$valor_total_emp,
-                                         breaks = c(1, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
-                                         labels = c("De 1 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"))
+                                breaks = c(1, 250000, 500000, 750000, 1000000, 2000000, 4000000,1000000000),
+                                labels = c("De 1 a 250", "De 250 a 500", "De 500 a 750", "De 750 a 1000", "De 1000 a 2000", "De 2000 a 4000", "Acima de 4000"),
+                                include.lowest = T)
 
 levels_mapa = mapa_paraiba@data$Nome_Munic
 paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
@@ -291,7 +293,7 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
-Os municípios que mais fizeram licitações envolevendo merenda foram:
+Os municípios que mais fizeram licitações envolvendo merenda foram:
 
 ```{r}
 
@@ -425,13 +427,6 @@ plot_ly(data = (licitacoes_merenda %>%
 ### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
 ### 2.14 - O valor médio da licitação alterou ao longo dos anos com relação às modalidades de licitação?
 ### 2.15 - A popularidade de alguma modalidade de licitação mudou ao longo dos anos?
-
-
-```{r}
-#Obter licitações que possuem apenas empenhos de merenda. É possível analisá-las?
-```
-
-
 De acordo com a lei que as rege, as licitações podem ser realizadas de acordo com várias modalidades. Cada uma dessas modalidades pode apresentar, entre outras restriçoes, especificações sobre valor máximo que pode ser licitado, número mínimo de participantes e a ordem em que as etapas de verificação e fiscalização devem ser realizadas.
 Por causa das variações em suas especificações, uma modalidade de licitação pode ser mais indicada do que outras para determinadas situações. Existem modalidades, como o *convite*, que limitam o valor total que pode ser licitado e não podem ser utilizadas para a contratação de grandes obras. Outras, foram definidas especialmente para serem utilizadas nas compras da União, como o *pregão*, que também é bastante utilizado nas compras dos estados e municípios.
 Tendo isso em mente podemos nos perguntar: **Quais são as modalidades mais presentes em licitações lançadas para a compra de merenda?**
@@ -439,7 +434,22 @@ Para responder essa pergunta, vamos utilizar apenas licitações onde todos os e
 
 
 ```{r}
+niveis = levels(licitacoes_merenda$de_TipoLicitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+levels(licitacoes_merenda$de_TipoLicitacao) = niveis
 
+licitacoes_merenda %>%
+  group_by(year(dt_Homologacao), de_TipoLicitacao) %>%
+  summarise(total = n()) %>%
+  rename(dt_AnoHomologacao = 'year(dt_Homologacao)') %>%
+  ungroup() %>%
+  plot_ly() %>%
+  add_trace(x = ~dt_AnoHomologacao, y = ~total, color = ~de_TipoLicitacao, type = 'scatter', mode = 'lines') %>%
+  layout(title = 'Licitações de merenda por modalidade',
+         yaxis = list(title = 'Total', fixedrange = TRUE),
+         xaxis = list(title = 'Ano'))
 ```
 
 
