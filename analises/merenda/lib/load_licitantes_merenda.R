@@ -69,10 +69,16 @@ load_licitantes_merenda <- function() {
               municipios_vitorias = n_distinct(de_Municipio),
               valor_total_emp = sum(vl_Empenho),
               valor_mediana_emp = median(vl_Empenho),
-              valor_total_pag = sum(total_pag, na.rm = TRUE))
+              valor_total_pag = sum(total_pag, na.rm = TRUE)) %>%
+    left_join(empenhos %>% group_by(cd_Credor, no_Credor) %>% distinct(cd_Credor), by = "cd_Credor")
+  
+  vitorias <- vitorias %>%
+    distinct(cd_Credor, .keep_all = TRUE) %>%
+    filter(cd_Credor != '00000000000000')
   
   licitantes <- participacoes %>%
-    left_join(vitorias, by = c('nu_CPFCNPJ' = 'cd_Credor'))
+    left_join(vitorias, by = c('nu_CPFCNPJ' = 'cd_Credor')) %>%
+    select(-no_Credor)
   
   licitantes <- licitantes %>%
     mutate(ganhou = ifelse(is.na(ganhou), 0, ganhou), 
