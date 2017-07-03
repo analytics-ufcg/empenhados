@@ -71,20 +71,53 @@ ganhadores.scaled <- ganhadores.log %>%
 
 ## Licitantes
 
+Para nos auxliar na escolha do número de grupos nos quais classificaremos os licitantes de merenda usaremos uma visualização que nos mostra a soma do quadrado das distâncias dentro dos grupos em função do número de grupos. O desejado é a menor distância possível, pois indica que temos grupos bastante coesos, com um número de grupos que sejamos capazer de diferenciar e interpretar.
 ```{r}
 wssplot(licitantes.scaled %>%
   select(-nu_CPFCNPJ, -no_Fornecedor), 
   nc = 20)
 ```
+A visualização indica que com __6 grupos__ obtemos um melhor agrupamento já que com mais grupos que isto não temos grandes impactos na qualidade dos grupos. Em função disso optamos por classificar licitantes de merenda nesses grupos.
 
+A distribuição dos licitantes em cada grupo pode ser vista no gráfico de dispersão abaixo que é dado em função das variáveis _PC1 e PC2_ que são aproximações para as variáveis usadas no agrupamento.
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km_lic <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 6, nstart = 20)
-
+?kmeans
 autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
 ```
+Basicamente seus valores exatos para cada ponto não nos interessam, mas a visão geral dos licitantantes e seus grupos sim.
+
+```{r}
+licitantes.km <- licitantes.scaled %>%
+  mutate(cluster = km_lic$cluster %>% as.factor)
+
+licitantes.km.long <- licitantes.km %>%
+  gather('variable', 'value', -c(nu_CPFCNPJ, no_Fornecedor), -cluster, factor_key=T)
+```
+A seguir observamos os 6 grupos gerados, cada um com um boxplot para cada vaiável usada no agrupamento.
+```{r}
+ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
+  geom_boxplot() +
+  geom_hline(alpha = 0.3, yintercept = 0) + 
+  geom_point(alpha = 0.2, position = position_jitter(width = .2)) +
+  facet_wrap(~ cluster, ncol = 3) +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank()) +
+  labs(title = 'Agrupamento dos licitantes de merenda da Paraíba', x = '', y = '') +
+  scale_color_brewer(palette='Dark2') 
+```
+Com isso podemos observar o comportamento de cada grupo e estuda-los em função das suas particularidades, como segue:
+
+#### Grupo 1
+#### Grupo 2
+#### Grupo 3
+#### Grupo 4
+#### Grupo 5
+#### Grupo 6
+
 
 ## Ganhadores
 ```{r}
