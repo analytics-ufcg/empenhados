@@ -132,16 +132,22 @@ ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
   labs(title = 'Agrupamento dos licitantes de merenda da Paraíba', x = '', y = '') +
-  scale_color_brewer(palette='Dark2') 
+  scale_color_brewer(palette='Dark2')
 ```
 Com isso podemos observar o comportamento de cada grupo e estuda-los em função das suas particularidades, como segue:
 
-#### Grupo 1
-#### Grupo 2
-#### Grupo 3
-#### Grupo 4
-#### Grupo 5
-#### Grupo 6
+#### Grupo 1 - Saudáveis
+Neste grupo estão os licitantes que tem comportamento regular, suas taxas estão todas na média. Indicando que os fornecedores deste grupo são mais cautelos ao participar de uma licitação.
+#### Grupo 2 - Gourmet
+Que faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor enpenhado, pago e a mediana do que foi emepenhado considarávelmente acima da média.
+#### Grupo 3 - Nutricionistas
+Esse pessoal sabe muito bem onde e o que comer. Participam pouco e em poucos municípíos mas mesmo assim ganham mais e melhor que os demais.
+#### Grupo 4 - Bom-de_garfo
+Quem está aqui é porque tem todas as taxas altas. Entra em várias licitações em muitos municípios e lucram bem com isso.
+#### Grupo 5 - Magro-de-ruim
+Come, come, come mas não engordam. Mesmo participando mais que a maioria, em geral não conseguem ganhar as licitações.
+#### Grupo 6 - Estudantes de Nutrição
+Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus luctros.
 
 
 ## Ganhadores
