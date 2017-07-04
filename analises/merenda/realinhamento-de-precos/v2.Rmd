@@ -239,7 +239,7 @@ A seguir serão estudados os valores descritos em cada fase do processo de execu
 
 g <- ggplot(aes(x=log(vl_Licitacao+1), y=log(vl_Contrato+1)), data = licitacoes.alt) +
   geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point() +
+  geom_point(alpha=0.3) +
   scale_x_continuous(breaks=pretty_breaks(10)) +
   scale_y_continuous(breaks=pretty_breaks(10)) +
   labs(
@@ -258,7 +258,7 @@ A partir do gráfico, é possível observar que, em geral, os valores estipulado
 
 g <- ggplot(aes(x=log(vl_Contrato+1), y=log(vl_Empenho+1)), data = licitacoes.alt) +
   geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point() +
+  geom_point(alpha=0.3) +
   scale_x_continuous(breaks=pretty_breaks(10)) +
   scale_y_continuous(breaks=pretty_breaks(10)) +
   labs(
@@ -279,7 +279,7 @@ Assim como no caso acima, há muitos pontos sobre os eixos do gráfico. Esses oc
 
 g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Liquidacao+1)), data = licitacoes.alt) +
   geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point() +
+  geom_point(alpha=0.3) +
   scale_x_continuous(breaks=pretty_breaks(10)) +
   scale_y_continuous(breaks=pretty_breaks(10)) +
   labs(
@@ -302,7 +302,7 @@ Além disso, a concentração de pontos no eixo horizontal indica que muitos emp
 
 g <- ggplot(aes(x=log(vl_Liquidacao+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
   geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point() +
+  geom_point(alpha=0.3) +
   scale_x_continuous(breaks=pretty_breaks(10)) +
   scale_y_continuous(breaks=pretty_breaks(10)) +
   labs(
@@ -324,10 +324,17 @@ Os pontos sobre os eixos vertical têm o mesmo significado que na seção anteri
 Abaixo, pode-se ver os gráficos de dispersão entre as variáveis estudadas e o valor da correlação entre elas, assim como suas distribuições isoladas na diagonal. Para que os valores faltantes não interfiram no valor de correlação calculado, eles foram removidos nesta seção.
 
 ```{r}
+custom <- function(data, mapping, ...) {
+  ggplot(data = data, mapping = mapping) +
+    geom_abline(slope = 1, intercept = 0, color = 'grey') +
+    geom_point(..., alpha = 0.3, stroke = 0)
+}
+
 licitacoes.alt %>%
   select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
-  mutate_all(funs(log(replace(., .==0, NA)+1))) %>%
-  ggpairs()
+  mutate_all(funs( log(replace(., . == 0, NA)+1) )) %>%
+  ggpairs(lower = list(continuous = custom)) +
+  theme_minimal()
 ```
 
 Observando os gráficos de dispersão, é possível identificar dois grupos com valores internos relativamente parecidos: os valores da licitação e do contrato, e os valores do empenho, da liquidação e do pagamento. Essa conclusão parte do fato de que tais gráficos se aproximam de uma reta entre as variáveis de cada grupo. Ademais, a alta correlação entre as variáveis do segundo grupo corrobora com o que foi dito.
@@ -368,7 +375,7 @@ Para compreendermos melhor o resultado deste "sobe e desce" de valores decidimos
 
 g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
     geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point() +
+    geom_point(alpha=0.3) +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
