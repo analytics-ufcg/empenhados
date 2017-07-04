@@ -122,7 +122,7 @@ licitantes.km.long <- licitantes.km %>%
   gather('variable', 'value', -c(nu_CPFCNPJ, no_Fornecedor), -cluster, factor_key=T)
 ```
 A seguir observamos os 6 grupos gerados, cada um com um boxplot para cada vaiável usada no agrupamento.
-```{r}
+```{r fig.height=10, fig.width=10}
 ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
   geom_hline(alpha = 0.3, yintercept = 0) + 
@@ -138,7 +138,7 @@ Com isso podemos observar o comportamento de cada grupo e estuda-los em função
 #### Grupo 1 - Saudáveis
 Neste grupo estão os licitantes que tem comportamento regular, suas taxas estão todas na média. Indicando que os fornecedores deste grupo são mais cautelos ao participar de uma licitação.
 #### Grupo 2 - Gourmet
-Que faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor enpenhado, pago e a mediana do que foi emepenhado considarávelmente acima da média.
+Que faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor enpenhado, pago e a mediana do que foi empenhado considarávelmente acima da média.
 #### Grupo 3 - Nutricionistas
 Esse pessoal sabe muito bem onde e o que comer. Participam pouco e em poucos municípíos mas mesmo assim ganham mais e melhor que os demais.
 #### Grupo 4 - Bom-de_garfo
@@ -211,7 +211,7 @@ ganhadores.km.long <- ganhadores.km %>%
 
 A seguir é apresentado o boxplot de cada variável por grupo com o objetivo de identificar as características de cada conjunto de ganhadores.
 
-```{r}
+```{r fig.height=10, fig.width=10}
 ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
   geom_hline(alpha = 0.3, yintercept = 0) + 
@@ -219,25 +219,26 @@ ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
   facet_wrap(~ cluster, ncol = 3) +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank()) +
-  labs(title = 'Agrupamento de ganhadores de licitações de merenda da Paraíba', x = '', y = '') +
+  labs(title = 'Agrupamento dos fornecedores de merenda da Paraíba', x = '', y = '', color = 'Variáveis') +
   scale_color_brewer(palette='Dark2') 
 ```
 
 Os grupos podem ser rotulados e descritos como:
 
-#### Grupo 1 - Em dieta
-Esses grupo de fornecedores costuma ganhar poucas licitações. Eles também são os fornecedores que ganham as licitações de valor mais modesto dentre todos os outros.
+#### Grupo 1 - Cuscuz
+Esse grupo de fornecedores possui variáveis com todas características próximas a média (um pouco abaixo) e então podem ser considerados básicos uma vez que nenhuma de suas variáveis se sobressai, além de serem o maior grupo observado.
 
-#### Grupo 2 - 
-Assim como fornecedores do grupo 1, esses fornecedores costumam ganhar licitações em poucos municípios. A principal diferença deles para os fornecedores do grupo 2 é que eles geralmente ganham licitações mais caras.
+#### Grupo 2 - Arroz com feijão
+Os fornecedores desse grupo, assim como no anterior possuem variáveis próximas ao que é observado na maioria dos fornecedores. No entanto, possuem valor total e mediano empenhado e o valor total pago acima do que é observado no grupo 1 e portanto, em geral, ganham mais.
 
-#### Grupo 3 - Comilões
-Esses fornecedores costumam ganhar um número considerável de licitações em diversos municípios e apresentam a maior diversidade no valor da mediana dos empenhos. 
+#### Grupo 3 - Baião de dois
+Os integrantes do grupo possuem variáveis acima do que é observado na maioria dos fornecedores de merenda. Apresentam, por exemplo, um valor maior no total empenhado do que na mediana do que é empenhado com relação a outros grupos, o que indica que participa de empenhos com valores menores, mas que o montante é acima da média já que ganhou mais empenhos que a maioria dos fornecedores.
 
-#### Grupo 4 - Papa-tudo
-Assim como os fornecedores do grupo anterior, os fornecedores desse grupo ganham muitas licitações. A diferença entre esses dois grupos está no fato que esses fornecedores costumam ganhar licitações mais caras e em muito mais municípios.
+#### Grupo 4 - Feijoada
+Esse grupo de fornecedores experimenta de tudo, ou seja, possuem vários empenhos ganhos, e em diferentes lugares. Em geral, também possuem valores totais empenhados e pagos maiores que a maioria.
 
-#### Grupo 5 - Olho-grande
-De maneira similar aos fornecedores do grupo 1, esses fornecedores costumam ganhar poucas licitações. O que os diferencia é que os fornecedores desse grupo em geral apresentam empenhos mais caros. Além disso, os valores empenhados para esses fornecedores costumam ser bem maiores que os valores pagos ao final do processo de execução.
+#### Grupo 5 - Pastel de vento
+Nesse grupo apesar do valor total do empenho estar próximo a maioria do que é encontrado nos fornecedores de merenda, o valor total pago está bem abaixo. O nome do grupo está atrelado ao fato que se ganha menos (pago) do que se espera ganhar (empenho).
 
-#### Grupo 6 - 
+#### Grupo 6 - Arroz com ovo
+Os participantes desse grupo possuem variáveis atreladas ao dinheiro com valores mais abaixo do que a maioria dos fornecedores de merenda.
