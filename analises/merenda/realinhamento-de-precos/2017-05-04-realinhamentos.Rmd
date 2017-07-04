@@ -3,7 +3,7 @@ title: 'Realinhamento de Preços'
 subtitle: "Merenda Escolar"
 author: 'Laboratório Analytics'
 layout: post
-published: true
+published: false
 comments: true
 ---
 
