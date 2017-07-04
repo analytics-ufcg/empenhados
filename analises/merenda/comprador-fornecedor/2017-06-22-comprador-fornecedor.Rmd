@@ -327,7 +327,7 @@ kable(
   align = c('c'))
 ```
 
-### 2.13 - Que modalidade de licitação é mais comum na compra de merenda?
+### Que modalidade de licitação é mais comum na compra de merenda?
 
 De acordo com a lei que as rege, as licitações podem ser realizadas de acordo com várias modalidades. Cada uma dessas modalidades pode apresentar, entre outras restriçoes, especificações sobre valor máximo que pode ser licitado, número mínimo de participantes e a ordem em que as etapas de verificação e fiscalização devem ser realizadas.
 Por causa das variações em suas especificações, uma modalidade de licitação pode ser mais indicada do que outras para determinadas situações. Existem modalidades, como o *convite*, que limitam o valor total que pode ser licitado e não podem ser utilizadas para a contratação de grandes obras. Outras, foram definidas especialmente para serem utilizadas nas compras da União, como o *pregão*, que também é bastante utilizado nas compras dos estados e municípios.
@@ -357,7 +357,6 @@ licitacoes_merenda %>%
 
 A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a tomada de preços. Até o ano 2009, o convite era a modalidade mais utilizada para esse tipo de compras, mas apresentou quedas quase contínuas a partir deste ano e foi ultrapassada pelo pregão em 2010.
 Uma coisa interessante que podemos observar é o crescimento no número de licitações da modalidade chamada pública a partir do ano de 2013. Essa modalidade é, na verdade, um caso especial da dispensa de licitação e é regulado pela resolução [Nº 26/2013](https://www.fnde.gov.br/fndelegis/action/UrlPublicasAction.php?acao=getAtoPublico&sgl_tipo=RES&num_ato=00000026&seq_ato=000&vlr_ano=2013&sgl_orgao=FNDE/MEC) do FNDE. Essa resolução definiu que a aquisição de alimentos com fundos do Plano Nacional de Alimentação Escolar (PNAE) poderia ser dispensada da necessidade de licitação caso os alimentos fossem originados da agricultura familiar. Nesse caso, deve ser realizada uma audiência pública com todos os fornecedores interessados para que os vencedores sejam definidos.
-
 
 ### Quem gasta mais com merenda?
 Nosso próximo passo é encontrar os municípios que mais gastam recursos com merenda escolar.
@@ -407,8 +406,7 @@ perc_top10 <- sum(top10$valor_total_emp_num) / sum(paraiba_sumarizado$valor_tota
 Juntos, eles concentram `r round(perc_top10*100, 1)`% do valor gasto por todos os municípios, restando aos outros 213 municípios gastar a outra metade do dinheiro.  
 Como é de se esperar João Pessoa e Campina Grande são as que mais gastam, já que elas são as cidades com mais habitantes no estado. As demais cidades que mais gastam estão todas entre as 20 cidades com mais habitantes do estado (de acordo com a projeção do IBGE para 2016).  
 
-### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
+### Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
 
 ```{r}
 lic_merenda_sum <-licitacoes_merenda %>%
@@ -435,7 +433,7 @@ kable(
 ```
 
 
-### 2.8 - Em que período do ano ocorrem mais licitações de merenda?
+### Em que período do ano ocorrem mais licitações de merenda?
 
 ```{r}
 plot_ly(data = licitacoes_merenda) %>%
@@ -445,7 +443,7 @@ plot_ly(data = licitacoes_merenda) %>%
          xaxis = list(title = 'Mês', dtick = 1))
 ```
 
-### 2.9 - Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
+### Em geral, as licitaçoes mais caras estão concentradas em alguma época do ano?
 Uma coisa que pode chamar atenção diz respeito ao período do ano em que ocorrem mais licitações de merenda. Por senso comum, espera-se que a maioria das licitações desse tipo ocorram nos primeiros meses do ano, quando geralmente são firmados os contratos de fornecimento do ano inteiro.
 
 ```{r}
@@ -474,7 +472,7 @@ plot_ly(data = (licitacoes_merenda %>%
 ```
 
 
-### Geralmente, quantas propostas são recebidas para licitações de merenda?
+### Quantas propostas, em geral, recebem as licitações de merenda?
 
 Sabendo agora quais são as modalidades de licitação mais utilizadas para a compra de merenda, podemos ainda observar o comportamento das propostas realizadas para esse tipo de licitação. Nesse ponto, podemos nos perguntar quantas propostas são feitas para as licitações de merenda ou se há alguma correlação entre o valor de uma licitação e a quantidade de propostas recebidas por ela. 
 
@@ -503,8 +501,9 @@ kable(
 
 
 A chamada pública é a modalidade da maioria dessas licitações. Sabendo como o processo de chamada pública funciona, o grande número de participantes faz um certo sentido.  
-Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. E é isso que vamos fazer em seguida.  
 
+### Existe relação entre o número de propostas e o valor de uma licitação?
+Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. E é isso que vamos fazer em seguida.  
 
 ```{r}
 cor1 = with(licitacoes_merenda,
@@ -523,7 +522,8 @@ plot_ly(data = licitacoes_merenda,
          yaxis = list(title = 'Número de propostas'),
          annotations = list(x = 1e+07, y = 30, showarrow = FALSE, text = paste('r = ', cor1)))
 ```
-
+Observando a visualização observamos que aparentemente não temos correlação linear entre as variáveis. O que pode ser confirmado pelo valor de correlação linear entre elas que é de `r cor1`.  
+Mas nesse gráfico temos alguns valores extremos que nos impedem de observar com mais detalhes onde nossos dados estão realmente concentrados, em função disso vamos desconsiderar esses valores extremos. gerar um novo gráfico e um novo valor de correlação linear entre variáveis como segue.
 
 ```{r}
 cor2 = with(filter(licitacoes_merenda,
@@ -542,5 +542,7 @@ plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoe
   layout(title = 'Número de propostas por valor total de licitação (99-percentil)',
          xaxis = list(title = 'Valor da licitação'),
          yaxis = list(title = 'Número de propostas'),
-         annotations = list(x = 1e+06, y = 6, showarrow = FALSE, text = paste('r = ', cor2)))
+         annotations = list(x = 0.5e+06, y = 15, showarrow = FALSE, text = paste('r = ', cor2)))
 ```
+
+Com a aproximação temos um valor de correlação linear ainda menor (`r cor2`), o que nos concluir que não existe correlação linear entre o valor da licitação e o número de participantes da mesma.
