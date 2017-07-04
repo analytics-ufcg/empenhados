@@ -108,7 +108,7 @@ A distribuição dos licitantes em cada grupo pode ser vista no gráfico de disp
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km_lic <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 6, nstart = 20)
-autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+autoplot(km_lic, data = licitantes.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means', alpha = .6) +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
 ```
@@ -148,8 +148,10 @@ Come, come, come mas não engordam. Mesmo participando mais que a maioria, em ge
 #### Grupo 6 - Estudantes de Nutrição
 Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus luctros.
 
+
 ## Ganhadores
 Na segunda perspectiva para o agrupamento, o interesse está em utilizar apenas quem possui empenhos de alimentação escolar associados. Ou seja, apenas os ganhadores dos itens das licitações que envolveram merenda. Sob essa perspectiva é possível afirmar com segurança de que os fornecedores aqui agrupados participaram efetivamente dos itens da licitação relacionados a merenda escolar. 
+
 ### Descrição das variáveis
 Foram analisados `r nrow(ganhadores)` empresas/pessoas físicas que ganharam licitações e possuem empenhos associados a alimentação escolar.
 
@@ -182,7 +184,7 @@ Considerando que quanto mais grupos maior será a dificuldade para interpretar c
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
 km_gan <- kmeans(select(ganhadores.scaled, -c(cd_Credor, no_Credor)), centers = 6, nstart = 20)
 
-autoplot(km_gan, data = ganhadores.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means') +
+autoplot(km_gan, data = ganhadores.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means', alpha = .6) +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
 ```
@@ -206,7 +208,9 @@ ganhadores.km <- ganhadores.scaled %>%
 ganhadores.km.long <- ganhadores.km %>%
   gather('variable', 'value', -cd_Credor, -no_Credor, -cluster, factor_key=T)
 ```
+
 A seguir é apresentado o boxplot de cada variável por grupo com o objetivo de identificar as características de cada conjunto de ganhadores.
+
 ```{r}
 ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
@@ -221,4 +225,19 @@ ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
 
 Os grupos podem ser rotulados e descritos como:
 
+#### Grupo 1 - Em dieta
+Esses grupo de fornecedores costuma ganhar poucas licitações. Eles também são os fornecedores que ganham as licitações de valor mais modesto dentre todos os outros.
 
+#### Grupo 2 - 
+Assim como fornecedores do grupo 1, esses fornecedores costumam ganhar licitações em poucos municípios. A principal diferença deles para os fornecedores do grupo 2 é que eles geralmente ganham licitações mais caras.
+
+#### Grupo 3 - Comilões
+Esses fornecedores costumam ganhar um número considerável de licitações em diversos municípios e apresentam a maior diversidade no valor da mediana dos empenhos. 
+
+#### Grupo 4 - Papa-tudo
+Assim como os fornecedores do grupo anterior, os fornecedores desse grupo ganham muitas licitações. A diferença entre esses dois grupos está no fato que esses fornecedores costumam ganhar licitações mais caras e em muito mais municípios.
+
+#### Grupo 5 - Olho-grande
+De maneira similar aos fornecedores do grupo 1, esses fornecedores costumam ganhar poucas licitações. O que os diferencia é que os fornecedores desse grupo em geral apresentam empenhos mais caros. Além disso, os valores empenhados para esses fornecedores costumam ser bem maiores que os valores pagos ao final do processo de execução.
+
+#### Grupo 6 - 
