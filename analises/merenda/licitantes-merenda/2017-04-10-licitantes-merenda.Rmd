@@ -3,7 +3,7 @@ title: 'Classificação dos licitantes de merenda'
 author: 'Laboratório Analytics'
 subtitle: "Merenda Escolar"
 layout: post
-published: true
+published: false
 comments: true
 ---
 

@@ -3,120 +3,99 @@ load_licitantes_merenda <- function() {
   library(methods)
   library(dplyr)
   library(stringr)
+  library(rsagrespb)
   
-  sagres = src_mysql('sagres', group='ministerio-publico', password=NULL)
-  utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+  sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+  utils = src_mysql('utils', group='ministerio-publico-local', password=NULL)
 
   municipios = tbl(utils, 'municipio') %>%
     collect()
 
+  empenhos <- get_empenhos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+    collect(n = Inf)
+  
+  pagamentos <- get_pagamentos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+    collect(n = Inf)
+  
+  pagamentos <- pagamentos %>%
+    group_by(cd_UGestora, nu_Empenho, dt_Ano, cd_UnidOrcamentaria) %>%
+    summarise(total_pag = sum(vl_Pagamento))
+  
+  empenhos <- empenhos %>%
+    left_join(pagamentos, by = c("cd_UGestora", "nu_Empenho", "dt_Ano", "cd_UnidOrcamentaria"))
+
+  licitacoes <- empenhos %>%
+    group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+    summarise(total_empenhos = n())
+  
   query <- sql('
     SELECT *
-    FROM licitacao
-    WHERE de_Obs REGEXP "merenda"
-    AND dt_Ano BETWEEN 2011 AND 2015
+    FROM Participantes
   ')
-
-  licitacoes <- tbl(sagres, query) %>%
-    compute(name = 'lm') %>%
-    collect()
-
-  query <- sql('
-    SELECT c.*
-    FROM contratos c
-    INNER JOIN lm
-    USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
-  ')
-
-  contratos <- tbl(sagres, query) %>%
-    compute(name = 'cm') %>%
-    collect()
-
-  query <- sql('
-    SELECT DISTINCT a.*
-    FROM aditivos a
-    INNER JOIN cm
-    USING (cd_UGestora, nu_Contrato)
-  ')
-
-  aditivos <- tbl(sagres, query) %>%
-    collect()
-
-  query <- sql('
-    SELECT p.*
-    FROM participantes p
-    INNER JOIN lm
-    USING (cd_UGestora, nu_Licitacao, tp_Licitacao)
-  ')
-
+  
   participantes <- tbl(sagres, query) %>%
-    compute(name = 'pm') %>%
-    collect()
-
+    collect(n = Inf)
+  
   query <- sql('
-    SELECT DISTINCT f.*
-    FROM fornecedores f
-    INNER JOIN pm
-    USING (cd_UGestora, nu_CPFCNPJ)
+    SELECT nu_CPFCNPJ, no_Fornecedor
+    FROM Fornecedores
   ')
-
+  
   fornecedores <- tbl(sagres, query) %>%
-    collect()
-
+    collect(n = Inf) %>%
+    distinct(nu_CPFCNPJ, .keep_all = TRUE)
+    
   get.municipio <- function(cd_UGestora) {
     result <- data.frame(
       cd_Municipio = str_sub(cd_UGestora, -3)) %>%
       left_join(municipios)
     return(result$de_Municipio)
   }
-
+  
   licitacoes <- licitacoes %>%
     mutate(de_Municipio = get.municipio(cd_UGestora))
-
+  
   participacoes <- participantes %>%
     merge(licitacoes, by=c('cd_UGestora', 'tp_Licitacao', 'nu_Licitacao'), all.x=T) %>%
     group_by(nu_CPFCNPJ) %>%
     summarise(
       participou = n(),
-      total = sum(vl_Licitacao),
-      mediana = median(vl_Licitacao),
       municipios = n_distinct(de_Municipio))
-
-  vitorias <- contratos %>%
-    group_by(nu_CPFCNPJ) %>%
-    summarise(
-      ganhou = n(),
-      total_ganho = sum(vl_TotalContrato))
-
-  aditivacoes <- contratos %>%
-    select(cd_UGestora, nu_Contrato, nu_CPFCNPJ) %>%
-    merge(aditivos) %>%
-    group_by(nu_CPFCNPJ) %>%
-    summarise(
-      aditivos = n())
-
-  licitantes <- fornecedores %>%
-    distinct(nu_CPFCNPJ) %>%
-    merge(participacoes, all=T) %>%
-    merge(vitorias, all=T) %>%
-    merge(aditivacoes, all=T)
-
-  licitantes[is.na(licitantes)] <- 0
   
-  nomefornecedores <- fornecedores %>%
-    select(c(nu_CPFCNPJ, no_Fornecedor)) %>%
-    distinct(nu_CPFCNPJ, .keep_all = TRUE)
+  vitorias <- empenhos %>%
+    mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
+    group_by(cd_Credor) %>%
+    summarise(ganhou = n_distinct(cd_UGestora, nu_Licitacao, tp_Licitacao),
+              municipios_vitorias = n_distinct(de_Municipio),
+              valor_total_emp = sum(vl_Empenho),
+              valor_mediana_emp = median(vl_Empenho),
+              valor_total_pag = sum(total_pag, na.rm = TRUE)) %>%
+    left_join(empenhos %>% group_by(cd_Credor, no_Credor) %>% distinct(cd_Credor), by = "cd_Credor")
+  
+  vitorias <- vitorias %>%
+    distinct(cd_Credor, .keep_all = TRUE) %>%
+    filter(cd_Credor != '00000000000000')
+  
+  licitantes <- participacoes %>%
+    left_join(vitorias, by = c('nu_CPFCNPJ' = 'cd_Credor')) %>%
+    select(-no_Credor)
   
   licitantes <- licitantes %>%
-    left_join(nomefornecedores, by = c("nu_CPFCNPJ" = "nu_CPFCNPJ"))
-
+    mutate(ganhou = ifelse(is.na(ganhou), 0, ganhou), 
+           valor_total_emp = ifelse(is.na(valor_total_emp), 0, valor_total_emp),
+           valor_mediana_emp = ifelse(is.na(valor_mediana_emp), 0, valor_mediana_emp),
+           valor_total_pag = ifelse(is.na(valor_total_pag), 0, valor_total_pag))
+  
   licitantes <- licitantes %>%
-    mutate(
-      aditivos = ifelse(is.nan(aditivos/ganhou), 0, aditivos/ganhou),
-      ganhou = ganhou/participou) %>%
+    mutate(ganhou = ganhou/participou) %>%
     filter(
       is.finite(ganhou),
       nu_CPFCNPJ != '00000000000000')
-
-  return(licitantes)
+  
+  licitantes <- licitantes %>%
+    left_join(fornecedores, by = c("nu_CPFCNPJ")) %>%
+    filter(!is.na(no_Fornecedor)) %>%
+    select(-municipios_vitorias)
+  
+  return(list(licitantes = licitantes, vitorias = vitorias))
 }
