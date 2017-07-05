@@ -94,9 +94,7 @@ ganhadores.scaled <- ganhadores.log %>%
   mutate_each(funs(scale(.) %>% c), -c(cd_Credor, no_Credor))
 ```
 
-## Licitantes
-
-Para nos auxliar na escolha do número de grupos nos quais classificaremos os licitantes de merenda usaremos uma visualização que nos mostra a soma do quadrado das distâncias dentro dos grupos em função do número de grupos. O desejado é a menor distância possível, pois indica que temos grupos bastante coesos, com um número de grupos que sejamos capazer de diferenciar e interpretar.
+Para nos auxiliar na escolha do número de grupos nos quais classificaremos os licitantes de merenda, usaremos uma visualização que nos mostra a soma do quadrado das distâncias dentro dos grupos em função do número de grupos. O desejado é a menor distância possível, pois indica que temos grupos bastante coesos, com um número de grupos que sejamos capazer de diferenciar e interpretar.
 ```{r}
 wssplot(licitantes.scaled %>%
   select(-nu_CPFCNPJ, -no_Fornecedor), 
@@ -121,7 +119,7 @@ licitantes.km <- licitantes.scaled %>%
 licitantes.km.long <- licitantes.km %>%
   gather('variable', 'value', -c(nu_CPFCNPJ, no_Fornecedor), -cluster, factor_key=T)
 ```
-A seguir observamos os 6 grupos gerados, cada um com um boxplot para cada vaiável usada no agrupamento.
+A seguir observamos os 6 grupos gerados, cada um com um boxplot para cada variável usada no agrupamento.
 ```{r fig.height=10, fig.width=10}
 ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   geom_boxplot() +
@@ -133,20 +131,25 @@ ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
   labs(title = 'Agrupamento dos licitantes de merenda da Paraíba', x = '', y = '') +
   scale_color_brewer(palette='Dark2')
 ```
-Com isso podemos observar o comportamento de cada grupo e estuda-los em função das suas particularidades, como segue:
+Com isso podemos observar o comportamento de cada grupo e estudá-los em função das suas particularidades, como segue:
 
 #### Grupo 1 - Saudáveis
 Neste grupo estão os licitantes que tem comportamento regular, suas taxas estão todas na média. Indicando que os fornecedores deste grupo são mais cautelos ao participar de uma licitação.
+
 #### Grupo 2 - Gourmet
 Que faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor enpenhado, pago e a mediana do que foi empenhado considarávelmente acima da média.
+
 #### Grupo 3 - Nutricionistas
 Esse pessoal sabe muito bem onde e o que comer. Participam pouco e em poucos municípíos mas mesmo assim ganham mais e melhor que os demais.
-#### Grupo 4 - Bom-de_garfo
+
+#### Grupo 4 - Bom-de-garfo
 Quem está aqui é porque tem todas as taxas altas. Entra em várias licitações em muitos municípios e lucram bem com isso.
+
 #### Grupo 5 - Magro-de-ruim
 Come, come, come mas não engordam. Mesmo participando mais que a maioria, em geral não conseguem ganhar as licitações.
+
 #### Grupo 6 - Estudantes de Nutrição
-Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus luctros.
+Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus lucros.
 
 
 ## Ganhadores
