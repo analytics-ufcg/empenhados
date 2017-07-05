@@ -3,7 +3,7 @@ title: "Descrição dos compradores e fornecedores de merenda"
 subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
-published: false
+published: true
 comments: true
 ---
 
@@ -128,7 +128,7 @@ licitacoes %>%
 ```
 
 
-## Como costuma ser o processo licitatório dos municípios do estado?
+### Como costuma ser o processo licitatório dos municípios do estado?
 Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
 Feita essa análise, descobrimos que dos cinco municípios que mais realizam licitações, quatro também estão presentes na lista dos mais populosos do estado. São eles: João Pessoa, Campina Grande, Santa Rita e Patos. A exceção aqui fica por conta do município de Pombal, que não está entre os quinze municípios mais populosos do estado e é o quinto maior realizador de licitações.
 
@@ -196,19 +196,22 @@ A partir do gráfico acima, podemos observar que, assim como a quantidade de lic
 
 
 ## Licitações de Merenda
-Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo! Para essa análise mais detalhada escolhemos trabalhar com dados relacionados aos gastos com __merenda escolar nos municípios da Paraíba entre 2012 e 2016__.  
+Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo. Para essa análise mais detalhada escolhemos trabalhar com dados relacionados aos gastos com __merenda escolar nos municípios da Paraíba entre 2012 e 2016__.  
 Porém, antes de prosseguirmos temos uma questão a resolver: se você está lembrado, no começo da análise afirmamos que vários itens distintos podem ser adquiridos ou contratados numa mesma licitação. Devido a isso, pode ser que apenas uma pequena parte dos itens adquiridos em uma licitação seja de merenda e outra parte seja, por exemplo, alimentação para os hospitais municipais ou materiais de escritório. Sendo assim, como poderíamos classificar uma licitação como sendo de merenda?  
 Várias alternativas podem ser utilizadas para realizar essa classificação, mas para essa análise, resolvemos classificar como licitações de merenda apenas as licitações em que todos os seus empenhos são de merenda.
 Agora sim, podemos continuar. Você sabe quanto o seu município gastou com merenda nos últimos anos? Será que ele está dentro da média da Paraíba? Quantas licitações são feitas para alimentação escolar? Quem gasta mais? Quem gasta menos? Essas e muitas outras perguntas podem ser respondidas pela análise abaixo. 
 
 
-### Quantas licitações de merenda foram realizadas em cada ano do período analisado?
+### Quantas licitações de merenda foram realizadas em cada ano do período?
 As licitações de merenda representam uma parcela de apenas `r round(100 * nrow(licitacoes_merenda)/nrow(licitacoes), 1)`% dos dados disponíveis no SAGRES. Esse recorte dos dados foi escolhido devido a constantes denúncias envolvendo desvios de merenda dentro e fora do estado nos últimos anos. Alguns exemplos podem ser vistos [aqui](http://g1.globo.com/pb/paraiba/noticia/2015/03/mpf-pb-abre-inqueritos-para-apurar-desvio-de-verbas-em-58-municipios.html) e [aqui](http://correiodaparaiba.com.br/politica/mpf-denuncia-desvio-de-verbas-em-livramento/).  
 
 De maneira similar ao que fizemos na análise de todas as licitações, uma boa maneira de começar nossa exploração é verificar quantas licitações de merenda foram realizadas em cada ano do período analisado. O gráfico abaixo nos mostra essa informação.
 
 
 ```{r}
+licitacoes_merenda <- licitacoes_merenda %>%
+  filter(year(dt_Homologacao) >= 2012 & year(dt_Homologacao) <= 2016)
+
 plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='histogram') %>%
   layout(
     xaxis = list(title = "Ano"),
@@ -218,9 +221,10 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
   
     
 Podemos perceber que houve um salto no total de licitações entre 2012 e 2013, o que pode indicar que os municípios passaram fazer mais licitações envolvendo merenda. Esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. Após atingir o pico em 2013, o número de licitações de merenda realizadas vem caindo constantemente.
+
  
 ### Quem faz mais licitações de merenda?
-Agora podemos entender como é o processo licitatório dos municípios do estado levando em conta apenas o recorte que escolhemos, de licitações de merenda. O mapa abaixo nos mostra quantas licitações foram realizadas por cada município do estado entre 2012 e 2016.
+Agora podemos entender como é o processo licitatório dos municípios do estado levando em conta apenas o recorte que escolhemos, de licitações de merenda. O mapa abaixo nos mostra quantas licitações foram realizadas por cada município do estado no período analisado.
 
 ```{r results='hide'}
 mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
@@ -297,7 +301,7 @@ kable(
   align = c('c'))
 ```
 
-Sete municípios do estado não realizaram nenhuma licitação exclusiva para merenda. São eles:
+Sete municípios do estado não realizaram nenhuma licitação exclusiva para merenda no período. São eles:
 
 ```{r}
 kable(
@@ -305,46 +309,11 @@ kable(
     municipios %>%
       anti_join(paraiba_sumarizado, by = 'de_Municipio') %>%
       select(de_Municipio) %>%
-      arrange(de_Municipio)  
+      arrange(de_Municipio)
   ),
   col.names = 'Município',
   align = 'c')
 ```
-
-### Que modalidade de licitação é mais comum na compra de merenda?
-
-De acordo com a lei que as rege, as licitações podem ser realizadas de acordo com várias modalidades. Cada uma dessas modalidades pode apresentar, entre outras restriçoes, especificações sobre valor máximo que pode ser licitado, número mínimo de participantes e a ordem em que as etapas de verificação e fiscalização devem ser realizadas.
-
-Por causa das variações em suas especificações, uma modalidade de licitação pode ser mais indicada do que outras para determinadas situações. Existem modalidades, como o *convite*, que limitam o valor total que pode ser licitado e não podem ser utilizadas para a contratação de grandes obras. Outras, foram definidas especialmente para serem utilizadas nas compras da União, como o *pregão*, que também é bastante utilizado nas compras dos estados e municípios.
-
-Tendo isso em mente podemos nos perguntar: **Quais são as modalidades mais presentes em licitações lançadas para a compra de merenda?**
-
-Para responder essa pergunta, vamos utilizar apenas licitações onde todos os empenhos são de merenda, de acordo com nosso filtro. A popularidade de cada modalidade de licitação através dos anos pode ser vista no gráfico abaixo.
-
-
-```{r}
-niveis = levels(licitacoes_merenda$de_TipoLicitacao)
-niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
-levels(licitacoes_merenda$de_TipoLicitacao) = niveis
-
-licitacoes_merenda %>%
-  group_by(year(dt_Homologacao), de_TipoLicitacao) %>%
-  summarise(total = n()) %>%
-  rename(dt_AnoHomologacao = 'year(dt_Homologacao)') %>%
-  ungroup() %>%
-  plot_ly() %>%
-  add_trace(x = ~dt_AnoHomologacao, y = ~total, color = ~de_TipoLicitacao, type = 'scatter', mode = 'lines') %>%
-  layout(title = 'Licitações de merenda por modalidade',
-         yaxis = list(title = 'Total', fixedrange = TRUE),
-         xaxis = list(title = 'Ano'))
-```
-
-
-A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a tomada de preços. Até o ano 2009, o convite era a modalidade mais utilizada para esse tipo de compras, mas apresentou quedas quase contínuas a partir deste ano e foi ultrapassada pelo pregão em 2010.
-
-Uma coisa interessante que podemos observar é o crescimento no número de licitações da modalidade chamada pública a partir do ano de 2013. Essa modalidade é, na verdade, um caso especial da dispensa de licitação e é regulado pela resolução [Nº 26/2013](https://www.fnde.gov.br/fndelegis/action/UrlPublicasAction.php?acao=getAtoPublico&sgl_tipo=RES&num_ato=00000026&seq_ato=000&vlr_ano=2013&sgl_orgao=FNDE/MEC) do FNDE. Essa resolução definiu que a aquisição de alimentos com fundos do Plano Nacional de Alimentação Escolar (PNAE) poderia ser dispensada da necessidade de licitação caso os alimentos fossem originados da agricultura familiar. Nesse caso, deve ser realizada uma audiência pública com todos os fornecedores interessados para que os vencedores sejam definidos.
 
 
 ### Quem gasta mais com merenda?
@@ -395,41 +364,13 @@ perc_top10 <- sum(top10$valor_total_emp_num) / sum(paraiba_sumarizado$valor_tota
 Juntos, eles concentram `r round(perc_top10*100, 1)`% do valor gasto por todos os municípios, restando aos outros 213 municípios gastar a outra metade do dinheiro.  
 Como é de se esperar João Pessoa e Campina Grande são as que mais gastam, já que elas são as cidades com mais habitantes no estado. As demais cidades que mais gastam estão todas entre as 20 cidades com mais habitantes do estado (de acordo com a projeção do IBGE para 2016).  
 
-### 2.3 - Qual a distribuição do valor total de licitações de merenda escolar entre todos os municípios da Paraíba?
-### 2.7 - Qual o comportamento da média e da mediana do valor das licitações de merenda ao longo dos anos (2011-2015)?
-
-```{r}
-lic_merenda_sum <-licitacoes_merenda %>%
-  group_by(year(dt_Homologacao)) %>%
-  summarise(mean_vl = mean(valor_merenda),
-            median_vl = median(valor_merenda))
-
-colnames(lic_merenda_sum)[1] <- "ano"
-
-plot_ly(data = lic_merenda_sum, x = ~as.factor(ano)) %>%
-  add_trace(y = ~mean_vl/1000, type = 'scatter', name = 'Média', mode = 'lines+markers') %>%
-  add_trace(y = ~median_vl/1000, type = 'scatter', name = 'Mediana', mode = 'lines+markers') %>%
-  layout(title = "Valor médio e mediano das licitações de merenda por ano",
-         yaxis = list(title = 'Valor da licitação (em milhares de reais)', hoverformat= '.2f'),
-         xaxis = list(title = 'Ano'))
-```
-
-```{r}
-kable(
-  x = head(arrange(select(subset(licitacoes_merenda, year(licitacoes_merenda$dt_Homologacao) == 2014),
-                          c(de_Municipio, valor_merenda)), desc(valor_merenda)), 5),
-  col.names = c('Município', 'Valor da empenhado para merenda (R$)'),
-  align = c('c'))
-```
-
-
 ### Em que período do ano ocorrem mais licitações de merenda?
 Uma coisa que pode chamar atenção diz respeito ao período do ano em que ocorrem mais licitações de merenda. Por senso comum, espera-se que a maioria das licitações desse tipo ocorram nos primeiros meses do ano, quando geralmente são firmados os contratos de fornecimento do ano inteiro. É exatamente isso que é comprovado pela visualização abaixo. 
 
 ```{r}
 plot_ly(data = licitacoes_merenda) %>%
   add_histogram(x = ~month(dt_Homologacao)) %>%
-  layout(title = 'Total de licitações por mês entre os anos 2012 e 2016',
+  layout(title = 'Total de licitações por mês',
          yaxis = list(title = 'Total', hoverformat= '.0f'),
          xaxis = list(title = 'Mês', dtick = 1))
 ```
@@ -454,17 +395,54 @@ plot_ly(data = (licitacoes_merenda %>%
             line = list(dash = "dash"),
             opacity = 0.75) %>%
   layout(
-    title = 'Valor mediano de licitações por mês entre os anos 2012 e 2016',
+    title = 'Valor mediano de licitações por mês',
     xaxis = list(title = 'Mês'),
     yaxis = list(title = 'Valor mediano', fixedrange = TRUE),
     legend = list(x = 100, y = 0.5)
   )
 ```
 
+Podemos concluir, então, que assim como o total de licitações realizadas nos primeiros meses do ano é maior, o valor de tais licitações também é mais alto.
 
-### Geralmente, quantas propostas são recebidas para licitações de merenda?
 
-Sabendo agora quais são as modalidades de licitação mais utilizadas para a compra de merenda, podemos ainda observar o comportamento das propostas realizadas para esse tipo de licitação. Nesse ponto, podemos nos perguntar quantas propostas são feitas para as licitações de merenda ou se há alguma correlação entre o valor de uma licitação e a quantidade de propostas recebidas por ela. 
+### Que modalidade de licitação é mais comum na compra de merenda?
+De acordo com a lei que as rege, as licitações podem ser realizadas de acordo com várias modalidades. Cada uma dessas modalidades pode apresentar, entre outras restriçoes, especificações sobre valor máximo que pode ser licitado, número mínimo de participantes e a ordem em que as etapas de verificação e fiscalização devem ser realizadas.
+
+Por causa das variações em suas especificações, uma modalidade de licitação pode ser mais indicada do que outras para determinadas situações. Existem modalidades, como o *convite*, que limitam o valor total que pode ser licitado e não podem ser utilizadas para a contratação de grandes obras. Outras, foram definidas especialmente para serem utilizadas nas compras da União, como o *pregão*, que também é bastante utilizado nas compras dos estados e municípios.
+
+Tendo isso em mente podemos nos perguntar: **Quais são as modalidades mais presentes em licitações lançadas para a compra de merenda?**
+
+Para responder essa pergunta, vamos utilizar apenas licitações onde todos os empenhos são de merenda, de acordo com nosso filtro. A popularidade de cada modalidade de licitação através dos anos pode ser vista no gráfico abaixo.
+
+
+```{r}
+niveis = levels(licitacoes_merenda$de_TipoLicitacao)
+niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
+niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
+levels(licitacoes_merenda$de_TipoLicitacao) = niveis
+
+licitacoes_merenda %>%
+  group_by(year(dt_Homologacao), de_TipoLicitacao) %>%
+  summarise(total = n()) %>%
+  rename(dt_AnoHomologacao = 'year(dt_Homologacao)') %>%
+  ungroup() %>%
+  plot_ly() %>%
+  add_trace(x = ~dt_AnoHomologacao, y = ~total, color = ~de_TipoLicitacao, type = 'scatter', mode = 'lines') %>%
+  layout(title = 'Licitações de merenda por modalidade',
+         yaxis = list(title = 'Total', fixedrange = TRUE),
+         xaxis = list(title = 'Ano'))
+```
+
+
+A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a tomada de preços. Até o ano 2013, o convite era a segunda modalidade mais utilizada para esse tipo de compras, mas apresentou uma queda brusca a partir deste ano e foi ultrapassada pela modalidade de chamada pública em anos seguintes. Atualmente, o convite não está sequer entre as cinco modalidades mais utilizadas.
+
+O crescimento no número de licitações da modalidade chamada pública a partir do ano de 2013 pode ser explicado. Essa modalidade é, na verdade, um caso especial da dispensa de licitação e é regulada pela resolução [Nº 26/2013](https://www.fnde.gov.br/fndelegis/action/UrlPublicasAction.php?acao=getAtoPublico&sgl_tipo=RES&num_ato=00000026&seq_ato=000&vlr_ano=2013&sgl_orgao=FNDE/MEC) do FNDE. Essa resolução definiu que a aquisição de alimentos com fundos do Plano Nacional de Alimentação Escolar (PNAE) poderia ser dispensada da necessidade de licitação caso os alimentos fossem originados da agricultura familiar. Nesse caso, deve ser realizada uma audiência pública com todos os fornecedores interessados para que os vencedores sejam definidos.
+
+
+### Quantas propostas uma licitação de merenda costuma receber?
+
+Prosseguindo nossa análise, podemos ainda observar o comportamento das propostas realizadas para esse tipo de licitação. Nesse ponto, podemos nos perguntar quantas propostas são feitas para as licitações de merenda ou se há alguma correlação entre o valor de uma licitação e a quantidade de propostas recebidas por ela. 
 
 ```{r}
 plot_ly(data = licitacoes_merenda, x = ~nu_Propostas) %>%
@@ -474,7 +452,7 @@ plot_ly(data = licitacoes_merenda, x = ~nu_Propostas) %>%
          xaxis = list(title = 'Número de propostas', zeroline = FALSE))
 ```
 
-É possível perceber que em geral as licitações recebem poucas propostas, na verdade, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem no máximo 3 propostas.  
+É possível perceber que em geral as licitações recebem poucas propostas. De fato, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem no máximo 3 propostas.  
 
 Apesar disso, existem casos onde o número de fornecedores interessados na licitação é muito maior, chegando até a `r max(licitacoes_merenda$nu_Propostas)` em uma única licitação. Podemos ter um primeiro contato com esses casos extremos a partir da tabela abaixo, que lista as 10 licitações com mais concorrentes.  
 
@@ -491,28 +469,11 @@ kable(
 ```
 
 
-A chamada pública é a modalidade da maioria dessas licitações. Sabendo como o processo de chamada pública funciona, o grande número de participantes faz um certo sentido.  
-Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. E é isso que vamos fazer em seguida.  
+A chamada pública é a modalidade da maioria dessas licitações. De acordo com a explicação dada mais acima sobre essa modalidade de licitação, o grande número de participantes faz um certo sentido.  
 
+### Existe relação entre o número de propostas e o valor de uma licitação?
 
-```{r}
-cor1 = with(licitacoes_merenda,
-            round(cor(valor_merenda, nu_Propostas), 2))
-
-plot_ly(data = licitacoes_merenda,
-        x = ~valor_merenda,
-        y = ~nu_Propostas,
-        alpha = 0.5,
-        type = 'scatter',
-        mode = 'markers',
-        text = ~paste('Valor: R$', valor_merenda, 'Propostas: ', nu_Propostas),
-        hoverinfo = 'text') %>%
-  layout(title = 'Número de propostas por valor total de licitação',
-         xaxis = list(title = 'Valor da licitação'),
-         yaxis = list(title = 'Número de propostas'),
-         annotations = list(x = 1e+07, y = 30, showarrow = FALSE, text = paste('r = ', cor1)))
-```
-
+Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. E é isso que vamos fazer em seguida.  Para melhorar os cálculos de correlação e a visualização, valores extremos de ambas características foram omitidos.
 
 ```{r}
 cor2 = with(filter(licitacoes_merenda,
@@ -531,5 +492,10 @@ plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoe
   layout(title = 'Número de propostas por valor total de licitação (99-percentil)',
          xaxis = list(title = 'Valor da licitação'),
          yaxis = list(title = 'Número de propostas'),
-         annotations = list(x = 1e+06, y = 6, showarrow = FALSE, text = paste('r = ', cor2)))
+         annotations = list(x = 0.5e+06, y = 15, showarrow = FALSE, text = paste('r = ', cor2)))
 ```
+
+## Uma palavra final
+Muito mais pode ser feito com os dados disponíveis na plataforma SAGRES. Uma pequena amostra disso pode ser vista no [3º Hackfest Contra a Corrupção](http://hackfest.com.br/), onde vários projetos interessantes surgiram baseados nesses e em outros dados abertos. 
+
+Caso tenha se interessado no assunto, um recorte dos dados do SAGRES pode ser encontrado [aqui](https://portal.tce.pb.gov.br/dados-abertos-do-sagres-tcepb/). Links para outros dados abertos foram agrupados nesse [repositório](https://github.com/hackfestcc/dados-hackfestcc).
