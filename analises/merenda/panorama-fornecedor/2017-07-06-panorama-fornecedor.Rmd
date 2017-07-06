@@ -1,0 +1,70 @@
+---
+title: "Descrição dos fornecedores de merenda"
+subtitle: "Merenda Escolar"
+author: "Laboratório Analytics"
+layout: post
+published: true
+comments: true
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  screenshot.force = FALSE,
+  fig.cap = '',
+  fig.align = 'center',
+  fig.width = 10)
+
+options(scipen = 999)
+```
+
+```{r}
+library(ggthemes)
+library(corrplot)
+library(plotly)
+
+library(tidyr)
+library(plyr)
+library(dplyr)
+library(ggplot2)
+source('../lib/load_licitantes_merenda.R')
+
+```
+
+```{r}
+dados <- load_licitantes_merenda()
+
+licitantes <- dados$licitantes
+ganhadores <- dados$vitorias
+```
+
+```{r}
+
+
+utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+municipios = tbl(utils, 'municipio') %>%
+  collect()
+
+sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+
+empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+  collect(n = Inf) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
+  select(-cd_UnGestora)
+
+  ```
+
+
+No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
+
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligado a algum empenho de merenda.
+
+### 3.1 - Quantos são os fornecedores de merenda de cada município?
+### 3.2 - Quantos fornecedores, em média, competem nas licitações?
+### 3.3 - Existem fornecedores que dominam a distribuição de merenda?
+### 3.4 - Os contratos de licitações são bem distribuidos entre os fornecedores?
