@@ -58,14 +58,6 @@ municipios = tbl(utils, 'municipio') %>%
 
 sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
 
-empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
-  collect(n = Inf) %>%
-  mutate(cd_UGestora_copy = cd_UGestora) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
-  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
-  mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
-  select(-cd_UnGestora)
-
 tipos_licitacao = tbl(sagres, 'Tipo_Modalidade_Licitacao') %>%
   collect() %>%
   mutate(de_TipoLicitacao = as.character(de_TipoLicitacao))
@@ -84,12 +76,28 @@ licitacoes <- licitacoes %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   select(-cd_UnGestora)
 
+licitacoes_merenda <- get_licitacoes(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+  collect() %>%
+  left_join(tipos_licitacao, by = 'tp_Licitacao') %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  select(-cd_UnGestora)
+
+empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+  collect(n = Inf) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
+  select(-cd_UnGestora)
+
 empenhos_merenda_group <- empenhos_merenda %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
   summarise(valor_merenda = sum(vl_Empenho))
 
-licitacoes_merenda <- licitacoes %>% 
-  right_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao')) %>%
+licitacoes_merenda <- licitacoes_merenda %>% 
+  left_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao')) %>%
   mutate(de_TipoLicitacao = factor(de_TipoLicitacao))
 ```
 
@@ -130,7 +138,7 @@ licitacoes %>%
 
 ### Como costuma ser o processo licitatório dos municípios do estado?
 Outra coisa interessante de ser analisada é o padrão de licitação dos municípios. Por meio disso, podemos descobrir quais são os municípios que mais realizam licitações de merenda e quantos itens, em média, há nas licitações desses municípios.
-Feita essa análise, descobrimos que dos cinco municípios que mais realizam licitações, quatro também estão presentes na lista dos mais populosos do estado. São eles: João Pessoa, Campina Grande, Santa Rita e Patos. A exceção aqui fica por conta do município de Pombal, que não está entre os quinze municípios mais populosos do estado e é o quinto maior realizador de licitações.
+Feita essa análise, descobrimos que dos cinco municípios que mais realizam licitações, quatro também estão presentes na lista dos mais populosos do estado. São eles: João Pessoa, Campina Grande, Santa Rita e Patos. A exceção aqui fica por conta do município de Pombal, que não está entre os quinze municípios mais populosos do estado e é o quarto maior realizador de licitações.
 
 
 ```{r}
@@ -157,7 +165,7 @@ licitacoes %>%
 ```
 
 
-Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chama atenção o caso de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016. 
+Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chamam atenção os casos de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016, e Campina Grande, onde o total de licitações de merenda cresceu bruscamente entre 2012 e 2013. 
 
 ```{r}
 licitacoes %>%
@@ -220,7 +228,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
 ```
   
     
-Podemos perceber que houve um salto no total de licitações entre 2012 e 2013, o que pode indicar que os municípios passaram fazer mais licitações envolvendo merenda. Esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. Após atingir o pico em 2013, o número de licitações de merenda realizadas vem caindo constantemente.
+Podemos perceber que houve um salto no total de licitações entre 2012 e 2013, o que pode indicar que os municípios passaram fazer mais licitações envolvendo merenda. Esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. Aqui, também chama a atenção o ano de 2015, que apresenta o maior número de licitações desse tipo.
 
  
 ### Quem faz mais licitações de merenda?
@@ -301,21 +309,7 @@ kable(
   align = c('c'))
 ```
 
-Sete municípios do estado não realizaram nenhuma licitação exclusiva para merenda no período. São eles:
-
-```{r}
-kable(
-  x = (
-    municipios %>%
-      anti_join(paraiba_sumarizado, by = 'de_Municipio') %>%
-      mutate(total_num = 0) %>%
-      select(de_Municipio, total_num) %>%
-      arrange(de_Municipio)
-  ),
-  col.names = c('Município', 'Número de Licitações'),
-  align = 'c')
-```
-
+É interessante notar o baixo número de licitações exclusivas para merenda realizadas no estado. `r nrow(paraiba_municipios) - nrow(paraiba_sumarizado)` municípios não realizaram nenhuma licitação desse tipo no período.
 
 ### Quem gasta mais com merenda?
 Nosso próximo passo é encontrar os municípios que mais gastam recursos com merenda escolar.
@@ -362,8 +356,8 @@ perc_top10 <- sum(top10$valor_total_emp_num) / sum(paraiba_sumarizado$valor_tota
 ```
 
 
-Juntos, eles concentram `r round(perc_top10*100, 1)`% do valor gasto por todos os municípios, restando aos outros 213 municípios gastar a outra metade do dinheiro.  
-Como é de se esperar João Pessoa e Campina Grande são as que mais gastam, já que elas são as cidades com mais habitantes no estado. As demais cidades que mais gastam estão todas entre as 20 cidades com mais habitantes do estado (de acordo com a projeção do IBGE para 2016).  
+Juntos, eles concentram `r round(perc_top10*100, 1)`% do valor gasto por todos os municípios, restando aos outros 213 municípios gastar a parte restante do dinheiro.  
+Como talvez já fosse esperado João Pessoa e Campina Grande estão entre as cidades que mais gastam, já que elas são as cidades com mais habitantes no estado. O que talvez seja um surpresa é que outras cidades de menor porte como Bananeiras e Salgado de São Félix também fazem parte desse ranking. Isso nos leva a suspeitar que o tamanho de uma cidade não tenha tanta influência no total gasto em licitações realizadas exclusivamente para a compra de merenda.
 
 ### Em que período do ano ocorrem mais licitações de merenda?
 Uma coisa que pode chamar atenção diz respeito ao período do ano em que ocorrem mais licitações de merenda. Por senso comum, espera-se que a maioria das licitações desse tipo ocorram nos primeiros meses do ano, quando geralmente são firmados os contratos de fornecimento do ano inteiro. É exatamente isso que é comprovado pela visualização abaixo. 
@@ -403,7 +397,7 @@ plot_ly(data = (licitacoes_merenda %>%
   )
 ```
 
-Podemos concluir, então, que assim como o total de licitações realizadas nos primeiros meses do ano é maior, o valor de tais licitações também é mais alto.
+Apesar de um grande salto entre os meses de Novembro e Dezembro, podemos concluir, de modo geral, que assim como o total de licitações realizadas nos primeiros meses do ano é maior, o valor de tais licitações também é mais alto.
 
 
 ### Que modalidade de licitação é mais comum na compra de merenda?
@@ -436,7 +430,7 @@ licitacoes_merenda %>%
 ```
 
 
-A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a tomada de preços. Até o ano 2013, o convite era a segunda modalidade mais utilizada para esse tipo de compras, mas apresentou uma queda brusca a partir deste ano e foi ultrapassada pela modalidade de chamada pública em anos seguintes. Atualmente, o convite não está sequer entre as cinco modalidades mais utilizadas.
+A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a chamada pública. Até o ano 2013, a modalidade convite era bastante utilizada para esse tipo de licitação, mas seu uso caiu bastante desde então. Atualmente o convite não está sequer entre as cinco modalidades mais utilizadas.
 
 O crescimento no número de licitações da modalidade chamada pública a partir do ano de 2013 pode ser explicado. Essa modalidade é, na verdade, um caso especial da dispensa de licitação e é regulada pela resolução [Nº 26/2013](https://www.fnde.gov.br/fndelegis/action/UrlPublicasAction.php?acao=getAtoPublico&sgl_tipo=RES&num_ato=00000026&seq_ato=000&vlr_ano=2013&sgl_orgao=FNDE/MEC) do FNDE. Essa resolução definiu que a aquisição de alimentos com fundos do Plano Nacional de Alimentação Escolar (PNAE) poderia ser dispensada da necessidade de licitação caso os alimentos fossem originados da agricultura familiar. Nesse caso, deve ser realizada uma audiência pública com todos os fornecedores interessados para que os vencedores sejam definidos.
 
@@ -455,7 +449,7 @@ plot_ly(data = licitacoes_merenda, x = ~nu_Propostas) %>%
 
 É possível perceber que em geral as licitações recebem poucas propostas. De fato, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem no máximo 3 propostas.  
 
-Apesar disso, existem casos onde o número de fornecedores interessados na licitação é muito maior, chegando até a `r max(licitacoes_merenda$nu_Propostas)` em uma única licitação. Podemos ter um primeiro contato com esses casos extremos a partir da tabela abaixo, que lista as 10 licitações com mais concorrentes.  
+Apesar disso, existem casos onde o número de fornecedores interessados na licitação é muito maior, chegando até a `r max(licitacoes_merenda$nu_Propostas, na.rm = T)` em uma única licitação. Podemos ter um primeiro contato com esses casos extremos a partir da tabela abaixo, que lista as 10 licitações com mais concorrentes.  
 
 ```{r}
 kable(
@@ -474,7 +468,7 @@ A chamada pública é a modalidade da maioria dessas licitações. De acordo com
 
 ### Existe relação entre o número de propostas e o valor de uma licitação?
 
-Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. E é isso que vamos fazer em seguida.  Para melhorar os cálculos de correlação e a visualização, valores extremos de ambas características foram omitidos.
+Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. Para melhorar os cálculos de correlação e a visualização, valores extremos de ambas características foram omitidos.
 
 ```{r}
 cor2 = with(filter(licitacoes_merenda,
@@ -495,6 +489,10 @@ plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoe
          yaxis = list(title = 'Número de propostas'),
          annotations = list(x = 0.5e+06, y = 15, showarrow = FALSE, text = paste('r = ', cor2)))
 ```
+
+O valor de r, destacado no gráfico, indica o grau de correlação direta entre os dois fatores observados e deve variar entre -1 e 1. Quanto mais próximo de 0 é esse valor, menor é a possibilidade de haver correlação. 
+
+Em nosso caso, o valor obtido para r foi de `r cor2` e indica uma possibilidade quase inexistente de correlação direta entre os valores. Em outras palavras, não temos sinais de que o valor de uma licitação influencie na quantidade de propostas recebidas pela mesma.  
 
 ## Uma palavra final
 Muito mais pode ser feito com os dados disponíveis na plataforma SAGRES. Uma pequena amostra disso pode ser vista no [3º Hackfest Contra a Corrupção](http://hackfest.com.br/), onde vários projetos interessantes surgiram baseados nesses e em outros dados abertos. 
