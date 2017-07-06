@@ -308,10 +308,11 @@ kable(
   x = (
     municipios %>%
       anti_join(paraiba_sumarizado, by = 'de_Municipio') %>%
-      select(de_Municipio) %>%
+      mutate(total_num = 0) %>%
+      select(de_Municipio, total_num) %>%
       arrange(de_Municipio)
   ),
-  col.names = 'Município',
+  col.names = c('Município', 'Número de Licitações'),
   align = 'c')
 ```
 
