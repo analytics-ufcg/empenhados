@@ -120,7 +120,7 @@ Se sua resposta para a pergunta anterior foi sim, é possível que você tenha s
 
 Antes de iniciarmos, alguns pontos importantes precisam ser esclarecidos. Uma etapa muito importante no processo de gastos públicos é a licitação. É por meio dela que a administração pública contrata serviços, realiza obras e compra produtos, por exemplo. Ela é o ponto de inicial de quase todo processo de investimento de receitas públicas, salvo algumas exceções onde podem ser dispensadas ou não são aplicáveis. Para obter mais detalhes sobre tais exceções, é possível acessar as leis [8.666/1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm) e [10.520/2002](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm), onde estão definidas as regras para o processo licitatório.  
 
-Os dados utilizados nesse relatório foram obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) e a parcela deles utilizada compreende informações sobre o processo de gastos públicos dos municípios do estado entre os anos de 2003 e 2016. Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
+Os dados utilizados nesse relatório foram obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) e a parcela deles utilizada compreende informações sobre o **processo de gastos públicos dos municípios do estado entre os anos de 2003 e 2016.** Uma das principais limitações encontradas ao se trabalhar com os dados dessa fonte surge da possibilidade das prefeituras contratarem vários serviços ou adquirirem produtos com finalidades distintas em um único processo licitatório. Os itens que compreendem essas licitações não estão descritos nos dados obtidos, o que dificulta bastante a obtenção de informações como o valor, total ou fornecedor de cada um deles. 
 
 ## Panorama
 ### Quantas licitações foram realizadas em cada ano do período analisado?
@@ -206,9 +206,12 @@ A partir do gráfico acima, podemos observar que, assim como a quantidade de lic
 
 
 ## Licitações de Merenda
-Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo. Para essa análise mais detalhada escolhemos trabalhar com dados relacionados aos gastos com __merenda escolar nos municípios da Paraíba entre 2012 e 2016__.  
+Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo. Para essa análise mais detalhada escolhemos trabalhar com dados relacionados aos gastos com merenda escolar nos municípios da Paraíba entre 2012 e 2016.  
+
 Porém, antes de prosseguirmos temos uma questão a resolver: se você está lembrado, no começo da análise afirmamos que vários itens distintos podem ser adquiridos ou contratados numa mesma licitação. Devido a isso, pode ser que apenas uma pequena parte dos itens adquiridos em uma licitação seja de merenda e outra parte seja, por exemplo, alimentação para os hospitais municipais ou materiais de escritório. Sendo assim, como poderíamos classificar uma licitação como sendo de merenda?  
-Várias alternativas podem ser utilizadas para realizar essa classificação, mas para essa análise, resolvemos classificar como licitações de merenda apenas as licitações em que todos os seus empenhos são de merenda.
+
+Várias alternativas podem ser utilizadas para realizar essa classificação, mas para essa análise, **resolvemos classificar como licitações de merenda apenas as licitações em que todos os seus empenhos são de merenda.**
+
 Agora sim, podemos continuar. Você sabe quanto o seu município gastou com merenda nos últimos anos? Será que ele está dentro da média da Paraíba? Quantas licitações são feitas para alimentação escolar? Quem gasta mais? Quem gasta menos? Essas e muitas outras perguntas podem ser respondidas pela análise abaixo. 
 
 
@@ -318,7 +321,10 @@ kable(
 
 ### Quem gasta mais com merenda?
 Nosso próximo passo é encontrar os municípios que mais gastam recursos com merenda escolar.
-Especialmente nesse caso, consideramos como gasto com merenda escolar a soma de tudo que foi _empenhado_ no período em estudo e que diz respeito a merenda escolar. 
+
+Infelizmente, não podemos utilizar os valores declarados nas licitações para responder essa questão. Eles são apenas estimativas do valor que será gasto e, ao fim do processo, parte desse valor pode ser devolvido aos cofres públicos se não for utilizado. Por isso, devemos considerar como gasto com merenda escolar a soma dos *valores empenhados* se quisermos uma análise mais fiel à realidade.
+
+*Especialmente para essa pergunta*, consideramos como gasto com merenda escolar a soma dos valores de todos os empenhos que dizem respeito a merenda escolar, **mesmo que esses empenhos sejam gerados por licitações que contém outros itens além de merenda**. Nas demais perguntas, o valor gasto com merenda é calculado usando apenas as licitações onde todos os itens são de merenda.
 
 
 ```{r}
@@ -375,7 +381,7 @@ plot_ly(data = licitacoes_merenda) %>%
          xaxis = list(title = 'Mês', dtick = 1))
 ```
 
-Já sabendo quantas licitações ocorrem em cada mês do ano, podemos nos voltar para os valores de cada uma dessas licitações. Aqui, mais uma vez, consideramos como gasto com merenda escolar a soma de todos os empenhos de merenda do período analisado.
+Já sabendo quantas licitações ocorrem em cada mês do ano, podemos nos voltar para os valores de cada uma dessas licitações.
 
 ```{r}
 mediana_geral = median(licitacoes_merenda$valor_merenda)
@@ -412,7 +418,7 @@ Por causa das variações em suas especificações, uma modalidade de licitaçã
 
 Tendo isso em mente podemos nos perguntar: **Quais são as modalidades mais presentes em licitações lançadas para a compra de merenda?**
 
-Para responder essa pergunta, vamos utilizar apenas licitações onde todos os empenhos são de merenda, de acordo com nosso filtro. A popularidade de cada modalidade de licitação através dos anos pode ser vista no gráfico abaixo.
+A popularidade de cada modalidade de licitação através dos anos pode ser vista no gráfico abaixo.
 
 
 ```{r}
@@ -452,7 +458,7 @@ plot_ly(data = licitacoes_merenda, x = ~nu_Propostas) %>%
          xaxis = list(title = 'Número de propostas', zeroline = FALSE))
 ```
 
-É possível perceber que em geral as licitações recebem poucas propostas. De fato, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem no máximo 3 propostas.  
+É possível perceber que em geral as licitações de merenda recebem poucas propostas. De fato, `r round(nrow(filter(licitacoes_merenda, nu_Propostas <= 3))/nrow(licitacoes_merenda) * 100, 2)`% das licitações tem no máximo 3 propostas.  
 
 Apesar disso, existem casos onde o número de fornecedores interessados na licitação é muito maior, chegando até a `r max(licitacoes_merenda$nu_Propostas, na.rm = T)` em uma única licitação. Podemos ter um primeiro contato com esses casos extremos a partir da tabela abaixo, que lista as 10 licitações com mais concorrentes.  
 
