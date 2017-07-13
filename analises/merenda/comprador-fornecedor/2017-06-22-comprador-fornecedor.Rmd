@@ -165,38 +165,39 @@ licitacoes %>%
 ```
 
 
-Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chamam atenção os casos de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016, e Campina Grande, onde o total de licitações de merenda cresceu bruscamente entre 2012 e 2013. 
+Aprofundando essa mesma ideia, buscamos verificar como o total de licitações realizados nesses municípios variou durante os anos observados. Dessa vez, chamam atenção os casos de João Pessoa, que apresentou uma queda drástica no número de licitações realizadas entre os anos de 2013 e 2016, e Campina Grande, onde o total de licitações de merenda cresceu bruscamente entre 2012 e 2013. Também podemos observar ao lado o total de empenhos realizados por esses municípios no mesmo intervalo de anos.
 
 ```{r}
-licitacoes %>%
+p1 <- licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
   mutate(dt_Ano_Homologacao = as.numeric(year(dt_Homologacao))) %>%
   group_by(de_Municipio, dt_Ano_Homologacao) %>%
   summarise(total_por_ano = n()) %>%
-  plot_ly() %>%
+  plot_ly(legendgroup = ~de_Municipio,  showlegend = F) %>%
     add_trace(x=~dt_Ano_Homologacao, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
-    layout(title = "Total anual de licitações nos 5 municípios que mais licitaram",
+    layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
            xaxis = list(title = 'Ano')) 
 ```
 
-
-Aqui cabe uma explicação: Uma diminuição ou aumento no total de licitações realizadas, não necessariamente implica que houve menos ou mais compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**. Esse é o próximo passo que vamos tomar.
-
-
 ```{r}
-empenhos %>%
+p2 <- empenhos %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
   mutate(dt_Ano) %>%
   group_by(de_Municipio, dt_Ano) %>%
   summarise(total_por_ano = n()) %>%
-  plot_ly() %>%
+  plot_ly(legendgroup = ~de_Municipio) %>%
      add_trace(x=~dt_Ano, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
-    layout(title = "Total anual de empenhos nos 5 municípios que mais licitaram",
+    layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de empenhos', hoverformat= '.0f', fixedrange = TRUE),
            xaxis = list(title = 'Ano')) 
 ```
 
+```{r}
+subplot(p1, p2, titleX = TRUE, titleY = TRUE, margin = 0.05)
+```
+
+Aqui cabe uma explicação: Uma diminuição ou aumento no total de licitações realizadas, não necessariamente implica que houve menos ou mais compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**.
 
 Um ponto que ilustra bem a diferença que pode ocorrer entre o número de licitações realizadas e o número de empenhos gerados é a situação de Campina Grande entre os anos de 2006 e 2008. Nesse período, o total de licitações realizados no município se manteve estável, mas a quantidade de empenhos realizados variou bastante, subindo quase 100% em 2007 e caindo cerca de 50% no ano seguinte.
 
