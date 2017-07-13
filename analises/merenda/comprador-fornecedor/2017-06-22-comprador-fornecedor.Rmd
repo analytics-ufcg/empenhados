@@ -425,7 +425,6 @@ A popularidade de cada modalidade de licitação através dos anos pode ser vist
 niveis = levels(licitacoes_merenda$de_TipoLicitacao)
 niveis[niveis == 'Pregão (Eletrônico e Presencial)'] = 'Pregão (Eletrônico e Presencial)'
 niveis[niveis == 'Pregão Eletrônico'] = 'Pregão (Eletrônico e Presencial)'
-niveis[niveis == 'Pregão Presencial'] = 'Pregão (Eletrônico e Presencial)'
 levels(licitacoes_merenda$de_TipoLicitacao) = niveis
 
 licitacoes_merenda %>%
@@ -441,7 +440,9 @@ licitacoes_merenda %>%
 ```
 
 
-A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são o pregão, eletrônico ou presencial, e a chamada pública. Até o ano 2013, a modalidade convite era bastante utilizada para esse tipo de licitação, mas seu uso caiu bastante desde então. Atualmente o convite não está sequer entre as cinco modalidades mais utilizadas.
+A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são a chamada pública e o pregão presencial. Esta última foi a modalidade mais utilizada para esse tipo de licitação até ser superada pelo pregão presencial, em 2013, e é uma das modalidades mais suscetíveis à fraude, visto que é possível ocorrer, dentre outras coisas, acordo prévio entre os participantes e a coação de compertidores para fazê-los desistir. 
+
+Outro ponto que salta aos olhos é a queda de popularidade da modalidade convite, que era bastante utilizada para esse tipo de licitação, mas atualmente não está sequer entre as cinco modalidades mais utilizadas.
 
 O crescimento no número de licitações da modalidade chamada pública a partir do ano de 2013 pode ser explicado. Essa modalidade é, na verdade, um caso especial da dispensa de licitação e é regulada pela resolução [Nº 26/2013](https://www.fnde.gov.br/fndelegis/action/UrlPublicasAction.php?acao=getAtoPublico&sgl_tipo=RES&num_ato=00000026&seq_ato=000&vlr_ano=2013&sgl_orgao=FNDE/MEC) do FNDE. Essa resolução definiu que a aquisição de alimentos com fundos do Plano Nacional de Alimentação Escolar (PNAE) poderia ser dispensada da necessidade de licitação caso os alimentos fossem originados da agricultura familiar. Nesse caso, deve ser realizada uma audiência pública com todos os fornecedores interessados para que os vencedores sejam definidos.
 
