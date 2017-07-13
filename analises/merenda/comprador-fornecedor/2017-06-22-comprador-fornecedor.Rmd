@@ -306,16 +306,17 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
-
 Baseando-se no mapa, não parece haver relação entre a localização geográfica de um município e seus hábitos licitatórios. 
-Os municípios que mais fizeram licitações envolvendo merenda foram:
+Os municípios que mais fizeram licitações envolvendo merenda de forma exclusiva foram:
 
 ```{r}
 kable(
-  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num, total_emp)), desc(total_num)), 5),
-  col.names = c('Município', 'Número de Licitações', 'Número de Empenhos'),
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num, total_emp, valor_total_emp_num)), desc(total_num)), 5),
+  col.names = c('Município', 'Número de Licitações', 'Número de Empenhos', 'Total empenhado (R$)'),
   align = c('c'))
 ```
+
+Também é possível verificar na tabela qual o número de empenhos associados a essas licitações 100% de merenda e quanto foi empenhado na soma de todas as licitações em cada município. Na pergunta seguinte iremos abordar um pouco mais sobre quanto é gasto com merenda nos municípios da Paraíba.
 
 É interessante notar o baixo número de licitações exclusivas para merenda realizadas no estado. `r nrow(paraiba_municipios) - nrow(paraiba_sumarizado)` municípios não realizaram nenhuma licitação desse tipo no período.
 
