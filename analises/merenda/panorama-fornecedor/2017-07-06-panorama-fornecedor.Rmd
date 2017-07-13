@@ -253,16 +253,20 @@ lucros <- lucros %>%
 lucros %>%
   group_by(participou, ganhou) %>%
   summarise(freq = n()) %>%
-  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    mutate(total = cut(freq, 
+                     breaks = c(1, 25, 50, 100, 200, 500, 516),
+                     include.lowest = T)) %>%
+  ggplot(aes(x=participou, y=ganhou, size=total, color = total)) +
     geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point(color = '#1E90FF') +
+    geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências') +
+      size = 'Ocorrências',
+      color = 'Ocorrências') +
     theme_minimal()
 ```
 
@@ -270,22 +274,34 @@ Como existem alguns valores extremos que tornam a escala difícil de visualizar,
 
 ```{r}
 lucros %>%
-  filter(participou < 30) %>%
+  filter(participou < 20) %>%
   group_by(participou, ganhou) %>%
   summarise(freq = n()) %>%
-  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    mutate(total = cut(freq, 
+                     breaks = c(1, 25, 50, 100, 200, 500, 516),
+                     include.lowest = T)) %>%
+  ggplot(aes(x=participou, y=ganhou, size=total, color = total)) +
     geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point(color = '#1E90FF') +
+    geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências') +
+      size = 'Ocorrências',
+      color = 'Ocorrências') +
     theme_minimal()
+```
+
+```{r}
+oxe <- lucros %>% filter(participou > ganhou) %>%
+  left_join(fornecedores, by = "nu_CPFCNPJ") %>%
+  group_by(nu_CPFCNPJ) %>%
+  summarise(n =)
 
 ```
+
 
 Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
 
