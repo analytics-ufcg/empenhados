@@ -94,7 +94,8 @@ empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_su
 
 empenhos_merenda_group <- empenhos_merenda %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise(valor_merenda = sum(vl_Empenho))
+  summarise(valor_merenda = sum(vl_Empenho),
+            total_emp_merenda = n())
 
 licitacoes_merenda <- licitacoes_merenda %>% 
   left_join(empenhos_merenda_group, by = c('cd_UGestora', 'nu_Licitacao', 'tp_Licitacao')) %>%
@@ -257,6 +258,7 @@ paraiba_sumarizado = paraiba %>%
             valor_medio_emp = mean(valor_merenda),
             valor_total_emp = sum(valor_merenda),
             total_num = n(),
+            total_emp = sum(total_emp_merenda),
             valor_total_emp_num = sum(valor_merenda))
 
 # Dividindo em faixas
@@ -276,9 +278,11 @@ paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 # Associando cada municipio do mapa ao municipio correspondente no dataframe de sumarização
 paraiba_municipios = paraiba_municipios %>% left_join(paraiba_sumarizado, c('levels_mapa' = 'de_Municipio'))
 
-colors = brewer.pal(6,"YlOrRd")
+```
 
+```{r}
 # A variável Y recebe os valores em ordem que devem apontar para cada municipio
+colors = brewer.pal(7,"YlOrRd")
 mapa_paraiba@data$Y <- paraiba_municipios$total
 mapa_paraiba@data$X <- paraiba_municipios$total_num
 colors = colorFactor('OrRd', mapa_paraiba@data$Y)
@@ -299,14 +303,14 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
+
 Baseando-se no mapa, não parece haver relação entre a localização geográfica de um município e seus hábitos licitatórios. 
 Os municípios que mais fizeram licitações envolvendo merenda foram:
 
-
 ```{r}
 kable(
-  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num)), desc(total_num)), 5),
-  col.names = c('Município', 'Número de Licitações'),
+  x = head(arrange(select(paraiba_sumarizado, c(de_Municipio, total_num, total_emp)), desc(total_num)), 5),
+  col.names = c('Município', 'Número de Licitações', 'Número de Empenhos'),
   align = c('c'))
 ```
 
