@@ -36,7 +36,7 @@ options(scipen = 999)
 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
 
 ```{r}
-sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
 
 pagamentos <- get_pagamentos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
     collect(n = Inf)
@@ -256,7 +256,11 @@ Como falado anteriormente alguns municípios que estão em cinza no mapa são aq
 
 ```{r}
   kable(
-    x = subset(municipios, municipios$de_Municipio %in% subset(gasto_municipios, is.na(gasto_municipios$Valor_Aluno))$de_Municipio) %>% select(de_Municipio, vl_Populacao, esctotal, matritotal, vl_IDEB_Anos_Iniciais, vl_IDEB_Anos_Finais),
+    x = subset(municipios, municipios$de_Municipio %in% subset(gasto_municipios, is.na(gasto_municipios$Valor_Aluno))$de_Municipio) %>% select(de_Municipio, vl_Populacao, esctotal, matritotal, vl_IDEB_Anos_Iniciais, vl_IDEB_Anos_Finais) %>% 
+  mutate(vl_IDEB_Anos_Iniciais = as.character(vl_IDEB_Anos_Iniciais)) %>%
+  mutate(vl_IDEB_Anos_Iniciais = if_else(vl_IDEB_Anos_Iniciais == "0", "-", vl_IDEB_Anos_Iniciais)) %>%
+  mutate(vl_IDEB_Anos_Finais = as.character(vl_IDEB_Anos_Finais)) %>%
+  mutate(vl_IDEB_Anos_Finais = if_else(vl_IDEB_Anos_Finais == "0", "-", vl_IDEB_Anos_Finais)),
     col.names = c('Município', 'População', 'Número de escolas', 'Número de Matrículas', 'IDEB (Anos Iniciais)', 'IDEB (Anos Finais)'),
     align = c('c'),
     row.names = FALSE
