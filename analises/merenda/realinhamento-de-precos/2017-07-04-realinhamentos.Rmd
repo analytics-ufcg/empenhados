@@ -231,22 +231,23 @@ O último estágio da despesa é o pagamento e consiste na entrega de numerário
 
 ## Comparando os valores entre os estágios da execução orçamentária
 
-A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, para facilitar a visualização dos dados foi aplicado a função logarítmo em todos os valores. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
+A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, para facilitar a visualização dos dados foi aplicado a função logarítmo na base 10 em todos os valores. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
 
 ### Valor da licitação versus valor do contrato
 
 ```{r licitacao vs contratos}
 
-g <- ggplot(aes(x=log(vl_Licitacao+1), y=log(vl_Contrato+1)), data = licitacoes.alt) +
-  geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point(alpha=0.3) +
-  scale_x_continuous(breaks=pretty_breaks(10)) +
-  scale_y_continuous(breaks=pretty_breaks(10)) +
-  labs(
-    x = 'Valor da licitação',
-    y = 'Valor do contrato') +
-  theme_minimal()
-ggplotly(g)
+plot_ly(licitacoes.alt, x = ~vl_Licitacao+1, y = ~vl_Contrato+1, alpha = 0.3) %>%
+  layout(
+    xaxis = list(
+      title = 'Valor da licitação (reais)', type = 'log'),
+    yaxis = list(
+      title = 'Valor do contrato (reais)', type = 'log'),
+    shapes = list(
+      type = 'line', layer = 'below',
+      x0 = 1, y0 = 1, x1 = 10^8, y1 = 10^8,
+      line = list(width = 1), opacity = 0.3)
+  )
 ```
 <br/>
 
@@ -256,16 +257,17 @@ A partir do gráfico, é possível observar que, em geral, os valores estipulado
 
 ```{r contratos vs empenhos}
 
-g <- ggplot(aes(x=log(vl_Contrato+1), y=log(vl_Empenho+1)), data = licitacoes.alt) +
-  geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point(alpha=0.3) +
-  scale_x_continuous(breaks=pretty_breaks(10)) +
-  scale_y_continuous(breaks=pretty_breaks(10)) +
-  labs(
-    x = 'Valor do contrato',
-    y = 'Valor do empenho') +
-  theme_minimal()
-ggplotly(g)
+plot_ly(licitacoes.alt, x = ~vl_Contrato+1, y = ~vl_Empenho+1, alpha = 0.3) %>%
+  layout(
+    xaxis = list(
+      title = 'Valor do contrato (reais)', type = 'log'),
+    yaxis = list(
+      title = 'Valor do empenho (reais)', type = 'log'),
+    shapes = list(
+      type = 'line', layer = 'below',
+      x0 = 1, y0 = 1, x1 = 10^8, y1 = 10^8,
+      line = list(width = 1), opacity = 0.3)
+  )
 ```
 <br/>
 
@@ -277,16 +279,17 @@ Assim como no caso acima, há muitos pontos sobre os eixos do gráfico. Esses oc
 
 ```{r empenhos vs liquidações}
 
-g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Liquidacao+1)), data = licitacoes.alt) +
-  geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point(alpha=0.3) +
-  scale_x_continuous(breaks=pretty_breaks(10)) +
-  scale_y_continuous(breaks=pretty_breaks(10)) +
-  labs(
-    x = 'Valor do empenho',
-    y = 'Valor da liquidação') +
-  theme_minimal()
-ggplotly(g)
+plot_ly(licitacoes.alt, x = ~vl_Empenho+1, y = ~vl_Liquidacao+1, alpha = 0.3) %>%
+  layout(
+    xaxis = list(
+      title = 'Valor do empenho (reais)', type = 'log'),
+    yaxis = list(
+      title = 'Valor do liquidação (reais)', type = 'log'),
+    shapes = list(
+      type = 'line', layer = 'below',
+      x0 = 1, y0 = 1, x1 = 10^8, y1 = 10^8,
+      line = list(width = 1), opacity = 0.3)
+  )
 ```
 <br/>
 
@@ -300,16 +303,17 @@ Além disso, a concentração de pontos no eixo horizontal indica que muitos emp
 
 ```{r liquidacões vs pagamentos}
 
-g <- ggplot(aes(x=log(vl_Liquidacao+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
-  geom_abline(slope=1, intercept=0, color='grey') +
-  geom_point(alpha=0.3) +
-  scale_x_continuous(breaks=pretty_breaks(10)) +
-  scale_y_continuous(breaks=pretty_breaks(10)) +
-  labs(
-    x = 'Valor da liquidação',
-    y = 'Valor do pagamento') +
-  theme_minimal()
-ggplotly(g)
+plot_ly(licitacoes.alt, x = ~vl_Liquidacao+1, y = ~vl_Pagamento+1, alpha = 0.3) %>%
+  layout(
+    xaxis = list(
+      title = 'Valor do liquidação (reais)', type = 'log'),
+    yaxis = list(
+      title = 'Valor do pagamento (reais)', type = 'log'),
+    shapes = list(
+      type = 'line', layer = 'below',
+      x0 = 1, y0 = 1, x1 = 10^8, y1 = 10^8,
+      line = list(width = 1), opacity = 0.3)
+  )
 ```
 <br/>
 
@@ -324,17 +328,33 @@ Os pontos sobre os eixos vertical têm o mesmo significado que na seção anteri
 Abaixo, pode-se ver os gráficos de dispersão entre as variáveis estudadas e o valor da correlação entre elas, assim como suas distribuições isoladas na diagonal. Para que os valores faltantes não interfiram no valor de correlação calculado, eles foram removidos nesta seção.
 
 ```{r}
-custom <- function(data, mapping, ...) {
+log.breaks <- trans_breaks('log10', function(x) 10^x, n = 3)
+log.labels <- trans_format('log10', math_format(10^.x))
+
+lower <- function(data, mapping, ...) {
   ggplot(data = data, mapping = mapping) +
     geom_abline(slope = 1, intercept = 0, color = 'grey') +
-    geom_point(..., alpha = 0.3, stroke = 0)
+    geom_point(..., alpha = 0.3, stroke = 0) +
+    scale_x_log10(breaks=log.breaks, labels=log.labels) +
+    scale_y_log10(breaks=log.breaks, labels=log.labels)
+}
+
+diag <- function(data, mapping, ...) {
+  ggplot(data = data, mapping = mapping) +
+    geom_density(...) +
+    scale_x_log10(breaks=log.breaks, labels=log.labels)
 }
 
 licitacoes.alt %>%
   select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
-  mutate_all(funs( log(replace(., . == 0, NA)+1) )) %>%
-  ggpairs(lower = list(continuous = custom)) +
-  theme_minimal()
+  mutate_all(funs( replace(., . == 0, NA) )) %>%
+  ggpairs(
+    lower = list(continuous = lower),
+    diag = list(continuous = diag)) +
+      labs(
+        x = 'Valor (reais)',
+        y = 'Valor (reais)') +
+      theme_minimal()
 ```
 
 Observando os gráficos de dispersão, é possível identificar dois grupos com valores internos relativamente parecidos: os valores da licitação e do contrato, e os valores do empenho, da liquidação e do pagamento. Essa conclusão parte do fato de que tais gráficos se aproximam de uma reta entre as variáveis de cada grupo. Ademais, a alta correlação entre as variáveis do segundo grupo corrobora com o que foi dito.
@@ -349,17 +369,14 @@ licitacoes.alt.long <- licitacoes.alt %>%
   select(vl_Licitacao, vl_Empenho, vl_Contrato, vl_Liquidacao, vl_Pagamento) %>%
   mutate(id = 1:nrow(licitacoes.alt)) %>%
   gather('atributo', 'valor', -id, factor_key = T) %>%
-  mutate(valor = log(valor+1)) %>%
   group_by(id) %>%
   filter(all(valor > 0))
 
-g <- ggplot(aes(x=atributo, y=valor, group=id, color=id), data = licitacoes.alt.long) +
-  geom_path(alpha = 0.3) +
-  geom_point(alpha = 0.3) +
-  guides(color = F) +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_line(color = 'black'))
-ggplotly(g)
+plot_ly(licitacoes.alt.long, x = ~atributo, y = ~valor, type = 'scatter', mode = 'lines+markers', alpha = 0.2) %>%
+  layout(
+    xaxis = list(title = ''),
+    yaxis = list(title = 'Valor (reais)', type = 'log')
+  )
 ```
 <br/>
 
@@ -373,16 +390,17 @@ Para compreendermos melhor o resultado deste "sobe e desce" de valores decidimos
 
 ```{r empenho vs pagamento}
 
-g <- ggplot(aes(x=log(vl_Empenho+1), y=log(vl_Pagamento+1)), data = licitacoes.alt) +
-    geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point(alpha=0.3) +
-    scale_x_continuous(breaks=pretty_breaks(10)) +
-    scale_y_continuous(breaks=pretty_breaks(10)) +
-    labs(
-      x = 'Valor da Empenho',
-      y = 'Valor do Pagamento') +
-    theme_minimal()
-ggplotly(g)
+plot_ly(licitacoes.alt, x = ~vl_Empenho+1, y = ~vl_Pagamento+1, alpha = 0.3) %>%
+  layout(
+    xaxis = list(
+      title = 'Valor do empenho (reais)', type = 'log'),
+    yaxis = list(
+      title = 'Valor do pagamento (reais)', type = 'log'),
+    shapes = list(
+      type = 'line', layer = 'below',
+      x0 = 1, y0 = 1, x1 = 10^8, y1 = 10^8,
+      line = list(width = 1), opacity = 0.3)
+  )
 ```
 <br/>
 
