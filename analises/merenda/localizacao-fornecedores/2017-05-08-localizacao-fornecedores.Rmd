@@ -24,52 +24,53 @@ library(ggfortify)
 library(leaflet)
 library(tidyr)
 library(stringr)
-source('../lib/load_licitantes_merenda.R')
+source('../lib/load_fornecedores_merenda.R')
 ```
 
 Todo fornecedor que se dispõe a participar de uma licitação deve possuir um endereço físico que possa ser consultado pela população. O objetivo desse relatório é apresentar como estão distribuídos geograficamente os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações aproximadas da maioria dos licitantes analisados em relatórios anteriores. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes. É possível obter mais detalhes sobre eles ao clicar sobr eum marcador.   
 
 ```{r}
-licitantes <- load_licitantes_merenda()
+ganhadores <- load_fornecedores_merenda()
+```
 
+```{r}
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
 cep_licitantes <- tbl(utils, 'empresa') %>%
   collect(n = Inf)
 
-dados_cep <- read.csv("dados-cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
+dados_cep <- read.csv("dados_cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
 ```
 
 ```{r}
-licitantes.log <- licitantes %>%
-  mutate_each(funs(log(. + 1)), -c(nu_CPFCNPJ, no_Fornecedor))
-
-licitantes.scaled <- licitantes.log %>%
-  mutate_each(funs(scale(.) %>% c), -c(nu_CPFCNPJ, no_Fornecedor))
+localizacao_licitantes_municipios <- ganhadores %>%
+  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
+  filter(!is.na(nu_CEP))
 ```
 
 ```{r}
-set.seed(12346) # Garantir que o k-means gere o mesmo resultado
-km <- kmeans(select(licitantes.scaled, -c(nu_CPFCNPJ, no_Fornecedor)), centers = 7, nstart = 10)
-
-licitantes <- licitantes %>%
-  mutate(cluster = km$cluster %>% as.factor)
+localizacao_licitantes <- ganhadores %>%
+  group_by(cd_Credor, no_Credor) %>%
+  summarise(ganhou = sum(ganhou),
+            valor_total_emp = sum(valor_total_emp),
+            valor_mediana_emp = median(valor_mediana_emp),
+            valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
+            num_municipios = n()) %>%
+  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
+  filter(!is.na(nu_CEP), nu_CEP != "")
 ```
 
 ```{r}
 dados_cep.selected <- dados_cep %>%
-  select(c(latitude, longitude, estado, cidade))
-
-localizacao_licitantes <- licitantes %>%
-  left_join(cep_licitantes, 'nu_CPFCNPJ')
+  select(c(cep, latitude, longitude, estado, cidade)) %>%
+  mutate(cep = as.character(cep))
 
 localizacao_licitantes <- localizacao_licitantes %>%
-  bind_cols(dados_cep.selected)
+  left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
 
 # Endereço incorreto retornado pela API de busca
 localizacao_licitantes <- localizacao_licitantes %>%
-  filter(nu_CPFCNPJ != '07150557000158' &
-           nu_CPFCNPJ != '07129849000109') %>%
+  filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
   filter(!(!is.na(nu_CEP) & is.na(latitude)))
 ```
 
@@ -77,14 +78,15 @@ localizacao_licitantes <- localizacao_licitantes %>%
 m <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
   addTiles() %>%
   addMarkers(data = localizacao_licitantes,
-             label = ~str_to_upper(no_Fornecedor), 
+             label = ~str_to_upper(no_Credor), 
              popup = paste(
-               "Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), "</br>",
-               "CNPJ:", localizacao_licitantes$nu_CPFCNPJ, "</br>",
+               "Nome:", str_to_upper(localizacao_licitantes$no_Credor), "</br>",
+               "CNPJ:", localizacao_licitantes$cd_Credor, "</br>",
                "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
-               "Participações:", localizacao_licitantes$participou, "</br>",
-               "Valor contratado: R$", localizacao_licitantes$total_ganho
-             ))
+               "Número de Municípios:", localizacao_licitantes$num_municipios, "</br>",
+               "Valor pago: R$", localizacao_licitantes$valor_total_pag
+             ),
+             clusterOptions = markerClusterOptions())
   
 m
 ```
