@@ -231,7 +231,7 @@ O último estágio da despesa é o pagamento e consiste na entrega de numerário
 
 ## Comparando os valores entre os estágios da execução orçamentária
 
-A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, para facilitar a visualização dos dados foi aplicado a função logarítmo na base 10 em todos os valores. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
+A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, aos quais foi aplicada uma escala logarítma na base 10 para facilitar a visualização dos dados. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
 
 ### Valor da licitação versus valor do contrato
 
