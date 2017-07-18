@@ -29,7 +29,9 @@ library(shiny)
 source('../lib/load_fornecedores_merenda.R')
 ```
 
-Todo fornecedor que se dispõe a participar de uma licitação deve possuir um endereço físico que possa ser consultado pela população. O objetivo desse relatório é apresentar como estão distribuídos geograficamente os licitantes de merenda no Estado da Paraíba. Os licitantes/fornecedores aqui listados não necessariamente ganharam uma licitação mas participaram de pelo menos uma. A partir de uma base de dados que associa CNPJs a CEPs obtemos as localizações aproximadas da maioria dos licitantes analisados em relatórios anteriores. A seguir apresentamos os resultados e a distribuição geográfica dos licitantes. É possível obter mais detalhes sobre eles ao clicar sobre um marcador.   
+Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
+
+Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3546 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda, que é mais de 9000. Decidimos ignorar tais fornecedores que não possuem os dados de localização disponíveis.
 
 ```{r}
 ganhadores <- load_fornecedores_merenda()
@@ -76,6 +78,8 @@ localizacao_licitantes <- localizacao_licitantes %>%
   filter(!(!is.na(nu_CEP) & is.na(latitude)))
 ```
 
+Abaixo você pode conferir a localização dos fornecedores de merenda na Paraíba. Inicialmente você observará grupos de fornecedores que estão juntos em uma mesma área, conforme você vai aumentando o zoom, mais informação de mais áreas se tornam disponíveis. Ao aproximar o zoom no nível das cidades é possível observar a localização do fornecedor individualmente (marcador em azul). Você também pode clicar sobre ele e obter informações mais específicas como nome, CNPJ/CPF, cidade, número de munícpios nos quais já forneceu e o valor total pago a esse fornecedor.
+
 ```{r}
 leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
   addTiles() %>%
@@ -83,8 +87,8 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
              label = ~str_to_upper(no_Credor), 
              popup = paste(
                "Nome:", str_to_upper(localizacao_licitantes$no_Credor), "</br>",
-               "CNPJ:", localizacao_licitantes$cd_Credor, "</br>",
-               "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
+               "CNPJ/CPF:", localizacao_licitantes$cd_Credor, "</br>",
+               "Cidade:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
                "Número de Municípios:", localizacao_licitantes$num_municipios, "</br>",
                "Valor pago: R$", localizacao_licitantes$valor_total_pag
              ),
@@ -93,94 +97,45 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
 
 Como talvez já pudesse ser esperado, a maioria dos licitantes de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos licitantes.  
 
-Um número considerável, ainda, está localizado em estados vizinhos. Chamam a atenção, a localização de apenas 3 licitantes que se encontram fora da região Nordeste. Sendo que, destes, apenas um licitante localizado em Diadema-SP apresentou ganhos.  
+Um número considerável, ainda, está localizado em estados vizinhos como Pernambuco, Rio Grande do Norte e Ceará. Existem também fornecedores em estados mais distantes como em São Paulo, Rio de Janeiro e Paraná. Há também alguns bancos com empenhos relacionados a alimentação escolar, localizados no Distrito Federal, a explicação para isso está geralmente nas taxas pagas ao banco por parte do município.
 
-<!-- ## Distribuição geográfica dos licitantes de merenda por grupo -->
-<!-- Em um dos [relatórios](https://analytics-ufcg.github.io/licitacoes-pb//2017/04/licitantes-merenda.html) disponíveis no site, é possível identificar grupos de licitantes que possuem características parecidas entre si. Tomando como base a análise realizada previamente, é possível verificar como estão distribuídos geograficamente os licitantes de merenda de acordo com seu grupo no mapa abaixo. Cada cor representa um grupo e há um total de 7 grupos. -->
+Descubra quais os fornecedores de merenda que se localizam na sua cidade ou próximo a você e comente no final desse post o que você encontrou e reconheceu.
 
-<!-- ```{r} -->
-<!-- getColor <- function(df) { -->
-<!--   sapply(df$cluster, function(cluster) { -->
-<!--   if(cluster == 1) { -->
-<!--     "darkgreen" -->
-<!--   } else if(cluster == 2) { -->
-<!--     "orange" -->
-<!--   } else if(cluster == 3) { -->
-<!--     "blue" -->
-<!--   } else if(cluster == 4) { -->
-<!--     "purple" -->
-<!--   } else if(cluster == 5) { -->
-<!--     "green" -->
-<!--   } else if(cluster == 6) { -->
-<!--     "red" -->
-<!--   } else if(cluster == 7) { -->
-<!--     "darkred" -->
-<!--   } else { -->
-<!--     "cadetblue" -->
-<!--   } }) -->
-<!-- } -->
+## Verificando a existência de grandes fornecedores em cidades improváveis
+Será que existem fornecedores com altos valores pagos de merenda em cidades pequenas da Paraíba? Os critérios utilizados para as cidades pequenas são aquelas que representam 10% das cidades com menor população da Paraíba. Um fornecedor é considerado com alto pagamentos quanto se ancaixa na lista de fornecedores dos 10% que mais receberam empenhos de merenda.
 
-<!-- icons <- awesomeIcons( -->
-<!--   icon = 'circle-o', -->
-<!--   iconColor = 'black', -->
-<!--   library = 'fa', -->
-<!--   markerColor = getColor(licitantes) -->
-<!-- ) -->
-<!-- ``` -->
+```{r}
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
-<!-- ```{r} -->
-<!-- mapa_grupos <- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% -->
-<!--   addTiles() %>% -->
-<!--   addAwesomeMarkers(data = localizacao_licitantes, icon = icons, -->
-<!--                     label = paste("Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), -->
-<!--                       "Grupo:", licitantes$cluster), -->
-<!--                     popup = paste( -->
-<!--                "Nome:", str_to_upper(localizacao_licitantes$no_Fornecedor), "</br>", -->
-<!--                "CNPJ:", localizacao_licitantes$nu_CPFCNPJ, "</br>", -->
-<!--                "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>", -->
-<!--                "Participações:", localizacao_licitantes$participou, "</br>", -->
-<!--                "Valor contratado: R$", localizacao_licitantes$total_ganho -->
-<!--              )) -->
-<!-- mapa_grupos -->
-<!-- ``` -->
+municipios <- tbl(utils, 'municipio') %>%
+    select(de_Municipio, vl_Populacao) %>%
+    collect()
 
-<!-- De acordo com a análise do mapa, não parece haver correlação entre o grupo em que cada licitante é classificado e sua localização geográfica. -->
+localizacao_licitantes <- localizacao_licitantes %>%
+  left_join(municipios, by = c('cidade' = 'de_Municipio'))
 
-<!-- ## Verificando a existência de grandes fornecedores em cidades improváveis. -->
-<!-- Como última parte na análise, foi verificada a existência de grandes fornecedores em cidades com população pequena. Nessa etapa, foram considerados apenas os licitantes que venceram pelo menos uma licitação e que estão sediados no estado da Paraíba. -->
+licitantes_cimprovaveis <- localizacao_licitantes %>%
+  filter(vl_Populacao < quantile(localizacao_licitantes$vl_Populacao, .1, na.rm = TRUE) &
+           valor_total_pag > quantile(localizacao_licitantes$valor_total_pag, .9))
+```
 
-<!-- Foram considerados grandes fornecedores, os 10% que apresentam o maior valor contratado dentre os demais. Para a obtenção das cidades de pequena população, as mesmas foram ordenadas de forma crescente pela população e os primeiros 20% foram selecionados. -->
+Foram encontrados 26 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
 
-<!-- ```{r} -->
-<!-- utils <- src_mysql('utils', group='ministerio-publico', password=NULL) -->
-
-<!-- municipios <- tbl(utils, 'municipio') %>% -->
-<!--     select(-cd_Municipio) %>% -->
-<!--     collect() -->
-
-<!-- localizacao_licitantes <- localizacao_licitantes %>% -->
-<!--   left_join(municipios, by = c('cidade' = 'de_Municipio')) -->
-
-<!-- licitantes_cimprovaveis <- localizacao_licitantes %>% -->
-<!--   filter(vl_Populacao < quantile(localizacao_licitantes$vl_Populacao, .2, na.rm = TRUE) & -->
-<!--            total_ganho > quantile(localizacao_licitantes$total_ganho, .9)) -->
-<!-- ``` -->
-
-<!-- Foram encontrados apenas 6 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo. -->
-
-<!-- ```{r} -->
-<!-- leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% -->
-<!--   addTiles() %>% -->
-<!--   addMarkers(data = licitantes_cimprovaveis, -->
-<!--              label = ~str_to_upper(no_Fornecedor), -->
-<!--              popup = paste( -->
-<!--                "Nome:", str_to_upper(licitantes_cimprovaveis$no_Fornecedor), "</br>", -->
-<!--                "CNPJ:", licitantes_cimprovaveis$nu_CPFCNPJ, "</br>", -->
-<!--                "Local:", licitantes_cimprovaveis$cidade, " - ", licitantes_cimprovaveis$estado, "</br>", -->
-<!--                "Participações:", licitantes_cimprovaveis$participou, "</br>", -->
-<!--                "Valor contratado: R$", licitantes_cimprovaveis$total_ganho -->
-<!--              )) -->
-<!-- ``` -->
+```{r}
+leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
+  addTiles() %>%
+  addMarkers(data = licitantes_cimprovaveis,
+             label = ~str_to_upper(no_Credor),
+             popup = paste(
+               "Nome:", str_to_upper(licitantes_cimprovaveis$no_Credor), "</br>",
+               "CNPJ/CPF:", licitantes_cimprovaveis$cd_Credor, "</br>",
+               "Cidade:", licitantes_cimprovaveis$cidade, " - ", licitantes_cimprovaveis$estado, "</br>",
+               "População:", licitantes_cimprovaveis$vl_Populacao, "</br>",
+               "Número de Municípios:", licitantes_cimprovaveis$num_municipios, "</br>",
+               "Valor pago: R$", licitantes_cimprovaveis$valor_total_pag
+             ),
+             clusterOptions = markerClusterOptions())
+```
 
 ## Onde atuam os diversos fornecedores de merenda?
 Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes.
