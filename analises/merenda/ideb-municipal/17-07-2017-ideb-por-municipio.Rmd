@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Relatório IDEB"
 subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
@@ -41,15 +41,30 @@ ideb_9ano <- read_csv("IDEB - 9º ano.csv")
 ```
 
 ```{r}
-utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+utils = src_mysql('utils', group='ministerio-publico-local', password=NULL)
 
 municipios = tbl(utils, 'municipio') %>%
   collect()
 
 sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
 
-empenhos_merenda <- get_empenhos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
-  collect(n = Inf)
+empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
+  collect(n = Inf) %>%
+  mutate(cd_UGestora_copy = cd_UGestora) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
+  mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
+  select(-cd_UnGestora)
+
+gastos_merenda <- empenhos_merenda %>%
+  group_by(de_Municipio) %>%
+  summarise(valor_merenda = sum(vl_Empenho),
+            total_emp_merenda = n())
+
+gastos_merenda_2015 <- filter(empenhos_merenda, dt_Ano == 2015) %>%
+  group_by(de_Municipio) %>%
+  summarise(valor_merenda = sum(vl_Empenho),
+            total_emp_merenda = n())
 
 ```
 
@@ -130,3 +145,34 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
+```{r}
+municipios <- municipios %>%
+  left_join(ideb_4ano %>% select('Município', '2015')
+              , c('de_Municipio' = 'Município')) %>%
+  mutate(IDEB_4ano_2015 = as.numeric(`2015`)) %>%
+  mutate('2015' = NULL) %>%
+  left_join(ideb_9ano %>% select('Município', '2015')
+              , c('de_Municipio' = 'Município')) %>%
+  mutate(IDEB_9ano_2015 = as.numeric(`2015`)) %>%
+  mutate('2015' = NULL) %>%
+  mutate(IDEB_medio_2015 = (IDEB_4ano_2015 + IDEB_9ano_2015) / 2) %>%
+  left_join(gastos_merenda_2015, by = 'de_Municipio') %>%
+  mutate(vl_Matriculas = vl_Matriculas_Pre_Escolar + vl_Matriculas_Fundamental + vl_Matriculas_Medio) %>%
+  mutate(gasto_por_aluno = valor_merenda/vl_Matriculas)
+
+municipios[is.na(municipios)] <- 0
+
+ggplot(data = filter(municipios, IDEB_4ano_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_4ano_2015)) +
+  geom_point()
+
+ggplot(data = filter(municipios, IDEB_9ano_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_9ano_2015)) +
+  geom_point()
+
+ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_medio_2015)) +
+  geom_point()
+
+
+cor(filter(municipios, IDEB_4ano_2015 != 0)$gasto_por_aluno, filter(municipios, IDEB_4ano_2015 != 0)$IDEB_4ano_2015)
+cor(filter(municipios, IDEB_9ano_2015 != 0)$gasto_por_aluno, filter(municipios, IDEB_9ano_2015 != 0)$IDEB_9ano_2015)
+cor(filter(municipios, IDEB_medio_2015 != 0)$gasto_por_aluno,filter(municipios, IDEB_medio_2015 != 0)$IDEB_medio_2015)
+```
