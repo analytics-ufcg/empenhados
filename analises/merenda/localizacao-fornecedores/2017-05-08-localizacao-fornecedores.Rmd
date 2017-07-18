@@ -22,6 +22,9 @@ knitr::opts_chunk$set(
 library(methods)
 library(dplyr)
 library(ggfortify)
+library(rgdal)
+library(maps)
+library(ggmap)
 library(leaflet)
 library(tidyr)
 library(stringr)
@@ -143,41 +146,69 @@ Como última parte da análise, buscamos verificar o local de atuação dos forn
 ```{r}
 ui <- fluidPage(
   fluidRow(
-    leafletOutput("map", width = "100%", height = "400")),
+    selectInput(inputId = "busca", 
+                  label = "Busque um fornecedor", 
+                  choices = (localizacao_licitantes_municipios %>%
+                              ungroup() %>%
+                              distinct(cd_Credor, nu_CEP, .keep_all = TRUE)
+                          )[["no_Credor"]]),
+      radioButtons("modo_visualizacao", "Verificar", c("Quantidade de empenhos", "Valor pago"), TRUE)
+  ),
   
   fluidRow(
-    verbatimTextOutput("click_text")
+    leafletOutput("municipios")
   )
 )
+  
 
-server <- function(input, output){
-  output$map <- renderLeaflet({
-    leaflet() %>%
-      setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
-      addTiles() %>%
-      addMarkers(data = localizacao_licitantes,
-                 label = ~str_to_upper(no_Credor), 
-                 popup = paste(
-                   "Nome:", str_to_upper(localizacao_licitantes$no_Credor), "</br>",
-                   "CNPJ:", localizacao_licitantes$cd_Credor, "</br>",
-                   "Local:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
-                   "Número de Municípios:", localizacao_licitantes$num_municipios, "</br>",
-                   "Valor pago: R$", localizacao_licitantes$valor_total_pag
-                 ),
-                 clusterOptions = markerClusterOptions())
-  })
-        
-  observe({
-    click<-input$map_marker_click
-    if(is.null(click))
-      return()
-    text<-paste("Latitude ", click$lat, "Longitude ", click$lng)
-    map$clearPopups()
-    map$showPopup( click$lat, click$lng, text)
+server <- function(input, output, session){
+  
+  mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
+
+  # Atualizando nome de municípios que mudaram de nome nos últimos anos
+  levels_mapa = levels(mapa_paraiba@data$Nome_Munic)
+  levels_mapa[51] = "Tacima"
+  levels_mapa[200] = "São Vicente do Seridó"
+  levels_mapa[173] = "Joca Claudino"
+  levels_mapa[156] = "Quixaba"
+  levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
+  
+  mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
+  
+  colors <- colorFactor('Blues', mapa_paraiba@data$Nome_Munic)
+  
+  eventReactive(input$busca, {
+    mapa_paraiba@data <- mapa_paraiba@data %>%
+      filter(no_Credor == input$busca) %>%
+      left_join(localizacao_licitantes_municipios, c("Nome_Munic" = "de_Municipio"))
     
-    output$click_text<-renderText({
-      text
-    })
+    leaflet(data = mapa_paraiba) %>%
+      addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+      addPolygons(opacity = 0.5,
+                  weight = 1,
+                  color = 'black',
+                  fillColor = colors(mapa_paraiba@data$num_empenhos),
+                  label = paste(mapa_paraiba@data$Nome_Munic),
+                  popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
+                                "Empenhos: R$ ", mapa_paraiba@data$num_empenhos, "</br>",
+                                "Valor pago: R$ ", mapa_paraiba@data$vl_pagamentos),
+                  fillOpacity = 1)
+  })
+  
+  eventReactive(input$modo_visualizacao, {
+    output$municipios <- renderLeaflet({
+    leaflet(data = mapa_paraiba) %>%
+      addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+      addPolygons(opacity = 0.5,
+                  weight = 1,
+                  color = 'black',
+                  fillColor = colors(mapa_paraiba@data$num_empenhos),
+                  label = paste(mapa_paraiba@data$Nome_Munic),
+                  popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
+                                "Empenhos: R$ ", mapa_paraiba@data$num_empenhos, "</br>",
+                                "Valor pago: R$ ", mapa_paraiba@data$vl_pagamentos),
+                  fillOpacity = 1)
+  })
   })
 }
 
