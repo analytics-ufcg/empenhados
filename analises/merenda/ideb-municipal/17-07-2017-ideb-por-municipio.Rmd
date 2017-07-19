@@ -36,7 +36,7 @@ library(rsagrespb)
 ```
 
 ```{r}
-ideb_4ano <- read_csv("IDEB - 4º ano.csv")
+ideb_5ano <- read_csv("IDEB - 4º ano.csv")
 ideb_9ano <- read_csv("IDEB - 9º ano.csv")
 ```
 
@@ -80,22 +80,28 @@ levels_mapa[200] = "São Vicente do Seridó"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 ```
 
+O Índice de Desenvolvimento da Educação Básica (Ideb) é o indicador base para a avaliação do desempenho da educação no país, pois reúne em um só indicador, os resultados de dois conceitos igualmente importantes para a qualidade da educação: o fluxo escolar e as médias de desempenho nas avaliações.^[[1]](http://portal.inep.gov.br/ideb)^
 
+Os resultados do Ideb 2015 para escola, município, unidade da federação, região e Brasil são calculados a partir do desempenho obtido pelos alunos que participaram da Prova Brasil/Saeb 2015 e das taxas de aprovação, calculadas com base nas informações prestadas ao Censo Escolar 2015. Dessa forma, cada uma dessas unidades de agregação tem seu próprio Ideb e metas estabelecidas ao longo do horizonte do PDE, ou seja, até 2021.^[[2]](http://download.inep.gov.br/educacao_basica/portal_ideb/o_que_e_o_ideb/nota_informativa_ideb.pdf)^
+
+Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
-paraiba_4ano = ideb_4ano %>% 
+paraiba_5ano = ideb_5ano %>% 
   inner_join(mapa_paraiba@data, c('Município' = 'Nome_Munic'))
 
-paraiba_4ano$`2015` <- cut(as.numeric(paraiba_4ano$`2015`),
+paraiba_5ano$ideb_5ano_faixas <- cut(as.numeric(paraiba_5ano$`2015`),
                                 breaks = c(3,3.5,4,4.5,5,6, 6.8),
                                 include.lowest = T)
 
 levels_mapa = mapa_paraiba@data$Nome_Munic
 paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
-paraiba_municipios = paraiba_municipios %>% left_join(paraiba_4ano, c('levels_mapa' = 'Município'))
+paraiba_municipios <- paraiba_municipios %>% left_join(paraiba_5ano, c('levels_mapa' = 'Município'))
 
-mapa_paraiba@data$Y <- paraiba_municipios$`2015`
+
+mapa_paraiba@data$Y <- paraiba_municipios$ideb_5ano_faixas
+mapa_paraiba@data$X <- paraiba_municipios$`2015`
 colors = colorFactor('Blues', mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
@@ -106,9 +112,9 @@ leaflet(data = mapa_paraiba) %>%
               color = 'black',
               label = paste(mapa_paraiba@data$Nome_Munic),
               popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
-                            "IDEB 4º ano: ", mapa_paraiba@data$Y),
+                            "IDEB do 5º ano: ", mapa_paraiba@data$X),
               fillOpacity = 1) %>% addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "IDEB 4º ano por município",
+            title = "IDEB 5º ano por município",
             opacity = 1, na.label = "0"
   )
 ```
@@ -117,8 +123,8 @@ leaflet(data = mapa_paraiba) %>%
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_9ano = ideb_9ano %>% 
   inner_join(mapa_paraiba@data, c('Município' = 'Nome_Munic'))
-summary(as.numeric(ideb_9ano$`2015`))
-paraiba_9ano$`2015` <- cut(as.numeric(paraiba_9ano$`2015`),
+
+paraiba_9ano$ideb_faixas <- cut(as.numeric(paraiba_9ano$`2015`),
                                 breaks = c(2, 2.5, 3, 3.5, 4, 4.5, 5, 5.4),
                                 include.lowest = T)
 
@@ -127,8 +133,9 @@ paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
 
 paraiba_municipios = paraiba_municipios %>% left_join(paraiba_9ano, c('levels_mapa' = 'Município'))
 
-mapa_paraiba@data$Y <- paraiba_municipios$`2015`
-colors = colorFactor('Blues', mapa_paraiba@data$Y)
+mapa_paraiba@data$Y <- paraiba_municipios$ideb_faixas
+mapa_paraiba@data$X <- paraiba_municipios$`2015`
+colors = colorFactor('Blues',   mapa_paraiba@data$Y)
 
 leaflet(data = mapa_paraiba) %>%
   addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
@@ -138,41 +145,111 @@ leaflet(data = mapa_paraiba) %>%
               color = 'black',
               label = paste(mapa_paraiba@data$Nome_Munic),
               popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
-                            "IDEB 4º ano: ", mapa_paraiba@data$Y),
+                            "IDEB do 9º ano: ", mapa_paraiba@data$X),
               fillOpacity = 1) %>% addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
             title = "IDEB 9º ano por município",
             opacity = 1, na.label = "0"
   )
 ```
-
+O Ideb do 4º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
+A tabela a seguir apresenta alguns valores para a comparação do Ideb nos dois níveis do ensino fundamental.  
 ```{r}
 municipios <- municipios %>%
-  left_join(ideb_4ano %>% select('Município', '2015')
+  left_join(ideb_5ano %>% select('Município', '2015')
               , c('de_Municipio' = 'Município')) %>%
-  mutate(IDEB_4ano_2015 = as.numeric(`2015`)) %>%
+  mutate(IDEB_5ano_2015 = as.numeric(`2015`)) %>%
   mutate('2015' = NULL) %>%
   left_join(ideb_9ano %>% select('Município', '2015')
               , c('de_Municipio' = 'Município')) %>%
   mutate(IDEB_9ano_2015 = as.numeric(`2015`)) %>%
   mutate('2015' = NULL) %>%
-  mutate(IDEB_medio_2015 = (IDEB_4ano_2015 + IDEB_9ano_2015) / 2) %>%
+  mutate(IDEB_medio_2015 = (IDEB_5ano_2015 + IDEB_9ano_2015) / 2) %>%
   left_join(gastos_merenda_2015, by = 'de_Municipio') %>%
   mutate(vl_Matriculas = vl_Matriculas_Pre_Escolar + vl_Matriculas_Fundamental + vl_Matriculas_Medio) %>%
   mutate(gasto_por_aluno = valor_merenda/vl_Matriculas)
 
 municipios[is.na(municipios)] <- 0
 
-ggplot(data = filter(municipios, IDEB_4ano_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_4ano_2015)) +
-  geom_point()
+```
 
-ggplot(data = filter(municipios, IDEB_9ano_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_9ano_2015)) +
-  geom_point()
+Ano | Média | Mediana | Máximo | Mínimo
+------------- | ------------- | ------------- | ------------- | ------------- 
+5º ano | `r round(mean(municipios$IDEB_5ano_2015), 2)` | `r median(municipios$IDEB_5ano_2015)` | `r max(municipios$IDEB_5ano_2015)` | `r min(filter(municipios, IDEB_5ano_2015 > 0)$IDEB_5ano_2015)`
+9º ano | `r round(mean(municipios$IDEB_9ano_2015), 2)` | `r median(municipios$IDEB_9ano_2015)` | `r max(municipios$IDEB_9ano_2015)` | `r min(filter(municipios, IDEB_9ano_2015 > 0)$IDEB_9ano_2015)`
 
-ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(y = gasto_por_aluno, x = IDEB_medio_2015)) +
-  geom_point()
+### O Ideb e o valor gasto com cada aluno
+Agora que já compreendemos como se comporta o Ideb na Paraíba, iremos estudar como ele se relaciona com gasto que os municípios tem com seus alunos da rede municipal.
+A partir daqui o valor de Ideb que usaremos é a média entre os valores do Ideb do 5º e do 9º ano.
+```{r}
+
+plot_ly(data = filter(municipios, IDEB_medio_2015 != 0), legendgroup = ~de_Municipio,  showlegend = F) %>%
+    add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, type = "scatter", mode="markers",
+              text = ~paste(de_Municipio),
+              hoverinfo = 'text') %>%
+    layout(title = "Valor gasto por aluno vs. IDEB em 2015",
+           yaxis = list(title = 'IDEB', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Gasto por aluno'))
+```
 
 
-cor(filter(municipios, IDEB_4ano_2015 != 0)$gasto_por_aluno, filter(municipios, IDEB_4ano_2015 != 0)$IDEB_4ano_2015)
-cor(filter(municipios, IDEB_9ano_2015 != 0)$gasto_por_aluno, filter(municipios, IDEB_9ano_2015 != 0)$IDEB_9ano_2015)
+Será que existe alguma relação entre o índice de desenvolvimento da educação básica de um município e o valor que é gasto com a alimentação escolar de cada aluno deste mesmo município?  
+O total gasto com a alimentação de cada aluno foi obtido somando o valor dos empenhos relativos a merenda e dividindo o resultado pelo total de alunos matriculados (nos níveis Pré-Escolar, Fundamental e Médio), nesse mesmo município. Os dados se referem ao ano de 2015.   
+
+Correlação entre o gasto por aluno e o número de matrículas em 2015
+```{r}
+cor(filter(municipios, IDEB_medio_2015 != 0)$gasto_por_aluno,filter(municipios, IDEB_medio_2015 != 0)$vl_Matriculas)
+```
+
+Correlação entre o valor gasto e o IDEB
+```{r}
 cor(filter(municipios, IDEB_medio_2015 != 0)$gasto_por_aluno,filter(municipios, IDEB_medio_2015 != 0)$IDEB_medio_2015)
 ```
+
+
+```{r}
+ggplot(data = municipios, aes(x = vl_Populacao)) +
+  geom_histogram() +
+  geom_rug()
+
+plot_ly(data = municipios) %>%
+  add_histogram(x = ~vl_Populacao)
+
+filter(municipios, vl_Populacao < 40000) %>%
+  plot_ly() %>%
+  add_histogram(x = ~vl_Populacao)
+
+summary(municipios$vl_Populacao)
+# Dividindo a população em faixas 
+municipios$faixa_pop <- cut(municipios$vl_Populacao,
+                            breaks = c(0, 4000, 6000, 8000, 10000, 20000, 50000, 15000, 801718),
+                            labels = c("[0, 4K]", "(4K, 6K]", "(6K, 8K]", "(8K, 10K]", "(10K, 20K]", "(20K, 50K]", "(50K, 150K]", "(150K, 801718]"),
+                            include.lowest = T)
+
+plot_ly(data = municipios) %>%
+  add_histogram(x = ~faixa_pop)
+
+ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(x = faixa_pop, y = IDEB_medio_2015)) +
+  geom_jitter()
+
+ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = faixa_pop)) +
+  geom_point()
+
+plot_ly(data = filter(municipios, IDEB_medio_2015 != 0), legendgroup = ~de_Municipio,  showlegend = T) %>%
+    add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, color = ~faixa_pop, type = "scatter", mode="markers",
+              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados"),
+              hoverinfo = 'text') %>%
+    layout(title = "Valor gasto por aluno vs. IDEB em 2015",
+           yaxis = list(title = 'IDEB', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Gasto por aluno')) 
+
+plot_ly(data = filter(municipios, IDEB_medio_2015 != 0 & vl_Matriculas < 10000), legendgroup = ~de_Municipio,  showlegend = T) %>%
+    add_trace(x = ~gasto_por_aluno, y = ~vl_Matriculas, size = ~vl_Populacao, color = ~IDEB_medio_2015, type = "scatter", mode="markers",
+              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados"),
+              hoverinfo = 'text') %>%
+    layout(title = "Número de alunos vs. Valor gasto",
+           yaxis = list(title = 'Número de alunos matriculados', hoverformat= '.0f', fixedrange = TRUE),
+           xaxis = list(title = 'Gasto por aluno')) 
+
+
+```
+
