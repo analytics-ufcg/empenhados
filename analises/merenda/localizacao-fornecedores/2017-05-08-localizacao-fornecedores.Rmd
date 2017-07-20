@@ -193,6 +193,27 @@ plot_ly(data = localizacao_licitantes %>%
 
 A correlação fica ainda menor atingindo `r cor3`. Ou seja, não parece haver uma correlação linear entre a população de um município no qual se localiza uma empresa e o quanto essa empresa recebeu por empenhos de merenda. É possível explorar o gráfico e obter mais informações sobre os fornecedores em cada faixa de população dos municípios observando a presença de outliers em vários casos como, por exemplo, em Bayeux, Cabedelo e Guarabira.
 
+
+## Observando os grandes fornecedores
+Continuando nossa análise sobre grandes fornecedores, decidimos investigar um pouco mais a história dos dois fornecedores que assinaram contratos com mais municípios no período, que são listados abaixo.
+
+```{r}
+maiores_fornecedores <- ganhadores %>% 
+  group_by(cd_Credor) %>% 
+  summarise(municipios = n()) %>% 
+  arrange(desc(municipios)) %>% 
+  left_join(ganhadores, 'cd_Credor') %>%
+  distinct(cd_Credor, no_Credor, municipios) %>%
+  rename(CPNJ = cd_Credor) %>%
+  rename(Fornecedor = no_Credor) %>%
+  rename(Municipios = municipios) %>%
+  head(2)
+  
+kable(maiores_fornecedores, align = "c")
+```
+
+Uma busca pelo CNPJ do primeiro fornecedor indica que ele já esteve envolvido em irregularidades anteriormente. Segundo a [Central de Compras do Governo Estadual](http://www.centraldecompras.pb.gov.br/appls/ccompras/central.nsf/ffornecedoressuspensos?OpenForm), tal fornecedor foi suspenso de licitar com a administração pública estadual por cinco anos em 2013, devido a irregularidades ocorridas em um pregão.
+
 ## Onde atuam os diversos fornecedores de merenda?
 Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuam em um grupo de cidades geográficamente próximas.
 
