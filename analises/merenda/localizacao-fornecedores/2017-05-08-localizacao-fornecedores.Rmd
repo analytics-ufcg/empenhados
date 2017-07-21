@@ -195,7 +195,7 @@ A correlação fica ainda menor atingindo `r cor3`. Ou seja, não parece haver u
 
 
 ## Observando os grandes fornecedores
-Continuando nossa análise sobre grandes fornecedores, decidimos investigar um pouco mais a história dos dois fornecedores que assinaram contratos com mais municípios no período, que são listados abaixo.
+Continuando nossa análise sobre grandes fornecedores, decidimos investigar um pouco mais a história dos dois fornecedores que assinaram contratos com mais municípios no período. Alguns detalhes desses fornecedores são listados abaixo.
 
 ```{r}
 maiores_fornecedores <- ganhadores %>% 
@@ -212,7 +212,13 @@ maiores_fornecedores <- ganhadores %>%
 kable(maiores_fornecedores, align = "c")
 ```
 
-Uma busca pelo CNPJ do primeiro fornecedor indica que ele já esteve envolvido em irregularidades anteriormente. Segundo a [Central de Compras do Governo Estadual](http://www.centraldecompras.pb.gov.br/appls/ccompras/central.nsf/ffornecedoressuspensos?OpenForm), tal fornecedor foi suspenso de licitar com a administração pública estadual por cinco anos em 2013, devido a irregularidades ocorridas em um pregão.
+Uma busca pelo CNPJ do fornecedor *Raimundo Adelmar Fonseca Pires* indica que ele já esteve envolvido em irregularidades anteriormente. Segundo [este documento](http://www.centraldecompras.pb.gov.br/appls/ccompras/central.nsf/ffornecedoressuspensos?OpenForm) da Central de Compras do Governo Estadual, tal fornecedor foi suspenso de licitar com a administração pública estadual por cinco anos em 2013, devido a irregularidades ocorridas no pregão presencial [175/2012](https://www.clickpb.com.br/static/filebrowser/edital-de-registro-de-preco-no-1752012-aquisicao-de-carnefrango-e-peixe-seap.pdf), que licitava carnes para os detentos do estado.
+Esse [documento](http://publicacao.tce.pb.gov.br/9c207dcfe37c4887431f3fed06454860) do TCE oferece mais detalhes sobre a condenação desse fornecedor.
+
+Já uma busca pelo CNPJ do segundo fornecedor, nos mostra que a empresa *Mega Master Comercial de Alimentos Ltda.* encontra-se atualmente no [cadastro de empresas inidôneas e suspeitas](http://www.portaltransparencia.gov.br/ceis/empresa/08370039000102) do Portal da Transparência e impedida de participar em licitações por dois anos, após não cumprir os termos de um contrato firmado com a EBSERH - Empresa Brasileira de Serviços Hospitalares.
+
+Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios (nesse site)[http://www.empresascnpj.com/], descobrimos algumas coisas interessantes: Os sócios de ambas empresas contém o mesmo sobrenome, Fonseca Pires, e ambas já foram sediadas em um mesmo bloco de galpões.
+
 
 ## Onde atuam os diversos fornecedores de merenda?
 Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuam em um grupo de cidades geográficamente próximas.
