@@ -33,6 +33,8 @@ library(scales)
 library(rgdal)
 library(RColorBrewer)
 library(rsagrespb)
+
+theme_set(theme_minimal())
 ```
 
 ```{r}
@@ -84,7 +86,7 @@ O Índice de Desenvolvimento da Educação Básica (Ideb) é o indicador base pa
 
 Os resultados do Ideb 2015 para escola, município, unidade da federação, região e Brasil são calculados a partir do desempenho obtido pelos alunos que participaram da Prova Brasil/Saeb 2015 e das taxas de aprovação, calculadas com base nas informações prestadas ao Censo Escolar 2015. Dessa forma, cada uma dessas unidades de agregação tem seu próprio Ideb e metas estabelecidas ao longo do horizonte do PDE, ou seja, até 2021.^[[2]](http://download.inep.gov.br/educacao_basica/portal_ideb/o_que_e_o_ideb/nota_informativa_ideb.pdf)^
 
-Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.
+Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.  
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_5ano = ideb_5ano %>% 
@@ -118,7 +120,7 @@ leaflet(data = mapa_paraiba) %>%
             opacity = 1, na.label = "0"
   )
 ```
-
+  
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_9ano = ideb_9ano %>% 
@@ -151,7 +153,9 @@ leaflet(data = mapa_paraiba) %>%
             opacity = 1, na.label = "0"
   )
 ```
+
 O Ideb do 4º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
+
 A tabela a seguir apresenta alguns valores para a comparação do Ideb nos dois níveis do ensino fundamental.  
 ```{r}
 municipios <- municipios %>%
@@ -163,6 +167,7 @@ municipios <- municipios %>%
               , c('de_Municipio' = 'Município')) %>%
   mutate(IDEB_9ano_2015 = as.numeric(`2015`)) %>%
   mutate('2015' = NULL) %>%
+  filter(IDEB_5ano_2015 != 0 & IDEB_9ano_2015 != 0) %>%
   mutate(IDEB_medio_2015 = (IDEB_5ano_2015 + IDEB_9ano_2015) / 2) %>%
   left_join(gastos_merenda_2015, by = 'de_Municipio') %>%
   mutate(vl_Matriculas = vl_Matriculas_Pre_Escolar + vl_Matriculas_Fundamental + vl_Matriculas_Medio) %>%
@@ -174,15 +179,18 @@ municipios[is.na(municipios)] <- 0
 
 Ano | Média | Mediana | Máximo | Mínimo
 ------------- | ------------- | ------------- | ------------- | ------------- 
-5º ano | `r round(mean(municipios$IDEB_5ano_2015), 2)` | `r median(municipios$IDEB_5ano_2015)` | `r max(municipios$IDEB_5ano_2015)` | `r min(filter(municipios, IDEB_5ano_2015 > 0)$IDEB_5ano_2015)`
-9º ano | `r round(mean(municipios$IDEB_9ano_2015), 2)` | `r median(municipios$IDEB_9ano_2015)` | `r max(municipios$IDEB_9ano_2015)` | `r min(filter(municipios, IDEB_9ano_2015 > 0)$IDEB_9ano_2015)`
+5º | `r round(mean(municipios$IDEB_5ano_2015), 2)` | `r median(municipios$IDEB_5ano_2015)` | `r max(municipios$IDEB_5ano_2015)` | `r min(filter(municipios, IDEB_5ano_2015 > 0)$IDEB_5ano_2015)`
+9º | `r round(mean(municipios$IDEB_9ano_2015), 2)` | `r median(municipios$IDEB_9ano_2015)` | `r max(municipios$IDEB_9ano_2015)` | `r min(filter(municipios, IDEB_9ano_2015 > 0)$IDEB_9ano_2015)`
 
 ### O Ideb e o valor gasto com cada aluno
-Agora que já compreendemos como se comporta o Ideb na Paraíba, iremos estudar como ele se relaciona com gasto que os municípios tem com seus alunos da rede municipal.
-A partir daqui o valor de Ideb que usaremos é a média entre os valores do Ideb do 5º e do 9º ano.
+Agora que já compreendemos como se comporta o Ideb na Paraíba, iremos estudar como ele se relaciona com gasto que os municípios tem com seus alunos da rede municipal.  
+
+O total gasto com a alimentação de cada aluno foi obtido somando o valor dos empenhos relativos a merenda e dividindo o resultado pelo total de alunos matriculados (nos níveis Pré-Escolar, Fundamental e Médio), nesse mesmo município. O valor de Ideb que usaremos é a média entre os valores do Ideb do 5º e do 9º ano. Os dados se referem ao ano de 2015.  
+
+A visualização abaixo mostra a ditribuição destas duas variáveis (foram removidas da análise as cidades em que não obtido valor do Ideb em 2015).
 ```{r}
 
-plot_ly(data = filter(municipios, IDEB_medio_2015 != 0), legendgroup = ~de_Municipio,  showlegend = F) %>%
+plot_ly(data = filter(municipios), legendgroup = ~de_Municipio,  showlegend = F) %>%
     add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, type = "scatter", mode="markers",
               text = ~paste(de_Municipio),
               hoverinfo = 'text') %>%
@@ -191,65 +199,93 @@ plot_ly(data = filter(municipios, IDEB_medio_2015 != 0), legendgroup = ~de_Munic
            xaxis = list(title = 'Gasto por aluno'))
 ```
 
+O gráfico anterior nos dá indícios de que não existe relação entre as duas variáveis estudadas, já que não existe nenhuma tendência aparente no comportamento dos dados, o que se comprova, já que a correlação entre o Ideb e o gasto por aluno é de apenas `r round(cor(municipios$gasto_por_aluno, municipios$IDEB_medio_2015), 2)` que é um valor tido como baixo para valores de correlação linear.  
 
-Será que existe alguma relação entre o índice de desenvolvimento da educação básica de um município e o valor que é gasto com a alimentação escolar de cada aluno deste mesmo município?  
-O total gasto com a alimentação de cada aluno foi obtido somando o valor dos empenhos relativos a merenda e dividindo o resultado pelo total de alunos matriculados (nos níveis Pré-Escolar, Fundamental e Médio), nesse mesmo município. Os dados se referem ao ano de 2015.   
+Além da relação entre as variáveis, podemos observar ainda que a maior parte dos municípios de concentra na região mais à esquerda do gráfico mas existe um pequeno grupo que está mais à direita, ou seja, gasta bem mais com a merenda de cada aluno que os demais. Será que esse comportamento tem relação com o tamanho da cidade?
 
-Correlação entre o gasto por aluno e o número de matrículas em 2015
+É o que descobriremos na seção a seguir!  
+
+### População  
+Cidades com número de habitantes semelhantes gastam e se desenvolvem da mesma forma? Existe um padrão entre as cidades de pequeno, médio e grande porte na Paraíba com relação aos gastos com merenda e o seu desenvolvimento da educação básica?
+
+#### Distribuição da População
+A população da Paraíba está distribuída da seguinte forma:
 ```{r}
-cor(filter(municipios, IDEB_medio_2015 != 0)$gasto_por_aluno,filter(municipios, IDEB_medio_2015 != 0)$vl_Matriculas)
-```
-
-Correlação entre o valor gasto e o IDEB
-```{r}
-cor(filter(municipios, IDEB_medio_2015 != 0)$gasto_por_aluno,filter(municipios, IDEB_medio_2015 != 0)$IDEB_medio_2015)
-```
-
-
-```{r}
-ggplot(data = municipios, aes(x = vl_Populacao)) +
-  geom_histogram() +
-  geom_rug()
-
 plot_ly(data = municipios) %>%
   add_histogram(x = ~vl_Populacao)
+```
 
-filter(municipios, vl_Populacao < 40000) %>%
-  plot_ly() %>%
-  add_histogram(x = ~vl_Populacao)
+Vemos que a imensa maioria das cidades tem até 100 mil habitantes, para analisarmos com mais detalhes estas cidades removeremos Campina Grande e João Pessoa da análise já que tem muito mais habitantes que as demais e não teríamos cidades de porte semelhantes para compará-las. Além disso, dividiremos os municípios em faixas de população para que possamos estudar essas faixas com mais detalhes.
 
-summary(municipios$vl_Populacao)
-# Dividindo a população em faixas 
+```{r}
+municipios <- municipios %>% filter(vl_Populacao <= 150000)
+# Removendo CG e JP
+#  municipios %>%
+#  plot_ly() %>%
+# add_histogram(x = ~vl_Populacao)
+
 municipios$faixa_pop <- cut(municipios$vl_Populacao,
-                            breaks = c(0, 4000, 6000, 8000, 10000, 20000, 50000, 15000, 801718),
-                            labels = c("[0, 4K]", "(4K, 6K]", "(6K, 8K]", "(8K, 10K]", "(10K, 20K]", "(20K, 50K]", "(50K, 150K]", "(150K, 801718]"),
+                            breaks = c(0, 4000, 6000, 9000, 15000, 30000, 150000),
+                            labels = c("[0, 4K]", "(4K, 6K]", "(6K, 9K]", "(9K, 15K]", "(15K, 30K]", "(30K, 150K]"),
                             include.lowest = T)
 
 plot_ly(data = municipios) %>%
-  add_histogram(x = ~faixa_pop)
+  add_histogram(x = ~faixa_pop) %>%
+    layout(xaxis = list(title = 'Faixas de população'))
 
-ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(x = faixa_pop, y = IDEB_medio_2015)) +
-  geom_jitter()
+```
+Ao dividirmos os municípios pela população obtemos novos valores de correlação para algumas variáveis que julgamos importantes, estas informações são exibidas na tabela a seguir.  
+```{r}
+municipios_group <- municipios %>%
+  group_by(faixa_pop) %>%
+  summarise(n = n(),
+            gasto_medio = mean(gasto_por_aluno),
+            gasto_mediano = median(gasto_por_aluno),
+           gastoXideb = round(cor(gasto_por_aluno, IDEB_medio_2015), 2), 
+           gastoXpop = round(cor(gasto_por_aluno, vl_Populacao), 2))
 
-ggplot(data = filter(municipios, IDEB_medio_2015 != 0), aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = faixa_pop)) +
-  geom_point()
+kable(
+  x = head(select(municipios_group, c(faixa_pop, n, gastoXideb, gastoXpop))),
+  col.names = c('Faixa da população', 'Nº de municípios', 'Gasto por aluno X Ideb', 'Gasto por aluno X População'),
+  align = c('c'))
+```
 
-plot_ly(data = filter(municipios, IDEB_medio_2015 != 0), legendgroup = ~de_Municipio,  showlegend = T) %>%
+Alguns valores de correlação são mais fortes que os observados anteriormente sem considerar a população das cidades. Mas ainda assim nenhuma correlação forte é observada.  
+
+Agora visualizaremos os municípios em relação ao seu Ideb e o gasto com a merenda do alunos mas considerando também a população.
+```{r}
+plot_ly(data = municipios, legendgroup = ~de_Municipio,  showlegend = T) %>%
     add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, color = ~faixa_pop, type = "scatter", mode="markers",
               text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados"),
               hoverinfo = 'text') %>%
     layout(title = "Valor gasto por aluno vs. IDEB em 2015",
            yaxis = list(title = 'IDEB', hoverformat= '.0f', fixedrange = TRUE),
            xaxis = list(title = 'Gasto por aluno')) 
+```
 
-plot_ly(data = filter(municipios, IDEB_medio_2015 != 0 & vl_Matriculas < 10000), legendgroup = ~de_Municipio,  showlegend = T) %>%
-    add_trace(x = ~gasto_por_aluno, y = ~vl_Matriculas, size = ~vl_Populacao, color = ~IDEB_medio_2015, type = "scatter", mode="markers",
-              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados"),
+```{r}
+ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = faixa_pop)) +
+  geom_point() + 
+  facet_wrap(~ faixa_pop, ncol = 2)
+```
+  
+Observando os municípios divididos pelas faixas de população escolhidas temos que o Ideb não nos informa muito a cerca dos municípios já que a ditribuição deste é bastante irregular. No entando o gasto por aluno parece apresentar casos com comportamento mais estranho, uma vez que temos municípios que gastam muito mais que os outros que estão na mesma faixa de valor dele. Alguns deles são:
+
+* Riacho dos Cavalos
+* São João do Rio do Peixe
+* São José do Brejo do Cruz
+* São Vicente do Seridó
+
+```{r}
+
+plot_ly(data = municipios) %>%
+    add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, color = ~vl_Matriculas, type = "scatter", mode="markers",
+              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados", ", IDEB", IDEB_medio_2015),
               hoverinfo = 'text') %>%
     layout(title = "Número de alunos vs. Valor gasto",
            yaxis = list(title = 'Número de alunos matriculados', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Gasto por aluno')) 
+           xaxis = list(title = 'Gasto por aluno'))
 
-
+#itabaiana 208.4182 - i = 5.55
+#pombal 213.77 - i = 2.75
 ```
-
