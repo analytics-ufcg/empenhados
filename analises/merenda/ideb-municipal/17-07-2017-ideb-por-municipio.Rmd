@@ -201,28 +201,27 @@ plot_ly(data = filter(municipios), legendgroup = ~de_Municipio,  showlegend = F)
 
 O gráfico anterior nos dá indícios de que não existe relação entre as duas variáveis estudadas, já que não existe nenhuma tendência aparente no comportamento dos dados, o que se comprova, já que a correlação entre o Ideb e o gasto por aluno é de apenas `r round(cor(municipios$gasto_por_aluno, municipios$IDEB_medio_2015), 2)` que é um valor tido como baixo para valores de correlação linear.  
 
+Compreendemos que essa correlação baixa entre o Ideb e o valor gasto com merenda já que existem diversos fatores que impactam no desenvolvimento da educação de um município, não somente a merenda escolar.
+
 Além da relação entre as variáveis, podemos observar ainda que a maior parte dos municípios de concentra na região mais à esquerda do gráfico mas existe um pequeno grupo que está mais à direita, ou seja, gasta bem mais com a merenda de cada aluno que os demais. Será que esse comportamento tem relação com o tamanho da cidade?
 
 É o que descobriremos na seção a seguir!  
 
 ### População  
-Cidades com número de habitantes semelhantes gastam e se desenvolvem da mesma forma? Existe um padrão entre as cidades de pequeno, médio e grande porte na Paraíba com relação aos gastos com merenda e o seu desenvolvimento da educação básica?
+Cidades com número de habitantes semelhantes gastam e se desenvolvem da mesma forma? Existe um padrão entre as cidades de pequeno, médio e grande porte na Paraíba com relação aos gastos com merenda e o seu desenvolvimento da educação básica?  
 
 #### Distribuição da População
-A população da Paraíba está distribuída da seguinte forma:
 ```{r}
 plot_ly(data = municipios) %>%
   add_histogram(x = ~vl_Populacao)
 ```
-
-Vemos que a imensa maioria das cidades tem até 100 mil habitantes, para analisarmos com mais detalhes estas cidades removeremos Campina Grande e João Pessoa da análise já que tem muito mais habitantes que as demais e não teríamos cidades de porte semelhantes para compará-las. Além disso, dividiremos os municípios em faixas de população para que possamos estudar essas faixas com mais detalhes.
-
+  
+Vemos que a imensa maioria das cidades tem até 100 mil habitantes, para analisarmos com mais detalhes estas cidades removeremos Campina Grande e João Pessoa da análise já que tem muito mais habitantes que as demais e não teríamos cidades de porte semelhante para compará-las. Além disso, dividiremos os municípios em faixas de população para que possamos estudar essas faixas com mais detalhes.
+  
 ```{r}
+municipios_full <- municipios
+
 municipios <- municipios %>% filter(vl_Populacao <= 150000)
-# Removendo CG e JP
-#  municipios %>%
-#  plot_ly() %>%
-# add_histogram(x = ~vl_Populacao)
 
 municipios$faixa_pop <- cut(municipios$vl_Populacao,
                             breaks = c(0, 4000, 6000, 9000, 15000, 30000, 150000),
@@ -252,16 +251,7 @@ kable(
 
 Alguns valores de correlação são mais fortes que os observados anteriormente sem considerar a população das cidades. Mas ainda assim nenhuma correlação forte é observada.  
 
-Agora visualizaremos os municípios em relação ao seu Ideb e o gasto com a merenda do alunos mas considerando também a população.
-```{r}
-plot_ly(data = municipios, legendgroup = ~de_Municipio,  showlegend = T) %>%
-    add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, color = ~faixa_pop, type = "scatter", mode="markers",
-              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados"),
-              hoverinfo = 'text') %>%
-    layout(title = "Valor gasto por aluno vs. IDEB em 2015",
-           yaxis = list(title = 'IDEB', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Gasto por aluno')) 
-```
+Agora visualizaremos os municípios em relação ao seu Ideb e o gasto com a merenda do alunos mas considerando também a população.  
 
 ```{r}
 ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = faixa_pop)) +
@@ -269,23 +259,69 @@ ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = 
   facet_wrap(~ faixa_pop, ncol = 2)
 ```
   
-Observando os municípios divididos pelas faixas de população escolhidas temos que o Ideb não nos informa muito a cerca dos municípios já que a ditribuição deste é bastante irregular. No entando o gasto por aluno parece apresentar casos com comportamento mais estranho, uma vez que temos municípios que gastam muito mais que os outros que estão na mesma faixa de valor dele. Alguns deles são:
+Mesmo agora, estudando os municípios em suas faixas de população percebemos que o Ideb não nos informa muito sobre os municípios, já que em todas as faixas temos uma distribuição bastante irregular.
 
-* Riacho dos Cavalos
-* São João do Rio do Peixe
-* São José do Brejo do Cruz
-* São Vicente do Seridó
+No entando o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
 
 ```{r}
-
-plot_ly(data = municipios) %>%
-    add_trace(x = ~gasto_por_aluno, y = ~IDEB_medio_2015, color = ~vl_Matriculas, type = "scatter", mode="markers",
-              text = ~paste(de_Municipio, ":", vl_Matriculas, "alunos matriculados", ", IDEB", IDEB_medio_2015),
-              hoverinfo = 'text') %>%
-    layout(title = "Número de alunos vs. Valor gasto",
-           yaxis = list(title = 'Número de alunos matriculados', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Gasto por aluno'))
-
-#itabaiana 208.4182 - i = 5.55
-#pombal 213.77 - i = 2.75
+kable(
+  x = head(arrange(select(municipios, c(de_Municipio, gasto_por_aluno, faixa_pop)), desc(gasto_por_aluno)), 5),
+  col.names = c('Município', 'Gasto por aluno', 'Faixa de população'),
+  align = c('c'))
 ```
+
+Ou ainda, cidades que parecem não ter gasto nada (ou quase nada) com merenda:
+
+```{r}
+kable(
+  x = head(arrange(select(municipios, c(de_Municipio, gasto_por_aluno, faixa_pop)), gasto_por_aluno), 10),
+  col.names = c('Município', 'Gasto por aluno', 'Faixa de população'),
+  align = c('c'))
+```
+
+
+### Gastam muito
+
+Observamos que cidades pequenas (com até 4000 habitantes) gastam em geral, mais que cidades com mais habitantes.
+
+
+É no mínimo curioso que __São José do Brejo do Cruz__ precise gastar __`r round(filter(municipios, de_Municipio == "São José do Brejo do Cruz")$gasto_por_aluno, 2)` reais__ com a merenda de seus `r filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` alunos matriculados enquanto __Várzea__ gaste __`r round(filter(municipios, de_Municipio == "Várzea")$gasto_por_aluno, 2)` reais__ tendo apenas `r filter(municipios, de_Municipio == "Várzea")$vl_Matriculas - filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` matriculas a mais. 
+
+### Gastam nada
+Uma justificativa que podemos encontrar para esses casos é que algumas administações podem estar comprando merenda sem necessariamente estar indicando isto através dos códigos corretos, e deste modo, essa compra não é capturada pelo filtro que usamos.
+
+### Distribuição do gasto por aluno
+```{r}
+mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
+paraiba = municipios_full %>% 
+  inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
+
+paraiba$gasto_faixas <- cut(as.numeric(paraiba$gasto_por_aluno),
+                                breaks = c(0, 100, 200, 300, 400, 500, 600, 750),
+                                include.lowest = T)
+
+levels_mapa = mapa_paraiba@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
+
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba, c('levels_mapa' = 'de_Municipio'))
+
+mapa_paraiba@data$Y <- paraiba_municipios$gasto_faixas
+mapa_paraiba@data$X <- paraiba_municipios$gasto_por_aluno
+colors = colorFactor('Reds',   mapa_paraiba@data$Y)
+
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5,
+              weight = 1,
+              fillColor = colors(mapa_paraiba@data$Y),
+              color = 'black',
+              label = paste(mapa_paraiba@data$Nome_Munic),
+              popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
+                            "Gasto por aluno:  R$", round(mapa_paraiba@data$X, 2)),
+              fillOpacity = 1) %>% addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
+            title = "IDEB 9º ano por município",
+            opacity = 1, na.label = "0"
+  )
+```
+
+
