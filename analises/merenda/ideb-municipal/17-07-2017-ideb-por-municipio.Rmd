@@ -38,8 +38,8 @@ theme_set(theme_minimal())
 ```
 
 ```{r}
-ideb_5ano <- read_csv("IDEB - 4º ano.csv")
-ideb_9ano <- read_csv("IDEB - 9º ano.csv")
+ideb_5ano <- read_csv("IDEB-5ano.csv")
+ideb_9ano <- read_csv("IDEB-9ano.csv")
 ```
 
 ```{r}
@@ -86,7 +86,8 @@ O Índice de Desenvolvimento da Educação Básica (Ideb) é o indicador base pa
 
 Os resultados do Ideb 2015 para escola, município, unidade da federação, região e Brasil são calculados a partir do desempenho obtido pelos alunos que participaram da Prova Brasil/Saeb 2015 e das taxas de aprovação, calculadas com base nas informações prestadas ao Censo Escolar 2015. Dessa forma, cada uma dessas unidades de agregação tem seu próprio Ideb e metas estabelecidas ao longo do horizonte do PDE, ou seja, até 2021.^[[2]](http://download.inep.gov.br/educacao_basica/portal_ideb/o_que_e_o_ideb/nota_informativa_ideb.pdf)^
 
-Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.  
+Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na Paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.  
+
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_5ano = ideb_5ano %>% 
@@ -154,7 +155,7 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
-O Ideb do 4º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
+O Ideb do 5º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
 
 A tabela a seguir apresenta alguns valores para a comparação do Ideb nos dois níveis do ensino fundamental.  
 ```{r}
@@ -228,6 +229,11 @@ municipios$faixa_pop <- cut(municipios$vl_Populacao,
                             labels = c("[0, 4K]", "(4K, 6K]", "(6K, 9K]", "(9K, 15K]", "(15K, 30K]", "(30K, 150K]"),
                             include.lowest = T)
 
+municipios$faixa_mat <- cut(municipios$vl_Matriculas_Fundamental,
+                            breaks = c(0, 500, 1000, 2500, 5000, 10000),
+                            labels = c("[0, 0.5K]", "(0.5K, 1K]", "(1K, 2.5K]", "(2.5K, 5K]", "(5K, 10K]"),
+                            include.lowest = T)
+
 plot_ly(data = municipios) %>%
   add_histogram(x = ~faixa_pop) %>%
     layout(xaxis = list(title = 'Faixas de população'))
@@ -261,7 +267,7 @@ ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = 
   
 Mesmo agora, estudando os municípios em suas faixas de população percebemos que o Ideb não nos informa muito sobre os municípios, já que em todas as faixas temos uma distribuição bastante irregular.
 
-No entando o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
+No entanto o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
 
 ```{r}
 kable(
@@ -288,7 +294,7 @@ Observamos que cidades pequenas (com até 4000 habitantes) gastam em geral, mais
 É no mínimo curioso que __São José do Brejo do Cruz__ precise gastar __`r round(filter(municipios, de_Municipio == "São José do Brejo do Cruz")$gasto_por_aluno, 2)` reais__ com a merenda de seus `r filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` alunos matriculados enquanto __Várzea__ gaste __`r round(filter(municipios, de_Municipio == "Várzea")$gasto_por_aluno, 2)` reais__ tendo apenas `r filter(municipios, de_Municipio == "Várzea")$vl_Matriculas - filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` matriculas a mais. 
 
 ### Gastam nada
-Uma justificativa que podemos encontrar para esses casos é que algumas administações podem estar comprando merenda sem necessariamente estar indicando isto através dos códigos corretos, e deste modo, essa compra não é capturada pelo filtro que usamos.
+Uma justificativa que podemos encontrar para esses casos é que algumas administações podem estar comprando merenda sem necessariamente estar indicando isto através dos códigos corretos, e deste modo, essa compra não é capturada pelo filtro que usamos. Isso deveria ser evitado, pois vai contra os princípios da Transparência Pública.
 
 ### Distribuição do gasto por aluno
 ```{r}
@@ -319,7 +325,7 @@ leaflet(data = mapa_paraiba) %>%
               popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
                             "Gasto por aluno:  R$", round(mapa_paraiba@data$X, 2)),
               fillOpacity = 1) %>% addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "IDEB 9º ano por município",
+            title = "Gasto por aluno (R$)",
             opacity = 1, na.label = "0"
   )
 ```
