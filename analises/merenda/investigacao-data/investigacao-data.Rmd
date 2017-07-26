@@ -1,0 +1,195 @@
+---
+title: 'Empenhos com pagamentos no mesmo dia'
+author: 'Laboratório Analytics'
+date: 'July 21, 2017'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE)
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+library(rgdal)
+library(leaflet)
+
+library(stringr)
+library(tidyr)
+library(dplyr)
+```
+
+```{r}
+sagres <-  src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+
+query <- sql('
+  SELECT
+    cd_UGestora, cd_Credor, no_Credor,
+    vl_Empenho, dt_Empenho, tp_Licitacao
+  FROM Empenhos e
+  INNER JOIN
+  ( SELECT cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, MIN(dt_Pagamento) dt_Pagamento
+    FROM Pagamentos
+    GROUP BY cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho
+  ) AS p
+  USING (cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho)
+  WHERE dt_Pagamento = dt_Empenho
+')
+
+empenhos <- tbl(sagres, query) %>%
+  collect(n = Inf)
+
+tipo.licitacao <- tbl(sagres, 'Tipo_Modalidade_Licitacao') %>%
+  collect()
+
+get.tipo.licitacao <- function(tp_Licitacao) {
+  result <- data.frame(
+      tp_Licitacao = tp_Licitacao) %>%
+    left_join(tipo.licitacao)
+  return(result$de_TipoLicitacao)
+}
+```
+
+```{r}
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+municipio <- tbl(utils, 'municipio') %>%
+  collect()
+
+get.municipio <- function(cd_UGestora) {
+  result <- data.frame(
+      cd_Municipio = str_sub(cd_UGestora, -3)) %>%
+    left_join(municipio)
+  return(result$de_Municipio)
+}
+```
+
+## Quantidade de empenhos com pagamentos em datas iguais a sua
+
+```{r}
+empenhos.hist <- empenhos %>%
+  group_by(
+    dt_Empenho = str_sub(dt_Empenho, 0, 7),
+    de_TipoLicitacao = get.tipo.licitacao(tp_Licitacao)) %>%
+  summarise(
+    n = n(),
+    vl_Empenho = sum(vl_Empenho))
+
+plot_ly(empenhos.hist) %>%
+  add_bars(x = ~dt_Empenho, y = ~n, color = ~de_TipoLicitacao, colors = 'Set1') %>%
+  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+
+plot_ly(empenhos.hist) %>%
+  add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
+  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+```
+
+```{r}
+empenhos.mapa <- empenhos %>%
+  group_by(
+    de_Municipio = get.municipio(cd_UGestora)) %>%
+  summarise(
+    n = n(),
+    vl_Empenho = sum(vl_Empenho)) %>%
+  mutate(
+    n.group = cut(
+      n,
+      breaks = c(0, 10e3, 20e3, 30e3, 40e3, 50e3, 60e3, 70e3, 80e3, 90e3, 100e3),
+      labels = c(
+        '0 a 10k', '10k a 20k', '20k a 30k', '30k a 40k', '40k a 50k',
+        '50k a 60k', '60k a 70k', '70k a 80k', '80k a 90k', '90k a 100k'),
+      include.lowest = TRUE,
+      ordered_result = TRUE),
+    vl_Empenho.group = cut(
+      vl_Empenho,
+      breaks = c(0, 50e6, 100e6, 150e6, 200e6, 250e6, 300e6, 350e6, 400e6, Inf),
+      labels = c(
+        '0 a 50M', '50M a 100M', '100M a 150M', '150M a 200M',
+        '200M a 250M', '250M a 300M', '300M a 350M', '350M a 400M',
+        '400M ou mais'),
+      include.lowest = TRUE,
+      ordered_result = TRUE))
+
+
+mapa.paraiba <- readOGR('../dados/mapa_paraiba_ibge/Municipios.shp')
+
+# Municípios que mudaram de nome ou que estão com o nome errado
+levels.mapa <- levels(mapa.paraiba@data$Nome_Munic)
+levels.mapa[51] <- 'Tacima'
+levels.mapa[173] <- 'Joca Claudino'
+levels.mapa[200] <- 'São Vicente do Seridó'
+
+# Alterações na acentuação dos nomes dos municípios
+empenhos.mapa$de_Municipio[156] <- 'Quixabá'
+
+levels(mapa.paraiba@data$Nome_Munic) <- levels.mapa
+
+mapa.paraiba@data <- mapa.paraiba@data %>%
+  left_join(empenhos.mapa, by = c('Nome_Munic' = 'de_Municipio'))
+
+
+colors <- colorFactor('OrRd', mapa.paraiba@data$n.group)
+
+leaflet(data = mapa.paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(
+    opacity = 0.5, 
+    weight = 1, 
+    fillColor = colors(mapa.paraiba@data$n.group),
+    color = 'black', 
+    label = mapa.paraiba@data$Nome_Munic,
+    popup = paste(
+      'Município: ', mapa.paraiba@data$Nome_Munic, '</br>',
+      'Ocorrências: ', mapa.paraiba@data$n),
+    fillOpacity = 1) %>%
+  addLegend(
+    position = 'bottomright',
+    pal = colors,
+    values = mapa.paraiba@data$n.group,
+    title = 'Ocorrências',
+    opacity = 1)
+
+
+colors <- colorFactor('OrRd', mapa.paraiba@data$vl_Empenho.group)
+
+leaflet(data = mapa.paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(
+    opacity = 0.5, 
+    weight = 1, 
+    fillColor = colors(mapa.paraiba@data$vl_Empenho.group),
+    color = 'black', 
+    label = mapa.paraiba@data$Nome_Munic,
+    popup = paste(
+      'Município: ', mapa.paraiba@data$Nome_Munic, '</br>',
+      'Valor: R$ ', mapa.paraiba@data$vl_Empenho),
+    fillOpacity = 1) %>%
+  addLegend(
+    position = 'bottomright',
+    pal = colors,
+    values = mapa.paraiba@data$vl_Empenho.group,
+    title = 'Valor (reais)',
+    opacity = 1)
+```
+
+```{r}
+empenhos.forn <- empenhos %>%
+  filter(as.numeric(cd_Credor) > 0) %>% 
+  group_by(cd_Credor) %>%
+  summarise(
+    no_Credor = first(no_Credor),
+    n = n(),
+    vl_Empenho = sum(vl_Empenho))
+
+top_n(empenhos.forn, 10000, n) %>%
+  plot_ly(type = 'scatter', x = ~n, y = ~vl_Empenho, hovertext = ~no_Credor) %>%
+  layout(
+    xaxis = list(type = 'log'),
+    yaxis = list(type = 'log'))
+```
+
