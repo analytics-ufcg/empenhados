@@ -25,6 +25,10 @@ library(dplyr)
 ```
 
 ```{r}
+cnae <- read.csv('CNAE.csv', stringsAsFactors = FALSE)
+```
+
+```{r}
 sagres <-  src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
 
 query <- sql('
@@ -184,10 +188,24 @@ empenhos.forn <- empenhos %>%
   summarise(
     no_Credor = first(no_Credor),
     n = n(),
-    vl_Empenho = sum(vl_Empenho))
+    vl_Empenho = sum(vl_Empenho)) %>%
+  merge(cnae, all.x = TRUE) %>%
+  replace_na(list(de_CNAE = 'DESCONHECIDO'))
 
 top_n(empenhos.forn, 10000, n) %>%
-  plot_ly(type = 'scatter', x = ~n, y = ~vl_Empenho, hovertext = ~no_Credor) %>%
+  plot_ly(
+    type = 'scatter',
+    mode = 'markers',
+    x = ~n, y = ~vl_Empenho,
+    color = ~de_CNAE,
+    colors = 'Set3',
+    hoverinfo = 'text',
+    text = ~paste(
+      'Credor: ', no_Credor, '\n',
+      'CNAE: ', de_CNAE, '\n',
+      'Ocorrências: ', n, '\n',
+      'Valor total: R$ ', vl_Empenho),
+    alpha = 0.8) %>%
   layout(
     xaxis = list(type = 'log'),
     yaxis = list(type = 'log'))
