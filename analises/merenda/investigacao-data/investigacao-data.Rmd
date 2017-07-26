@@ -82,11 +82,15 @@ empenhos.hist <- empenhos %>%
 
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~n, color = ~de_TipoLicitacao, colors = 'Set1') %>%
-  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+  layout(xaxis = list(title = 'Data do empenho', tickangle = 60), 
+         margin = list(b = 100), barmode = 'stack',
+         yaxis = list(title = 'Número de empenhos'))
 
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
-  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+ layout(xaxis = list(title = 'Data do empenho', tickangle = 60), 
+         margin = list(b = 100), barmode = 'stack',
+         yaxis = list(title = 'Valor do empenho'))
 ```
 
 ```{r}
@@ -189,7 +193,7 @@ empenhos.forn <- empenhos %>%
 top_n(empenhos.forn, 10000, n) %>%
   plot_ly(type = 'scatter', x = ~n, y = ~vl_Empenho, hovertext = ~no_Credor) %>%
   layout(
-    xaxis = list(type = 'log'),
-    yaxis = list(type = 'log'))
+    xaxis = list(title = 'Número de empenhos', type = 'log'),
+    yaxis = list(title = 'Valor do empenho', type = 'log'))
 ```
 
