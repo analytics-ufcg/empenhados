@@ -89,7 +89,7 @@ Os resultados do Ideb 2015 para escola, município, unidade da federação, regi
 
 Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na Paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.  
 
-#### 5º ano
+#### Ideb do 5º ano
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_5ano = ideb_5ano %>% 
@@ -124,8 +124,7 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
   
-  
-#### 9º ano
+#### Ideb do 9º ano
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_9ano = ideb_9ano %>% 
@@ -271,8 +270,6 @@ ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = 
   
 Mesmo agora, estudando os municípios em suas faixas de população percebemos que o Ideb não nos informa muito sobre os municípios, já que em todas as faixas temos uma distribuição bastante irregular.
 
-Uma possível justificativa para isso é que o Ideb leva em consideração vários fatores para avaliar um município, logo, a alimentação escolar sozinha não é capaz de determinar o desempenho de um município.
-
 No entanto o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
 
 ```{r}
@@ -297,48 +294,6 @@ kable(
 
 Para mais informações sobre o custo de merenda por aluno na Paraíba, leia este [outro trabalho](https://analytics-ufcg.github.io/licitacoes-pb//2017/07/custo-por-aluno.html) nosso. 
 
-### Gastam muito
-
-Observamos que cidades pequenas (com até 4000 habitantes) gastam em geral, mais que cidades com mais habitantes.
-
-
-É no mínimo curioso que __São José do Brejo do Cruz__ precise gastar __`r round(filter(municipios, de_Municipio == "São José do Brejo do Cruz")$gasto_por_aluno, 2)` reais__ com a merenda de seus `r filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` alunos matriculados enquanto __Várzea__ gaste __`r round(filter(municipios, de_Municipio == "Várzea")$gasto_por_aluno, 2)` reais__ tendo apenas `r filter(municipios, de_Municipio == "Várzea")$vl_Matriculas - filter(municipios, de_Municipio == "São José do Brejo do Cruz")$vl_Matriculas` matriculas a mais. 
-
-### Gastam nada
-Uma justificativa que podemos encontrar para esses casos é que algumas administações podem estar comprando merenda sem necessariamente estar indicando isto através dos códigos corretos, e deste modo, essa compra não é capturada pelo filtro que usamos. Isso deveria ser evitado, pois vai contra os princípios da Transparência Pública.
-
-### Distribuição do gasto por aluno
-```{r}
-mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
-paraiba = municipios_full %>% 
-  inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
-
-paraiba$gasto_faixas <- cut(as.numeric(paraiba$gasto_por_aluno),
-                                breaks = c(0, 100, 200, 300, 400, 500, 600, 750),
-                                include.lowest = T)
-
-levels_mapa = mapa_paraiba@data$Nome_Munic
-paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
-
-paraiba_municipios = paraiba_municipios %>% left_join(paraiba, c('levels_mapa' = 'de_Municipio'))
-
-mapa_paraiba@data$Y <- paraiba_municipios$gasto_faixas
-mapa_paraiba@data$X <- paraiba_municipios$gasto_por_aluno
-colors = colorFactor('Reds',   mapa_paraiba@data$Y)
-
-leaflet(data = mapa_paraiba) %>%
-  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
-  addPolygons(opacity = 0.5,
-              weight = 1,
-              fillColor = colors(mapa_paraiba@data$Y),
-              color = 'black',
-              label = paste(mapa_paraiba@data$Nome_Munic),
-              popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
-                            "Gasto por aluno:  R$", round(mapa_paraiba@data$X, 2)),
-              fillOpacity = 1) %>% addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$Y,
-            title = "Gasto por aluno (R$)",
-            opacity = 1, na.label = "0"
-  )
-```
-
-
+### Conclusão
+Com base no que foi estudado, mesmo lançando mão de diferentes critérios para a análise, concluimos que o gasto com merenda e o Ideb de um município não estão diretamento relacionados.  
+Uma possível justificativa para isso é que o Ideb leva em consideração vários fatores para avaliar um município, logo, a alimentação escolar sozinha não é capaz de determinar o desempenho de um município.
