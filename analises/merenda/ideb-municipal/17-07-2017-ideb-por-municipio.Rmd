@@ -1,5 +1,5 @@
 ---
-title: "Relatório IDEB"
+title: "Alimentação escolar e o desempenho no IDEB"
 subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
@@ -82,12 +82,14 @@ levels_mapa[200] = "São Vicente do Seridó"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 ```
 
+### O que é o Ideb?
 O Índice de Desenvolvimento da Educação Básica (Ideb) é o indicador base para a avaliação do desempenho da educação no país, pois reúne em um só indicador, os resultados de dois conceitos igualmente importantes para a qualidade da educação: o fluxo escolar e as médias de desempenho nas avaliações.^[[1]](http://portal.inep.gov.br/ideb)^
 
 Os resultados do Ideb 2015 para escola, município, unidade da federação, região e Brasil são calculados a partir do desempenho obtido pelos alunos que participaram da Prova Brasil/Saeb 2015 e das taxas de aprovação, calculadas com base nas informações prestadas ao Censo Escolar 2015. Dessa forma, cada uma dessas unidades de agregação tem seu próprio Ideb e metas estabelecidas ao longo do horizonte do PDE, ou seja, até 2021.^[[2]](http://download.inep.gov.br/educacao_basica/portal_ideb/o_que_e_o_ideb/nota_informativa_ideb.pdf)^
 
 Os mapas a seguir apresentam um panorama da distribuição do Ideb do 5º e do 9º no ensino fundamental na Paraíba. Os municípios em cinza não possuem valores para o Ideb em 2015.  
 
+#### 5º ano
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_5ano = ideb_5ano %>% 
@@ -122,6 +124,8 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
   
+  
+#### 9º ano
 ```{r}
 mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
 paraiba_9ano = ideb_9ano %>% 
@@ -155,8 +159,6 @@ leaflet(data = mapa_paraiba) %>%
   )
 ```
 
-O Ideb do 5º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
-
 A tabela a seguir apresenta alguns valores para a comparação do Ideb nos dois níveis do ensino fundamental.  
 ```{r}
 municipios <- municipios %>%
@@ -183,7 +185,9 @@ Ano | Média | Mediana | Máximo | Mínimo
 5º | `r round(mean(municipios$IDEB_5ano_2015), 2)` | `r median(municipios$IDEB_5ano_2015)` | `r max(municipios$IDEB_5ano_2015)` | `r min(filter(municipios, IDEB_5ano_2015 > 0)$IDEB_5ano_2015)`
 9º | `r round(mean(municipios$IDEB_9ano_2015), 2)` | `r median(municipios$IDEB_9ano_2015)` | `r max(municipios$IDEB_9ano_2015)` | `r min(filter(municipios, IDEB_9ano_2015 > 0)$IDEB_9ano_2015)`
 
-### O Ideb e o valor gasto com cada aluno
+O Ideb do 5º ano é superior ao do 9º ano, o que indica que a educação pública na Paraíba tem mais qualidade no Ensino Fundamental I que no Fundamental II.  
+
+### Existe relação entre o gasto com merenda e o Ideb?
 Agora que já compreendemos como se comporta o Ideb na Paraíba, iremos estudar como ele se relaciona com gasto que os municípios tem com seus alunos da rede municipal.  
 
 O total gasto com a alimentação de cada aluno foi obtido somando o valor dos empenhos relativos a merenda e dividindo o resultado pelo total de alunos matriculados (nos níveis Pré-Escolar, Fundamental e Médio), nesse mesmo município. O valor de Ideb que usaremos é a média entre os valores do Ideb do 5º e do 9º ano. Os dados se referem ao ano de 2015.  
@@ -208,10 +212,10 @@ Além da relação entre as variáveis, podemos observar ainda que a maior parte
 
 É o que descobriremos na seção a seguir!  
 
-### População  
-Cidades com número de habitantes semelhantes gastam e se desenvolvem da mesma forma? Existe um padrão entre as cidades de pequeno, médio e grande porte na Paraíba com relação aos gastos com merenda e o seu desenvolvimento da educação básica?  
+### Cidades com número de habitantes semelhantes gastam com merenda e se desenvolvem da mesma forma?
+Existe um padrão entre as cidades de pequeno, médio e grande porte na Paraíba com relação aos gastos com merenda e o seu desenvolvimento da educação básica?  
 
-#### Distribuição da População
+A população da paraíba está distribuída da seguinte forma:  
 ```{r}
 plot_ly(data = municipios) %>%
   add_histogram(x = ~vl_Populacao)
@@ -244,14 +248,14 @@ Ao dividirmos os municípios pela população obtemos novos valores de correlaç
 municipios_group <- municipios %>%
   group_by(faixa_pop) %>%
   summarise(n = n(),
-            gasto_medio = mean(gasto_por_aluno),
-            gasto_mediano = median(gasto_por_aluno),
+            gasto_medio = round(mean(gasto_por_aluno), 2),
+            gasto_mediano = round(median(gasto_por_aluno), 2),
            gastoXideb = round(cor(gasto_por_aluno, IDEB_medio_2015), 2), 
            gastoXpop = round(cor(gasto_por_aluno, vl_Populacao), 2))
 
 kable(
-  x = head(select(municipios_group, c(faixa_pop, n, gastoXideb, gastoXpop))),
-  col.names = c('Faixa da população', 'Nº de municípios', 'Gasto por aluno X Ideb', 'Gasto por aluno X População'),
+  x = head(select(municipios_group, c(faixa_pop, n, gastoXideb, gastoXpop, gasto_mediano))),
+  col.names = c('Faixa da população', 'Nº de municípios', 'Gasto por aluno X Ideb', 'Gasto por aluno X População', "Gasto mediano"),
   align = c('c'))
 ```
 
@@ -267,11 +271,15 @@ ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = 
   
 Mesmo agora, estudando os municípios em suas faixas de população percebemos que o Ideb não nos informa muito sobre os municípios, já que em todas as faixas temos uma distribuição bastante irregular.
 
+Uma possível justificativa para isso é que o Ideb leva em consideração vários fatores para avaliar um município, logo, a alimentação escolar sozinha não é capaz de determinar o desempenho de um município.
+
 No entanto o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
 
 ```{r}
 kable(
-  x = head(arrange(select(municipios, c(de_Municipio, gasto_por_aluno, faixa_pop)), desc(gasto_por_aluno)), 5),
+  x = head(arrange(select(municipios %>% 
+                            mutate(gasto_por_aluno = round(gasto_por_aluno, 2)),
+                          c(de_Municipio, gasto_por_aluno, faixa_pop)), desc(gasto_por_aluno)), 5),
   col.names = c('Município', 'Gasto por aluno', 'Faixa de população'),
   align = c('c'))
 ```
@@ -280,11 +288,14 @@ Ou ainda, cidades que parecem não ter gasto nada (ou quase nada) com merenda:
 
 ```{r}
 kable(
-  x = head(arrange(select(municipios, c(de_Municipio, gasto_por_aluno, faixa_pop)), gasto_por_aluno), 10),
+  x = head(arrange(select(municipios %>% 
+                            mutate(gasto_por_aluno = round(gasto_por_aluno, 2)),
+                          c(de_Municipio, gasto_por_aluno, faixa_pop)), gasto_por_aluno), 10),
   col.names = c('Município', 'Gasto por aluno', 'Faixa de população'),
   align = c('c'))
 ```
 
+Para mais informações sobre o custo de merenda por aluno na Paraíba, leia este [outro trabalho](https://analytics-ufcg.github.io/licitacoes-pb//2017/07/custo-por-aluno.html) nosso. 
 
 ### Gastam muito
 
