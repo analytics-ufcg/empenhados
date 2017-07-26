@@ -86,11 +86,19 @@ empenhos.hist <- empenhos %>%
 
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~n, color = ~de_TipoLicitacao, colors = 'Set1') %>%
-  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+  layout(
+    xaxis = list(title = 'Data do empenho', tickangle = 60),
+    yaxis = list(title = 'Número de empenhos'),
+    margin = list(b = 100),
+    barmode = 'stack')
 
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
-  layout(xaxis = list(tickangle = 60), margin = list(b = 100), barmode = 'stack')
+  layout(
+    xaxis = list(title = 'Data do empenho', tickangle = 60),
+    yaxis = list(title = 'Valor do empenho'),
+    margin = list(b = 100),
+    barmode = 'stack')
 ```
 
 ```{r}
@@ -171,13 +179,13 @@ leaflet(data = mapa.paraiba) %>%
     label = mapa.paraiba@data$Nome_Munic,
     popup = paste(
       'Município: ', mapa.paraiba@data$Nome_Munic, '</br>',
-      'Valor: R$ ', mapa.paraiba@data$vl_Empenho),
+      'Valor total: R$ ', mapa.paraiba@data$vl_Empenho),
     fillOpacity = 1) %>%
   addLegend(
     position = 'bottomright',
     pal = colors,
     values = mapa.paraiba@data$vl_Empenho.group,
-    title = 'Valor (reais)',
+    title = 'Valor total (reais)',
     opacity = 1)
 ```
 
@@ -203,11 +211,10 @@ top_n(empenhos.forn, 10000, n) %>%
     text = ~paste(
       'Credor: ', no_Credor, '\n',
       'CNAE: ', de_CNAE, '\n',
-      'Ocorrências: ', n, '\n',
+      'Número de empenhos: ', n, '\n',
       'Valor total: R$ ', vl_Empenho),
     alpha = 0.8) %>%
   layout(
-    xaxis = list(type = 'log'),
-    yaxis = list(type = 'log'))
+    xaxis = list(title = 'Número de empenhos', type = 'log'),
+    yaxis = list(title = 'Valor total (reais)', type = 'log'))
 ```
-
