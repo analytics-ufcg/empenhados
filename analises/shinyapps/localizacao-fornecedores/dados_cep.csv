@@ -1,0 +1,938 @@
+"ibge","bairro","altitude","logradouro","longitude","cep","latitude","estado","cidade","ddd"
+2507507,"Cruz das Armas",44.7,"Rua Silvino Montenegro",-34.8843985,"58085690",-7.1523763,"PB","João Pessoa",83
+2507408,"",235,"Jericó",-37.8077461,"58830000",-6.5537654,"PB","Jericó",NA
+2512101,"",196.7,"Pombal",-37.7973839,"58840000",-6.7708458,"PB","Pombal",83
+2503704,"",308.9,"Cajazeiras",-38.5270305,"58900000",-6.8992144,"PB","Cajazeiras",83
+2504801,"",217.6,"Coremas",-37.9446335,"58770000",-7.0174314,"PB","Coremas",NA
+2503209,"Amazônia Park",8.4,"Rua das Mangueiras",-34.8505404,"58106542",-7.0502534,"PB","Cabedelo",NA
+2512507,"",442.6,"Queimadas",-35.9023681,"58475000",-7.3637571,"PB","Queimadas",83
+2507507,"Cristo Redentor",46,"Rua Presidente Ranieri Mazilli",-34.8679083,"58071000",-7.1639125,"PB","João Pessoa",83
+2502151,"",492.1,"Boa Vista",-36.2414091,"58123000",-7.2639013,"PB","Boa Vista",NA
+2512705,"",588.8,"Remígio",-35.7938085,"58398000",-6.9671474,"PB","Remígio",83
+2512804,"",204.3,"Riacho dos Cavalos",-37.6509179,"58870000",-6.4369179,"PB","Riacho dos Cavalos",NA
+2504009,"Catolé",516.8,"Rua Antônio de Souza Lopes",-35.872326,"58410180",-7.233353,"PB","Campina Grande",83
+2504009,"Estação Velha",505.1,"Rua Guilhermino Barbosa",-35.8854811,"58410097",-7.2369782,"PB","Campina Grande",83
+2505808,"",146.2,"Duas Estradas",-35.4184973,"58265000",-6.6881109,"PB","Duas Estradas",83
+2502805,"",205.5,"Brejo do Cruz",-37.4984299,"58890000",-6.349459,"PB","Brejo do Cruz",NA
+2507507,"Varjão",47.4,"Rua Quatorze de Julho",-34.8732274,"58070160",-7.1487442,"PB","João Pessoa",83
+2507507,"Varjão",45.5,"Avenida Dois de Fevereiro",-34.8739632,"58070000",-7.1485741,"PB","João Pessoa",83
+2505501,"",251,"Vista Serrana",-37.5686299,"58710000",-6.7394278,"PB","Vista Serrana",NA
+2507507,"Ernesto Geisel",49.9,"Rua Sargento Pedro Gomes de Lira",-34.8691158,"58075820",-7.1736923,"PB","João Pessoa",83
+2503902,"",523.1,"Camalaú",-36.8242022,"58530000",-7.8882378,"PB","Camalaú",NA
+2504355,"",408.5,"Caturité",-36.0197713,"58455000",-7.4216347,"PB","Caturité",NA
+2501203,"",695.4,"Areial",-35.9247342,"58140000",-7.0490856,"PB","Areial",NA
+NA,"",667.2,"São José da Mata (Campina Grande)",-35.984795,"58441000",-7.1818816,"PB","São José da Mata (Campina Grande)",NA
+2504850,"",474,"Coxixola",-36.6067705,"58588000",-7.6240643,"PB","Coxixola",NA
+2510709,"",305,"Passagem",-37.0475249,"58734000",-7.1371096,"PB","Passagem",NA
+2510303,"",566.7,"Nova Palmeira",-36.4191745,"58184000",-6.678269,"PB","Nova Palmeira",NA
+2607653,"",181.5,"Itambé",-35.1102778,"55920000",-7.4107744,"PE","Itambé",81
+2505600,"",314.5,"Diamante",-38.264777,"58994000",-7.4265034,"PB","Diamante",NA
+2513505,"",376.9,"Santana de Mangueira",-38.3341378,"58985000",-7.5515043,"PB","Santana de Mangueira",NA
+2513984,"",269,"",-38.0948621,"58818000",-6.6187181,"PB","São Francisco",83
+2607901,"Santana",40.4,"Rua Santa Maria (Lot Vinte e Três)",-34.9297044,"54160594",-8.1502231,"PE","Jaboatão dos Guararapes",81
+2607901,"Prazeres",11.2,"Rua Luís Eloy de Pontes",-34.9423933,"54310210",-8.1733608,"PE","Jaboatão dos Guararapes",81
+2505402,"",595.3,"Desterro",-37.0845169,"58695000",-7.2857814,"PB","Desterro",83
+2504405,"",223,"Conceição",-38.2,"58970000",-6.8,"PB","Conceição",NA
+2501500,"",499.8,"Bananeiras",-35.6331731,"58220000",-6.7545388,"PB","Bananeiras",NA
+2506004,"",634.1,"Esperança",-35.8574436,"58135000",-7.0204985,"PB","Esperança",83
+2509396,"",820.7,"",-37.3426697,"58737000",-7.2651339,"PB","Maturéia",NA
+2500700,"",248,"São João do Rio do Peixe",-38.4495018,"58910000",-6.7272538,"PB","São João do Rio do Peixe",NA
+2504009,"Liberdade",524.3,"Rua Pernambuco",-35.8921032,"58414085",-7.2334108,"PB","Campina Grande",83
+2507507,"Oitizeiro",35.8,"Avenida Desembargador Santos Estanislau",-34.9012131,"58088540",-7.1556117,"PB","João Pessoa",83
+2506301,"",97.8,"Guarabira",-35.4922422,"58200000",-6.8512706,"PB","Guarabira",83
+2504306,"",299.2,"Catolé do Rocha",-37.7459981,"58884000",-6.3478413,"PB","Catolé do Rocha",83
+2516755,"",605.3,"Tenório",-36.6296349,"58665000",-6.9385901,"PB","Tenório",NA
+2516706,"",773.3,"Teixeira",-37.2523026,"58735000",-7.2212062,"PB","Teixeira",83
+2509156,"",305.7,"Marizópolis",-38.3479815,"58819000",-6.8440694,"PB","Marizópolis",83
+2606200,"",23.8,"Goiana",-35.0131428,"55900000",-7.5630149,"PE","Goiana",81
+2510006,"",277.3,"Nazarezinho",-38.3256323,"58817000",-6.9151019,"PB","Nazarezinho",NA
+2515500,"",502.1,"Serra Branca",-36.666333,"58580000",-7.4807541,"PB","Serra Branca",NA
+2516904,"",305.7,"Uiraúna",-38.4129524,"58915000",-6.5212442,"PB","Uiraúna",83
+2500403,"",524.2,"Alagoa Nova",-35.7635976,"58125000",-7.0600915,"PB","Alagoa Nova",NA
+2502409,"",590.8,"Bonito de Santa Fé",-38.5136811,"58960000",-7.3138144,"PB","Bonito de Santa Fé",83
+2613909,"Nossa Senhora da Penha",413.4,"Rua Inocêncio Gomes de Andrade, de 864/865 ao fim",-38.302079,"56903580",-7.9945256,"PE","Serra Talhada",87
+2513901,"",153,"São Bento",-37.4504265,"58865000",-6.4913536,"PB","São Bento",83
+2507002,"",298.2,"Itaporanga",-38.1528878,"58780000",-7.3047059,"PB","Itaporanga",83
+2511301,"",263.6,"Piancó",-37.9228255,"58765000",-7.1957199,"PB","Piancó",83
+2515401,"",635.6,"São Vicente do Seridó",-36.4011912,"58158000",-6.933743,"PB","São Vicente do Seridó",NA
+2505709,"",417.8,"Dona Inês",-35.6262828,"58228000",-6.6034771,"PB","Dona Inês",NA
+2502300,"",309.6,"Bom Sucesso",-37.9297218,"58887000",-6.4463071,"PB","Bom Sucesso",NA
+2512606,"",297.4,"Quixabá",-37.1496108,"58733000",-7.0318978,"PB","Quixabá",NA
+2505006,"",559.2,"Cubati",-36.3509485,"58167000",-6.8651118,"PB","Cubati",83
+2509701,"",599.6,"Monteiro",-37.1171012,"58500000",-7.8887727,"PB","Monteiro",83
+2613909,"Nossa Senhora da Penha",421.4,"Rua Cirilo Xavier",-38.3012878,"56903370",-7.9890631,"PE","Serra Talhada",87
+2516201,"Estação",227.7,"Rua Dom Pedro II",-38.2342888,"58807345",-6.7657077,"PB","Sousa",83
+2507507,"Mangabeira",37.5,"Rua Empresário Waldemar Pereira do Egito",-34.8241141,"58058660",-7.1648576,"PB","João Pessoa",83
+2507507,"Bancários",32.1,"Rua Abelardo Pereira dos Santos",-34.8306008,"58051810",-7.147242,"PB","João Pessoa",83
+2507507,"Valentina de Figueiredo",36.2,"Rua Mariângela Lucena Peixoto",-34.8490135,"58063300",-7.2017136,"PB","João Pessoa",83
+2507507,"Estados",40.8,"Rua San Juan",-34.8564756,"58030226",-7.1103802,"PB","João Pessoa",83
+2503753,"",258.9,"Cajazeirinhas",-37.7995413,"58855000",-6.9620815,"PB","Cajazeirinhas",NA
+2508802,"",263.4,"Malta",-37.5217818,"58713000",-6.9064566,"PB","Malta",83
+2507507,"Funcionários",52.8,"Rua Professora Maria Helena Silva Rocha",-34.8793186,"58078440",-7.1852656,"PB","João Pessoa",83
+2510907,"",173.2,"Paulista",-37.6236629,"58860000",-6.5971297,"PB","Paulista",83
+2503555,"",632.9,"Cacimbas",-37.0578923,"58698000",-7.2111216,"PB","Cacimbas",83
+2516201,"Estação",227.3,"Rua Francisco Cartaxo Correia de Sá",-38.2340356,"58807325",-6.7664607,"PB","Sousa",83
+2512903,"",16.3,"",-35.0767469,"58297000",-6.8078347,"PB","Rio Tinto",83
+2503407,"",278.6,"Cacimba de Areia",-37.1570888,"58730000",-7.1299323,"PB","Cacimba de Areia",NA
+2514602,"",279,"São José do Bonfim",-37.3079484,"58725000",-7.1622816,"PB","São José do Bonfim",NA
+2503308,"",322,"Cachoeira dos Índios",-38.67416,"58935000",-6.9258214,"PB","Cachoeira dos Índios",83
+2504009,"Itararé",505.1,"Rua Manoel Alves de Oliveira",-35.88254,"58411114",-7.2502446,"PB","Campina Grande",83
+2502201,"",323.4,"Bom Jesus",-38.6553173,"58930000",-6.8152523,"PB","Bom Jesus",83
+2505303,"",343.3,"Curral Velho",-38.1983234,"58990000",-7.5372389,"PB","Curral Velho",NA
+2502904,"",332.3,"Brejo dos Santos",-37.8240636,"58880000",-6.3773466,"PB","Brejo dos Santos",NA
+2513356,"",416.8,"Santa Inês",-38.558899,"58978000",-7.6261462,"PB","Santa Inês",NA
+2507507,"Centro",46.5,"Avenida Miguel Couto",-34.8827514,"58010770",-7.1186542,"PB","João Pessoa",83
+2800308,"Inácio Barbosa",11,"Rua Professor José de Lima Peixoto",-37.0694039,"49040510",-10.9467217,"SE","Aracaju",79
+NA,"",18.4,"Camurupim (Rio Tinto)",-34.945764,"58299000",-6.7445935,"PB","Camurupim (Rio Tinto)",NA
+2504009,"Conceição",549.9,"Rua Siqueira Campos",-35.8881435,"58401260",-7.2116252,"PB","Campina Grande",83
+3118601,"Morada Nova",882.3,"Rodovia BR-040, do km 519,002 ao km 529,998 - lado par",-44.0359809,"32145480",-19.9163025,"MG","Contagem",31
+2614501,"",408.4,"Surubim",-35.7570657,"55750000",-7.8478439,"PE","Surubim",81
+2501807,"São Bento",13.6,"Avenida Idalina Leite",-34.9064789,"58305150",-7.1233833,"PB","Bayeux",83
+2504009,"Presidente Médici",503.7,"Rua Ascendino Toscano de Brito",-35.9092914,"58417695",-7.2509641,"PB","Campina Grande",83
+2504009,"Centro",531.6,"Rua Pedro Álvares Cabral",-35.87794,"58400206",-7.2192965,"PB","Campina Grande",83
+2502607,"",315.8,"Igaracy",-38.1496514,"58775000",-7.1805176,"PB","Igaracy",NA
+NA,"",272,"Olho D'Água",-37.7502531,"58760000",-7.2283144,"PB","Olho D'Água",NA
+2504009,"Liberdade",524.6,"Rua Getúlio Cavalcante",-35.8948889,"58414245",-7.2393506,"PB","Campina Grande",83
+2512309,"",685.4,"Princesa Isabel",-37.9916987,"58755000",-7.7362129,"PB","Princesa Isabel",83
+2504504,"",255.7,"Condado",-37.6005909,"58714000",-6.9104011,"PB","Condado",NA
+2507507,"Roger",8.6,"Rua Anísio Salatiel",-34.8857451,"58020000",-7.1121819,"PB","João Pessoa",83
+2604007,"Bairro Novo",176,"Rodovia BR-408",-35.2413116,"55819320",-7.8392065,"PE","Carpina",81
+2516607,"",714.9,"Tavares",-37.8789802,"58753000",-7.6366833,"PB","Tavares",83
+2515302,"",126.7,"Sapé",-35.2302351,"58340000",-7.0961644,"PB","Sapé",83
+2507101,"",79.7,"Itapororoca",-35.2457153,"58275000",-6.8286181,"PB","Itapororoca",83
+2510808,"Centro",32.7,"AC Patos, Rua Presidente Epitácio Pessoa, 69",-49.0819218,"58700970",-26.4801686,"PB","Patos",83
+2510808,"Centro",246.8,"Rua Presidente Epitácio Pessoa",-37.275037,"58700020",-7.0178331,"PB","Patos",83
+2510808,"Distrito Industrial",102.9,"Rodovia BR-230",-49.3249009,"58705760",-5.2585369,"PB","Patos",83
+2507507,"Portal do Sol",38.4,"Rua Maurício de Araújo Gama Filho (Lot Q Mares II)",-34.8167579,"58046710",-7.1523807,"PB","João Pessoa",83
+2510808,"Belo Horizonte",252.3,"Rua Horácio Nóbrega, lado par",-37.2845684,"58704000",-7.0161292,"PB","Patos",83
+2408102,"Nossa Senhora de Nazaré",56.4,"Rua Hidrógrafo Vital de Oliveira",-35.2356152,"59062240",-5.8170426,"RN","Natal",84
+2507507,"Mangabeira",41.1,"Rua Elias Pereira de Araújo",-34.8402951,"58056010",-7.1722027,"PB","João Pessoa",83
+2504009,"Jardim Paulistano",496,"Rua José Firmino da Silva",-35.8945744,"58415245",-7.2533384,"PB","Campina Grande",83
+2504009,"Alto Branco",588.6,"Rua Doutor Vasconcelos, até 988 - lado par",-35.8797893,"58401624",-7.203853,"PB","Campina Grande",83
+2504009,"Alto Branco",588.6,"Rua Doutor Vasconcelos, até 989 - lado ímpar",-35.8797893,"58401450",-7.203853,"PB","Campina Grande",83
+2504108,"",375.9,"Carrapateira",-38.3440542,"58945000",-7.0387151,"PB","Carrapateira",NA
+2504009,"Catolé",513.2,"Rua Vigário Calixto",-35.8792411,"58410340",-7.2409179,"PB","Campina Grande",83
+2504009,"Distrito Industrial",244.2,"Avenida Jornalista Assis Chateaubriand",-37.288201,"58411450",-7.01514,"PB","Campina Grande",83
+2501807,"São Bento",9.4,"Avenida Liberdade, de 1137/1138 a 2377/2378",-34.9055073,"58305006",-7.1204015,"PB","Bayeux",83
+2507507,"Jaguaribe",51.4,"Avenida Primeiro de Maio, de 487/488 ao fim",-34.8762111,"58015435",-7.1336742,"PB","João Pessoa",83
+2507507,"Jaguaribe",51.4,"Avenida Generino Maciel",-34.8762111,"58015700",-7.1336742,"PB","João Pessoa",83
+2604007,"São Sebastião",187.4,"Rua João Batista de Carvalho",-35.2531749,"55818585",-7.8488617,"PE","Carpina",81
+2511509,"",38.4,"Pilar",-35.258515,"58338000",-7.2669628,"PB","Pilar",83
+2504009,"Malvinas",532.6,"Rua Olindina Pedro Santos",-35.9342721,"58432664",-7.2304728,"PB","Campina Grande",83
+2514701,"",341,"São José do Sabugi",-36.7992396,"58610000",-6.7759968,"PB","São José do Sabugi",NA
+2402006,"",164.7,"Caicó",-37.0936867,"59300000",-6.4599655,"RN","Caicó",84
+2510808,"Sete Casas",260.5,"Rodovia BR-230",-37.2624058,"58705275",-7.0143574,"PB","Patos",83
+2504009,"Centro",554.5,"Rua Presidente João Pessoa, de 472/473 a 897/898",-35.8896323,"58400034",-7.2164521,"PB","Campina Grande",83
+2504009,"Centro",523.7,"Rua Presidente João Pessoa, até 470/471",-35.8734667,"58400002",-7.2223667,"PB","Campina Grande",83
+2507507,"Bessa",6.5,"Avenida Campos Sales",-34.8408978,"58035000",-7.0743718,"PB","João Pessoa",83
+2507507,"Aeroclube",4.9,"Rua Francisco Leocádio Ribeiro Coutinho",-34.8438038,"58036450",-7.0850754,"PB","João Pessoa",83
+2510204,"",315,"Nova Olinda",-38.0411943,"58798000",-7.4785422,"PB","Nova Olinda",NA
+2504009,"Centro",521.2,"Rua Capitão João de Sá",-35.8761928,"58400200",-7.2198133,"PB","Campina Grande",83
+2514909,"",268.1,"São Mamede",-37.0966116,"58625000",-6.9273987,"PB","São Mamede",NA
+2510808,"Liberdade",251.2,"Rua Santos Dumont",-37.2838944,"58703010",-7.0282894,"PB","Patos",83
+2516201,"Centro",226.5,"Rua Emílio Pires",-38.2308291,"58800270",-6.7570731,"PB","Sousa",83
+2507200,"",122.2,"Itatuba",-35.6279935,"58378000",-7.3770571,"PB","Itatuba",NA
+2507507,"Centro",43.6,"Avenida Francisca Moura, até 473/474",-34.8450118,"58013440",-7.1194958,"PB","João Pessoa",83
+2513406,"",307.4,"Santa Luzia",-36.9213103,"58600000",-6.8717979,"PB","Santa Luzia",NA
+2504009,"Catolé",506.8,"Rua Guilhermino Barbosa",-35.8855957,"58410100",-7.2373644,"PB","Campina Grande",83
+2510808,"Santo Antônio",246.8,"Rua Irineu Joffily, lado par",-37.275037,"58701000",-7.0178331,"PB","Patos",83
+2507507,"Centro",56.2,"Rua das Trincheiras",-34.8846955,"58011000",-7.1258777,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Manoel Deodato, até 613/614",-34.8596574,"58040180",-7.1260002,"PB","João Pessoa",83
+2513703,"Municípios",70.2,"Rua Sá Andrade",-34.9768306,"58302515",-7.1590164,"PB","Santa Rita",83
+2507507,"Estados",41.4,"Avenida Presidente Epitácio Pessoa, de 1743 a 2559 - lado ímpar",-34.8541389,"58030002",-7.1128323,"PB","João Pessoa",83
+2504009,"Monte Santo",586.4,"Rua Agrônomo João Maurício de Medeiros",-35.8982596,"58400690",-7.2134209,"PB","Campina Grande",83
+2500775,"",217.1,"Aparecida",-38.0835406,"58823000",-6.7864776,"PB","Aparecida",83
+2507507,"Cristo Redentor",50.8,"Rua Petrarca Grisi",-34.8789697,"58071710",-7.1630006,"PB","João Pessoa",83
+2507507,"Cruz das Armas",41.5,"Avenida Cruz das Armas, até 2202/2203",-34.887245,"58085000",-7.1463677,"PB","João Pessoa",83
+2503209,"Morada Nova",9.3,"Rodovia BR-230",-34.8513443,"58109303",-7.0847141,"PB","Cabedelo",NA
+2503209,"Parque Esperança",8.9,"Rodovia BR-230",-34.8287221,"58108502",-6.9877215,"PB","Cabedelo",NA
+2504009,"Estação Velha",516.2,"Avenida Professor Almeida Barreto",-35.8871681,"58410000",-7.2277111,"PB","Campina Grande",83
+2509909,"",338.1,"Natuba",-35.5522023,"58494000",-7.6415183,"PB","Natuba",NA
+2516102,"",519.9,"Soledade",-36.367118,"58155000",-7.058699,"PB","Soledade",83
+2509602,"",726.8,"Monte Horebe",-38.5857769,"58950000",-7.2146435,"PB","Monte Horebe",83
+2504009,"Cruzeiro",510.6,"Rua Aderaldo Vasconcelos Diniz",-35.901587,"58415605",-7.2559681,"PB","Campina Grande",83
+2504009,"Centro",533.6,"Rua Vila Nova da Rainha",-35.879157,"58400220",-7.2205266,"PB","Campina Grande",83
+2409100,"",176,"Passa e Fica",-35.6444991,"59218000",-6.4305855,"RN","Passa e Fica",NA
+2510808,"Centro",245.4,"Rua Doutor Pedro Firmino",-37.2716204,"58700070",-7.0237551,"PB","Patos",83
+2510808,"Centro",252.7,"Rua Leôncio Wanderley",-37.2784851,"58700120",-7.0268644,"PB","Patos",83
+2504009,"São José",529.3,"Rua Doutor Chateaubriand",-35.8910138,"58400396",-7.226638,"PB","Campina Grande",83
+2516003,"",628,"Solânea",-35.6591635,"58225000",-6.7580104,"PB","Solânea",83
+2612802,"",818.8,"Santa Terezinha",-37.4790871,"56750000",-7.3773687,"PE","Santa Terezinha",NA
+2516508,"",531.7,"Taperoá",-36.8243689,"58680000",-7.2101825,"PB","Taperoá",NA
+2511004,"",302.9,"Pedra Branca",-38.0683607,"58790000",-7.4267046,"PB","Pedra Branca",NA
+2512036,"",451.9,"Poço Dantas",-38.496682,"58933000",-6.4040413,"PB","Poço Dantas",NA
+2507507,"Manaíra",9.8,"Rua João Câncio, de 501/502 a 1425/1426",-34.8339623,"58038341",-7.1077328,"PB","João Pessoa",83
+2507507,"Costa e Silva",37.9,"Rua Francisco Sales Cavalcanti",-34.897094,"58081380",-7.1780807,"PB","João Pessoa",83
+2506202,"",370,"Frei Martinho",-36.4536876,"58195000",-6.4027843,"PB","Frei Martinho",NA
+2604601,"",135,"Condado",-35.100755,"55940000",-7.5857543,"PE","Condado",81
+2510501,"",558.4,"Olivedos",-36.2429467,"58160000",-6.9902658,"PB","Olivedos",NA
+2507507,"Estados",41.4,"Avenida Santa Catarina, de 623/624 ao fim",-34.8541389,"58030071",-7.1128323,"PB","João Pessoa",83
+2504009,"Centro",528.2,"Rua Quebra Quilos",-35.8774007,"58400208",-7.2211282,"PB","Campina Grande",83
+2505238,"",69.8,"Cuité de Mamanguape",-35.2505359,"58289000",-6.9133286,"PB","Cuité de Mamanguape",NA
+2510808,"Centro",251.3,"Rua Peregrino de Carvalho",-37.279559,"58700160",-7.027116,"PB","Patos",83
+2503605,"",109.1,"Caiçara",-35.4703297,"58253000",-6.6164647,"PB","Caiçara",NA
+2502102,"",321.8,"Boa Ventura",-38.2176477,"58993000",-7.4219014,"PB","Boa Ventura",NA
+2610707,"Janga",7.8,"Rua Itapetim",-34.8228465,"53437720",-7.9246342,"PE","Paulista",81
+2504009,"Monte Santo",572.7,"Rua Probo Câmara",-35.8990572,"58400723",-7.2114021,"PB","Campina Grande",83
+2507507,"Cristo Redentor",50.8,"Rua Antônia Gomes da Silveira, de 1263/1264 ao fim",-34.8789697,"58071200",-7.1630006,"PB","João Pessoa",83
+2504009,"Bodocongó",512.1,"Rua Isolda Barros Torquato, de 390/391 ao fim",-35.9179312,"58430090",-7.2184353,"PB","Campina Grande",83
+2504009,"Liberdade",526.7,"Avenida Jornalista Assis Chateaubriand",-35.8947759,"58414060",-7.2374259,"PB","Campina Grande",83
+2509107,"",149.2,"Mari",-35.3201392,"58345000",-7.0523005,"PB","Mari",83
+2504009,"Liberdade",517.9,"Rua Gilberto Pereira",-35.8928853,"58414120",-7.2349147,"PB","Campina Grande",83
+2507507,"Castelo Branco",35.9,"Avenida Apolônio Nóbrega",-34.8454026,"58050260",-7.1311183,"PB","João Pessoa",83
+2509404,"",112.2,"Mogeiro",-35.4783084,"58375000",-7.3021587,"PB","Mogeiro",NA
+2502003,"",184.8,"Belém do Brejo do Cruz",-37.5365588,"58895000",-6.187828,"PB","Belém do Brejo do Cruz",83
+2504009,"Alto Branco",548.3,"Avenida Manoel Tavares, de 601/602 a 1446/1447",-35.87646,"58401490",-7.2109499,"PB","Campina Grande",83
+2504009,"Lauritzen",549.6,"Avenida Manoel Tavares, até 599 - lado ímpar",-35.8811519,"58401402",-7.2116154,"PB","Campina Grande",83
+2505352,"",590,"Damião",-35.9072644,"58173000",-6.6313143,"PB","Damião",83
+2507507,"Torre",40.3,"Avenida Sinésio Guimarães, até 1057/1058",-34.8596574,"58040400",-7.1260002,"PB","João Pessoa",83
+2514651,"",156,"São José do Brejo do Cruz",-37.3537353,"58893000",-6.2132789,"PB","São José do Brejo do Cruz",NA
+2611606,"Cordeiro",10.6,"Rua Amália",-34.9246586,"50630210",-8.0528853,"PE","Recife",81
+2501807,"Sesi",13.1,"Rua João XXIII",-34.9159038,"58306010",-7.1255692,"PB","Bayeux",83
+2502508,"",370.8,"Boqueirão",-36.135257,"58450000",-7.4819416,"PB","Boqueirão",83
+2502052,"",706.1,"Bernardino Batista",-38.5507076,"58922000",-6.4519443,"PB","Bernardino Batista",NA
+2516201,"Centro",227.4,"Rua Coronel André Avelino",-38.2322218,"58800530",-6.7599661,"PB","Sousa",83
+2500809,"",52.5,"Araçagi",-35.380508,"58270000",-6.8527094,"PB","Araçagi",NA
+2504009,"Lauritzen",545.2,"Rua Monteiro Lobato",-35.8804233,"58401417",-7.2103601,"PB","Campina Grande",83
+2508208,"",152.7,"Lagoa de Dentro",-35.3763667,"58250000",-6.6734101,"PB","Lagoa de Dentro",NA
+2607901,"Prazeres",11.2,"Rodovia BR-101, Sul - do km 82,003 ao km 86,005 - lado ímpar",-34.9423933,"54335000",-8.1733608,"PE","Jaboatão dos Guararapes",81
+2507507,"Cristo Redentor",49,"Rua Presidente Carlos Luz",-34.8720956,"58071490",-7.1600425,"PB","João Pessoa",83
+2616407,"Cajá",148.9,"Rua Doutor José Rufino Bezerra, de 382/383 ao fim",-35.2889982,"55610010",-8.1022874,"PE","Vitória de Santo Antão",81
+2504009,"José Pinheiro",522.3,"Rua Fernandes Vieira, de 1/2 ao fim",-35.870251,"58407490",-7.2261188,"PB","Campina Grande",83
+2504009,"Três Irmãs",504.9,"Rua Otávio Batista Cabral",-35.9215603,"58423215",-7.2525237,"PB","Campina Grande",83
+2504009,"Centro",538.6,"Rua Deputado José Tavares",-35.8786288,"58400187",-7.2181796,"PB","Campina Grande",83
+2504009,"Jardim Paulistano",507.3,"Rua Gabriel Chabo",-35.8952592,"58415153",-7.2507437,"PB","Campina Grande",83
+2507507,"Cristo Redentor",50.8,"Rua José Francisco da Silva, de 1303/1304 ao fim",-34.8789697,"58071120",-7.1630006,"PB","João Pessoa",83
+2501351,"",575.5,"Assunção",-36.7301875,"58685000",-7.0748836,"PB","Assunção",83
+2504009,"Conceição",542.3,"Rua Severino Verônica",-35.8869542,"58401314",-7.207473,"PB","Campina Grande",83
+2504009,"Conceição",542.3,"Travessa Severino Verônica",-35.8869542,"58401227",-7.207473,"PB","Campina Grande",83
+2505279,"",68.5,"Curral de Cima",-35.2675339,"58291000",-6.7160453,"PB","Curral de Cima",NA
+2504009,"Centro",522.7,"Rua Doutor Carlos Agra",-35.8770149,"58400204",-7.2199041,"PB","Campina Grande",83
+2504009,"Estação Velha",508.2,"Rua Prudente de Morais",-35.8846003,"58410040",-7.2317723,"PB","Campina Grande",83
+2513208,"",320,"Santa Cruz",-38.0590076,"58824000",-6.5333011,"PB","Santa Cruz",NA
+2412807,"",83.2,"São Rafael",-36.8834071,"59518000",-5.8019756,"RN","São Rafael",84
+2604007,"Santo Antônio",186.1,"Avenida Francisco Montenegro",-35.2615367,"55816450",-7.8415862,"PE","Carpina",81
+2511608,"",382.2,"Pilões",-35.5986093,"58393000",-6.8887883,"PB","Pilões",83
+2504009,"Centro",536.7,"Rua Cristóvão Colombo",-35.8786116,"58400223",-7.2194322,"PB","Campina Grande",83
+2504009,"Centro",555.7,"Rua Venâncio Neiva",-35.8845104,"58400090",-7.21816,"PB","Campina Grande",83
+2616407,"São Vicente de Paulo",157.2,"Rua Doutor Ivo Queiroz",-35.3012516,"55604270",-8.1232008,"PE","Vitória de Santo Antão",81
+2704302,"Prado",10,"Rua Caramurus, até 447/448",-35.7488774,"57010091",-9.6705306,"AL","Maceió",82
+2504009,"Nova Brasília",510.1,"Rua Izabel Alexandre Bernadino",-35.8610154,"58406585",-7.2151729,"PB","Campina Grande",83
+2504009,"Nova Brasília",510.1,"Rua Isabel Alexandre Bernadino",-35.8610154,"58406840",-7.2151729,"PB","Campina Grande",83
+2504074,"",457.5,"Caraúbas",-36.4933187,"58595000",-7.7278521,"PB","Caraúbas",NA
+2507507,"Centro",48,"Rua Visconde de Pelotas",-34.8830839,"58013000",-7.1182182,"PB","João Pessoa",83
+2614105,"",557.7,"Sertânia",-37.269356,"56600000",-8.0751481,"PE","Sertânia",87
+3513801,"Conceição",780,"Rua Noraldino Bispo da Silva (Prq Real)",-46.6397074237,"9992060",-23.7013000034,"SP","Diadema",11
+2506400,"",104.6,"Gurinhém",-35.4256996,"58356000",-7.1238242,"PB","Gurinhém",83
+2515930,"",134.8,"Sertãozinho",-35.4402885,"58268000",-6.7526051,"PB","Sertãozinho",83
+2504900,"",18.3,"Cruz do Espírito Santo",-35.0860365,"58337000",-7.1394306,"PB","Cruz do Espírito Santo",83
+2507507,"Torre",40.3,"Avenida Rui Barbosa, até 797/798",-34.8596574,"58040490",-7.1260002,"PB","João Pessoa",83
+2510659,"",480.1,"Parari",-36.6556354,"58575000",-7.3179813,"PB","Parari",NA
+2515971,"",53,"Sobrado",-35.2360569,"58342000",-7.1446965,"PB","Sobrado",NA
+2504009,"Monte Castelo",515.3,"Rua Gonçalves Dias",-35.8660807,"58407060",-7.2212733,"PB","Campina Grande",83
+2512200,"",580,"Prata",-37.0831456,"58550000",-7.6937137,"PB","Prata",NA
+2507507,"Centro",39.8,"Rua Irineu Pinto",-34.8852783,"58010100",-7.12093,"PB","João Pessoa",83
+2503100,"",387.3,"Cabaceiras",-36.2877792,"58480000",-7.4904985,"PB","Cabaceiras",NA
+2501807,"Mário Andreazza",52.8,"Rua Chico Mendes",-34.9259437,"58309646",-7.1446652,"PB","Bayeux",83
+2504009,"Alto Branco",588.6,"Rua Doutor Vasconcelos, de 991 a 99999 - lado ímpar",-35.8797893,"58401722",-7.203853,"PB","Campina Grande",83
+2509339,"",491,"Matinhas",-35.7717742,"58128000",-7.1219756,"PB","Matinhas",NA
+2507507,"Centro",43.6,"Avenida Dom Pedro II, até 1238/1239",-34.8450118,"58013420",-7.1194958,"PB","João Pessoa",83
+2500775,"Centro",217.1,"AC Aparecida, Rua Antônio Amâncio Pires 201",-38.0835406,"58823970",-6.7864776,"PB","Aparecida",83
+2611606,"Imbiribeira",7.9,"Avenida Antônio Torres Galvão",-34.9046441,"51160330",-8.1132334,"PE","Recife",81
+2606804,"Umbura",26.5,"Rua Canário do Império (Lot Rumo Leste II)",-34.8975168,"53625539",-7.8660436,"PE","Igarassu",81
+2508307,"",634.5,"Lagoa Seca",-35.8537249,"58117000",-7.1549934,"PB","Lagoa Seca",83
+2516300,"",525.3,"Sumé",-36.879064,"58540000",-7.670398,"PB","Sumé",83
+2501807,"Imaculada",11.3,"Largo do Mercado",-34.9248191,"58309080",-7.1331546,"PB","Bayeux",83
+2501807,"Sesi",14.7,"Rua Francisca Almeida",-34.9148168,"58305350",-7.122526,"PB","Bayeux",83
+2513927,"",256,"São Bentinho",-37.7277546,"58857000",-6.8898627,"PB","São Bentinho",NA
+2512002,"",646.3,"Pocinhos",-36.0598184,"58150000",-7.0777037,"PB","Pocinhos",NA
+2504009,"Liberdade",526.7,"Rua Dom Anselmo de Pietrula",-35.8947759,"58414063",-7.2374259,"PB","Campina Grande",83
+2513703,"Municípios",63.3,"Rua Pombal",-34.9657704,"58302300",-7.1514498,"PB","Santa Rita",83
+2507507,"João Paulo II",50.1,"Rua Valdemar Naziazeno",-34.8737063,"58076003",-7.1787529,"PB","João Pessoa",83
+2501807,"Centro",13.1,"Rua Petrônio Figueiredo",-34.9318211,"58307210",-7.1285824,"PB","Bayeux",83
+2501807,"Imaculada",13,"Rua Osvaldo Cruz",-34.9274964,"58309490",-7.1325256,"PB","Bayeux",83
+2504603,"",93,"Conde",-34.9120662,"58322000",-7.2602822,"PB","Conde",83
+2504009,"Nova Brasília",521.4,"Rua Doutor Antônio Bezerra Camboim",-35.8615476,"58406785",-7.2198631,"PB","Campina Grande",83
+2504207,"",294,"Catingueira",-37.6077239,"58715000",-7.1257813,"PB","Catingueira",NA
+2513703,"Centro",17.2,"Praça Antenor Navarro",-34.9795115,"58300010",-7.1235396,"PB","Santa Rita",83
+2504009,"Liberdade",522.5,"Rua Riachuelo",-35.893504,"58414140",-7.2380388,"PB","Campina Grande",83
+2509206,"",532.8,"Massaranduba",-35.7334547,"58120000",-7.1805317,"PB","Massaranduba",NA
+2504009,"Jardim Tavares",523.7,"Rua Apolônio Amorim",-35.8734667,"58402090",-7.2223667,"PB","Campina Grande",83
+2604007,"São Sebastião",184.6,"Rua Santos Dumont",-35.251034,"55818510",-7.8496227,"PE","Carpina",81
+2514453,"",104.8,"São José dos Ramos",-35.3682096,"58339000",-7.2556629,"PB","São José dos Ramos",NA
+2613602,"",597.8,"São José do Egito",-37.2746574,"56700000",-7.4686612,"PE","São José do Egito",87
+2504009,"Alto Branco",539.4,"Rua Franklin Araújo, de 1/2 a 99997/99998",-35.88677,"58401430",-7.2081158,"PB","Campina Grande",83
+2504009,"Santo Antônio",529.4,"Rua Santo Antônio",-35.8716472,"58406025",-7.2175764,"PB","Campina Grande",83
+2507507,"José Américo de Almeida",23.6,"Rua Julieta Gonçalves Rezende",-34.8498117,"58074675",-7.1761674,"PB","João Pessoa",83
+2504009,"José Pinheiro",512.6,"Rua Amélia Vieira",-35.8711409,"58407505",-7.2294633,"PB","Campina Grande",83
+2507507,"Gramame",48,"Rua Funcionário Pedro Alves da Silva",-34.8789697,"58068088",-7.1994077,"PB","João Pessoa",83
+NA,"",640.5,"São Sebastião de Lagoa de Roça",-35.8670456,"58119000",-7.1049751,"PB","São Sebastião de Lagoa de Roça",NA
+2507507,"Varjão",50.7,"Avenida São Judas Tadeu",-34.8709619,"58070100",-7.151359,"PB","João Pessoa",83
+2513109,"",58.1,"Salgado de São Félix",-35.4401442,"58370000",-7.3555209,"PB","Salgado de São Félix",NA
+2504009,"Velame",496.7,"Avenida Deputado Raimundo Asfora",-35.9097595,"58420000",-7.2800272,"PB","Campina Grande",83
+2517001,"",532.5,"Umbuzeiro",-35.6653832,"58497000",-7.6963786,"PB","Umbuzeiro",NA
+2507705,"",554.5,"Juazeirinho",-36.5794208,"58660000",-7.0693466,"PB","Juazeirinho",83
+2513943,"",407.7,"São Domingos do Cariri",-36.4326841,"58485000",-7.6349305,"PB","São Domingos do Cariri",NA
+2507507,"Jaguaribe",48.6,"Rua Doutor Silvino Nóbrega",-34.8812451,"58015120",-7.1374034,"PB","João Pessoa",83
+2506905,"",48.9,"Itabaiana",-35.3330235,"58360000",-7.3296633,"PB","Itabaiana",NA
+3525904,"Tijuco Preto",781.6,"Rodovia Anhangüera, do km 46,500 ao km 51,998 - lado par",-46.8561323,"13205700",-23.2578786,"SP","Jundiaí",11
+4119152,"Alto Tarumã",893,"Rua Corbélia",-49.1965880543,"83325260",-25.4482400063,"PR","Pinhais",41
+4106902,"Centro",934,"Rua Emiliano Perneta, de 372/373 ao fim",-49.2643301007,"80420080",-25.4201699923,"PR","Curitiba",41
+5300108,"Asa Sul",1048.4,"CRS 505 Bloco C",-47.9140722,"70350530",-15.8321684,"DF","Brasília",61
+5300108,"Asa Sul",1084.6,"Galeria dos Estados",-47.9045093,"70310500",-15.8202434,"DF","Brasília",61
+5300108,"Asa Sul",1164.4,"Caixa Econômica Federal, SBS Quadra 4 Bloco A Lotes 3/4",-47.9117082,"70092900",-15.7794923,"DF","Brasília",61
+5300108,"Asa Sul",1079.8,"Banco do Brasil (Sede III), SBS Quadra 1 Bloco G Lote 32",-47.917206,"70073901",-15.820697,"DF","Brasília",61
+5300108,"Asa Sul",1086.4,"Fundo Nacional de Desenvolvimento da Educação, SBS Quadra 2 Bloco F",-47.8872617,"70070929",-15.8123265,"DF","Brasília",61
+5300108,"Asa Norte",1017,"SAUN Quadra 5",-47.8838819,"70040250",-15.7412859,"DF","Brasília",61
+2304400,"Bela Vista",17.7,"Rua Goiás, até 618/619",-38.5624793,"60441125",-3.7517772,"CE","Fortaleza",85
+2409407,"",196.9,"Pau dos Ferros",-38.2052039,"59900000",-6.112331,"RN","Pau dos Ferros",84
+2401008,"",79.2,"Apodi",-37.7988308,"59700000",-5.6624907,"RN","Apodi",84
+2408003,"Abolição",20,"Avenida Lauro Monte",-37.3479691,"59619000",-5.1709931,"RN","Mossoró",84
+2411403,"",155.1,"Santana do Matos",-36.6580919,"59520000",-5.946453,"RN","Santana do Matos",84
+2403103,"",352.6,"Currais Novos",-36.5210436,"59380000",-6.2577903,"RN","Currais Novos",84
+2507507,"Jaguaribe",51.4,"Rua Cecília Miranda",-34.8726392,"58015130",-7.1289922,"PB","João Pessoa",83
+2411205,"",246.3,"Santa Cruz",-36.0202284,"59200000",-6.2239132,"RN","Santa Cruz",84
+2408102,"Lagoa Nova",41.1,"Avenida Capitão-mor Gouveia, de 3333 a 4479 - lado ímpar",-35.2099611,"59063400",-5.8259362,"RN","Natal",84
+2509008,"",760.7,"Manaíra",-38.1549097,"58995000",-7.7072216,"PB","Manaíra",NA
+2507507,"Cristo Redentor",50.8,"Rua Major Brito",-34.8788428,"58070360",-7.1542534,"PB","João Pessoa",83
+2507507,"Ernani Sátiro",41.1,"Rua Professor José Holmes",-34.8924518,"58080400",-7.1746881,"PB","João Pessoa",83
+2501005,"",573.2,"Araruna",-35.7407441,"58233000",-6.5281982,"PB","Araruna",83
+2514503,"",345.5,"São José de Piranhas",-38.4993817,"58940000",-7.1191546,"PB","São José de Piranhas",83
+2507507,"Centro",43.6,"Avenida Dom Pedro I, de 401/402 ao fim",-34.8450118,"58013021",-7.1194958,"PB","João Pessoa",83
+2513968,"",54,"São Domingos de Pombal",-35.05,"58853000",-6.75,"PB","São Domingos",NA
+2509370,"",200.2,"Mato Grosso",-37.7143609,"58832000",-6.5419367,"PB","Mato Grosso",NA
+2507507,"Ernesto Geisel",48.3,"Rua Deputado Petrônio Figueiredo",-34.8668118,"58075410",-7.1760987,"PB","João Pessoa",83
+2516201,"Augusto Braga",221.6,"Rua Rita de Cássia",-38.2314022,"58808500",-6.7518873,"PB","Sousa",83
+2516201,"Jardim Iracema",221.6,"Rua Francisca Iran de Sousa",-38.2314022,"58807035",-6.7518873,"PB","Sousa",83
+2516201,"Jardim Sorrilândia II",228,"Rua Vereador Possidônio Queiroga",-38.2310116,"58805288",-6.7757659,"PB","Sousa",83
+2516201,"André Gadelha",223.8,"Rua Salatiel Marques Fontes",-38.2424339,"58806470",-6.7531771,"PB","Sousa",83
+2516201,"Jardim Sorrilândia III",221.6,"Rua Mário Morais da Silva",-38.2314022,"58805570",-6.7518873,"PB","Sousa",83
+2516201,"Jardim Sorrilândia I",220,"Rua Nelson Meira",-38.2292780229,"58805180",-6.761,"PB","Sousa",83
+2510808,"Liberdade",259,"Rua Raniere Mazile",-37.2870307,"58703150",-7.0268747,"PB","Patos",83
+2516201,"Areias",226.4,"Rua Gualberto Filho",-38.2271754,"58801600",-6.7579055,"PB","Sousa",83
+2504009,"Catolé",518.4,"Avenida Elpídio de Almeida",-35.8754782,"58410215",-7.2388106,"PB","Campina Grande",83
+2516201,"Centro",226.2,"Rua Ananias Gadelha",-38.2323497,"58800500",-6.7574385,"PB","Sousa",83
+2516201,"Centro",228.9,"Rua Doutor José Mariz",-38.2315791,"58800380",-6.7592089,"PB","Sousa",83
+2516201,"Centro",227.1,"Rua Doutor Silva Mariz",-38.2304765,"58800290",-6.7577022,"PB","Sousa",83
+2507507,"Água Fria",42.6,"Rodovia BR-230, até km 24,000",-34.8555185,"58053002",-7.1593344,"PB","João Pessoa",83
+2516201,"Centro",228,"Rua Cônego José Neves",-38.2289683,"58800190",-6.7617294,"PB","Sousa",83
+2516201,"Centro",229.1,"Rua Coronel José Gomes de Sá",-38.2287932,"58800050",-6.7588079,"PB","Sousa",83
+2516201,"Doutor Zezé",221.6,"Rua Francisco Sarmento Medeiros",-38.2314022,"58804370",-6.7518873,"PB","Sousa",83
+2513604,"",325.8,"Santana dos Garrotes",-37.9869429,"58795000",-7.3851571,"PB","Santana dos Garrotes",NA
+2507507,"Estados",43.7,"Rua Joaquim Pires Ferreira",-34.8561275,"58030224",-7.1087664,"PB","João Pessoa",83
+2506707,"",763.1,"Imaculada",-37.5082553,"58745000",-7.3893128,"PB","Imaculada",83
+2501153,"",361.2,"Areia de Baraúnas",-36.9485356,"58732000",-7.1238341,"PB","Areia de Baraúnas",NA
+2514404,"",213.6,"São José de Espinharas",-37.3256414,"58723000",-6.8470966,"PB","São José de Espinharas",NA
+2501807,"Mário Andreazza",56.7,"Rua Maria Auxiliadora Araújo Silva",-34.9272639,"58309650",-7.1450849,"PB","Bayeux",83
+2513802,"",308.1,"Santa Teresinha",-37.4436522,"58720000",-7.0852524,"PB","Santa Teresinha",NA
+2516201,"Centro",226.2,"Rua Coronel Antônio Soares",-38.2291995,"58800200",-6.7633966,"PB","Sousa",83
+2504009,"Santa Rosa",522.9,"Rua Maria do Socorro Targino Arruda",-35.9070354,"58416715",-7.2329369,"PB","Campina Grande",83
+NA,"",244.2,"Santa Gertrudes (Patos)",-37.3954089,"58709000",-6.9495822,"PB","Santa Gertrudes (Patos)",NA
+2510808,"Jatobá",256.4,"Rua Manoel Meira",-37.2764562,"58707460",-7.0541508,"PB","Patos",83
+2514206,"",261.4,"São José da Lagoa Tapada",-38.1622538,"58815000",-6.9413591,"PB","São José da Lagoa Tapada",NA
+2510808,"Monte Castelo",248.3,"Rua Manoel Mota",-37.2767801,"58707000",-7.0430515,"PB","Patos",83
+2609006,"",312.1,"Macaparana",-35.4427791,"55865000",-7.5560496,"PE","Macaparana",81
+2510808,"Salgadinho",253.3,"Rua Francisco Pontes",-37.2651372,"58706520",-7.0220294,"PB","Patos",83
+2504009,"Centro",555,"Rua Cardoso Vieira",-35.8837345,"58400097",-7.2173935,"PB","Campina Grande",83
+2507507,"Cristo Redentor",50.8,"Rua Olívia Martins de Almeida Guerra",-34.8789697,"58071430",-7.1630006,"PB","João Pessoa",83
+2501807,"São Bento",8.2,"Avenida Santa Rita",-34.9050528,"58305090",-7.1224546,"PB","Bayeux",83
+2510808,"Jardim Magnólia",246.8,"Rodovia BR-230",-37.2841395,"58705555",-7.0080659,"PB","Patos",83
+2510808,"Noé Trajano",247.5,"Rua Sebastião Marcelino Sobrinho",-37.2878446,"58705000",-7.009713,"PB","Patos",83
+2510808,"Bela Vista",240.8,"Rua Antônio Justino",-37.280991,"58704620",-7.0128952,"PB","Patos",83
+2510808,"Belo Horizonte",254.6,"Rua Moacir Leitão",-37.2841961,"58704330",-7.0174043,"PB","Patos",83
+2504009,"Velame",505.1,"Rua Ezequiel Tavares de Souza",-35.9101484,"58418107",-7.2607779,"PB","Campina Grande",83
+2510808,"Belo Horizonte",244.8,"Rua João Domingos de Queiroz",-37.2826473,"58704140",-7.0229054,"PB","Patos",83
+2508000,"",586.8,"Juru",-37.8186684,"58750000",-7.5380213,"PB","Juru",NA
+2510808,"Morro",254.9,"Rua Janúncio Nóbrega",-37.2925246,"58703230",-7.0297319,"PB","Patos",83
+2507507,"Bancários",42.6,"Rua Esmeraldo Gomes Vieira",-34.8358933,"58051650",-7.1488135,"PB","João Pessoa",83
+2510808,"Liberdade",258.7,"Rua Severino Dutra",-37.2870087,"58703140",-7.0271849,"PB","Patos",83
+2510808,"Liberdade",261.2,"Rua Paulo Leite",-37.2861664,"58703130",-7.0270316,"PB","Patos",83
+2510808,"Liberdade",258.2,"Rua do Prado",-37.2946128,"58703000",-7.0322995,"PB","Patos",83
+2510808,"Maternidade",244.9,"Rua Saulo de Queiroz Melo",-37.2858564,"58701470",-7.0400579,"PB","Patos",83
+2510808,"Maternidade",256.1,"Rua Severino Soares",-37.2871451,"58701380",-7.0376893,"PB","Patos",83
+2516201,"Jardim Bela Vista",221.6,"Rua Lúcia Nogueira Elias",-38.2314022,"58808295",-6.7518873,"PB","Sousa",83
+2510808,"Santo Antônio",248.2,"Rua Santana",-37.2798874,"58701150",-7.0351791,"PB","Patos",83
+2504009,"Centro",544.7,"Rua Coronel João Lourenço Porto",-35.8813441,"58400240",-7.2201073,"PB","Campina Grande",83
+2510808,"Brasília",248.3,"Avenida Benjamin Constant",-37.2729963,"58700360",-7.0252075,"PB","Patos",83
+2510808,"Centro",254.7,"Terminal Rodoviário",-37.2598502,"58700260",-7.0195406,"PB","Patos",83
+2510808,"Centro",248.3,"Rua Severino Martins",-37.2759137,"58700130",-7.0262361,"PB","Patos",83
+2507507,"Cruz das Armas",51.1,"Avenida Lima Filho",-34.8849268,"58085310",-7.1410573,"PB","João Pessoa",83
+2510808,"Centro",250.3,"Rua Vereador Joaquim Leitão",-37.2804068,"58700110",-7.0268044,"PB","Patos",83
+2508109,"",275.2,"Lagoa",-37.9153693,"58835000",-6.59088,"PB","Lagoa",NA
+2500601,"",58.6,"Alhandra",-34.9115335,"58320000",-7.4331058,"PB","Alhandra",83
+2507507,"Jardim Cidade Universitária",43.6,"Rua Bacharel Wilson Flávio Moreira Coutinho",-34.8450118,"58052510",-7.1194958,"PB","João Pessoa",83
+2516201,"Centro",570.3,"AC Sousa, Rua Coronel José Vicente, 18",-35.8976793,"58800970",-7.2166857,"PB","Sousa",83
+2500734,"",620.3,"Amparo",-37.0640888,"58548000",-7.5690406,"PB","Amparo",NA
+2517407,"",632.7,"Zabelê",-37.0996052,"58515000",-8.0765902,"PB","Zabelê",NA
+2509800,"",95.4,"Mulungu",-35.4634585,"58354000",-7.0301513,"PB","Mulungu",NA
+2515203,"",598.8,"São Sebastião do Umbuzeiro",-37.0141746,"58510000",-8.1533021,"PB","São Sebastião do Umbuzeiro",NA
+2507507,"Jardim São Paulo",41.3,"Rua José Firmino Ferreira",-34.8516396,"58053022",-7.1524213,"PB","João Pessoa",83
+2506251,"",354.9,"Gado Bravo",-35.7915396,"58492000",-7.5825489,"PB","Gado Bravo",NA
+2510808,"Bela Vista",242.4,"Rua Antônio Gomes da Costa",-37.2835893,"58704412",-7.0133386,"PB","Patos",83
+2510808,"Maternidade",256.5,"Rua Luiz Fragoso Diniz",-37.286691,"58701502",-7.0384863,"PB","Patos",83
+2501302,"",341,"Aroeiras",-35.7063659,"58489000",-7.5453203,"PB","Aroeiras",NA
+2606002,"Boa Vista",854.8,"Rua Afonso Natário",-36.4918433,"55292430",-8.9058872,"PE","Garanhuns",87
+2500536,"",523.2,"Alcantil",-36.0592398,"58460000",-7.743334,"PB","Alcantil",NA
+2504009,"Nova Brasília",509,"Rua Papa Leão X",-35.8593486,"58406795",-7.2158328,"PB","Campina Grande",83
+NA,"",595.3,"Santa Terezinha (Campina Grande)",-35.9363779,"58449000",-7.2091422,"PB","Santa Terezinha (Campina Grande)",NA
+2514305,"",584.9,"São José de Caiana",-38.2992722,"58784000",-7.2467661,"PB","São José de Caiana",NA
+2504009,"Malvinas",526.5,"Rua Cabaceiras",-35.9296446,"58433106",-7.2344739,"PB","Campina Grande",83
+2516201,"Jardim Bela Vista",221.6,"Rua Gastão Medeiros Forte",-38.2314022,"58808270",-6.7518873,"PB","Sousa",83
+2506509,"",490.8,"Gurjão",-36.4868333,"58670000",-7.2473356,"PB","Gurjão",NA
+2504009,"Malvinas",518.9,"Avenida Marechal Floriano Peixoto",-35.9282625,"58432809",-7.2396174,"PB","Campina Grande",83
+2504009,"Malvinas",513.1,"Rua das Juremas",-35.9226253,"58432587",-7.2483392,"PB","Campina Grande",83
+2504009,"Malvinas",532.6,"Rua José Marques Ferreira",-35.9342721,"58432545",-7.2304728,"PB","Campina Grande",83
+2510808,"Noé Trajano",247.5,"Rua Carlos Dantas Trigueiro",-37.2878446,"58705050",-7.009713,"PB","Patos",83
+2510808,"Salgadinho",253.2,"Rua Manoel Torres",-37.2621935,"58706510",-7.0226105,"PB","Patos",83
+2507507,"Centro",55.9,"Rua Professora Alice Azevedo",-34.8831641,"58013480",-7.1241378,"PB","João Pessoa",83
+2504009,"Bodocongó",512.1,"Avenida Industrial Ademar Veloso da Silveira",-35.9179312,"58430000",-7.2184353,"PB","Campina Grande",83
+2504009,"Centenário",499.8,"Avenida Marechal Floriano Peixoto, lado ímpar",-35.9146084,"58428111",-7.2333776,"PB","Campina Grande",83
+2304400,"Centro",23.8,"Rua Governador Sampaio",-38.5242476,"60055050",-3.7279769,"CE","Fortaleza",85
+2504009,"Velame",488.6,"Rua Daniel Luiz Rodrigues",-35.9140711,"58420060",-7.27564,"PB","Campina Grande",83
+2504009,"Cruzeiro",521.1,"Rua Almirante Barroso",-35.9027365,"58415670",-7.2433751,"PB","Campina Grande",83
+2504009,"Cruzeiro",507.7,"Rua Doutor Antônio Figueiredo Agra",-35.9023061,"58415570",-7.252297,"PB","Campina Grande",83
+2507507,"Centro",43.6,"Praça Mil Oitocentos e Dezessete",-34.8450118,"58013010",-7.1194958,"PB","João Pessoa",83
+2507507,"Centro",44,"Avenida Desembargador Souto Maior",-34.8787743,"58013190",-7.1168881,"PB","João Pessoa",83
+2504009,"Cruzeiro",510.6,"Avenida Presidente Juscelino Kubitschek",-35.901587,"58415530",-7.2559681,"PB","Campina Grande",83
+2507507,"Cristo Redentor",50.8,"Rua dos Milagres, até 1595/1596",-34.8789697,"58070530",-7.1630006,"PB","João Pessoa",83
+2504009,"Jardim Paulistano",503.4,"Rua Getúlio Cavalcante",-35.8942268,"58415290",-7.2451148,"PB","Campina Grande",83
+2516409,"",170,"Tacima",-35.6373637,"58240000",-6.488126,"PB","Tacima",NA
+2504009,"Tambor",497.3,"Avenida Jornalista Assis Chateaubriand",-35.8893265,"58414500",-7.2536981,"PB","Campina Grande",83
+2504009,"Liberdade",519.5,"Rua Padre Pedro Serrão",-35.8926909,"58414265",-7.2385524,"PB","Campina Grande",83
+2507507,"Ipês",7.8,"Via Expressa Ayrton Senna da Silva",-34.8527592,"58028830",-7.1027215,"PB","João Pessoa",83
+2513703,"Popular",22.9,"Rua Eurico Dutra",-34.9774805,"58301055",-7.1273306,"PB","Santa Rita",83
+2504009,"Liberdade",520.4,"Rua Doutor Edésio Silva",-35.8924392,"58414255",-7.2405326,"PB","Campina Grande",83
+2611606,"Várzea",16.7,"Rua Gastão Vidigal",-34.9614377,"50980360",-8.0350092,"PE","Recife",81
+2504009,"Liberdade",531.5,"Rua Almirante Barroso",-35.8973157,"58414200",-7.2368278,"PB","Campina Grande",83
+2507507,"Centro",38.7,"Parque Solon de Lucena, lado ímpar",-34.8787183,"58013131",-7.1215116,"PB","João Pessoa",83
+2513703,"Centro",17.9,"Rua Professor Luiz Soares",-34.9862671,"58300320",-7.126562,"PB","Santa Rita",83
+2507507,"Costa e Silva",38.2,"Rua Marieta Araújo Nascimento",-34.8952028,"58081240",-7.1780955,"PB","João Pessoa",83
+2504009,"Catolé",509.3,"Rua Manoel Alves de Oliveira",-35.8809665,"58410575",-7.249938,"PB","Campina Grande",83
+2504009,"Catolé",509.4,"Rua Deputado Djalma Marinho",-35.8813892,"58410495",-7.2456786,"PB","Campina Grande",83
+2403251,"Parque de Exposições",43.2,"Rua Câmara Cascudo",-35.2576191,"59146460",-5.9006077,"RN","Parnamirim",84
+2504009,"Catolé",514.6,"Rua Francisco Camilo",-35.879128,"58410280",-7.2302146,"PB","Campina Grande",83
+2507507,"Ernani Sátiro",28.9,"Rua Mário Neves do Nascimento",-34.8875815,"58080030",-7.1718137,"PB","João Pessoa",83
+2504009,"Catolé",519.7,"Rua Otacílio Nepomuceno",-35.8729918,"58410160",-7.2338966,"PB","Campina Grande",83
+2504009,"Catolé",512.2,"Rua João Pequeno",-35.8773938,"58410150",-7.233433,"PB","Campina Grande",83
+2507507,"Bancários",38.5,"Rua Antônio Miguel Duarte",-34.8479136,"58051125",-7.1453424,"PB","João Pessoa",83
+2507507,"Varjão",47.8,"Rua Cônego Vicente Pimentel",-34.872073,"58070030",-7.1488105,"PB","João Pessoa",83
+2504009,"Estação Velha",513.4,"Rua Benjamin Constant",-35.8846813,"58410003",-7.2287497,"PB","Campina Grande",83
+2515807,"",382.9,"Serra Redonda",-35.6803639,"58385000",-7.1856345,"PB","Serra Redonda",NA
+2516201,"Jardim Sorrilândia I",221.6,"Travessa Vinte de Abril",-38.2314022,"58805060",-6.7518873,"PB","Sousa",83
+2504009,"Vila Cabral",522.5,"Avenida Senador Argemiro de Figueiredo",-35.8711228,"58408330",-7.243713,"PB","Campina Grande",83
+2504009,"Mirante",517.6,"Avenida Prefeito Severino Bezerra Cabral",-35.8682079,"58407660",-7.2355698,"PB","Campina Grande",83
+2504009,"José Pinheiro",513.2,"Avenida Prefeito Severino Bezerra Cabral",-35.8721498,"58407475",-7.2307788,"PB","Campina Grande",83
+2501807,"Imaculada",13.3,"Rua Doutor Gilvan Muribeca",-34.9264754,"58309410",-7.1335689,"PB","Bayeux",83
+2504009,"José Pinheiro",520,"Rua Campos Sales",-35.8724315,"58407450",-7.2257831,"PB","Campina Grande",83
+2504009,"Santo Antônio",525.5,"Rua Vigário Virgínio",-35.8745488,"58406030",-7.2175056,"PB","Campina Grande",83
+2504009,"Santo Antônio",533.7,"Rua Giló Guedes, lado ímpar",-35.8729763,"58406000",-7.2168585,"PB","Campina Grande",83
+2507507,"Varadouro",20.6,"Rua Maciel Pinheiro, de 521/522 ao fim",-34.8886242,"58010132",-7.1178338,"PB","João Pessoa",83
+2510808,"Jatobá",251.6,"Rua Manoel Cabral",-37.2740226,"58707280",-7.0487619,"PB","Patos",83
+2504009,"Conceição",529.6,"Rua Vigolvino Wanderley",-35.8849458,"58401311",-7.2138836,"PB","Campina Grande",83
+2504009,"Palmeira",583.4,"Rua Quinze de Novembro",-35.8954198,"58401075",-7.2024947,"PB","Campina Grande",83
+2504009,"Monte Santo",563.5,"Rua João Suassuna",-35.8999017,"58400775",-7.2105845,"PB","Campina Grande",83
+2504009,"Monte Santo",559.6,"Rua Vereador Arrojado Lisboa",-35.9002248,"58400640",-7.2121492,"PB","Campina Grande",83
+2507507,"Estados",41.4,"Avenida Presidente Epitácio Pessoa, até 1145 - lado ímpar",-34.8541389,"58030000",-7.1128323,"PB","João Pessoa",83
+2510808,"Centro",252.8,"Rua Dom Pedro II",-37.2801905,"58700180",-7.0300258,"PB","Patos",83
+2504009,"Prata",565.5,"Rua Duque de Caxias",-35.8977286,"58400506",-7.2225536,"PB","Campina Grande",83
+2504009,"Prata",552,"Rua da Independência",-35.8946907,"58400480",-7.2242823,"PB","Campina Grande",83
+2501609,"",458.9,"Barra de Santa Rosa",-36.0599473,"58170000",-6.7217118,"PB","Barra de Santa Rosa",NA
+2504009,"São José",543.8,"Rua Melo Leitão",-35.8925748,"58400459",-7.2238907,"PB","Campina Grande",83
+2504009,"Centro",554.6,"Rua Maciel Pinheiro",-35.883646,"58400100",-7.2179827,"PB","Campina Grande",83
+2504009,"São José",544.4,"Rua Siqueira Campos",-35.8912757,"58400453",-7.21716,"PB","Campina Grande",83
+2514008,"",454.9,"São João do Cariri",-36.532597,"58590000",-7.3911149,"PB","São João do Cariri",NA
+2504009,"São José",534.7,"Rua Dom Pedro I",-35.8928477,"58400414",-7.2267574,"PB","Campina Grande",83
+2504009,"São José",528.1,"Rua Doutor João Moura",-35.8882068,"58400344",-7.2251882,"PB","Campina Grande",83
+2504009,"Centro",547.6,"Rua Treze de Maio",-35.8856038,"58400290",-7.2210479,"PB","Campina Grande",83
+2504009,"Centro",539.4,"Rua Vidal de Negreiros",-35.8828724,"58400263",-7.2210984,"PB","Campina Grande",83
+2504009,"Centro",523.7,"Praça Coronel Antônio Pessoa",-35.8734667,"58400262",-7.2223667,"PB","Campina Grande",83
+2511905,"",31.7,"Pitimbu",-34.8104224,"58324000",-7.4731934,"PB","Pitimbu",NA
+2504009,"Alto Branco",592,"Rua Genaro Cavalcante Queiroz",-35.882807,"58401686",-7.2013571,"PB","Campina Grande",83
+2504009,"Centro",550.9,"Rua Afonso Campos",-35.8816382,"58400235",-7.2193398,"PB","Campina Grande",83
+2507507,"Roger",50.6,"Rua Padre Rolim, lado ímpar",-34.878249,"58020530",-7.1148326,"PB","João Pessoa",83
+2504009,"Catolé",509,"Rua Maria de Lourdes Aguiar Loureiro",-35.8804677,"58410488",-7.2469337,"PB","Campina Grande",83
+2504009,"Centro",523.7,"Rua Peregrino de Carvalho, até 104/105",-35.8734667,"58400230",-7.2223667,"PB","Campina Grande",83
+2504009,"Centro",541.4,"Rua Doutor Antônio Sá",-35.8792501,"58400227",-7.2191435,"PB","Campina Grande",83
+2507507,"Oitizeiro",36.5,"Avenida Marta Pacheco",-34.9013005,"58088520",-7.1565146,"PB","João Pessoa",83
+2504009,"Centenário",523.7,"Rua Eunice Ribeiro Araújo",-35.9070979,"58428150",-7.2280734,"PB","Campina Grande",83
+2504702,"",486.8,"Congo",-36.6608942,"58535000",-7.7972216,"PB","Congo",NA
+2504009,"Centro",523.7,"Rua Giló Guedes, lado par",-35.8734667,"58400195",-7.2223667,"PB","Campina Grande",83
+4105805,"Atuba",1027,"Rua Abel Scuissiato",-49.2164348142,"83408280",-25.2988400038,"PR","Colombo",41
+2507507,"Cruz das Armas",46.3,"Rua Quatro de Outubro",-34.8831278,"58085480",-7.1430625,"PB","João Pessoa",83
+2516201,"Jardim Sorrilândia II",227.9,"Avenida José Gadelha de Oliveira",-38.2299818,"58805280",-6.7735772,"PB","Sousa",83
+2504009,"Centro",506.6,"Avenida Marechal Floriano Peixoto, lado par",-35.9076808,"58400180",-7.2303174,"PB","Campina Grande",83
+2513703,"Centro",13,"Rua Luís Porto",-34.9809123,"58300200",-7.1227785,"PB","Santa Rita",83
+2504009,"Centro",523.7,"Rua Peregrino de Carvalho, de 106/107 ao fim",-35.8734667,"58400143",-7.2223667,"PB","Campina Grande",83
+2504009,"Centro",529.6,"Rua Vigolvino Wanderley",-35.8849458,"58400126",-7.2138836,"PB","Campina Grande",83
+2507507,"Torre",47.2,"Avenida General Bento da Gama",-34.8691982,"58040090",-7.1232127,"PB","João Pessoa",83
+2504009,"Vila Cabral",493.3,"Rua Professor José Lopes de Andrade",-35.8675255,"58408100",-7.244399,"PB","Campina Grande",83
+2504009,"Centro",536.7,"Rua João Leôncio",-35.8842712,"58400120",-7.2152047,"PB","Campina Grande",83
+2507507,"Jardim Oceania",9.6,"Avenida Governador Argemiro de Figueiredo",-34.8328896,"58037030",-7.083845,"PB","João Pessoa",83
+2504009,"Centro",531.6,"Rua João Alves de Oliveira",-35.8838691,"58400117",-7.214922,"PB","Campina Grande",83
+2504009,"Centro",523.7,"Praça Tenente Alfredo Dantas",-35.8734667,"58400107",-7.2223667,"PB","Campina Grande",83
+2506103,"",513.1,"Fagundes",-35.7868519,"58487000",-7.3582688,"PB","Fagundes",83
+2501104,"",613.7,"Areia",-35.7002289,"58397000",-6.9686709,"PB","Areia",83
+2504009,"Bodocongó",522,"Rua Antônio Vieira da Rocha",-35.9186554,"58430460",-7.2197205,"PB","Campina Grande",83
+2512077,"",292.8,"Poço de José de Moura",-38.5113258,"58908000",-6.5742584,"PB","Poço de José de Moura",NA
+2513703,"Popular",69.8,"Rua São Paulo",-34.9810215,"58301520",-7.1358326,"PB","Santa Rita",83
+2516201,"Centro",226.4,"Rua Sinfrônio Nazaré",-38.2286249,"58800240",-6.7623387,"PB","Sousa",83
+2500908,"",473,"Arara",-35.7595746,"58396000",-6.8294168,"PB","Arara",83
+2515906,"",532.1,"Serraria",-35.6413285,"58395000",-6.8201281,"PB","Serraria",NA
+2403251,"Vale do Sol",48,"Rua Senador Dinarte Mariz",-35.2705552,"59143290",-5.9307439,"RN","Parnamirim",84
+2502706,"",358.4,"Borborema",-35.5985453,"58394000",-6.8076898,"PB","Borborema",NA
+2500502,"",136.9,"Alagoinha",-35.546154,"58390000",-6.9502133,"PB","Alagoinha",NA
+2507507,"Altiplano Cabo Branco",37.6,"Rua Emílio de Araújo Chaves",-34.8280057,"58046150",-7.1350887,"PB","João Pessoa",83
+2512754,"",164.6,"Riachão do Bacamarte",-35.6642135,"58382000",-7.249294,"PB","Riachão do Bacamarte",NA
+2506806,"",142.9,"Ingá",-35.6100553,"58380000",-7.2892923,"PB","Ingá",83
+2507507,"Centro",50.6,"Rua Marechal Almeida Barreto",-34.8807454,"58013460",-7.123852,"PB","João Pessoa",83
+2503803,"",74.9,"Caldas Brandão",-35.3248749,"58350000",-7.1026686,"PB","Caldas Brandão",NA
+2512762,"Centro",59.9,"AGC Riachão do Poço, Rua Joao Ferreira Alves 44",-35.2641818,"58348970",-7.1466577,"PB","Riachão do Poço",NA
+2507507,"Manaíra",9.6,"Rua João Câncio, até 499/500",-34.837581,"58038340",-7.1006083,"PB","João Pessoa",83
+2512762,"",52.8,"Riachão do Poço",-35.2628177,"58348000",-7.1471456,"PB","Riachão do Poço",NA
+2515302,"Centro",126.7,"AC Sapé, Praça Doutor João Úrsulo 17",-35.2302351,"58340970",-7.0961644,"PB","Sapé",83
+2504009,"Centro",562.8,"Rua Félix Araújo",-35.8864511,"58400078",-7.2183953,"PB","Campina Grande",83
+2504009,"Alto Branco",588.6,"Avenida Manoel Tavares, de 1449 a 2301 - lado ímpar",-35.8797893,"58401500",-7.203853,"PB","Campina Grande",83
+2511509,"Centro",38.5,"AC Pilar, Rua José Lins do Rêgo 77",-35.2588716,"58338970",-7.2669694,"PB","Pilar",83
+2515005,"Centro",42,"AC São Miguel de Taipú, Praça Elias Cavalcante de Albuquerque 10",-35.2095872,"58334970",-7.2503882,"PB","São Miguel de Taipu",NA
+2515005,"",42,"São Miguel de Taipu",-35.2095872,"58334000",-7.2503882,"PB","São Miguel de Taipu",NA
+2507903,"",121.3,"Juripiranga",-35.2398199,"58330000",-7.3746289,"PB","Juripiranga",NA
+2504009,"Centro",549.6,"Rua Estelita Cruz",-35.879954,"58400152",-7.210484,"PB","Campina Grande",83
+2504009,"José Pinheiro",517,"Rua Silva Jardim",-35.8714304,"58407333",-7.223525,"PB","Campina Grande",83
+2504009,"Prata",552.9,"Avenida Presidente Getúlio Vargas",-35.8933188,"58400585",-7.2173285,"PB","Campina Grande",83
+2516201,"Augusto Braga",221.6,"Rua Valdemiro Queiroga de Figueiredo",-38.2314022,"58808550",-6.7518873,"PB","Sousa",83
+2501807,"Mário Andreazza",36.8,"Rua da Paz",-34.9243818,"58309602",-7.1432309,"PB","Bayeux",83
+2501807,"Imaculada",10.6,"Rua Coronel Lira",-34.9276395,"58309060",-7.1301898,"PB","Bayeux",83
+2501807,"Imaculada",9.3,"Rua Francisco Marques da Fonseca",-34.9269094,"58309000",-7.1357512,"PB","Bayeux",83
+2507507,"Cristo Redentor",47.3,"Rua Dom Bosco",-34.8761379,"58070470",-7.1554683,"PB","João Pessoa",83
+2501807,"Rio do Meio",10.9,"Travessa Francisco Marques da Fonseca",-34.9289186,"58308005",-7.1355397,"PB","Bayeux",83
+2504009,"Centro",523.7,"Rua Manoel Farias Leite",-35.8734667,"58400225",-7.2223667,"PB","Campina Grande",83
+2501807,"Alto da Boa Vista",15,"Rua Francisco Marques da Fonseca",-34.9309797,"58308001",-7.1321219,"PB","Bayeux",83
+2501807,"Centro",16.8,"Avenida Liberdade, de 3957/3958 ao fim",-34.9322771,"58306001",-7.1315529,"PB","Bayeux",83
+2501807,"Sesi",13.7,"Rua Tenente José Heleno",-34.9150511,"58305450",-7.1215991,"PB","Bayeux",83
+2516201,"Alto do Cruzeiro",228,"Rua J. César",-38.230386,"58806100",-6.7773551,"PB","Sousa",83
+2511806,"",102.5,"Pirpirituba",-35.496794,"58213000",-6.7811243,"PB","Pirpirituba",NA
+2405009,"",653,"Jaçanã",-36.2116722,"59225000",-6.409459,"RN","Jaçanã",NA
+2507507,"Ernesto Geisel",43.8,"Rua Otacílio Coutinho",-34.8653177,"58075140",-7.176585,"PB","João Pessoa",83
+NA,"",57.6,"Várzea Nova (Santa Rita)",-34.9539247,"58304500",-7.1258108,"PB","Várzea Nova (Santa Rita)",NA
+2504009,"Centro",547.9,"Rua João Suassuna",-35.8892975,"58400036",-7.2155838,"PB","Campina Grande",83
+NA,"",32,"Nossa Senhora do Livramento (Santa Rita)",-34.9017249,"58304000",-7.0514201,"PB","Nossa Senhora do Livramento (Santa Rita)",NA
+2507507,"Tambaú",9.8,"Avenida Olinda, até 399/400",-34.8251604,"58039120",-7.114174,"PB","João Pessoa",83
+2513703,"Popular",69.6,"Rua Venâncio Correia",-34.9860743,"58301575",-7.1371519,"PB","Santa Rita",83
+2501807,"Rio do Meio",14.2,"Travessa Nossa Senhora de Lourdes",-34.9327598,"58308155",-7.1357798,"PB","Bayeux",83
+2513703,"Popular",69.7,"Rua Amazonas",-34.9824167,"58301545",-7.1370774,"PB","Santa Rita",83
+2513703,"Popular",61.4,"Rua Manoel Veloso Borges",-34.9774544,"58301115",-7.1338266,"PB","Santa Rita",83
+2513703,"Popular",37.6,"Rua Minas Gerais",-34.9774455,"58301070",-7.1289053,"PB","Santa Rita",83
+2513703,"Popular",57.1,"Rua Professor Severo Rodrigues",-34.979097,"58301000",-7.1302911,"PB","Santa Rita",83
+2507507,"Mangabeira",42.1,"Rua Josefa Taveira",-34.8387875,"58055000",-7.1701344,"PB","João Pessoa",83
+2501807,"Centro",16.8,"Avenida Presidente Kennedy",-34.9322771,"58306310",-7.1315529,"PB","Bayeux",83
+2513703,"Centro",15.8,"AC Santa Rita, Praça Getúlio Vargas, 94",-34.977432,"58300970",-7.1215845,"PB","Santa Rita",83
+2510808,"São Sebastião",239.6,"Rua Lima Campos",-37.2756269,"58706310",-7.0200916,"PB","Patos",83
+2609600,"Peixinhos",4.5,"Rua Armindo Cardoso Moura",-34.8712606,"53220050",-8.0158037,"PE","Olinda",81
+NA,"",523.6,"Umburetama (Orobó)",-35.647649,"55746000",-7.6980116,"PE","Umburetama (Orobó)",NA
+2507507,"Tambaú",9.8,"Rua Helena Meira Lima, de 377/378 ao fim",-34.8251604,"58039081",-7.114174,"PB","João Pessoa",83
+2513703,"Centro",19.3,"Rua Sebastião Madruga",-34.9882107,"58300350",-7.1273231,"PB","Santa Rita",83
+2513703,"Centro",13,"Rua Antônio Ferreira Nunes",-34.9803797,"58300190",-7.1225544,"PB","Santa Rita",83
+2506608,"",345.5,"Ibiara",-38.4039358,"58980000",-7.499547,"PB","Ibiara",NA
+2513703,"Centro",15.9,"Praça Getúlio Vargas",-34.9776011,"58300130",-7.1212301,"PB","Santa Rita",83
+2513703,"Centro",13.9,"Rua Epitácio Pessoa",-34.9784494,"58300030",-7.1232162,"PB","Santa Rita",83
+2507507,"Jaguaribe",51.4,"Avenida Monsenhor Almeida",-34.8802979,"58015090",-7.1278691,"PB","João Pessoa",83
+2513703,"Centro",14.4,"Rua Coronel Domiciano",-34.979836,"58300170",-7.1225053,"PB","Santa Rita",83
+2516201,"Jardim Sorrilândia II",227.2,"Rua Gastão Medeiros Forte",-38.2352148,"58805290",-6.7786043,"PB","Sousa",83
+2509305,"",68.7,"Mataraca",-35.0576436,"58292000",-6.5928178,"PB","Mataraca",NA
+2507804,"",588.5,"Junco do Seridó",-36.7132449,"58640000",-6.9933652,"PB","Junco do Seridó",NA
+2507507,"Bancários",40.2,"Rua Bancário Wagner Alexandrino Bezerra Japyassu",-34.8415096,"58051320",-7.1455147,"PB","João Pessoa",83
+2514552,"",722.6,"São José de Princesa",-38.0986126,"58758000",-7.740825,"PB","São José de Princesa",NA
+2504033,"",96.3,"Capim",-35.1675661,"58287000",-6.9166507,"PB","Capim",NA
+NA,"",103,"Pitanga de Estrada (Mamanguape)",-35.1335406,"58286000",-6.5936021,"PB","Pitanga de Estrada (Mamanguape)",NA
+2508554,"",123.6,"Logradouro",-35.4425934,"58254000",-6.6144662,"PB","Logradouro",NA
+2511202,"",175.1,"Pedras de Fogo",-35.1117491,"58328000",-7.4009253,"PB","Pedras de Fogo",83
+2504157,"",512.1,"Casserengue",-35.8177357,"58238000",-6.7806353,"PB","Casserengue",NA
+2504009,"Liberdade",516.4,"Rua Sergipe",-35.8907625,"58414040",-7.2357177,"PB","Campina Grande",83
+2512747,"",174.8,"Riachão",-35.6596474,"58235000",-6.5410115,"PB","Riachão",NA
+2503506,"",536.8,"Cacimba de Dentro",-35.7927369,"58230000",-6.6418188,"PB","Cacimba de Dentro",NA
+2504009,"Acácio Figueiredo",485.1,"Rua Doutor Acácio Figueiredo",-35.9189876,"58421210",-7.267808,"PB","Campina Grande",83
+2516201,"Várzea da Cruz",222,"Rua Manoel Celestino de Paula",-38.2350029,"58806658",-6.7538232,"PB","Sousa",83
+2507507,"Estados",41.4,"Avenida Presidente Epitácio Pessoa, de 1147 a 1741 - lado ímpar",-34.8541389,"58030001",-7.1128323,"PB","João Pessoa",83
+2501807,"Mário Andreazza",50,"Avenida Vereador Genival Guedes",-34.9240384,"58309700",-7.1456916,"PB","Bayeux",83
+2507507,"Centro",43.6,"Avenida Duarte da Silveira, até 703/704",-34.8450118,"58013280",-7.1194958,"PB","João Pessoa",83
+2507507,"Jardim Oceania",8,"Rua Severino Linhares Pordeus",-34.8362783,"58037208",-7.0916971,"PB","João Pessoa",83
+2510808,"Santo Antônio",250,"Rua José Mendes",-37.2834181,"58701190",-7.034969,"PB","Patos",83
+2510808,"Centro",257,"Rua Felizardo Leite",-37.2832276,"58700030",-7.0297575,"PB","Patos",83
+2505204,"",94.3,"Cuitegi",-35.5245171,"58208000",-6.8975099,"PB","Cuitegi",83
+2504009,"José Pinheiro",520.7,"Rua Maximiano Machado",-35.8730952,"58407340",-7.2214386,"PB","Campina Grande",83
+2511400,"",446.9,"Picuí",-36.3500305,"58187000",-6.5088537,"PB","Picuí",83
+2511103,"",511.7,"Pedra Lavrada",-36.4707725,"58180000",-6.756566,"PB","Pedra Lavrada",83
+2505105,"",666,"Cuité",-36.153902,"58175000",-6.4848236,"PB","Cuité",83
+2504009,"Tambor",510,"Rua João Quirino",-35.880577,"58414403",-7.2351043,"PB","Campina Grande",83
+2611606,"Imbiribeira",8.5,"Avenida Marechal Mascarenhas de Morais, até 1920 - lado par",-34.9107585,"51170000",-8.1036898,"PE","Recife",81
+2516102,"Centro",519.9,"AC Soledade, Rua Doutor Gouveia Nóbrega 67",-36.367118,"58155970",-7.058699,"PB","Soledade",83
+2504009,"Malvinas",503.2,"Avenida Francisco Lopes de Almeida",-35.9361792,"58432570",-7.2523039,"PB","Campina Grande",83
+2509503,"",717.1,"Montadas",-35.9588958,"58145000",-7.0873639,"PB","Montadas",NA
+2611606,"Nova Descoberta",63.1,"Rua Luiza",-34.9254848,"52090220",-8.0115387,"PE","Recife",81
+2501807,"Imaculada",11.5,"Rua Plácido Oliveira Lima",-34.9252011,"58309180",-7.1345959,"PB","Bayeux",83
+2601201,"Coronel Siqueira Campos",674.7,"Avenida Osvaldo Cruz, do km 255,000 ao km 259,000",-37.0658719,"56511000",-8.4344385,"PE","Arcoverde",87
+2500106,"",736.2,"Água Branca",-37.6408731,"58748000",-7.5142567,"PB","Água Branca",NA
+2402600,"",66.2,"Ceará-Mirim",-35.4237292,"59570000",-5.6395379,"RN","Ceará-Mirim",84
+2510808,"Maternidade",258.3,"Rua do Prado",-37.2935902,"58701418",-7.0320394,"PB","Patos",83
+2512408,"",665.7,"Puxinanã",-35.9624008,"58115000",-7.1467711,"PB","Puxinanã",83
+2504009,"Estação Velha",523.7,"Rua Severino Rodrigues de Albuquerque",-35.8734667,"58410082",-7.2223667,"PB","Campina Grande",83
+2501807,"Manguinhos",69,"Rodovia BR-101",-40.3798368,"58309600",-19.7504844,"PB","Bayeux",83
+2510808,"Morro",254.1,"Rua Natália de Figueiredo",-37.2904129,"58703290",-7.029001,"PB","Patos",83
+2504009,"Centro",527.3,"Avenida Janúncio Ferreira",-35.879987,"58400158",-7.2154345,"PB","Campina Grande",83
+2611533,"",384,"Quixabá",-37.283333,"56828000",-9.016667,"PE","Quixabá",NA
+2501575,"",334.7,"Barra de Santana",-35.9995079,"58458000",-7.5232664,"PB","Barra de Santana",83
+2403400,"",563,"Equador",-36.7176682,"59355000",-6.9444777,"RN","Equador",NA
+2516201,"Gato Preto",220,"Rua Sady Fernandes Aragão",-38.2299124288,"58802030",-6.7620800081,"PB","Sousa",83
+2510808,"Jatobá",254.5,"Rua Manoel Reinaldo",-37.2754824,"58707420",-7.0531748,"PB","Patos",83
+2507507,"Tambiá",39.4,"Rua Líbero Badaró",-34.8715675,"58020790",-7.1151818,"PB","João Pessoa",83
+2507507,"Pedro Gondim",44.9,"Rua Coronel Otto Feio da Silveira",-34.8472468,"58031010",-7.1185116,"PB","João Pessoa",83
+2510808,"Noé Trajano",247.5,"Rua Dorgival de Souza Cavalcante",-37.2878446,"58705040",-7.009713,"PB","Patos",83
+2408102,"Bom Pastor",52,"Travessa Lima e Silva",-35.2391277,"59062305",-5.8136515,"RN","Natal",84
+2504009,"Centro",523.7,"Rua João da Silva Pimentel, até 348/349",-35.8734667,"58400028",-7.2223667,"PB","Campina Grande",83
+2507507,"Valentina de Figueiredo",50.8,"Conjunto Sonho Meu",-34.8802645,"58064395",-7.1618375,"PB","João Pessoa",83
+2509008,"Centro",760.7,"AC Manaíra, Praça Félix da Silva Cabral 6",-38.1549097,"58995970",-7.7072216,"PB","Manaíra",NA
+2504009,"Centenário",499.8,"Avenida Marechal Floriano Peixoto, lado par",-35.9146084,"58428130",-7.2333776,"PB","Campina Grande",83
+2507507,"Estados",41.4,"Rua Professor Barroso, de 401/402 ao fim",-34.8541389,"58030204",-7.1128323,"PB","João Pessoa",83
+2507507,"Distrito Industrial",42.9,"Conjunto Distrito Industrial",-34.9011922,"58082040",-7.1772647,"PB","João Pessoa",83
+2510808,"Brasília",253.4,"Rua Bossuet Wanderley, de 400/401 ao fim",-37.272465,"58700410",-7.0260577,"PB","Patos",83
+2512507,"Centro",442.6,"AGC Ligeiro, Sítio Ligeiro s/n",-35.9023681,"58475972",-7.3637571,"PB","Queimadas",83
+2504009,"Acácio Figueiredo",485.8,"Rua Três Irmãs",-35.9176859,"58421180",-7.2592647,"PB","Campina Grande",83
+2500577,"",447.8,"Algodão de Jandaíra",-36.0076425,"58399000",-6.9039612,"PB","Algodão de Jandaíra",NA
+2510808,"Monte Castelo",251.6,"Rua Joaquim Amaro",-37.2752743,"58707080",-7.0413514,"PB","Patos",83
+2513653,"",348.4,"Joca Claudino",-38.4795129,"58928000",-6.4835644,"PB","Joca Claudino",NA
+2504009,"Prata",537.2,"Rua Luís de Melo",-35.8913983,"58400545",-7.2212536,"PB","Campina Grande",83
+2513703,"Centro",243.2,"Rua Joaquim Gomes da Silveira",-42.6276046,"58300240",-19.5077373,"PB","Santa Rita",83
+2504009,"Monte Castelo",518.4,"Rua Mamede Moisés Raia",-35.8680883,"58407030",-7.2196143,"PB","Campina Grande",83
+2511707,"",137,"Pilõezinhos",-35.5305775,"58210000",-6.843131,"PB","Pilõezinhos",NA
+2504009,"Tambor",507.8,"Rua Guilhermino Barbosa",-35.8851795,"58414410",-7.2354015,"PB","Campina Grande",83
+2507507,"Mangabeira",33.7,"Rua José César de Carvalho",-34.8194706,"58058644",-7.1662798,"PB","João Pessoa",83
+2507507,"Alto do Mateus",43.3,"Rua José Gomes de Abreu",-34.9129829,"58090810",-7.1335786,"PB","João Pessoa",83
+2507507,"Alto do Mateus",44.1,"Rua Índio Araribóia",-34.9130931,"58090680",-7.134131,"PB","João Pessoa",83
+2507507,"Alto do Mateus",38.7,"Rua Luiz de França Pereira",-34.9144021,"58090580",-7.1386363,"PB","João Pessoa",83
+2507507,"Alto do Mateus",42.3,"Rua Carteiro Francisco Inácio do Rego Filho",-34.9136636,"58090570",-7.1375959,"PB","João Pessoa",83
+2507507,"Alto do Mateus",29.9,"Conjunto Juracy Palhano",-34.9054641,"58090050",-7.1485909,"PB","João Pessoa",83
+2507507,"Distrito Industrial",26.6,"Rodovia BR-101",-34.9032717,"58082000",-7.1887522,"PB","João Pessoa",83
+2507507,"Alto do Mateus",15.5,"Rua Carmem Miranda",-34.9094725,"58090000",-7.132626,"PB","João Pessoa",83
+2501807,"Centro",15.6,"Avenida São Sebastião",-34.9210882,"58306170",-7.1275954,"PB","Bayeux",83
+2507507,"Oitizeiro",28.8,"Rua Ambrózio Rodrigues de Souza",-34.9058724,"58088798",-7.1491666,"PB","João Pessoa",83
+2507507,"Oitizeiro",24.6,"Avenida Coronel Adolfo Massa",-34.8983246,"58088620",-7.1514236,"PB","João Pessoa",83
+2504009,"Distrito Industrial",502.7,"Rua Herbert Muller",-35.8906889,"58411420",-7.2614659,"PB","Campina Grande",83
+2507507,"Oitizeiro",29.3,"Avenida José Bonifácio",-34.901251,"58088560",-7.1534601,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Presidente Epitácio Pessoa, até 1698 - lado par",-34.8596574,"58040000",-7.1260002,"PB","João Pessoa",83
+2507507,"Oitizeiro",29.1,"Avenida Capitão Francisco Pereira",-34.8967727,"58088530",-7.1518538,"PB","João Pessoa",83
+2507507,"Oitizeiro",34.4,"Rodovia BR-101",-34.9064531,"58088200",-7.1581249,"PB","João Pessoa",83
+2501807,"Sesi",14.8,"Avenida Liberdade, de 2379/2380 a 3955/3956",-34.9155426,"58306000",-7.1226846,"PB","Bayeux",83
+2507507,"Oitizeiro",40.8,"Rua Professor Cândido de Sá Andrade",-34.9045066,"58088150",-7.1594082,"PB","João Pessoa",83
+2507309,"",191.9,"Jacaraú",-35.2911117,"58278000",-6.6150571,"PB","Jacaraú",NA
+2507507,"Oitizeiro",53.6,"Rua Valêncio Lins de Mendonça",-34.8997344,"58088110",-7.1595419,"PB","João Pessoa",83
+2507507,"Oitizeiro",50.1,"Rua Manoel Guerra",-34.8956661,"58087020",-7.1609445,"PB","João Pessoa",83
+2507507,"Oitizeiro",55.3,"Avenida Cruz das Armas, de 2204/2205 ao fim",-34.8982775,"58087000",-7.1590609,"PB","João Pessoa",83
+2516201,"Estação",228,"Rua Coronel Manoel Isidro Rocha",-38.234201,"58807250",-6.7737476,"PB","Sousa",83
+2507507,"Bancários",38.1,"Rua Bancário Sérgio Guerra",-34.8440904,"58051255",-7.1479718,"PB","João Pessoa",83
+2507507,"Cruz das Armas",47.2,"Avenida Engenheiro Retumba",-34.8899025,"58085610",-7.1474441,"PB","João Pessoa",83
+2510808,"Bivar Olinto",265.1,"Rua Deca Simplício",-37.3017327,"58701600",-7.033733,"PB","Patos",83
+2507507,"Cruz das Armas",40.3,"Rua Monsenhor Severiano",-34.8874181,"58085510",-7.1464113,"PB","João Pessoa",83
+2507507,"Costa e Silva",42.4,"Rua Graciliano Delgado",-34.8972314,"58081000",-7.1799786,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Avenida Dom Pedro I, até 399/400",-34.8450118,"58013020",-7.1194958,"PB","João Pessoa",83
+2507507,"Jardim Veneza",43.6,"Conjunto José Vieira Diniz",-34.8450118,"58084190",-7.1194958,"PB","João Pessoa",83
+2516201,"Centro",221.6,"Rua Coronel José Vicente",-38.2314022,"58800005",-6.7518873,"PB","Sousa",83
+2507507,"Jardim Veneza",38,"Rua Maria José Miranda do Amaral",-34.9120901,"58084160",-7.170021,"PB","João Pessoa",83
+2510105,"",671.2,"Nova Floresta",-36.2040497,"58178000",-6.4554493,"PB","Nova Floresta",83
+2507507,"Ernesto Geisel",42.6,"Rua Doutor Manoel Lopes de Carvalho",-34.8634338,"58075427",-7.1719334,"PB","João Pessoa",83
+2507507,"Jardim Veneza",39.5,"Rua José Dantas Almeida",-34.9137348,"58084145",-7.1716675,"PB","João Pessoa",83
+2507507,"Jardim Veneza",32.4,"Rua Martinho Lutero",-34.9068325,"58084000",-7.164329,"PB","João Pessoa",83
+2507507,"Indústrias",53,"Rua Cidade de Bom Sucesso",-34.9260247,"58083597",-7.1746928,"PB","João Pessoa",83
+2507507,"Indústrias",51.7,"Rua Manuel de Paula Magalhães",-34.9189597,"58083090",-7.1788793,"PB","João Pessoa",83
+2507507,"Treze de Maio",43.2,"Praça Vilas Boas",-34.8665552,"58025200",-7.1129061,"PB","João Pessoa",83
+2504009,"Catolé",518.4,"2ª Travessa Elpídio de Almeida",-35.8754782,"58410170",-7.2388106,"PB","Campina Grande",83
+2504009,"Jardim Tavares",523.7,"Avenida Manoel Tavares, de 1450 a 2302 - lado par",-35.8734667,"58402020",-7.2223667,"PB","Campina Grande",83
+2507507,"Distrito Industrial",53.1,"Rua Y Dois",-34.9211954,"58082025",-7.179495,"PB","João Pessoa",83
+2507507,"Distrito Industrial",37.1,"Avenida Chesf",-34.9011313,"58082010",-7.173716,"PB","João Pessoa",83
+2602803,"",814.5,"Buíque",-37.1572494,"56520000",-8.6210924,"PE","Buíque",87
+2507507,"Ernani Sátiro",33.3,"Rua Coronel João Costa e Silva",-34.8954826,"58080410",-7.1723215,"PB","João Pessoa",83
+2507507,"Ernani Sátiro",29.7,"Rua Lourenço César",-34.8878445,"58080000",-7.1694498,"PB","João Pessoa",83
+2510808,"Centro",246.8,"Praça Presidente Getúlio Vargas",-37.275037,"58700230",-7.0178331,"PB","Patos",83
+2507507,"Grotão",53.6,"Rua Blumenau",-34.8824773,"58079804",-7.1868366,"PB","João Pessoa",83
+2504009,"Centro",555.2,"Praça da Bandeira",-35.8849528,"58400085",-7.2195995,"PB","Campina Grande",83
+2503209,"Intermares",11.1,"Rua Golfo da Califórnia",-34.8429461,"58102100",-7.0431985,"PB","Cabedelo",NA
+2507507,"Funcionários",32.9,"Rua Deputado Francisco Seráphico da Nóbrega Filho",-34.8858658,"58079000",-7.1817426,"PB","João Pessoa",83
+2516201,"Centro",229.5,"Rua Quintino Bocaiúva",-38.2299268,"58800060",-6.7612718,"PB","Sousa",83
+2507507,"Cruz das Armas",50.8,"Rua Santa Tereza",-34.891797,"58086050",-7.1519808,"PB","João Pessoa",83
+2510808,"Centro",246.8,"Rua Jeová Bezerra",-37.275037,"58700090",-7.0178331,"PB","Patos",83
+2507507,"Manaíra",9.6,"Rua Francisco Brandão, até 1188/1189",-34.837581,"58038520",-7.1006083,"PB","João Pessoa",83
+2507507,"Alto do Mateus",31.1,"Conjunto dos Motoristas",-34.907912,"58091200",-7.1417258,"PB","João Pessoa",83
+2507507,"Funcionários",54.9,"Rua Maria Isaura da Gama e Melo",-34.8820847,"58078360",-7.181984,"PB","João Pessoa",83
+2403400,"Dinarte Mariz",574.9,"AC Equador, Rua Balduíno Guedes 95",-36.7132449,"59355970",-6.9489029,"RN","Equador",NA
+2507507,"Funcionários",34.7,"Rua Alexandrino D. da Silva Neto",-34.8867881,"58078160",-7.1785462,"PB","João Pessoa",83
+2507507,"Funcionários",36.2,"Rua Jessé da Costa Cabral",-34.8858066,"58078000",-7.1765916,"PB","João Pessoa",83
+2507507,"João Paulo II",36.9,"Rua Abdias Genuíno de Lima",-34.8817282,"58076070",-7.174137,"PB","João Pessoa",83
+2516201,"Estação",228,"Rua Cônego José Viana",-38.2325306,"58807320",-6.7666946,"PB","Sousa",83
+2507507,"Ernesto Geisel",46,"Rua Coronel João Augusto de Lima",-34.8705355,"58075470",-7.1806537,"PB","João Pessoa",83
+2509057,"",94.1,"Marcação",-35.0160566,"58294000",-6.7705579,"PB","Marcação",NA
+2507507,"Trincheiras",10.7,"Rua Sebastião Oliveira Lima",-34.8903067,"58011290",-7.127235,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",47.4,"Rua Adauto Toledo",-34.8682524,"58075260",-7.1778078,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",49.5,"Rua Pastor Misael Jacomé Cavalcanti",-34.8702636,"58075010",-7.174082,"PB","João Pessoa",83
+2507507,"Cabo Branco",9.2,"Avenida Buarque",-34.8260055,"58045160",-7.1256047,"PB","João Pessoa",83
+2507507,"José Américo de Almeida",568.8,"Rua Praia de Boa Viagem, até 424 - lado direito",-47.3201811,"58073590",-23.1864072,"PB","João Pessoa",83
+2507507,"Cristo Redentor",50.8,"Rua Antônia Gomes da Silveira, até 1261/1262",-34.8789697,"58070510",-7.1630006,"PB","João Pessoa",83
+2507507,"José Américo de Almeida",45.4,"Rua Leila Diniz",-34.8553794,"58073180",-7.1680169,"PB","João Pessoa",83
+2407005,"",602.8,"Luís Gomes",-38.3902094,"59940000",-6.4062835,"RN","Luís Gomes",NA
+2507507,"Cristo Redentor",50.8,"Diretoria Regional da ECT/Paraíba, Rodovia BR-230 km 24,5",-34.8789697,"58071900",-7.1630006,"PB","João Pessoa",83
+2610905,"",652.3,"Pesqueira",-36.6981139,"55200000",-8.3583909,"PE","Pesqueira",87
+2504009,"Centro",561.7,"Rua Theodósio de Oliveira Ledo",-35.8860844,"58400081",-7.2189007,"PB","Campina Grande",83
+2408102,"Redinha",3.8,"Avenida Ulisses Guimarães",-35.2071056,"59122170",-5.7436614,"RN","Natal",84
+2507507,"Cristo Redentor",44.1,"Rua Joana Domingos Alves",-34.8660067,"58071690",-7.1625277,"PB","João Pessoa",83
+2510600,"",596.7,"Ouro Velho",-37.1509898,"58560000",-7.6209354,"PB","Ouro Velho",NA
+2504009,"Catolé",516.5,"Rua Professora Eutécia Vital Ribeiro",-35.8736217,"58410205",-7.2379353,"PB","Campina Grande",83
+2507507,"Cristo Redentor",50.8,"Rodovia BR-230, do km 25,000 ao fim",-34.8789697,"58071680",-7.1630006,"PB","João Pessoa",83
+2507507,"Varadouro",19.3,"Rua Padre Azevedo",-34.8884239,"58010360",-7.1184774,"PB","João Pessoa",83
+2507507,"Cristo Redentor",50.1,"Rua Nereu de Morais Coelho",-34.8717046,"58071470",-7.157121,"PB","João Pessoa",83
+2504009,"Dinamérica",498,"Avenida Marechal Floriano Peixoto",-35.9148975,"58432120",-7.2335879,"PB","Campina Grande",83
+2504009,"Jardim Paulistano",523.7,"Rua João Carolino",-35.8734667,"58415045",-7.2223667,"PB","Campina Grande",83
+2507507,"Oitizeiro",53.5,"Rua Engenheiro Ávidos",-34.8968041,"58088010",-7.1560044,"PB","João Pessoa",83
+2507507,"Cristo Redentor",42.2,"Rua José Gomes da Silveira",-34.8793715,"58070390",-7.1485888,"PB","João Pessoa",83
+2507507,"Aeroclube",8.5,"Rua Edgar Sales de Miranda Henrique",-34.8447776,"58036880",-7.0935219,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",46.2,"Avenida Presidente Juscelino Kubitschek",-34.8698513,"58075400",-7.1798432,"PB","João Pessoa",83
+2507507,"Cristo Redentor",49.4,"Avenida da Fraternidade",-34.8818683,"58070310",-7.1522011,"PB","João Pessoa",83
+2516201,"Centro",226.7,"Rua Odon Bezerra",-38.2282117,"58800130",-6.7608281,"PB","Sousa",83
+2501906,"",153.1,"Belém",-35.5355783,"58255000",-6.6956001,"PB","Belém",83
+2507507,"Gramame",48,"Rua Comerciante Álvaro Antero Nascimento",-34.8789697,"58067201",-7.1994077,"PB","João Pessoa",83
+2613909,"São Sebastião",427,"Rua Conselheiro Oliveira Neto",-38.306354,"56906500",-7.9793323,"PE","Serra Talhada",87
+2507507,"Planalto Boa Esperança",44.1,"Avenida Goiânia",-34.8557817,"58065016",-7.2025866,"PB","João Pessoa",83
+2507507,"Mandacaru",14.6,"Rua Trinta de Setembro",-34.8657354,"58027200",-7.1015599,"PB","João Pessoa",83
+2507507,"Estados",41.4,"Rua Manoel Ferreira Machado, de 196/197 ao fim",-34.8541389,"58030203",-7.1128323,"PB","João Pessoa",83
+2507507,"Valentina de Figueiredo",32.6,"Loteamento Quintas de Gramame",-34.8501922,"58064483",-7.2060186,"PB","João Pessoa",83
+2513703,"Municípios",64.3,"Rua Puxinana",-34.963688,"58302295",-7.1509231,"PB","Santa Rita",83
+2507507,"Torre",41.4,"Rua Pedro Batista",-34.8611049,"58040510",-7.1305241,"PB","João Pessoa",83
+2507507,"Valentina de Figueiredo",45.1,"Rua Joamir Severino dos Santos",-34.8438608,"58064132",-7.1994698,"PB","João Pessoa",83
+2507507,"Mangabeira",40.6,"Rua Beatriz Maria de Oliveira",-34.8305353,"58058320",-7.1690487,"PB","João Pessoa",83
+2611606,"Imbiribeira",13.9,"Praça Ministro Salgado Filho",-34.9175318,"51210010",-8.1329248,"PE","Recife",81
+2504009,"Itararé",511.3,"Rua Vigário Calixto, de 1841/1842 ao fim",-35.8797893,"58411070",-7.253435,"PB","Campina Grande",83
+2507507,"Mangabeira",37,"Rua Professora Alice Elisa de Melo",-34.8462377,"58057400",-7.1841418,"PB","João Pessoa",83
+2507507,"Mangabeira",40.9,"Rua José Mendonça de Araújo",-34.8420006,"58056380",-7.1745074,"PB","João Pessoa",83
+2507507,"Mangabeira",40.5,"Rua Deputado Plínio Salgado",-34.8415857,"58056290",-7.1731787,"PB","João Pessoa",83
+2507507,"Mangabeira",42.1,"Rua Ivan de Assis Costa",-34.8356715,"58055700",-7.1668322,"PB","João Pessoa",83
+2507507,"Mangabeira",45.3,"Rua Catequista Maria José",-34.8398948,"58055370",-7.1661837,"PB","João Pessoa",83
+2507507,"Mangabeira",45.4,"Rua Capitão Carlos Sobreira",-34.8400085,"58055340",-7.1678524,"PB","João Pessoa",83
+2507507,"Mangabeira",46.2,"Rua Comerciante Antônio de Souza Lima",-34.8374711,"58055060",-7.164478,"PB","João Pessoa",83
+2507507,"Ilha do Bispo",23.2,"Rua Lopo Garro",-34.8982775,"58011380",-7.1363246,"PB","João Pessoa",83
+2507507,"Mangabeira",41.6,"Rua Rita Xavier de Oliveira",-34.8366969,"58055020",-7.1672451,"PB","João Pessoa",83
+2507507,"Oitizeiro",26.4,"Rua José Novais",-34.8988931,"58088570",-7.152356,"PB","João Pessoa",83
+2507507,"Mangabeira",36.9,"Avenida Hilton Souto Maior, de 1 a 99999 - lado esquerdo",-34.834821,"58055018",-7.1759102,"PB","João Pessoa",83
+2512788,"",446.4,"Riacho de Santo Antônio",-36.1562949,"58465000",-7.6936901,"PB","Riacho de Santo Antônio",NA
+2507507,"Anatólia",37.3,"Rua Francisco Timóteo de Souza",-34.8424901,"58052130",-7.1515548,"PB","João Pessoa",83
+2507507,"Anatólia",36.6,"Rua dos Pinheiros",-34.8418331,"58052090",-7.1508704,"PB","João Pessoa",83
+2501807,"Centro",13.8,"Rua Celina Miranda",-34.9311257,"58307170",-7.1292186,"PB","Bayeux",83
+2507507,"Anatólia",39.7,"Rua Bancário Sérgio Guerra",-34.8418442,"58052000",-7.1493049,"PB","João Pessoa",83
+2507507,"Castelo Branco",43.2,"Universidade Federal da Paraíba - Campus I, Jardim Universitário, s/n",-34.8431006,"58051900",-7.1365167,"PB","João Pessoa",83
+2504009,"Centro",532.5,"Rua Irineu Joffily",-35.8842263,"58400270",-7.2228389,"PB","Campina Grande",83
+2516805,"",312.1,"",-38.5976968,"58920000",-6.5792047,"PB","Triunfo",NA
+2516151,"",587.4,"Sossego",-36.2463194,"58177000",-6.7668249,"PB","Sossego",NA
+2507507,"Bancários",38.9,"Rua Djalma Coêlho",-34.8483632,"58051124",-7.1454051,"PB","João Pessoa",83
+2507507,"Jardim São Paulo",42.7,"Rua Empresário João Rodrigues Alves",-34.8467628,"58051000",-7.1471905,"PB","João Pessoa",83
+2516201,"Jardim Sorrilândia I",226.7,"Rua Assis Chateaubriand",-38.2351667,"58805000",-6.7765832,"PB","Sousa",83
+2507507,"Castelo Branco",41.9,"Rua Onaldo da Silva Coutinho",-34.8500173,"58050600",-7.1344082,"PB","João Pessoa",83
+2505907,"",272.1,"Emas",-37.7152141,"58763000",-7.1075728,"PB","Emas",NA
+2516201,"André Gadelha",221.6,"Rua Manoel Batista de Sousa",-38.2314022,"58806410",-6.7518873,"PB","Sousa",83
+2507507,"Cabo Branco",5.9,"Avenida Cabo Branco",-34.8163024,"58045010",-7.1402167,"PB","João Pessoa",83
+2504009,"Monte Santo",582,"Rua Olegário Maciel",-35.896431,"58400745",-7.2129289,"PB","Campina Grande",83
+2507507,"Cabo Branco",9,"Avenida Presidente Epitácio Pessoa, de 4200 ao fim - lado par",-34.8251604,"58045000",-7.1255451,"PB","João Pessoa",83
+2510808,"Bivar Olinto",256.2,"Rua Zózimo Gurgel",-37.3012154,"58701690",-7.0372199,"PB","Patos",83
+2507507,"Miramar",28.6,"Rua Olívio Travassos de Medeiros",-34.8378923,"58043050",-7.1238821,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",51.3,"Rua Valdemar Naziazeno",-34.8736936,"58075000",-7.1803212,"PB","João Pessoa",83
+2507507,"Tambauzinho",37.5,"Avenida Presidente Epitácio Pessoa, de 2122 a 3240 - lado par",-34.8472401,"58042006",-7.1236539,"PB","João Pessoa",83
+2507507,"Expedicionários",43.3,"Avenida Expedicionários",-34.8552223,"58041010",-7.1246081,"PB","João Pessoa",83
+2504009,"Prata",543.9,"Rua Vereador Arrojado Lisboa",-35.8947759,"58400610",-7.219399,"PB","Campina Grande",83
+2507507,"Torre",41.9,"Rua Otacílio de Albuquerque",-34.8579563,"58040720",-7.1247476,"PB","João Pessoa",83
+2507507,"Torre",42.2,"Avenida Geminiano da Franca",-34.8612372,"58040560",-7.1288304,"PB","João Pessoa",83
+2515609,"",330.7,"Serra da Raiz",-35.4432344,"58260000",-6.686659,"PB","Serra da Raiz",NA
+2507507,"Torre",40.3,"Avenida Rui Barbosa, de 799/800 ao fim",-34.8596574,"58040491",-7.1260002,"PB","João Pessoa",83
+2504009,"Centro",552.2,"Rua Siqueira Campos",-35.8904759,"58400020",-7.2157247,"PB","Campina Grande",83
+2507507,"Torre",28,"Rua João Nobre",-34.8589829,"58040460",-7.1336745,"PB","João Pessoa",83
+2507507,"Roger",51.8,"Rua Joaquim Nabuco",-34.8811836,"58020510",-7.1147438,"PB","João Pessoa",83
+2507507,"Tambaú",9.8,"Rua Nossa Senhora dos Navegantes, de 425/426 ao fim",-34.8251604,"58039111",-7.114174,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Santa Júlia, até 651/652",-34.8596574,"58040450",-7.1260002,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Dom Pedro II, de 1240/1241 ao fim",-34.8596574,"58040440",-7.1260002,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Sinésio Guimarães, de 1059/1060 ao fim",-34.8596574,"58040401",-7.1260002,"PB","João Pessoa",83
+2507507,"Torre",43.2,"Avenida Nossa Senhora de Fátima",-34.8653678,"58040380",-7.1281914,"PB","João Pessoa",83
+2507507,"Torre",41.6,"Avenida Barão de Mamanguape, até 799/800",-34.8639064,"58040330",-7.1251312,"PB","João Pessoa",83
+2507507,"Torre",42.4,"Avenida Ministro José Américo de Almeida, de 1103/1104 a 2089/2090",-34.8603277,"58040302",-7.1279733,"PB","João Pessoa",83
+2513703,"Centro",17.6,"Rua Senador José Américo",-34.9823607,"58300250",-7.1257935,"PB","Santa Rita",83
+2513000,"",427.4,"Salgadinho",-36.8457667,"58650000",-7.1029906,"PB","Salgadinho",83
+2507507,"Torre",40.3,"Avenida Ministro José Américo de Almeida, até 1101/1102",-34.8596574,"58040300",-7.1260002,"PB","João Pessoa",83
+2507507,"Costa e Silva",35.8,"Rua José da Cunha",-34.8957383,"58081150",-7.1767579,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Rua Feliciano Dourado, até 819/820",-34.8596574,"58040260",-7.1260002,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Avenida Carneiro da Cunha, até 793/794",-34.8596574,"58040240",-7.1260002,"PB","João Pessoa",83
+2507507,"Torre",45.8,"Rua Clemente Rosas",-34.8676349,"58040170",-7.1246193,"PB","João Pessoa",83
+2507507,"Torre",40.3,"Rua Júlia Freire, até 1181/1182",-34.8596574,"58040040",-7.1260002,"PB","João Pessoa",83
+2507507,"Manaíra",8.2,"Avenida Senador Ruy Carneiro, lado par",-34.828319,"58039180",-7.1121567,"PB","João Pessoa",83
+2606804,"Centro",5,"Avenida Alfredo Bandeira de Melo, do km 40,006 ao km 50,008 - lado par",-34.9016204,"53610000",-7.8292242,"PE","Igarassu",81
+2507507,"Tambaú",12.7,"Rua Professora Maria Sales",-34.8256476,"58039130",-7.1150284,"PB","João Pessoa",83
+2507507,"Tambaú",9.8,"Avenida Nego, até 405/406",-34.8251604,"58039100",-7.114174,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",44.3,"Rua Carlos Ribeiro Prado",-34.8655579,"58075100",-7.1760443,"PB","João Pessoa",83
+2507507,"Tambaú",9.8,"Rua Helena Meira Lima, até 375/376",-34.8251604,"58039080",-7.114174,"PB","João Pessoa",83
+2507507,"Tambaú",9.8,"Avenida Antônio Lira, até 765/766",-34.8251604,"58039050",-7.114174,"PB","João Pessoa",83
+2500304,"",126.3,"Alagoa Grande",-35.6300977,"58388000",-7.0390507,"PB","Alagoa Grande",83
+2507507,"Estados",41.4,"Avenida Mato Grosso, até 1039/1040",-34.8541389,"58030080",-7.1128323,"PB","João Pessoa",83
+NA,"",68.6,"Cupissura (Caaporã)",-34.9173992,"58327000",-7.5130634,"PB","Cupissura (Caaporã)",NA
+2507507,"Tambaú",7.6,"Praça Santo Antônio",-34.8236578,"58039030",-7.1109121,"PB","João Pessoa",83
+2507507,"Tambaú",9.6,"Avenida Almirante Tamandaré",-34.8229401,"58039010",-7.111941,"PB","João Pessoa",83
+2507507,"Tambaú",9.8,"Avenida Presidente Epitácio Pessoa, de 4183 ao fim - lado ímpar",-34.8251604,"58039000",-7.114174,"PB","João Pessoa",83
+2501534,"",619,"Baraúna",-36.2523754,"58188000",-6.6434624,"PB","Baraúna",NA
+2507507,"Manaíra",9.6,"Rua Eutiquiano Barreto, de 589/590 ao fim",-34.837581,"58038311",-7.1006083,"PB","João Pessoa",83
+2507507,"Manaíra",9.6,"Rua Eutiquiano Barreto, até 587/588",-34.837581,"58038310",-7.1006083,"PB","João Pessoa",83
+2512721,"",177.6,"Pedro Régis",-35.2930013,"58273000",-6.6406173,"PB","Pedro Régis",NA
+2507507,"Manaíra",6.5,"Rua Nicola Porto",-34.8273248,"58038120",-7.1103184,"PB","João Pessoa",83
+2507507,"Manaíra",9.6,"Avenida General Edson Ramalho, até 811/812",-34.837581,"58038100",-7.1006083,"PB","João Pessoa",83
+2507507,"Manaíra",8.9,"Rua Ubirajara Boto Targino",-34.8284294,"58038030",-7.1110972,"PB","João Pessoa",83
+2507507,"Manaíra",9.6,"Avenida João Maurício, até 1766/1767",-34.837581,"58038000",-7.1006083,"PB","João Pessoa",83
+2507507,"Paratibe",37.1,"Avenida Jacarandá",-34.8301789,"58062090",-7.2123057,"PB","João Pessoa",83
+2507507,"Jardim Oceania",43.6,"Rua Themístocles da Costa Brito",-34.8450118,"58037725",-7.1194958,"PB","João Pessoa",83
+2516201,"Alto do Cruzeiro",229.1,"Avenida Saul Pedrosa de Sá Melo",-38.240117,"58806000",-6.7454617,"PB","Sousa",83
+2507507,"Jardim Oceania",8.2,"Rua Mirian Barreto Rabelo, lado par",-34.8381231,"58037195",-7.0930773,"PB","João Pessoa",83
+2507507,"Jardim Oceania",43.6,"Rua Fernando Luiz Henriques dos Santos, até 1415/1416",-34.8450118,"58037050",-7.1194958,"PB","João Pessoa",83
+2504009,"Catolé",501,"Rua Humberto Batista de Lima",-35.8839721,"58410530",-7.2457965,"PB","Campina Grande",83
+2507507,"Manaíra",9.4,"Avenida Governador Flávio Ribeiro Coutinho",-34.8401849,"58037000",-7.0976044,"PB","João Pessoa",83
+2510808,"Centro",253.6,"Rua do Prado",-37.2787853,"58700010",-7.0303808,"PB","Patos",83
+2517100,"",270.1,"Várzea",-36.9908414,"58620000",-6.7712993,"PB","Várzea",NA
+2501708,"",494.9,"Barra de São Miguel",-36.3167904,"58483000",-7.7528883,"PB","Barra de São Miguel",NA
+2507507,"Bessa",6.3,"Rua Presidente Nilo Peçanha",-34.8437362,"58035200",-7.0678949,"PB","João Pessoa",83
+2504009,"Acácio Figueiredo",495.1,"Rua Ministro Dilson Funaro",-35.9146184,"58421070",-7.263605,"PB","Campina Grande",83
+2504009,"São José",518.1,"Avenida Professor Almeida Barreto",-35.8893307,"58400328",-7.228281,"PB","Campina Grande",83
+2516201,"Centro",220,"Rua Doutor Carlos Pires de Sá",-38.2306374737,"58800280",-6.7606399948,"PB","Sousa",83
+2507507,"Miramar",18.9,"Avenida Senador Ruy Carneiro, lado par",-34.8333842,"58032101",-7.1147638,"PB","João Pessoa",83
+2507507,"Miramar",32.7,"Rua Ovídio Mendonça",-34.8345526,"58043210",-7.1232321,"PB","João Pessoa",83
+2507507,"Miramar",27.6,"Avenida Presidente Epitácio Pessoa, de 3663 a 4161 - lado ímpar",-34.837581,"58032000",-7.1233443,"PB","João Pessoa",83
+2408003,"Belo Horizonte",13.1,"Rua Antônio Delmiro de Medeiros",-37.3549512,"59600460",-5.2083584,"RN","Mossoró",84
+2507507,"Tambaú",10.3,"Rua Monteiro Lobato",-34.8272957,"58039170",-7.1138691,"PB","João Pessoa",83
+2510808,"Centro",251.3,"Avenida Solon de Lucena, lado par",-37.2765051,"58700002",-7.0277993,"PB","Patos",83
+2504009,"Liberdade",516.6,"Rua Alagoas",-35.8924316,"58414100",-7.2349414,"PB","Campina Grande",83
+2504009,"Distrito Industrial",503.1,"Rua Barão de Mauá",-35.8855409,"58411500",-7.2650576,"PB","Campina Grande",83
+2507507,"Estados",41.4,"Avenida Santa Catarina, até 621/622",-34.8541389,"58030070",-7.1128323,"PB","João Pessoa",83
+2507606,"",153,"Juarez Távora",-35.590492,"58387000",-7.1730035,"PB","Juarez Távora",NA
+2504009,"São José",529.4,"Rua José do Patrocínio",-35.8893318,"58400370",-7.2256534,"PB","Campina Grande",83
+2507507,"Trincheiras",29.3,"Rua Frei Miguelino",-34.8900942,"58011250",-7.1256015,"PB","João Pessoa",83
+2504009,"Bodocongó",513.3,"Rua João Sérgio de Almeida",-35.9169643,"58430340",-7.2231312,"PB","Campina Grande",83
+2507507,"Mandacaru",13.2,"Rua Silvino Santos",-34.8618736,"58027470",-7.1003367,"PB","João Pessoa",83
+2507507,"Mandacaru",12.1,"Rua São Pedro, lado ímpar",-34.866458,"58027185",-7.1013372,"PB","João Pessoa",83
+2507507,"Mandacaru",14.3,"Rua João de Brito Lima Moura",-34.8657657,"58027070",-7.0949697,"PB","João Pessoa",83
+2507507,"Penha",28.1,"Praia da Penha",-34.7987652,"58047000",-7.165502,"PB","João Pessoa",83
+2507507,"Tambiá",43.6,"Rua Professor Batista Leite, de 2 ao fim - lado esquerdo",-34.8450118,"58020600",-7.1194958,"PB","João Pessoa",83
+2510808,"Centro",246.2,"Rua Coronel Miguel Sátiro",-37.2740583,"58700530",-7.0292978,"PB","Patos",83
+2507507,"Tambiá",50.5,"Praça Coronel Antônio Pessoa",-34.8781112,"58020520",-7.1151525,"PB","João Pessoa",83
+2507507,"Tambiá",49.2,"Avenida Deputado Odon Bezerra",-34.8785587,"58020500",-7.1153323,"PB","João Pessoa",83
+2507507,"Roger",13.6,"Rua Tereza Alves da Silva Barbosa",-34.8752525,"58020388",-7.1092702,"PB","João Pessoa",83
+2507507,"Roger",22.8,"Rua Dezenove de Março",-34.8777274,"58020340",-7.1098073,"PB","João Pessoa",83
+2516201,"Centro",229.7,"Rua Getúlio Vargas",-38.2294,"58800110",-6.7602185,"PB","Sousa",83
+2504009,"Bela Vista",571.5,"Rua Rodrigues Alves",-35.8986403,"58428795",-7.2198451,"PB","Campina Grande",83
+2507507,"Roger",25.1,"Rua Gouveia Nóbrega",-34.8825603,"58020100",-7.1112838,"PB","João Pessoa",83
+2516201,"Centro",221.6,"Rua Antônio Marinho Correia",-38.2314022,"58800160",-6.7518873,"PB","Sousa",83
+2507507,"Roger",7.7,"Rua Cordeiro Sênior",-34.884197,"58020020",-7.1098205,"PB","João Pessoa",83
+2507507,"Jaguaribe",51.4,"Rua Engenheiro Leonardo Arcoverde",-34.8762111,"58015660",-7.1336742,"PB","João Pessoa",83
+2507507,"Jaguaribe",50.1,"Rua Coronel Sérgio Dantas",-34.8802784,"58015610",-7.1357725,"PB","João Pessoa",83
+2513703,"Municípios",65.2,"Avenida João Pessoa",-34.9650953,"58302000",-7.149974,"PB","Santa Rita",83
+2507507,"Jaguaribe",48.4,"Avenida Feliciano Cirne",-34.8725783,"58015570",-7.1368965,"PB","João Pessoa",83
+2516201,"Centro",221.6,"Rua Capitão Manoel Gadelha",-38.2314022,"58800300",-6.7518873,"PB","Sousa",83
+2507507,"Jaguaribe",51.4,"Avenida Primeiro de Maio, até 469/470",-34.8762111,"58015430",-7.1336742,"PB","João Pessoa",83
+2507507,"Jaguaribe",51.4,"Avenida Doze de Outubro, até 521/522",-34.8762111,"58015330",-7.1336742,"PB","João Pessoa",83
+2508505,"",583.9,"Livramento",-36.9446096,"58690000",-7.3751484,"PB","Livramento",83
+2508604,"",5.3,"Lucena",-34.8750825,"58315000",-6.9029848,"PB","Lucena",83
+2507507,"Jaguaribe",51.4,"Avenida Capitão José Pessoa, até 511/512",-34.8762111,"58015170",-7.1336742,"PB","João Pessoa",83
+2507507,"Jaguaribe",52.7,"Avenida Senador João Lira",-34.8797811,"58015150",-7.1291257,"PB","João Pessoa",83
+2507507,"Jaguaribe",55.3,"Rua Antônio Soares",-34.8813384,"58015080",-7.1269519,"PB","João Pessoa",83
+2510808,"Bivar Olinto",271.1,"Rua José Mesquita",-37.3032306,"58701630",-7.0357905,"PB","Patos",83
+2504009,"Jardim Paulistano",510.6,"Rua Aprígio Pereira Nepomuceno",-35.8940169,"58415310",-7.2433305,"PB","Campina Grande",83
+2507507,"Jaguaribe",49.8,"Avenida João da Mata",-34.8816648,"58015020",-7.131495,"PB","João Pessoa",83
+2507507,"Jaguaribe",54.1,"Avenida Aderbal Piragibe",-34.8805483,"58015000",-7.1301984,"PB","João Pessoa",83
+2615706,"",1048.8,"",-38.0981189,"56870000",-7.8331307,"PE","Triunfo",87
+2408300,"",82.4,"Nova Cruz",-35.4289332,"59215000",-6.475518,"RN","Nova Cruz",NA
+2516201,"Centro",228.1,"Rua Presidente João Pessoa",-38.2294634,"58800010",-6.7583,"PB","Sousa",83
+2507507,"Centro",43.6,"Avenida Camilo de Holanda, até 669/670",-34.8450118,"58013360",-7.1194958,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Avenida Princesa Isabel, até 669/670",-34.8450118,"58013250",-7.1194958,"PB","João Pessoa",83
+2514107,"",585.4,"São João do Tigre",-36.8250274,"58520000",-8.063015,"PB","São João do Tigre",NA
+2504009,"Distrito Industrial",502.7,"Avenida João Wallig",-35.8906889,"58411170",-7.2614659,"PB","Campina Grande",83
+2507507,"Centro",38.7,"Parque Solon de Lucena, lado par",-34.8787183,"58013130",-7.1215116,"PB","João Pessoa",83
+2513703,"Centro",19.7,"Rua Horácio Furtado",-34.9823942,"58300380",-7.1249141,"PB","Santa Rita",83
+2507507,"Centro",43.6,"Rua Treze de Maio, até 609/610",-34.8450118,"58013070",-7.1194958,"PB","João Pessoa",83
+2504009,"Centro",528.5,"Rua Desembargador Trindade, de 560/561 a 862/863",-35.8852403,"58400277",-7.2235918,"PB","Campina Grande",83
+2507507,"Centro",43.6,"Rua Frutuoso Barbosa",-34.8450118,"58013050",-7.1194958,"PB","João Pessoa",83
+2507507,"Ernesto Geisel",47.9,"Rua Antônio Arantes",-34.8677867,"58075200",-7.1769363,"PB","João Pessoa",83
+2513851,"",499.5,"Santo André",-36.6314853,"58675000",-7.2191921,"PB","Santo André",NA
+2504009,"José Pinheiro",518.1,"Rua Estácio de Sá",-35.872657,"58407390",-7.2234855,"PB","Campina Grande",83
+2507507,"Ernesto Geisel",47.1,"Rodovia BR-230",-34.8695308,"58075004",-7.1706536,"PB","João Pessoa",83
+2507507,"Ilha do Bispo",18.5,"Rua Carneiro Campos",-34.8995827,"58011440",-7.1267532,"PB","João Pessoa",83
+2510808,"Jatobá",254.3,"Rua José Sátiro Quinho",-37.2732517,"58707220",-7.0463704,"PB","Patos",83
+2510808,"São Sebastião",246.7,"Rua Euclides Franco",-37.2703635,"58706190",-7.0138165,"PB","Patos",83
+2507507,"Trincheiras",22,"Rua Sargento Lauro Pereira da Silva",-34.8858658,"58011327",-7.129435,"PB","João Pessoa",83
+2507507,"Varadouro",13.2,"Travessa Milagre",-34.8866311,"58011360",-7.1152317,"PB","João Pessoa",83
+2507507,"Distrito Industrial",35.7,"Rua Doutor Walter Bellian",-34.9111624,"58082005",-7.1864855,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Rua Irineu Joffily",-34.8450118,"58011110",-7.1194958,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Rua Duque de Caxias, até 349/350",-34.8450118,"58010820",-7.1194958,"PB","João Pessoa",83
+2508901,"",46.8,"Mamanguape",-35.1366303,"58280000",-6.8386981,"PB","Mamanguape",83
+2507507,"Água Fria",45.8,"Rua Diógenes Chianca",-34.8613563,"58053000",-7.1634937,"PB","João Pessoa",83
+2507507,"Centro",43.4,"Avenida General Osório",-34.8847625,"58010780",-7.1195034,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Rua da República, até 663/664",-34.8450118,"58010180",-7.1194958,"PB","João Pessoa",83
+2507507,"Cristo Redentor",49.6,"Rua Fernando Cunha Lima",-34.8786917,"58071480",-7.1607221,"PB","João Pessoa",83
+2507507,"Centro",43.6,"Rua Beaurepaire Rohan, até 317/318",-34.8450118,"58010000",-7.1194958,"PB","João Pessoa",83
+2613503,"",481.2,"São José do Belmonte",-38.7601577,"56950000",-7.865489,"PE","São José do Belmonte",87
+2501401,"",6.2,"Baía da Traição",-34.9342034,"58295000",-6.6900813,"PB","Baía da Traição",NA
+2613909,"Várzea",429.9,"Rua Manoel Antônio dos Santos",-38.2836282,"56912225",-7.9876337,"PE","Serra Talhada",87
+2507507,"Trincheiras",54.6,"Rua Rodrigues Chaves",-34.8854761,"58011040",-7.1263253,"PB","João Pessoa",83
+2612471,"",852.6,"Santa Cruz da Baixa Verde",-38.1517737,"56895000",-7.8202826,"PE","Santa Cruz da Baixa Verde",NA
+2507507,"Estados",41.4,"Avenida Rio Grande do Sul, até 1045/1046",-34.8541389,"58030020",-7.1128323,"PB","João Pessoa",83
+2600104,"",530.7,"Afogados da Ingazeira",-37.6346628,"56800000",-7.7480174,"PE","Afogados da Ingazeira",87
+2614600,"",577.7,"Tabira",-37.5381606,"56780000",-7.5846909,"PE","Tabira",87
+2615904,"",568,"Tuparetama",-37.3117068,"56760000",-7.6027643,"PE","Tuparetama",NA
+2504009,"Liberdade",526.7,"Rua Papa João XXIII",-35.8947759,"58414300",-7.2374259,"PB","Campina Grande",83
+2607703,"",641.8,"Itapetim",-37.1866005,"56720000",-7.3721859,"PE","Itapetim",87
+2408102,"Neópolis",35.6,"Avenida Ayrton Senna, de 1828 a 2174 - lado par",-35.2066038,"59088100",-5.8693931,"RN","Natal",84
+2601201,"São Cristóvão",669.4,"Rua Félix Paiva",-37.0677496,"56512290",-8.4127162,"PE","Arcoverde",87
+2601201,"Centro",666.9,"Rua Leonardo Couto",-37.052635,"56506150",-8.4208172,"PE","Arcoverde",87
+2603603,"",112.9,"Camutanga",-35.2748844,"55930000",-7.4086997,"PE","Camutanga",81
+2504009,"Bodocongó",512.1,"Rua Manoel Guimarães de Morais, até 358/359",-35.9179312,"58430410",-7.2184353,"PB","Campina Grande",83
+2510808,"Jatobá",252.8,"Rua Dinamérico Palmeira",-37.2743265,"58707260",-7.0482626,"PB","Patos",83
+2507507,"Oitizeiro",32.4,"Rua Enedino Jorge de Andrade",-34.8908955,"58088760",-7.1562054,"PB","João Pessoa",83
+2504009,"Centro",526.6,"Rua Marcílio Dias",-35.8773161,"58400190",-7.2183977,"PB","Campina Grande",83
+2510808,"Monte Castelo",253.7,"Rua Antônio Barreto",-37.2753876,"58707180",-7.0460168,"PB","Patos",83
+2600708,"",128.6,"Aliança",-35.23088,"55890000",-7.5976554,"PE","Aliança",NA
+2613800,"",420.8,"São Vicente Ferrer",-35.4811634,"55860000",-7.5901029,"PE","São Vicente Ferrer",81
+2610608,"",82.6,"Paudalho",-35.1731826,"55825000",-7.8990984,"PE","Paudalho",81
+2604007,"São Sebastião",184.7,"Rua Tertuliano Augusto Santiago",-35.2527675,"55818555",-7.8516771,"PE","Carpina",81
+2507507,"José Américo de Almeida",46.5,"Rua Alcides de Miranda Henrique",-34.8565799,"58073150",-7.1678882,"PB","João Pessoa",83
+2507507,"Tambaú",18.9,"Avenida Senador Ruy Carneiro, lado ímpar",-34.8333842,"58039181",-7.1147638,"PB","João Pessoa",83
+4106902,"São Lourenço",934,"Rua Reinaldo Hecke",-49.273,"82210300",-25.4950500078,"PR","Curitiba",41
+2609709,"",410.2,"Orobó",-35.603719,"55745000",-7.7481295,"PE","Orobó",81
+2605608,"",484.7,"Flores",-37.9718528,"56850000",-7.858832,"PE","Flores",87
+2611200,"",1032.6,"Poção",-36.7114679,"55240000",-8.1876736,"PE","Poção",NA
+2408102,"Tirol",41.5,"Avenida Senador Salgado Filho, até 1559 - lado ímpar",-35.2011079,"59015000",-5.8034577,"RN","Natal",84
+2604106,"Caiuca",541.2,"Avenida Leão Dourado, de 268/269 a 910/911",-35.9839123,"55034190",-8.2881804,"PE","Caruaru",81
+2507507,"Jardim São Paulo",43,"Rua Joaquim Borba Filho",-34.8491703,"58053110",-7.1516307,"PB","João Pessoa",83
+2604106,"Nossa Senhora das Dores",541.6,"Rua Quinze de Novembro",-35.9705431,"55004160",-8.2863298,"PE","Caruaru",81
+2604106,"Nossa Senhora das Dores",536.6,"Rua dos Guararapes",-35.9675475,"55004000",-8.2877144,"PE","Caruaru",81
+2607901,"Piedade",9.5,"Rua Maestro Nelson Ferreira",-34.9203383,"54410220",-8.1801557,"PE","Jaboatão dos Guararapes",81
+2515708,"",595.6,"Serra Grande",-38.3715585,"58955000",-7.2136688,"PB","Serra Grande",NA
+2503001,"",68.6,"Caaporã",-34.9173992,"58326000",-7.5130634,"PB","Caaporã",83
+2607901,"Sucupira",77.4,"Avenida General Manoel Rabelo, de 4142 a 4714 - lado par",-34.9740873,"54280000",-8.1066977,"PE","Jaboatão dos Guararapes",81
+2304400,"Conjunto Palmeiras",33.1,"Rua Valparaíso",-38.5189178,"60870440",-3.8463237,"CE","Fortaleza",85
+2507507,"Ipês",11,"Rua José Peregrino Montenegro",-34.8545197,"58028470",-7.0988513,"PB","João Pessoa",83
+2607901,"Santo Aleixo",49,"Rua Arcoverde",-35.0191445,"54140030",-8.105752,"PE","Jaboatão dos Guararapes",81
+2606804,"Centro",25.8,"AC Igarassu, Avenida Severino Tavares Uchôa, s/n",-34.9194984,"53610970",-7.8282428,"PE","Igarassu",81
+2507507,"Jardim Cidade Universitária",40.6,"Rua Doutor Ephigênio Barbosa da Silva",-34.8319135,"58052310",-7.1545382,"PB","João Pessoa",83
+2611606,"Apipucos",22.9,"Largo de Dois Irmãos",-34.940726,"52171348",-8.0179739,"PE","Recife",81
+2504009,"Centro",523.7,"Rua Índios Cariris, de 200/201 ao fim",-35.8734667,"58400056",-7.2223667,"PB","Campina Grande",83
+2611606,"Dois Irmãos",14.3,"Rua Dois Irmãos, de 322/323 ao fim",-34.9452495,"52171010",-8.0161786,"PE","Recife",81
+2500205,"",263.5,"Aguiar",-38.1716957,"58778000",-7.0915319,"PB","Aguiar",NA
+2507507,"Valentina de Figueiredo",50.8,"Rua Luiz Leonardo da Silva (Paratibe)",-34.8802645,"58064682",-7.1618375,"PB","João Pessoa",83
+2611606,"Ipsep",7.4,"Avenida Presidente Kennedy",-34.9251665,"51350610",-8.1030061,"PE","Recife",81
+2504009,"Centenário",543.5,"Rua Delmiro Gouveia",-35.8984323,"58428016",-7.2270257,"PB","Campina Grande",83
+2611606,"Afogados",750.8,"Rua Vinte e Um de Abril, até 1768/1769",-50.881044,"50820000",-26.3849326,"PE","Recife",81
+2507507,"Cruz das Armas",52.8,"Rua São Salvador",-34.8905163,"58085100",-7.1376805,"PB","João Pessoa",83
+2611606,"Cordeiro",10,"Travessa Inácio Monteiro",-34.9354702,"50721321",-8.0558484,"PE","Recife",81
+2611606,"Madalena",11.2,"Rua Costa Gomes",-34.9073188,"50710510",-8.0479107,"PE","Recife",81
+2611606,"Boa Vista",7.4,"Praça Parque Amorim",-34.8949162,"50050280",-8.0519662,"PE","Recife",81
+2611606,"São José",9,"Avenida Dantas Barreto, de 635/636 ao fim",-34.8840889,"50020000",-8.0722973,"PE","Recife",81
+3304557,"Centro",11.4,"Praça Quinze de Novembro",-43.1741016,"20010010",-22.9025537,"RJ","Rio de Janeiro",21
+3554508,"",479.3,"Tietê",-47.7144578,"18530000",-23.0972163,"SP","Tietê",15
+2400505,"",316.9,"Alexandria",-38.0122112,"59965000",-6.4138915,"RN","Alexandria",NA
+3550308,"Vila Progredior",760,"Rua Amélia Correa Fontes Guimarães",-46.636,"5617010",-23.9724400433,"SP","São Paulo",11
+3550308,"Alto da Lapa",760,"Avenida Diógenes Ribeiro de Lima, de 2821/2822 ao fim",-46.636,"5083010",-23.1787299542,"SP","São Paulo",11
