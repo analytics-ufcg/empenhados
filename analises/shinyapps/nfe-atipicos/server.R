@@ -41,6 +41,7 @@ server <- function(input, output, session){
   })
   
   
-}
+  output$table <- renderDataTable(dados_nfe() %>% filter(Unid_prod == input$select_unid) %>% select(-c(Unid_prod, NCM_prod)),
+                                  options = list(scrollX = TRUE, pageLength = 10))
 
-#shinyApp(ui, server)
+}

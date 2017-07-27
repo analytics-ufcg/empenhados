@@ -20,8 +20,6 @@ ncm_cod <- tbl(notas, query) %>%
 ncm <- read.csv("NCMatualizada13072017.csv", sep=";", stringsAsFactors = F, colClasses = c(NCM = "character")) %>%
   semi_join(ncm_cod, by = c("NCM" = "NCM_prod"))
 
-
-
 ui <- dashboardPage(
   dashboardHeader(title = "Notas fiscais atípicas"),
   dashboardSidebar(disable = TRUE),
@@ -40,6 +38,12 @@ ui <- dashboardPage(
         box(width = 12, status = "primary",              
           plotlyOutput("scatter")
         )
+    ),
+    fluidRow(
+      box(width = 12, status = "primary", solidHeader = TRUE, title = "Dados",
+          collapsible = TRUE, collapsed = TRUE,           
+          dataTableOutput("table")
+      )
     )
   )
 )
