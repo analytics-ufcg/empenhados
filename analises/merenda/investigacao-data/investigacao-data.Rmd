@@ -91,7 +91,15 @@ plot_ly(empenhos.hist) %>%
     yaxis = list(title = 'Número de empenhos'),
     margin = list(b = 100),
     barmode = 'stack')
+```
+Observamos que a prática de empenhar e pagar no mesmo dia é uma prática recorrente ao longo do tempo na administração pública e acontece massivamente nos casos em que o empenho ocorre sem licitação prévia, mas existem também observações significativas em licitações do tipo Dispensa por Valor e Convite. 
 
+Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e veriifcação do protudo possa ser realizada no ato da compra, algo similar a uma compra à vista com pronta entrega. No entanto, não encontramos justificativas convincentes para que a prática ocorra em licitações do tipo Convite.
+
+Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provávelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano, ou seja, é momento de "fechar as contas" do município.
+
+
+```{r}
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
   layout(
@@ -100,6 +108,9 @@ plot_ly(empenhos.hist) %>%
     margin = list(b = 100),
     barmode = 'stack')
 ```
+Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia é varia pouco em função do tempo, aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ter havido licitação ou sob a justificativa de dispensa por valor, destacam-se das demais.
+
+Como na visualização anterior, nesta os picos também são mais recorrentes no último mês do ano, o que nos faz acreditar ainda mais na justificativa apresentada. Mas essa "pressa" para fechar o orçamento pode indicar que o dinheiro público está sendo mal gasto pelos adminstradores municipais.
 
 ```{r}
 empenhos.mapa <- empenhos %>%
