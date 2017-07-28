@@ -1,13 +1,14 @@
 ---
-title: 'Empenhos com pagamentos no mesmo dia'
+title: 'Execução orçamentária em um dia só'
 author: 'Laboratório Analytics'
-date: 'July 21, 2017'
-output: html_document
+layout: post
+published: true
+comments: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  echo = TRUE,
+  echo = FALSE,
   warning = FALSE,
   message = FALSE)
 ```
@@ -73,7 +74,11 @@ get.municipio <- function(cd_UGestora) {
 }
 ```
 
-## Quantidade de empenhos com pagamentos em datas iguais a sua
+Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando o as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
+
+Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem pelo menos um pagamento registrado no mesmo dia do empenho em questão e os dados de seus credores.
+
+## Ocorrência de cada tipo de licitação ao longo do tempo
 
 ```{r}
 empenhos.hist <- empenhos %>%
@@ -87,19 +92,13 @@ empenhos.hist <- empenhos %>%
 plot_ly(empenhos.hist) %>%
   add_bars(x = ~dt_Empenho, y = ~n, color = ~de_TipoLicitacao, colors = 'Set1') %>%
   layout(
-    xaxis = list(title = 'Data do empenho', tickangle = 60),
+    xaxis = list(title = 'Data', tickangle = 60),
     yaxis = list(title = 'Número de empenhos'),
     margin = list(b = 100),
     barmode = 'stack')
-
-plot_ly(empenhos.hist) %>%
-  add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
-  layout(
-    xaxis = list(title = 'Data do empenho', tickangle = 60),
-    yaxis = list(title = 'Valor do empenho'),
-    margin = list(b = 100),
-    barmode = 'stack')
 ```
+
+## Onde se concentram esses empenhos?
 
 ```{r}
 empenhos.mapa <- empenhos %>%
@@ -127,7 +126,9 @@ empenhos.mapa <- empenhos %>%
       include.lowest = TRUE,
       ordered_result = TRUE))
 
+```
 
+```{r results = 'hide'}
 mapa.paraiba <- readOGR('../dados/mapa_paraiba_ibge/Municipios.shp')
 
 # Municípios que mudaram de nome ou que estão com o nome errado
@@ -143,8 +144,9 @@ levels(mapa.paraiba@data$Nome_Munic) <- levels.mapa
 
 mapa.paraiba@data <- mapa.paraiba@data %>%
   left_join(empenhos.mapa, by = c('Nome_Munic' = 'de_Municipio'))
+```
 
-
+```{r}
 colors <- colorFactor('OrRd', mapa.paraiba@data$n.group)
 
 leaflet(data = mapa.paraiba) %>%
@@ -163,10 +165,25 @@ leaflet(data = mapa.paraiba) %>%
     position = 'bottomright',
     pal = colors,
     values = mapa.paraiba@data$n.group,
-    title = 'Ocorrências',
+    title = 'Número de empenhos',
     opacity = 1)
+```
 
+## Custo total de cada tipo de licitação ao longo do tempo
 
+```{r}
+plot_ly(empenhos.hist) %>%
+  add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
+  layout(
+    xaxis = list(title = 'Data', tickangle = 60),
+    yaxis = list(title = 'Valor total (reais)'),
+    margin = list(b = 100),
+    barmode = 'stack')
+```
+
+## Onde se concentram esses gastos?
+
+```{r}
 colors <- colorFactor('OrRd', mapa.paraiba@data$vl_Empenho.group)
 
 leaflet(data = mapa.paraiba) %>%
@@ -188,6 +205,10 @@ leaflet(data = mapa.paraiba) %>%
     title = 'Valor total (reais)',
     opacity = 1)
 ```
+
+## Quais são os credores mais relacionados a esses empenhos?
+
+Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. Note que ambos os eixos do gráfico estão em uma escala de log, com o intuito de facilitar a visualização de valores muito altos.
 
 ```{r}
 empenhos.forn <- empenhos %>%
@@ -218,3 +239,9 @@ top_n(empenhos.forn, 10000, n) %>%
     xaxis = list(title = 'Número de empenhos', type = 'log'),
     yaxis = list(title = 'Valor total (reais)', type = 'log'))
 ```
+
+É interessante perceber que credores com atividades similares também têm, em geral, um comportamento parecido, estando os ponto de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
+
+Faz sentido que gastos já previstos e recorrentes, como INSS, serviços bancários e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível recebê-lo no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
+
+Uma coisa suspeita, no entanto, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Também é necessário investigar os credores cujo CNAE não conhecemos, mas que aparecem em posições de relevância, como *ANTONIO COELHO AIRES E OUTROS* e *MARIA DA PENHA LUCINDO*.
