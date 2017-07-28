@@ -19,7 +19,7 @@ source('../lib/load_fornecedores_merenda.R')
 
 ganhadores <- load_fornecedores_merenda()
 
-utils <- src_mysql('utils', group='ministerio-publico-local', password=NULL)
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
 cep_licitantes <- tbl(utils, 'empresa') %>%
   collect(n = Inf)
