@@ -7,7 +7,7 @@ server <- function(input, output, session){
   dados_nfe <- reactive({
     ncm_input = ncm_input()
     
-    tbl(src_mysql('notas_fiscais', group='ministerio-publico-local', password=NULL), 'nota_fiscal') %>%
+    tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), 'nota_fiscal') %>%
       filter(ncm_input == NCM_prod) %>%
       select(Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, Nome_razao_social_dest, Valor_total_da_nota, Unid_prod) %>%
       collect(n = Inf)

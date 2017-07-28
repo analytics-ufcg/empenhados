@@ -8,7 +8,7 @@ library(tidyr)
 library(stringr)
 library(shinydashboard)
 
-notas <-  src_mysql('notas_fiscais', group='ministerio-publico-local', password=NULL)
+notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
 
 query <- sql('
  SELECT DISTINCT NCM_prod FROM nota_fiscal
