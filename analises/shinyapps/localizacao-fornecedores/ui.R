@@ -1,3 +1,7 @@
+library(dplyr)
+library(leaflet)
+library(shiny)
+
 source('../lib/load_fornecedores_merenda.R')
 
 ganhadores <- load_fornecedores_merenda() %>%
