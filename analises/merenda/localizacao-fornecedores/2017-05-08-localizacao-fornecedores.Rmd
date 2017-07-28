@@ -44,18 +44,21 @@ ganhadores <- load_fornecedores_merenda()
 ```
 
 ```{r}
-utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+utils <- src_mysql('utils', group='ministerio-publico-local', password=NULL)
 
 cep_licitantes <- tbl(utils, 'empresa') %>%
   collect(n = Inf)
 
-dados_cep <- read.csv("dados_cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
+dados_cep <- read.csv("mrg_all.csv", sep = ";", stringsAsFactors = FALSE) %>%
+  mutate(longitude = as.numeric(longitude)) %>%
+  mutate(latitude = as.numeric(latitude))
 ```
 
 ```{r}
 localizacao_licitantes_municipios <- ganhadores %>%
-  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
-  filter(!is.na(nu_CEP)) %>%
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "") %>%
   ungroup()
 ```
 
@@ -67,22 +70,19 @@ localizacao_licitantes <- ganhadores %>%
             valor_mediana_emp = median(valor_mediana_emp),
             valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
             num_municipios = n()) %>%
-  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
-  filter(!is.na(nu_CEP), nu_CEP != "")
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "")
 ```
 
 ```{r}
-dados_cep.selected <- dados_cep %>%
-  select(c(cep, latitude, longitude, estado, cidade)) %>%
-  mutate(cep = as.character(cep))
 
-localizacao_licitantes <- localizacao_licitantes %>%
-  left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
 
+##### Não tenho certeza se isso ainda é necessário #####
 # Endereço incorreto retornado pela API de busca
 localizacao_licitantes <- localizacao_licitantes %>%
   filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
-  filter(!(!is.na(nu_CEP) & is.na(latitude)))
+  filter(!(!is.na(cep) & is.na(latitude)))
 ```
 
 Abaixo você pode conferir a localização dos fornecedores de merenda na Paraíba. Inicialmente você observará grupos de fornecedores que estão juntos em uma mesma área, conforme você vai aumentando o zoom, mais informação de mais áreas se tornam disponíveis. Ao aproximar o zoom no nível das cidades é possível observar a localização do fornecedor individualmente (marcador em azul). Você também pode clicar sobre ele e obter informações mais específicas como nome, CNPJ/CPF, cidade, número de munícipios nos quais já forneceu e o valor total pago a esse fornecedor.
@@ -314,9 +314,8 @@ server <- function(input, output, session){
                addMarkers(
                  data = (
                        localizacao_licitantes_municipios %>%
-                          filter(grepl(str_sub(input$busca, -14), cd_Credor)) %>%
-                          left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
-                 ),
+                          filter(grepl(str_sub(input$busca, -14), cd_Credor))
+                       ),
                  label = ~str_to_upper(no_Credor), 
                  popup = ~paste(
                    "Nome:", str_to_upper(no_Credor), "</br>",
@@ -346,8 +345,7 @@ server <- function(input, output, session){
                addMarkers(
                  data = (
                        localizacao_licitantes_municipios %>%
-                          filter(grepl(str_sub(input$busca, -14), cd_Credor)) %>%
-                          left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
+                          filter(grepl(str_sub(input$busca, -14), cd_Credor))
                  ),
                  label = ~str_to_upper(no_Credor), 
                  popup = ~paste(
@@ -362,6 +360,4 @@ server <- function(input, output, session){
 
 shinyApp(ui, server, options = list(height = 650))
 ```
-
-
 
