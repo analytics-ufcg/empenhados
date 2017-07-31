@@ -10,7 +10,10 @@ comments: true
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
-  message = FALSE)
+  message = FALSE,
+  screenshot.force = FALSE,
+  fig.align = 'center',
+  fig.width = 10)
 ```
 
 ```{r}
@@ -26,11 +29,11 @@ library(dplyr)
 ```
 
 ```{r}
-cnae <- read.csv('CNAE.csv', stringsAsFactors = FALSE)
+cnae <- read.csv('CNAE.csv', stringsAsFactors=FALSE)
 ```
 
 ```{r}
-sagres <-  src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+sagres <-  src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 query <- sql('
   SELECT
@@ -38,7 +41,7 @@ query <- sql('
     vl_Empenho, dt_Empenho, tp_Licitacao
   FROM Empenhos e
   INNER JOIN
-  ( SELECT cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, MIN(dt_Pagamento) dt_Pagamento
+  ( SELECT cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho, MAX(dt_Pagamento) dt_Pagamento
     FROM Pagamentos
     GROUP BY cd_UGestora, dt_Ano, cd_UnidOrcamentaria, nu_Empenho
   ) AS p
@@ -76,9 +79,12 @@ get.municipio <- function(cd_UGestora) {
 
 Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando o as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
 
-Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem pelo menos um pagamento registrado no mesmo dia do empenho em questão e os dados de seus credores.
+Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem todos seus pagamentos registrados no mesmo dia do empenho em questão e os dados de seus credores.
 
 ### Esse fenômeno está mais relacionado a quais tipos de licitação?
+<br/>
+
+#### Número total de empenhos ao longo dos meses por tipo de licitação
 
 ```{r}
 empenhos.hist <- empenhos %>%
@@ -90,31 +96,53 @@ empenhos.hist <- empenhos %>%
     vl_Empenho = sum(vl_Empenho))
 
 plot_ly(empenhos.hist) %>%
-  add_bars(x = ~dt_Empenho, y = ~n, color = ~de_TipoLicitacao, colors = 'Set1') %>%
+  add_bars(
+    x = ~dt_Empenho,
+    y = ~n,
+    color = ~de_TipoLicitacao,
+    colors = 'Set1',
+    text = ~paste(
+      'Data: ', dt_Empenho, '\n',
+      'Valot total: R$ ', vl_Empenho, '\n',
+      'Tipo de licitação: ', de_TipoLicitacao),
+    hoverinfo = 'text') %>%
   layout(
     xaxis = list(title = 'Data', tickangle = 60),
     yaxis = list(title = 'Número de empenhos'),
+    legend = list(font = list(size = 9)),
     margin = list(b = 100),
     barmode = 'stack')
 ```
 
-Observamos que a prática de empenhar e pagar no mesmo dia é uma prática recorrente ao longo do tempo na administração pública e acontece massivamente nos casos em que o empenho ocorre sem licitação prévia, mas existem também observações significativas em licitações do tipo Dispensa por Valor e Convite. 
+Observamos que a prática de empenhar e pagar no mesmo dia é recorrente ao longo dos anos na administração pública e acontece massivamente nos casos em que o empenho ocorre sem licitação prévia. Mas existem também observações significativas em licitações do tipo Dispensa por Valor e Convite.
 
-Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto possa ser realizada no ato da compra, algo similar a uma compra à vista com pronta entrega. No entanto, não encontramos justificativas convincentes para que a prática ocorra em licitações do tipo Convite.
+Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto podem ser realizados no ato da compra, algo similar a uma compra à vista com pronta entrega. No entanto, não encontramos justificativas convincentes para que a prática ocorra em licitações do tipo Convite.
 
-Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provávelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano, ou seja, é momento de "fechar as contas" do município.
+Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provávelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
+
+#### Valor total gasto ao longo dos meses por tipo de licitação
 
 ```{r}
 plot_ly(empenhos.hist) %>%
-  add_bars(x = ~dt_Empenho, y = ~vl_Empenho, color = ~de_TipoLicitacao, colors = 'Set1') %>%
+  add_bars(
+    x = ~dt_Empenho,
+    y = ~vl_Empenho,
+    color = ~de_TipoLicitacao,
+    colors = 'Set1',
+    text = ~paste(
+      'Data: ', dt_Empenho, '\n',
+      'Valot total: R$ ', vl_Empenho, '\n',
+      'Tipo de licitação: ', de_TipoLicitacao),
+    hoverinfo = 'text') %>%
   layout(
-    xaxis = list(title = 'Data do empenho', tickangle = 60),
-    yaxis = list(title = 'Valor do empenho'),
+    xaxis = list(title = 'Data', tickangle = 60),
+    yaxis = list(title = 'Valor total (reais)'),
+    legend = list(font = list(size = 9)),
     margin = list(b = 100),
     barmode = 'stack')
 ```
 
-Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia é varia pouco em função do tempo, aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ter havido licitação ou sob a justificativa de dispensa por valor, destacam-se das demais.
+Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia varia pouco em função do tempo. Aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ter havido licitação ou sob a justificativa de dispensa por valor, destacam-se das demais.
 
 Como na visualização anterior, nesta os picos também são mais recorrentes no último mês do ano, o que nos faz acreditar ainda mais na justificativa apresentada. Mas essa "pressa" para fechar o orçamento pode indicar que o dinheiro público está sendo mal gasto pelos adminstradores municipais.
 
@@ -143,11 +171,9 @@ empenhos.mapa <- empenhos %>%
       breaks = c(0, 50e6, 100e6, 150e6, 200e6, 250e6, 300e6, 350e6, 400e6, Inf),
       labels = c(
         '0 a 50M', '50M a 100M', '100M a 150M', '150M a 200M',
-        '200M a 250M', '250M a 300M', '300M a 350M', '350M a 400M',
-        '400M ou mais'),
+        '200M a 250M', '250M a 300M', '300M a 350M', '350M a 400M', '400M ou mais'),
       include.lowest = TRUE,
       ordered_result = TRUE))
-
 ```
 
 ```{r results = 'hide'}
@@ -167,6 +193,9 @@ levels(mapa.paraiba@data$Nome_Munic) <- levels.mapa
 mapa.paraiba@data <- mapa.paraiba@data %>%
   left_join(empenhos.mapa, by = c('Nome_Munic' = 'de_Municipio'))
 ```
+<br/>
+
+#### Número de empenhos por município
 
 ```{r}
 colors <- colorFactor('OrRd', mapa.paraiba@data$n.group)
@@ -190,6 +219,9 @@ leaflet(data = mapa.paraiba) %>%
     title = 'Número de empenhos',
     opacity = 1)
 ```
+<br/>
+
+#### Valor total gasto por município
 
 ```{r}
 colors <- colorFactor('OrRd', mapa.paraiba@data$vl_Empenho.group)
@@ -213,12 +245,15 @@ leaflet(data = mapa.paraiba) %>%
     title = 'Valor total (reais)',
     opacity = 1)
 ```
+<br/>
 
-Vemos que a distribuição no número de empenhos é bastante regular para os municípios mas o mesmo não ocorre para o valor destes mesmos empenhos, grande parte das cidades totalizaram até 50 milhões de reais gastos com empenhos deste tipo, mas cidades populosas como Campina Grande e João Pessoa somaram mais de 400 milhões de reais em empenhos com essa característica. Um comportamento como este já era esperado, uma vez que cidades maiores tem um volume de gastos maior e grande parte das cidades da Paraíba são de pequeno porte.
+Vemos que a distribuição do número de empenhos é bastante regular para os municípios, mas o mesmo não ocorre para o valor total destes. Grande parte das cidades totalizaram até 50 milhões de reais gastos com empenhos deste tipo, mas cidades populosas como Campina Grande e João Pessoa somaram mais de 400 milhões de reais. Um comportamento como este já era esperado, uma vez que cidades maiores tem um volume de gastos maior e grande parte das cidades da Paraíba são de pequeno porte.
 
 ### Quais são os credores mais relacionados a esses empenhos?
 
-Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. Note que ambos os eixos do gráfico estão em uma escala de log, com o intuito de facilitar a visualização de valores muito altos.
+Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. Note que ambos os eixos do gráfico estão em uma escala logarítmica, com o intuito de facilitar a visualização de valores muito altos.
+
+#### Número de empenhos feitos versus valor total recebido para cada credor
 
 ```{r}
 empenhos.forn <- empenhos %>%
@@ -235,23 +270,29 @@ top_n(empenhos.forn, 10000, n) %>%
   plot_ly(
     type = 'scatter',
     mode = 'markers',
-    x = ~n, y = ~vl_Empenho,
+    x = ~n,
+    y = ~vl_Empenho,
     color = ~de_CNAE,
     colors = 'Set3',
     hoverinfo = 'text',
     text = ~paste(
       'Credor: ', no_Credor, '\n',
+      'CNPJ: ', cd_Credor, '\n',
       'CNAE: ', de_CNAE, '\n',
       'Número de empenhos: ', n, '\n',
       'Valor total: R$ ', vl_Empenho),
     alpha = 0.8) %>%
   layout(
+    legend = list(font = list(size = 9)),
     xaxis = list(title = 'Número de empenhos', type = 'log'),
     yaxis = list(title = 'Valor total (reais)', type = 'log'))
 ```
+<br/>
 
-É interessante perceber que credores com atividades similares também têm, em geral, um comportamento parecido, estando os ponto de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
+É interessante perceber que credores com atividades similares têm, em geral, um comportamento parecido, estando os ponto de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
 
-Faz sentido que gastos já previstos e recorrentes, como INSS, serviços bancários e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível recebê-lo no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
+Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível recebê-lo no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
 
-Uma coisa suspeita, no entanto, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Também é necessário investigar os credores cujo CNAE não conhecemos, mas que aparecem em posições de relevância, como *ANTONIO COELHO AIRES E OUTROS* e *MARIA DA PENHA LUCINDO*.
+Uma coisa suspeita, no entanto, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Isso só seria aceitável, de certa forma, se essas empresas estiverem na verdade fornecendo materias de construção.
+
+Também é necessário investigar os credores cujo CNAE não conhecemos, mas que aparecem em posições de relevância, como **ANTONIO COELHO AIRES E OUTROS** e **MARIA DA PENHA LUCINDO**. O primeiro no entretanto, está representando um grande número de pessoas que não possuem seu cadastro de CNPJ devidamente preenchidos.
