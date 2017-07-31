@@ -75,6 +75,19 @@ get.municipio <- function(cd_UGestora) {
     left_join(municipio)
   return(result$de_Municipio)
 }
+
+get.populacao <- function(de_Municipio) {
+  result <- data.frame(
+      de_Municipio = de_Municipio) %>%
+    left_join(municipio)
+  return(result$vl_Populacao)
+}
+
+reais <- function(valor) {
+  paste('R$ ', round(valor, 2) %>%
+    format(nsmall = 2, big.mark = '.', decimal.mark = ',')) %>%
+  return()
+}
 ```
 
 Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando o as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
@@ -156,8 +169,10 @@ empenhos.mapa <- empenhos %>%
     de_Municipio = get.municipio(cd_UGestora)) %>%
   summarise(
     n = n(),
-    vl_Empenho = sum(vl_Empenho)) %>%
+    vl_EmpenhoTotal = sum(vl_Empenho)) %>%
   mutate(
+    vl_Populacao = get.populacao(de_Municipio),
+    vl_Empenho = vl_EmpenhoTotal/vl_Populacao,
     n.group = cut(
       n,
       breaks = c(0, 10e3, 20e3, 30e3, 40e3, 50e3, 60e3, 70e3, 80e3, 90e3, 100e3),
@@ -168,10 +183,10 @@ empenhos.mapa <- empenhos %>%
       ordered_result = TRUE),
     vl_Empenho.group = cut(
       vl_Empenho,
-      breaks = c(0, 50e6, 100e6, 150e6, 200e6, 250e6, 300e6, 350e6, 400e6, Inf),
+      breaks = c(0, 5e3, 10e3, 15e3, 20e3, 25e3, 30e3, 35e3, 40e3),
       labels = c(
-        '0 a 50M', '50M a 100M', '100M a 150M', '150M a 200M',
-        '200M a 250M', '250M a 300M', '300M a 350M', '350M a 400M', '400M ou mais'),
+        '0 a 5k', '5k a 10k', '10k a 15k', '15k a 20k',
+        '20k a 25k', '25k a 30k', '30k a 35k', '35k a 40k'),
       include.lowest = TRUE,
       ordered_result = TRUE))
 ```
@@ -210,7 +225,8 @@ leaflet(data = mapa.paraiba) %>%
     label = mapa.paraiba@data$Nome_Munic,
     popup = paste(
       'Município: ', mapa.paraiba@data$Nome_Munic, '</br>',
-      'Ocorrências: ', mapa.paraiba@data$n),
+      'Ocorrências: ', mapa.paraiba@data$n, '</br>',
+      'População: ', mapa.paraiba@data$vl_Populacao),
     fillOpacity = 1) %>%
   addLegend(
     position = 'bottomright',
@@ -221,7 +237,7 @@ leaflet(data = mapa.paraiba) %>%
 ```
 <br/>
 
-#### Valor total gasto por município
+#### Valor total gasto per capita por município
 
 ```{r}
 colors <- colorFactor('OrRd', mapa.paraiba@data$vl_Empenho.group)
@@ -236,18 +252,20 @@ leaflet(data = mapa.paraiba) %>%
     label = mapa.paraiba@data$Nome_Munic,
     popup = paste(
       'Município: ', mapa.paraiba@data$Nome_Munic, '</br>',
-      'Valor total: R$ ', mapa.paraiba@data$vl_Empenho),
+      'Gastos per capita: ', reais(mapa.paraiba@data$vl_Empenho), '</br>',
+      'Gastos totais: ', reais(mapa.paraiba@data$vl_EmpenhoTotal), '</br>',
+      'População: ', mapa.paraiba@data$vl_Populacao),
     fillOpacity = 1) %>%
   addLegend(
     position = 'bottomright',
     pal = colors,
     values = mapa.paraiba@data$vl_Empenho.group,
-    title = 'Valor total (reais)',
+    title = 'Gastos per capita (reais)',
     opacity = 1)
 ```
 <br/>
 
-Vemos que a distribuição do número de empenhos é bastante regular para os municípios, mas o mesmo não ocorre para o valor total destes. Grande parte das cidades totalizaram até 50 milhões de reais gastos com empenhos deste tipo, mas cidades populosas como Campina Grande e João Pessoa somaram mais de 400 milhões de reais. Um comportamento como este já era esperado, uma vez que cidades maiores tem um volume de gastos maior e grande parte das cidades da Paraíba são de pequeno porte.
+Vemos que a distribuição do número de empenhos é bastante regular entre os municípios (apenas o município de **Mogeiro** parece fugir ao padrão). O mesmo ocorre para a distribuição do gasto per capita, com algumas poucas exceções: cidades bem pequenas como **Areia de Baraúnas** e **São José do Brejo do Cruz** gastam relativamente muito mais com empenhos cujo pagamento é feito no mesmo dia de sua realização do que todas as outras cidades. É necessário investigar mais a fundo para descobrir por que isso ocorre.
 
 ### Quais são os credores mais relacionados a esses empenhos?
 
@@ -280,7 +298,7 @@ top_n(empenhos.forn, 10000, n) %>%
       'CNPJ: ', cd_Credor, '\n',
       'CNAE: ', de_CNAE, '\n',
       'Número de empenhos: ', n, '\n',
-      'Valor total: R$ ', vl_Empenho),
+      'Valor total: ', reais(vl_Empenho)),
     alpha = 0.8) %>%
   layout(
     legend = list(font = list(size = 9)),
