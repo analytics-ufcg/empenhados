@@ -7,14 +7,15 @@
 #    http://shiny.rstudio.com/
 #
 
+library(methods)
+library(dplyr)
 library(ggfortify)
 library(rgdal)
 library(maps)
 library(ggmap)
+library(leaflet)
 library(stringr)
-library(dplyr)
 library(shiny)
-library(plotly)
 source('../lib/load_fornecedores_merenda.R')
 
 ganhadores <- load_fornecedores_merenda()
@@ -24,34 +25,33 @@ utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 cep_licitantes <- tbl(utils, 'empresa') %>%
   collect(n = Inf)
 
-dados_cep <- read.csv("dados_cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
+dados_cep <- cep_licitantes %>%
+  mutate(longitude = as.numeric(longitude)) %>%
+  mutate(latitude = as.numeric(latitude))
 
 localizacao_licitantes_municipios <- ganhadores %>%
-  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
-  filter(!is.na(nu_CEP)) %>%
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "") %>%
   ungroup()
 
-localizacao_licitantes <- ganhadores %>%
-  group_by(cd_Credor, no_Credor) %>%
-  summarise(ganhou = sum(ganhou),
-            valor_total_emp = sum(valor_total_emp),
-            valor_mediana_emp = median(valor_mediana_emp),
-            valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
-            num_municipios = n()) %>%
-  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
-  filter(!is.na(nu_CEP), nu_CEP != "")
+# localizacao_licitantes <- ganhadores %>%
+#   group_by(cd_Credor, no_Credor) %>%
+#   summarise(ganhou = sum(ganhou),
+#             valor_total_emp = sum(valor_total_emp),
+#             valor_mediana_emp = median(valor_mediana_emp),
+#             valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
+#             num_municipios = n()) %>%
+#   left_join(dados_cep %>%
+#               select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+#   filter(!is.na(cep), cep != "")
+# 
+# ##### Não tenho certeza se isso ainda é necessário #####
+# # Endereço incorreto retornado pela API de busca
+# localizacao_licitantes <- localizacao_licitantes %>%
+#   filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
+#   filter(!(!is.na(cep) & is.na(latitude)))
 
-dados_cep.selected <- dados_cep %>%
-  select(c(cep, latitude, longitude, estado, cidade)) %>%
-  mutate(cep = as.character(cep))
-
-localizacao_licitantes <- localizacao_licitantes %>%
-  left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
-
-# Endereço incorreto retornado pela API de busca
-localizacao_licitantes <- localizacao_licitantes %>%
-  filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
-  filter(!(!is.na(nu_CEP) & is.na(latitude)))
 
 server <- function(input, output, session){
   
@@ -107,8 +107,7 @@ server <- function(input, output, session){
                addMarkers(
                  data = (
                    localizacao_licitantes_municipios %>%
-                     filter(grepl(str_sub(input$busca, -14), cd_Credor)) %>%
-                     left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
+                     filter(grepl(str_sub(input$busca, -14), cd_Credor))
                  ),
                  label = ~str_to_upper(no_Credor), 
                  popup = ~paste(
@@ -139,8 +138,7 @@ server <- function(input, output, session){
                addMarkers(
                  data = (
                    localizacao_licitantes_municipios %>%
-                     filter(grepl(str_sub(input$busca, -14), cd_Credor)) %>%
-                     left_join(dados_cep.selected, by = c("nu_CEP" = "cep"))
+                     filter(grepl(str_sub(input$busca, -14), cd_Credor))
                  ),
                  label = ~str_to_upper(no_Credor), 
                  popup = ~paste(
@@ -152,4 +150,3 @@ server <- function(input, output, session){
            ))
   })
 }
-

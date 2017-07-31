@@ -7,19 +7,20 @@ source('../lib/load_fornecedores_merenda.R')
 ganhadores <- load_fornecedores_merenda() %>%
   ungroup()
 
-cep_licitantes <- tbl(utils, 'empresa') %>%
-  collect(n = Inf)
+dados_cep <- tbl(utils, "empresa") %>%
+  collect() %>%
+  mutate(longitude = as.numeric(longitude)) %>%
+  mutate(latitude = as.numeric(latitude))
 
-dados_cep <- read.csv("dados_cep.csv", stringsAsFactors = FALSE, header = TRUE, na.strings = '')
+localizacao_licitantes_municipios <- ganhadores %>%
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "") %>%
+  ungroup()
 
 labels <- localizacao_licitantes_municipios %>%
   distinct(cd_Credor, .keep_all = TRUE) %>%
   arrange(no_Credor)
-
-localizacao_licitantes_municipios <- ganhadores %>%
-  left_join(cep_licitantes, by = c('cd_Credor' = 'nu_CPFCNPJ')) %>%
-  filter(!is.na(nu_CEP)) %>%
-  ungroup()
 
 ui <- shinyUI(
   fluidPage(
