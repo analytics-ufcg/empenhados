@@ -270,7 +270,38 @@ ggplot(data = municipios, aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = 
   
 Mesmo agora, estudando os municípios em suas faixas de população percebemos que o Ideb não nos informa muito sobre os municípios, já que em todas as faixas temos uma distribuição bastante irregular.
 
-No entanto o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
+Percebemos no gráfico que alguns municípios, considerados outliers podem estar afetando a correlação linear. A seguir iremos olhar uma nova visualização e correlação desconsiderando esses outliers.
+
+```{r}
+municipios.alt <- municipios %>%
+         filter(!de_Municipio %in% c("São Francisco", "São Sebastião do Umbuzeiro", "Bernardino Batista", "São Domingos", "São José do Brejo do Cruz", "Curral Velho", "Cacimba de Areia", "Montadas", "Bom Sucesso", "São Vicente do Seridó", "Livramento", "Belém do Brejo do Cruz", "Aparecida", "Condado", "São João do Rio do Peixe", "Fagundes", "Serra Branca", "Riacho dos Cavalos"))
+
+
+ggplot(data = municipios.alt, 
+       aes(x = gasto_por_aluno, y = IDEB_medio_2015, color = faixa_pop)) +
+  geom_point() + 
+  geom_smooth() +
+  facet_wrap(~ faixa_pop, ncol = 2)
+```
+
+Observamos que para algumas faixas de população, como [0, 4K], parece haver uma correlação linear entre as variáveis. A linha ajuda a entender como se dá a distribuição dos pontos e busca representar a forma dessa distribuição. A seguir iremos verificar em termos estatísticos qual a correlação linear entre as variáveis para essas cidades. Lembrando que tanto na visualização acima como na tabela abaixo ignoramos alguns municípios considerados outliers.
+
+```{r}
+municipios_group_alt <- municipios.alt %>%
+  group_by(faixa_pop) %>%
+  summarise(n = n(),
+            gasto_medio = round(mean(gasto_por_aluno), 2),
+            gasto_mediano = round(median(gasto_por_aluno), 2),
+           gastoXideb = round(cor(gasto_por_aluno, IDEB_medio_2015), 2), 
+           gastoXpop = round(cor(gasto_por_aluno, vl_Populacao), 2))
+
+kable(
+  x = head(select(municipios_group_alt, c(faixa_pop, n, gastoXideb, gastoXpop, gasto_mediano))),
+  col.names = c('Faixa da população', 'Nº de municípios', 'Gasto por aluno X Ideb', 'Gasto por aluno X População', "Gasto mediano"),
+  align = c('c'))
+```
+
+Voltando a considerar todos os municípios, o gasto por aluno parece apresentar casos com comportamento _estranho_, uma vez que, na mediana os municípios da paraíba gastaram `r round(median(municipios$gasto_por_aluno), 2)` reais com a alimentação de cada aluno no ano de 2015, no entanto alguns municípios parecem ter gasto muito mais que isso. Alguns deles são:
 
 ```{r}
 kable(
