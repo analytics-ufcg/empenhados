@@ -27,16 +27,78 @@ library(leaflet)
 library(plotly)
 library(knitr)
 library(rsagrespb)
-
 library(dplyr)
+
 options(scipen = 999)
 
+source("../lib/load_dados_escolares.R")
 ```
+
+```{r}
+matriculas_municipios <- dados_educacao %>%
+  select(-vl_Escolas_Total) %>%
+  spread(key = dt_Ano, value = vl_Matriculas_Total) %>%
+  rename(ano2005 = `2005`) %>%
+  rename(ano2007 = `2007`) %>%
+  rename(ano2009 = `2009`) %>%
+  rename(ano2012 = `2012`) %>%
+  rename(ano2015 = `2015`)
+
+
+matriculas_municipios <- matriculas_municipios %>%
+  rowwise() %>%
+  mutate(ano2006 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(1)
+    ) %>%
+  mutate(ano2008 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(3)
+    ) %>%
+  mutate(ano2010 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(5)
+    ) %>%
+  mutate(ano2011 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(6)
+    ) %>%
+  mutate(ano2013 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(8)
+    ) %>%
+  mutate(ano2014 = approxfun(
+      x = c(0,2,4,7,10), 
+      y = c(ano2005, ano2007, ano2009, ano2012, ano2015)
+      )(9)
+    ) %>%
+  mutate(ano2006 = as.integer(ano2006)) %>%
+  mutate(ano2008 = as.integer(ano2008)) %>%
+  mutate(ano2010 = as.integer(ano2010)) %>%
+  mutate(ano2011 = as.integer(ano2011)) %>%
+  mutate(ano2013 = as.integer(ano2013)) %>%
+  mutate(ano2014 = as.integer(ano2014))
+
+# escolas_municipios <- dados_educacao %>%
+#   select(-vl_Matriculas_Total) %>%
+#   spread(key = dt_Ano, value = vl_Escolas_Total) %>%
+#   rename(ano2005 = `2005`) %>%
+#   rename(ano2007 = `2007`) %>%
+#   rename(ano2009 = `2009`) %>%
+#   rename(ano2012= `2012`) %>%
+#   rename(ano2015 = `2015`)
+```
+
 
 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
 
 ```{r}
-sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 pagamentos <- get_pagamentos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
     collect(n = Inf)
@@ -45,6 +107,11 @@ utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
 municipios <- tbl(utils, 'municipio') %>%
   collect()
+
+dados_educacao <- load_dados_escolares() %>%
+  mutate(vl_Matriculas_Total = vl_Matriculas_Fundamental + vl_Matriculas_Medio + vl_Matriculas_Pre_Escolar) %>%
+  mutate(vl_Escolas_Total = vl_Escolas_Fundamental + vl_Escolas_Medio, vl_Matriculas_Pre_Escolar) %>%
+  select(c(cd_IBGE, de_Municipio, dt_Ano, vl_Matriculas_Total, vl_Escolas_Total)) %>%
 
 ```
 
