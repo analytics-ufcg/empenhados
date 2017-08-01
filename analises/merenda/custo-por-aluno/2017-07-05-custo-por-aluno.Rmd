@@ -271,6 +271,10 @@ Conforme mostrado acima existem alunos matriculados nesses municípios e provave
 
 ## Considerações
 
-Conforme explicado acima, não cabe ao presente relatório afirmar que os valores apresentados são exatamente o total gasto com merenda em 2015 pelos municípios. Contudo, assumindo que **todos** os empenhos relacionados a alimentação escolar foram considerados, é alarmante que alguns municípios estejam gastando tão pouco com merenda ou ainda não informando corretamente todos os campos sobre a natureza dos gastos quando se trata de alimentação escolar. Foi constatado também municípios que embora tenham população e número de matrículas parecidas, não gastam de forma semelhante na alimentação escolar. Compartilhe nos comentários sobre o que você achou sobre a análise, e quais experiências com merenda no seu município você sabe ou já presenciou.
+Conforme explicado acima, não cabe ao presente relatório afirmar que os valores apresentados são exatamente o total gasto com merenda em 2015 pelos municípios. Contudo, assumindo que **todos** os empenhos relacionados a alimentação escolar foram considerados, é alarmante que alguns municípios estejam gastando tão pouco com merenda ou ainda não informando corretamente todos os campos sobre a natureza dos gastos quando se trata de alimentação escolar. Foi constatado também municípios que embora tenham população e número de matrículas parecidas, não gastam de forma semelhante na alimentação escolar.  
+
+Um trabalho semelhante pode ser visto no [IDGPB](https://idgpb.tce.pb.gov.br/nova-versao/idgpb/) que é uma plataforma do Tribunal de Contas da Paraíba com informações sobre os indicadores dos gastos públicos no estado.  
+
+Compartilhe nos comentários sobre o que você achou sobre a análise, e quais experiências com merenda no seu município você sabe ou já presenciou.  
     
   
