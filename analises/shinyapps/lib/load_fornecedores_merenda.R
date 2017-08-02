@@ -15,11 +15,10 @@ load_fornecedores_merenda <- function() {
     collect(n = Inf)
   
   pagamentos <- get_pagamentos_filtrados(sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
-    collect(n = Inf)
-  
-  pagamentos <- pagamentos %>%
+    select(cd_UGestora, nu_Empenho, dt_Ano, cd_UnidOrcamentaria, vl_Pagamento) %>%
     group_by(cd_UGestora, nu_Empenho, dt_Ano, cd_UnidOrcamentaria) %>%
-    summarise(total_pag = sum(vl_Pagamento))
+    summarise(total_pag = sum(vl_Pagamento)) %>%
+    collect(n = Inf)
   
   empenhos <- empenhos %>%
     left_join(pagamentos, by = c("cd_UGestora", "nu_Empenho", "dt_Ano", "cd_UnidOrcamentaria"))

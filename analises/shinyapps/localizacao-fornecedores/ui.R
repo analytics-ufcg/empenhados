@@ -2,10 +2,7 @@ library(dplyr)
 library(leaflet)
 library(shiny)
 
-source('../lib/load_fornecedores_merenda.R')
-
-ganhadores <- load_fornecedores_merenda() %>%
-  ungroup()
+ganhadores <- ganhadores <- read.csv("../lib/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
 dados_cep <- tbl(utils, "empresa") %>%
   collect() %>%

@@ -16,9 +16,8 @@ library(ggmap)
 library(leaflet)
 library(stringr)
 library(shiny)
-source('../lib/load_fornecedores_merenda.R')
 
-ganhadores <- load_fornecedores_merenda()
+ganhadores <- read.csv("../lib/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
