@@ -229,13 +229,14 @@ participacoes <- participantes %>%
   summarise(participou = n())
 ```
 
-Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram, o que significa que os pontos acima dessa reta são inconsistências nos dados. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou `r max(participacoes$participou)` vezes e como distorceria a visualização não foi inserido no gráfico.
+Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram. Além disso existe um ponto acima da reta, o que indica fornecedores que ganharam mais que participaram, por essa situação ser no mínimo intrigante, analisaremos estes casos com mais detalhe ainda nesse relatório. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou `r max(participacoes$participou)` vezes e como distorceria a visualização não foi inserido no gráfico.
 
 ```{r}
 
 vitorias <- contratos %>%
   group_by(nu_CPFCNPJ) %>%
   summarise(
+    ganhou_l = n_distinct(cd_UGestora, nu_Licitacao, tp_Licitacao),
     ganhou = n(),
     valor = sum(vl_TotalContrato))
 
@@ -250,42 +251,68 @@ lucros[is.na(lucros)] <- 0
 lucros <- lucros %>%
   mutate(perdeu = participou-ganhou)
 
-lucros %>%
-  group_by(participou, ganhou) %>%
+a = lucros %>%
+  group_by(participou, ganhou_l) %>%
   summarise(freq = n()) %>%
-  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    mutate(total = cut(freq, 
+                     breaks = c(1, 25, 50, 100, 200, 500, 518),
+                     include.lowest = T)) %>%
+  ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
     geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point(color = '#1E90FF') +
+    geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências') +
-    theme_minimal()
+      size = 'Ocorrências',
+      color = 'Ocorrências') +
+  theme_minimal()
+
+
+a
 ```
+    
 
 Como existem alguns valores extremos que tornam a escala difícil de visualizar, também pode ser vista abaixo uma versão do gráfico com apenas a parte que corresponde a maior parte dos fornecedores.
 
 ```{r}
 lucros %>%
-  filter(participou < 30) %>%
-  group_by(participou, ganhou) %>%
+  filter(participou < 20) %>%
+  group_by(participou, ganhou_l) %>%
   summarise(freq = n()) %>%
-  ggplot(aes(x=participou, y=ganhou, size=freq)) +
+    mutate(total = cut(freq, 
+                     breaks = c(1, 25, 50, 100, 200, 500, 518),
+                     include.lowest = T)) %>%
+  ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
     geom_abline(slope=1, intercept=0, color='grey') +
-    geom_point(color = '#1E90FF') +
+    geom_point() +
     scale_x_continuous(breaks=pretty_breaks(10)) +
     scale_y_continuous(breaks=pretty_breaks(10)) +
     labs(
       title = 'Participações em licitações versus vitórias por fornecedor',
       x = 'Participações',
       y = 'Vitórias',
-      size = 'Ocorrências') +
+      size = 'Ocorrências',
+      color = 'Ocorrências') +
     theme_minimal()
-
 ```
+
+Como dito anteriormente, vamos agora fazer um estudo mais criterioso dos casos em que um fornecedor ganha vezes que o número de vezes que participou, vale lembrar que esta inconsistência pode ter ocorrido por diversos fatores, como por exemplo erro na inserção do CPF ou CNPJ de um fornecedor.
+A tabela a seguir mostra os fornecedores que se encaixam na descrição anterior.
+```{r}
+ganhamais <- lucros %>% filter(participou < ganhou_l) %>%
+  left_join(fornecedores %>%
+              mutate(no_Fornecedor = toupper(no_Fornecedor)), by = "nu_CPFCNPJ") %>%
+  select(nu_CPFCNPJ, no_Fornecedor, ganhou, participou, perdeu, valor)
+
+kable(ganhamais)
+```
+Observa-se que os 3 casos o nome do Fornecedor consta como _NA_ o que indica que estes CPF's ou CNPJ's não constam nos nossos dados de fornecedores de merenda. 
+Fazendo uma busca pelo CNPJ no [site da fazenda](https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/cnpjreva_solicitacao2.asp) verificamos que _02323033000106_ diz respeito a empresa __UNIDAS VEICULOS E SERVICOS LTDA__ de João Pessoa-PB que foi contratada pelo município de Água Branca para fornecer um veículo adaptado a unidade itinerante de ensino com o valor exibido na tabela de R$ 410.000 através de uma licitação descrita como AQUISICAO DE GENEROS ALIMENTICIOS DESTINADOS A MERENDA DOS ALUNOS DA REDE DE ESCOLAS PUBLICAS DO MUNICIPIO.
+
+Os outros 2 fornecedores, ao que parece, são identificados pelo CPF então não conseguimos identificar o nome deles, mas eles referem para uma mesma licitação realizada pelo município de __PRATA-PB__ com a descrição AQUISIÇÃO DE CARNES, FRANGOS E OVOS, DESTINADOS PARA A MERENDA DAS ESCOLAS DA REDE MUNICIPAL DO MUNICÍPIO DE PRATA - PB.
 
 Outra coisa relevante a se observar é que o dinheiro recebido por meio de contratos de licitação se concentra em uma pequena parcela dos fornecedores, como pode ser visto no gráfico abaixo. Um dos motivos disso é que a maioria dos fornecedores só participou de uma ou duas licitações, mas isso não descarta a possibilidade de favoritismo ou contratos únicos de alto valor.
 
