@@ -28,18 +28,17 @@ server <- function(input, output, session){
     mediana_total = median(dados_nfe$Valor_unit_prod)
     
     dados_nfe %>%
-      plot_ly(x = ~Valor_total_da_nota, y = ~Valor_unit_prod, type = "scatter", mode = "markers", 
+      plot_ly(x0 = ~as.factor(NCM_prod), y = ~Valor_unit_prod, type = "scatter", mode = "markers",
               text = ~paste('Descrição: ', Descricao_do_Produto_ou_servicos,
                             '<br>Emitente: ', Nome_razao_social_emit,
                             '<br>Destino: ', Nome_razao_social_dest,
                             '<br>Valor Unitário: R$', Valor_unit_prod,
                             '<br>Valor total da Nota: R$', Valor_total_da_nota
               ),
-              hoverinfo = 'text', name = 'Valor Unitário') %>%
-      layout(xaxis = list(type = 'log', title = 'Valor total em Reais (log)'),
+              hoverinfo = 'text', name = 'Valor Unitário')  %>%
+      layout(xaxis = list(title = input$busca, showticklabels = FALSE),
              yaxis = list(title = 'Valor unitário em Reais'))
   })
-  
   
   output$table <- renderDataTable(dados_nfe() %>% filter(Unid_prod == input$select_unid) %>% select(-c(Unid_prod, NCM_prod)),
                                   options = list(scrollX = TRUE, pageLength = 10))
