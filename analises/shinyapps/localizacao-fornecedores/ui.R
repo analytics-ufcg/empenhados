@@ -5,6 +5,8 @@ library(shinydashboard)
 
 ganhadores <- ganhadores <- read.csv("../lib/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
 dados_cep <- tbl(utils, "empresa") %>%
   collect() %>%
   mutate(longitude = as.numeric(longitude)) %>%
