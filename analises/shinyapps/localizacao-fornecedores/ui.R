@@ -45,26 +45,3 @@ ui <- dashboardPage(
     )
   )
 )
-
-# ui <- shinyUI(
-#   fluidPage(
-#     wellPanel(
-#       fluidRow(
-#         selectInput(inputId = "busca", 
-#                     label = "Busque um fornecedor", 
-#                     choices = (paste(labels[["no_Credor"]], " - ",labels[["cd_Credor"]]))
-#         ),
-#         radioButtons(inputId = "modo_visualizacao", 
-#                      label = "Verificar", 
-#                      choices = c("Total de vitórias", "Valor recebido"),
-#                      selected = "Total de vitórias",
-#                      inline = TRUE
-#         )
-#       )
-#     ),
-#     
-#     fluidRow(
-#       leafletOutput("municipios")
-#     )
-#   )
-# )
