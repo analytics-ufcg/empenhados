@@ -1,11 +1,9 @@
 library(dplyr)
 library(leaflet)
 library(shiny)
+library(shinydashboard)
 
-source('../lib/load_fornecedores_merenda.R')
-
-ganhadores <- load_fornecedores_merenda() %>%
-  ungroup()
+ganhadores <- ganhadores <- read.csv("../lib/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
 dados_cep <- tbl(utils, "empresa") %>%
   collect() %>%
@@ -22,25 +20,28 @@ labels <- localizacao_licitantes_municipios %>%
   distinct(cd_Credor, .keep_all = TRUE) %>%
   arrange(no_Credor)
 
-ui <- shinyUI(
-  fluidPage(
-    wellPanel(
-      fluidRow(
-        selectInput(inputId = "busca", 
-                    label = "Busque um fornecedor", 
-                    choices = (paste(labels[["no_Credor"]], " - ",labels[["cd_Credor"]]))
-        ),
-        radioButtons(inputId = "modo_visualizacao", 
-                     label = "Verificar", 
-                     choices = c("Total de vitórias", "Valor recebido"),
-                     selected = "Total de vitórias",
-                     inline = TRUE
-        )
+ui <- dashboardPage(
+  dashboardHeader(title = "Localização"),
+  dashboardSidebar(disable = TRUE),
+  dashboardBody(
+    fluidRow(
+      box(width = 12, status = "primary",
+          selectInput(inputId = "busca", 
+                      label = "Busque um fornecedor",
+                      choices = (paste(labels[["no_Credor"]], " - ",labels[["cd_Credor"]]))
+          ),
+          radioButtons(inputId = "modo_visualizacao",
+                       label = "Verificar",
+                       choices = c("Total de vitórias", "Valor recebido"),
+                       selected = "Total de vitórias",
+                       inline = TRUE
+          )
       )
     ),
-    
     fluidRow(
-      leafletOutput("municipios")
+      box(width = 12, status = "primary",              
+          leafletOutput("municipios")
+      )
     )
   )
 )
