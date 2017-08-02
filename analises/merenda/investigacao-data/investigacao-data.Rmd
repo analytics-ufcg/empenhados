@@ -273,7 +273,7 @@ Abaixo estão representados os 10.000 credores que fizeram o maior número de em
 
 #### Número de empenhos feitos versus valor total recebido para cada credor
 
-```{r}
+```{r fig.height = 14}
 empenhos.forn <- empenhos %>%
   filter(as.numeric(cd_Credor) > 0) %>% 
   group_by(cd_Credor) %>%
@@ -301,9 +301,17 @@ top_n(empenhos.forn, 10000, n) %>%
       'Valor total: ', reais(vl_Empenho)),
     alpha = 0.8) %>%
   layout(
-    legend = list(font = list(size = 9)),
-    xaxis = list(title = 'Número de empenhos', type = 'log'),
-    yaxis = list(title = 'Valor total (reais)', type = 'log'))
+    legend = list(
+      font = list(size = 9),
+      orientation = 'h',
+      yanchor = 'top',
+      y = -0.2),
+    xaxis = list(
+      title = 'Número de empenhos',
+      type = 'log'),
+    yaxis = list(
+      title = 'Valor total (reais)',
+      type = 'log'))
 ```
 <br/>
 
