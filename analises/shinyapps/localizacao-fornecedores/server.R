@@ -34,24 +34,6 @@ localizacao_licitantes_municipios <- ganhadores %>%
   filter(!is.na(cep), cep != "") %>%
   ungroup()
 
-# localizacao_licitantes <- ganhadores %>%
-#   group_by(cd_Credor, no_Credor) %>%
-#   summarise(ganhou = sum(ganhou),
-#             valor_total_emp = sum(valor_total_emp),
-#             valor_mediana_emp = median(valor_mediana_emp),
-#             valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
-#             num_municipios = n()) %>%
-#   left_join(dados_cep %>%
-#               select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
-#   filter(!is.na(cep), cep != "")
-# 
-# ##### Não tenho certeza se isso ainda é necessário #####
-# # Endereço incorreto retornado pela API de busca
-# localizacao_licitantes <- localizacao_licitantes %>%
-#   filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
-#   filter(!(!is.na(cep) & is.na(latitude)))
-
-
 server <- function(input, output, session){
   
   mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
