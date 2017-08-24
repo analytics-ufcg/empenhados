@@ -31,7 +31,7 @@ Fases pelas quais todos os órgãos da administração pública, sem excessão, 
 A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação. A licitação **NÃO PODE** acontecer de maneira sigilosa, sempre deverá ser pública, respeitando o direito da publicidade, acessível a qualquer cidadão. O processo licitatório é regido pela [LEI Nº 8.666, DE 21 DE JUNHO DE 1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm). Mais detalhes [aqui](http://www.revistas.unifacs.br/index.php/redu/article/viewFile/1892/1439).
 
 
-Existem diversas modalidades de licitação, são algumas: pregão eletrônico, pregão presencial, carta convite, tomada de preços, concorrência pública, concurso, dentre outras. Mais detalhes podem ser vistos na *Lei Geral de Licitações* ou na *Lei Geral de Instituição do Pregão* (mais sobre o [aqui](https://www.comprasgovernamentais.gov.br/arquivos/micro-e-pequenas-empresas/pregao-presencial-e-eletronico-29out2014.pdf) e [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/sobre-pregao/)).
+Existem diversas modalidades de licitação, são algumas: pregão eletrônico, pregão presencial, carta convite, tomada de preços, concorrência pública, concurso, dentre outras. Mais detalhes podem ser vistos na *Lei Geral de Licitações* ou na *Lei Geral de Instituição do Pregão* (mais informações [aqui](https://www.comprasgovernamentais.gov.br/arquivos/micro-e-pequenas-empresas/pregao-presencial-e-eletronico-29out2014.pdf) e [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/sobre-pregao/)).
 
 
 Para participação em certames licitatórios, as empresas devem estar habilitadas, certificadas e cadastradas no SICAF - Sistema de Cadastramento Unificado de Fornecedores. Mais informações [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/dicas-cadastramento/), [aqui](https://sicafnet.com.br/sicaf-cadastramento-comprasnet/) e [aqui](http://www.justicaeleitoral.jus.br/arquivos/tre-ma-perguntas-frequentes-faq-cadastro-no-sicaf).
@@ -43,7 +43,7 @@ Após concluída a licitação ou os procedimentos de dispensa ou inexigibilidad
 
 ### 3  Contrato
 
-A seguir do empenho a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado. 
+Após o empenho a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado. 
 
 ### 4  Liquidação
 
@@ -102,7 +102,7 @@ O mesmo pode acontecer com contratos. Tomando o exemplo acima, caso a Prefeitura
 
 - ####  O que ocorre se o pagamento realizado ao credor for indevido ou maior do que o acordado?
 
-Se houver importância paga a maior ou indevidamente, sua reposição aos órgãos públicos deverá ocorrer dentro do próprio exercício, mediante crédito à conta bancária da unidade gestora que efetuou o pagamento. Quando a reposição se efetuar em outro exercício, o seu valor deverá ser restituído por DARF ao Tesouro Nacional.
+Se houver importância paga a mais ou indevidamente, sua reposição aos órgãos públicos deverá ocorrer dentro do próprio exercício, mediante crédito à conta bancária da unidade gestora que efetuou o pagamento. Quando a reposição se efetuar em outro exercício, o seu valor deverá ser restituído por DARF ao Tesouro Nacional.
 
 
 - ####  Como funciona a *Ata de Registro de Preço*?

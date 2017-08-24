@@ -44,7 +44,7 @@ utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 municipios = tbl(utils, 'municipio') %>%
   collect()
 
-sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 tipos_licitacao = tbl(sagres, 'Tipo_Modalidade_Licitacao') %>%
   collect() %>%
@@ -94,9 +94,9 @@ levels_mapa[200] = "São Vicente do Seridó"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 ```
 
-No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
+No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
 
-Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligado a uma licitação que é considerada 100% de merenda. Ou seja, todos os empenhos dessa licitação são destinados a alimentação escolar e quaisquer empresas ou pessoas físicas que lançaram propostas para tais licitações serão consideradas fornecedores de merenda.
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda. Ou seja, todos os empenhos dessa licitação são destinados a alimentação escolar, quaisquer empresas ou pessoas físicas que lançaram propostas para tais licitações serão consideradas fornecedores de merenda.
 
 ### 3.1 - Quantos são os fornecedores de merenda de cada município?
 A partir do filtro, explicado acima, aplicado as licitações, o mapa abaixo aponta a quantidade de fornecedores de licitações por município na Paraíba. É preciso observar que não há garantia que esses fornecedores ganharam as licitações, apenas que os mesmos participaram, ou seja, lançaram propostas para licitações que são 100% de merenda.
@@ -112,7 +112,7 @@ get.municipio <- function(cd_UGestora) {
 merenda_pb <- fornecedores %>%
   mutate(de_Municipio = get.municipio(cd_UGestora)) %>%
   group_by(de_Municipio) %>%
-  summarise(total = n())
+  dplyr::summarise(total = n())
 
 merenda_pb$de_Municipio[114] = "Quixabá"
 
@@ -130,14 +130,18 @@ mapa_paraiba@data <- mapa_paraiba@data %>%
 library(leaflet)
 colors <- colorFactor('OrRd', mapa_paraiba@data$total_lvl)
 
+labs <- lapply(seq(nrow(mapa_paraiba@data)), function(i) {
+  paste0('Município: ', mapa_paraiba@data[i, "Nome_Munic"], '</br>', 
+        'Número de fornecedores: ', mapa_paraiba@data[i, "total"]) 
+})
+
 leaflet(data = mapa_paraiba) %>%
   addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
   addPolygons(opacity = 0.5, 
               weight = 1, 
               fillColor = colors(mapa_paraiba@data$total_lvl),
-              color = 'black', 
-              label = mapa_paraiba@data$Nome_Munic,
-              popup = paste('Município: ', mapa_paraiba@data$Nome_Munic, '</br>Número de fornecedores: ', mapa_paraiba@data$total),
+              color = 'black',
+              label = lapply(labs, htmltools::HTML),
               fillOpacity = 1) %>%
   addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$total_lvl,
             title = "Fornecedores de merenda por município",
@@ -146,13 +150,13 @@ leaflet(data = mapa_paraiba) %>%
 
 ```
 
-Observa-se que o número de fornecedores da maioria das cidades é, em geral, baixo se comparado a valores mais extremos de cidades como Monteiro (106) e Guarabira (72). Uma medida que comprova essa afirmação é de que 75% das cidades tem no máximo `r quantile(merenda_pb$total, .75)` fornecedores e 67 cidades, com a cor cinza no mapa, não apresentaram nenhum fornecedor em licitações 100% de merenda, ou seja, tais cidades não realizaram licitações com essa característica.
+Observa-se que o número de fornecedores da maioria das cidades é, em geral, baixo se comparado a valores mais extremos de cidades como Monteiro (106) e Guarabira (72). Uma medida que comprova essa afirmação é de que 75% das cidades tem no máximo `r quantile(merenda_pb$total, .75)` fornecedores e 67 cidades, com a cor cinza no mapa, não apresentaram nenhum fornecedor em licitações 100% de merenda, ou seja, tais cidades não realizaram licitações com essa característica ou não há dados.
 
 ### Quantos fornecedores, em média, competem nas licitações?
 ```{r}
 n_propostas_group <- licitacoes_merenda %>%
   group_by(nu_Propostas) %>%
-  summarise(n = n())
+  dplyr::summarise(n = n())
 lic_sem_concorrentes <- subset(licitacoes_merenda, nu_Propostas <= 1)
 ```
 A média de fornecedores por licitação de merenda é de __`r round(mean(licitacoes_merenda$nu_Propostas), 2)`__ enquanto a mediana é de `r median(licitacoes_merenda$nu_Propostas)` o que significa que existem licitações com valores extremos para o número de interessados que fazem a média subir, em geral, essas licitações são chamadas públicas para aquisição de gêneros alimentícios provenientes de agricultura familiar.
@@ -165,7 +169,7 @@ Para responder essa questão foi calculado o número de contratos celebrados por
 
 ```{r}
 fornecedores_groups <- group_by(contratos, nu_CPFCNPJ)
-data_fornecedores_groups <- summarise(fornecedores_groups, n = n())
+data_fornecedores_groups <- dplyr::summarise(fornecedores_groups, n = n())
 contratos_ordenados <- within(contratos,
                               nu_CPFCNPJ <- factor(nu_CPFCNPJ, levels = names(sort(table(nu_CPFCNPJ), decreasing = TRUE))))
 
@@ -217,7 +221,8 @@ Uma atenção especial para os seguintes fornecedores, todos eles fecharam __mai
 
 ```{r}
 vencedores3 <- get.grandes.vencedores(20)
-kable(vencedores3[order(vencedores3$n),], col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+kable(vencedores3[order(vencedores3$n),], caption = "Fornecedores que fecharam mais de 20 contratos",
+      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
 ```
 
 
@@ -226,7 +231,7 @@ kable(vencedores3[order(vencedores3$n),], col.names = c("CPF/CNPJ", "Nome", "Nú
 ```{r}
 participacoes <- participantes %>%
   group_by(nu_CPFCNPJ) %>%
-  summarise(participou = n())
+  dplyr::summarise(participou = n())
 ```
 
 Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do processo licitatório apenas uma vez. Note que a reta desenhada mostra os fornecedores que ganharam todas as vezes que participaram. Além disso existe um ponto acima da reta, o que indica fornecedores que ganharam mais que participaram, por essa situação ser no mínimo intrigante, analisaremos estes casos com mais detalhe ainda nesse relatório. Também é importante destacar que o fornecedor com mais participações, mas nenhuma vitória, é um fornecedor genérico, entitulado "Folha de Pagamento (Fornecedor Padrão)". Ele participou `r max(participacoes$participou)` vezes e como distorceria a visualização não foi inserido no gráfico.
@@ -235,7 +240,7 @@ Os gráficos abaixo mostram que a maior parte dos fornecedores participaram do p
 
 vitorias <- contratos %>%
   group_by(nu_CPFCNPJ) %>%
-  summarise(
+  dplyr::summarise(
     ganhou_l = n_distinct(cd_UGestora, nu_Licitacao, tp_Licitacao),
     ganhou = n(),
     valor = sum(vl_TotalContrato))
@@ -251,9 +256,9 @@ lucros[is.na(lucros)] <- 0
 lucros <- lucros %>%
   mutate(perdeu = participou-ganhou)
 
-a = lucros %>%
+lucros %>%
   group_by(participou, ganhou_l) %>%
-  summarise(freq = n()) %>%
+  dplyr::summarise(freq = n()) %>%
     mutate(total = cut(freq, 
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
@@ -269,9 +274,6 @@ a = lucros %>%
       size = 'Ocorrências',
       color = 'Ocorrências') +
   theme_minimal()
-
-
-a
 ```
     
 
@@ -281,7 +283,7 @@ Como existem alguns valores extremos que tornam a escala difícil de visualizar,
 lucros %>%
   filter(participou < 20) %>%
   group_by(participou, ganhou_l) %>%
-  summarise(freq = n()) %>%
+  dplyr::summarise(freq = n()) %>%
     mutate(total = cut(freq, 
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
@@ -299,7 +301,7 @@ lucros %>%
     theme_minimal()
 ```
 
-Como dito anteriormente, vamos agora fazer um estudo mais criterioso dos casos em que um fornecedor ganha vezes que o número de vezes que participou, vale lembrar que esta inconsistência pode ter ocorrido por diversos fatores, como por exemplo erro na inserção do CPF ou CNPJ de um fornecedor.
+Como dito anteriormente, vamos agora fazer um estudo mais criterioso dos casos em que um fornecedor ganha um número maior de vezes do que o número de vezes que participou, vale lembrar que esta inconsistência pode ter ocorrido por diversos fatores, como por exemplo, erro na inserção do CPF ou CNPJ de um fornecedor.
 A tabela a seguir mostra os fornecedores que se encaixam na descrição anterior.
 ```{r}
 ganhamais <- lucros %>% filter(participou < ganhou_l) %>%

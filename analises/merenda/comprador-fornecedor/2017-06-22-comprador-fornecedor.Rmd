@@ -56,7 +56,7 @@ utils = src_mysql('utils', group='ministerio-publico', password=NULL)
 municipios = tbl(utils, 'municipio') %>%
   collect()
 
-sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico-local', password=NULL)
+sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
 tipos_licitacao = tbl(sagres, 'Tipo_Modalidade_Licitacao') %>%
   collect() %>%
@@ -117,7 +117,7 @@ empenhos <- tbl(sagres, 'Empenhos') %>%
 
 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
 
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este [outro post](https://analytics-ufcg.github.io/licitacoes-pb//2017/05/execucaoorcamentaria.html) preparado por nós explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este [outro post](https://analytics-ufcg.github.io/licitacoes-pb//2017/05/execucaoorcamentaria.html) preparado por nós, explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios
 
 Os dados utilizados nesse relatório foram obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) e a parcela deles que foi utilizada compreende informações sobre o **processo de gastos públicos dos 223 municípios do estado entre os anos de 2003 e 2016.**
 
@@ -197,7 +197,7 @@ p2 <- empenhos %>%
 subplot(p1, p2, titleX = TRUE, titleY = TRUE, margin = 0.05)
 ```
 
-Aqui cabe uma explicação: Uma diminuição ou aumento no total de licitações realizadas, não necessariamente implica que houve menos ou mais compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**.
+Aqui cabe uma explicação: Uma diminuição ou aumento no total de licitações realizadas, não necessariamente implica que houve menos ou mais compras ou contratações. Precisamos lembrar que uma única licitação pode compreender vários itens, e, por isso, a análise do total de licitações serve principalmente como uma verificação dos hábitos licitatórios de cada prefeitura. A verificação do total de materiais adquiridos e serviços contratados pode ser *aproximada* utilizando as diferentes compensações financeiras geradas pela licitação, representadas geralmente na forma de **empenhos**.
 
 Um ponto que ilustra bem a diferença que pode ocorrer entre o número de licitações realizadas e o número de empenhos gerados é a situação de Campina Grande entre os anos de 2006 e 2008. Nesse período, o total de licitações realizados no município se manteve estável, mas a quantidade de empenhos realizados variou bastante, subindo quase 100% em 2007 e caindo cerca de 50% no ano seguinte.
 
@@ -209,7 +209,7 @@ Agora que entendemos melhor nossos dados e variáveis, podemos ir mais a fundo. 
 
 Porém, antes de prosseguirmos temos uma questão a resolver: se você está lembrado, no começo da análise afirmamos que vários itens distintos podem ser adquiridos ou contratados numa mesma licitação. Devido a isso, pode ser que apenas uma pequena parte dos itens adquiridos em uma licitação seja de merenda e outra parte seja, por exemplo, alimentação para os hospitais municipais ou materiais de escritório. Sendo assim, como poderíamos classificar uma licitação como sendo de merenda?  
 
-Várias alternativas podem ser utilizadas para realizar essa classificação, mas para essa análise, **resolvemos classificar como licitações de merenda apenas as licitações em que todos os seus empenhos são de merenda.**
+Várias alternativas podem ser utilizadas para realizar essa classificação, mas para esta análise, **resolvemos classificar como licitações de merenda apenas as licitações em que todos os seus empenhos são de merenda.**
 
 Agora sim, podemos continuar. Você sabe quanto o seu município gastou com merenda nos últimos anos? Será que ele está dentro da média da Paraíba? Quantas licitações são feitas para alimentação escolar? Quem gasta mais? Quem gasta menos? Essas e muitas outras perguntas podem ser respondidas pela análise abaixo. 
 
@@ -232,7 +232,7 @@ plot_ly(data = licitacoes_merenda, x = ~as.factor(year(dt_Homologacao)), type='h
 ```
   
     
-Podemos perceber que houve um salto no total de licitações entre 2012 e 2013, o que pode indicar que os municípios passaram fazer mais licitações envolvendo merenda. Esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. Aqui, também chama a atenção o ano de 2015, que apresenta o maior número de licitações desse tipo.
+Podemos perceber que houve um salto no total de licitações entre 2012 e 2013, o que pode indicar que os municípios passaram a realizar mais licitações envolvendo merenda. Esse salto acontece também nos dados gerais de licitação e já foi analisado neste mesmo relatório. Aqui, também chama a atenção o ano de 2015, que apresenta o maior número de licitações desse tipo.
 
  
 ### Quem faz mais licitações de merenda?
@@ -439,8 +439,7 @@ licitacoes_merenda %>%
          xaxis = list(title = 'Ano'))
 ```
 
-
-A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são a chamada pública e o pregão presencial. Esta última foi a modalidade mais utilizada para esse tipo de licitação até ser superada pelo pregão presencial, em 2013, e é uma das modalidades mais suscetíveis à fraude, visto que é possível ocorrer, dentre outras coisas, acordo prévio entre os participantes e a coação de compertidores para fazê-los desistir. 
+A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são a chamada pública e o pregão presencial. Esta última foi a modalidade mais utilizada para esse tipo de licitação até ser superada pela primeira em 2014, e é uma das modalidades mais suscetíveis à fraude, visto que é possível ocorrer, dentre outras coisas, acordo prévio entre os participantes e a coação de compertidores para fazê-los desistir. 
 
 Outro ponto que salta aos olhos é a queda de popularidade da modalidade convite, que era bastante utilizada para esse tipo de licitação, mas atualmente não está sequer entre as cinco modalidades mais utilizadas.
 

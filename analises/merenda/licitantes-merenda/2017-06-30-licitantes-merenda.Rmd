@@ -76,7 +76,7 @@ Os critérios considerados para a realização do agrupamento foram:
 
 * Valor total empenhado: Soma do valor em reais de todos os empenhos relacionados ao licitante.
 
-* Valor mediano empenhado: Mediana do valor em reais dos empenhos relacionados ao licitante .
+* Valor mediano empenhado: Mediana do valor em reais dos empenhos relacionados ao licitante.
 
 * Valor total pago: Soma do valor em reais efetivamente pago ao licitante mediante transferência bancária.
 
@@ -134,10 +134,10 @@ ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
 Com isso podemos observar o comportamento de cada grupo e estudá-los em função das suas particularidades, como segue:
 
 #### Grupo 1 - Saudáveis
-Neste grupo estão os licitantes que tem comportamento regular, suas taxas estão todas na média. Indicando que os fornecedores deste grupo são mais cautelos ao participar de uma licitação.
+Neste grupo estão os licitantes que tem comportamento regular, suas taxas estão todas na média. Indicando que os fornecedores deste grupo são mais cautelosos ao participar de uma licitação.
 
 #### Grupo 2 - Gourmet
-Que faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor enpenhado, pago e a mediana do que foi empenhado considarávelmente acima da média.
+Quem faz parte desse grupo participa muito em muitos municípios dando a ideia de que estão sempre experimentando novas formas de participar. Estes quando ganham, ganham bem pois tem o valor empenhado, pago e a mediana do que foi empenhado considarávelmente acima da média.
 
 #### Grupo 3 - Nutricionistas
 Esse pessoal sabe muito bem onde e o que comer. Participam pouco e em poucos municípíos mas mesmo assim ganham mais e melhor que os demais.
@@ -146,7 +146,7 @@ Esse pessoal sabe muito bem onde e o que comer. Participam pouco e em poucos mun
 Quem está aqui é porque tem todas as taxas altas. Entra em várias licitações em muitos municípios e lucram bem com isso.
 
 #### Grupo 5 - Magro-de-ruim
-Come, come, come mas não engordam. Mesmo participando mais que a maioria, em geral não conseguem ganhar as licitações.
+Comem, comem, comem mas não engordam. Mesmo participando mais que a maioria, em geral não conseguem ganhar as licitações.
 
 #### Grupo 6 - Estudantes de Nutrição
 Esses estão aprendendo com os nutricionistas ainda. Participam pouco e em poucos municipios diferentes mas ganham bem com isso, um pouco pior que os verdadeiros nutricionistas mas ainda sim tem seus lucros.
@@ -229,7 +229,7 @@ ggplot(ganhadores.km.long, aes(x = variable, y = value, colour = variable)) +
 Os grupos podem ser rotulados e descritos como:
 
 #### Grupo 1 - Cuscuz
-Esse grupo de fornecedores possui variáveis com todas características próximas a média (um pouco abaixo) e então podem ser considerados básicos uma vez que nenhuma de suas variáveis se sobressai, além de serem o maior grupo observado.
+Esse grupo de fornecedores possui variáveis com todas características próximas a média (um pouco abaixo) e então podem ser considerados básicos uma vez que nenhuma de suas variáveis se sobressai, além de ser o maior grupo observado.
 
 #### Grupo 2 - Arroz com feijão
 Os fornecedores desse grupo, assim como no anterior possuem variáveis próximas ao que é observado na maioria dos fornecedores. No entanto, possuem valor total e mediano empenhado e o valor total pago acima do que é observado no grupo 1 e portanto, em geral, ganham mais.

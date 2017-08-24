@@ -256,8 +256,16 @@ gasto_sao_jose <- pagamentos %>%
 ```
 
 ```{r}
+valor_medio_total <- round(mean(gasto_sao_jose$custo_total), 2)
+
 plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
   add_trace(y = ~custo_total, type = 'scatter', name = 'Total Pago', mode = 'lines+markers') %>%
+  add_trace(y = valor_medio_total, type = 'scatter', mode = 'lines',
+          name = 'Média geral',
+          text = ~paste('Valor médio: R$', valor_medio_total),
+          hoverinfo = 'text',
+          line = list(dash = "dash"),
+          opacity = 0.75) %>%
   layout(title = "Total pago em São José do Brejo do Cruz",
          yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
          xaxis = list(title = 'Ano'))
@@ -266,8 +274,16 @@ plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
 Agora que visualizamos o total pago no município, podemos visualizar também o valor pago pelo município para cada aluno.
 
 ```{r}
+valor_medio_por_aluno <- round(mean(gasto_sao_jose$custo_aluno), 2)
+
 plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
-  add_trace(y = ~custo_aluno, type = 'scatter', name = 'Total', mode = 'lines+markers', color='orange') %>%
+  add_trace(y = ~custo_aluno, type = 'scatter', color=I('orange'), name = 'Total', mode = 'lines+markers') %>%
+  add_trace(y = valor_medio_por_aluno, type = 'scatter', mode = 'lines',
+          name = 'Média geral',
+          text = ~paste('Valor médio: R$', valor_medio_por_aluno),
+          hoverinfo = 'text',
+          line = list(dash = "dash"),
+          opacity = 0.75) %>%
   layout(title = "Total por aluno em São José do Brejo do Cruz",
          yaxis = list(title = 'Total por Aluno (em milhares de reais)', hoverformat= '.2f'),
          xaxis = list(title = 'Ano'))
@@ -320,8 +336,16 @@ gasto_serra_branca <- pagamentos %>%
 ```
 
 ```{r}
+valor_medio_serra_branca <- round(mean(gasto_serra_branca$custo_total), 2)
+
 plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
   add_trace(y = ~custo_total, type = 'scatter', name = 'Total', mode = 'lines+markers') %>%
+  add_trace(y = valor_medio_serra_branca, type = 'scatter', mode = 'lines',
+          name = 'Média geral',
+          text = ~paste('Valor médio: R$', valor_medio_serra_branca),
+          hoverinfo = 'text',
+          line = list(dash = "dash"),
+          opacity = 0.75) %>%
   layout(title = "Total pago em Serra Branca",
          yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
          xaxis = list(title = 'Ano'))
@@ -332,8 +356,16 @@ Como já dito anteriormente, Serra Branca gastou menos de 1 real por aluno em 20
 Similar ao que fizemos para o município de São José do Brejo do Cruz, podemos visualizar o custo por aluno entre os anos de 2009 e 2015 e verificar se esse valor segue a mesma tendência do valor total gasto.
 
 ```{r}
+valor_medio_por_aluno <- round(mean(gasto_serra_branca$custo_aluno), 2)
+
 plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
   add_trace(y = ~custo_aluno, type = 'scatter', name = 'Total', mode = 'lines+markers', color='orange') %>%
+  add_trace(y = valor_medio_por_aluno, type = 'scatter', mode = 'lines',
+          name = 'Média geral',
+          text = ~paste('Valor médio: R$', valor_medio_por_aluno),
+          hoverinfo = 'text',
+          line = list(dash = "dash"),
+          opacity = 0.75) %>%
   layout(title = "Total por aluno em Serra Branca",
          yaxis = list(title = 'Total por Aluno (em milhares de reais)', hoverformat= '.2f'),
          xaxis = list(title = 'Ano'))
@@ -365,6 +397,6 @@ Conforme explicado acima, não cabe ao presente relatório afirmar que os valore
 
 Um trabalho semelhante pode ser visto no [IDGPB](https://idgpb.tce.pb.gov.br/nova-versao/idgpb/) que é uma plataforma do Tribunal de Contas da Paraíba com informações sobre os indicadores dos gastos públicos no estado.  
 
-Compartilhe nos comentários sobre o que você achou sobre a análise, e quais experiências com merenda no seu município você sabe ou já presenciou.  
+Compartilhe nos comentários o que você achou sobre a análise, e quais experiências com merenda no seu município você sabe ou já presenciou.  
     
   

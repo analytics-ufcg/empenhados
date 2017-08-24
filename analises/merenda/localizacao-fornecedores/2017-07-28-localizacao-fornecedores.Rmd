@@ -37,7 +37,7 @@ options(scipen = 999)
 
 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
 
-Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3546 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 9000). Decidimos ignorar tais fornecedores que não possuem os dados de localização disponíveis.
+Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3546 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 9000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
 
 ```{r}
 ganhadores <- load_fornecedores_merenda()
@@ -115,7 +115,7 @@ Um número considerável, ainda, está localizado em estados vizinhos como Perna
 Descubra quais os fornecedores de merenda que se localizam na sua cidade ou próximo a você e comente no final desse post o que você encontrou e reconheceu.
 
 ## Verificando a existência de grandes fornecedores em cidades improváveis
-Será que existem fornecedores com altos valores pagos de merenda em cidades pequenas da Paraíba? Os critérios utilizados para as cidades pequenas são aquelas que representam 10% das cidades com menor população da Paraíba. Um fornecedor é considerado com altos pagamentos quando se encaixa na lista de fornecedores dos 10% que mais receberam pagamentos de empenhos de merenda.
+Será que existem fornecedores com altos valores pagos de merenda em cidades pequenas da Paraíba? O critério utilizado para determinar quais cidades são pequenas é a população, são classificadas como pequenas aquelas que estão incluídas no grupo das 10% cidades com menor população da Paraíba. Um fornecedor é considerado com altos pagamentos quando se encaixa na lista de fornecedores dos 10% que mais receberam pagamentos de empenhos de merenda.
 
 ```{r}
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
@@ -223,7 +223,7 @@ Esse [documento](http://publicacao.tce.pb.gov.br/9c207dcfe37c4887431f3fed0645486
 
 Já uma busca pelo CNPJ do segundo fornecedor, nos mostra que a empresa *Mega Master Comercial de Alimentos Ltda.* encontra-se atualmente no [cadastro de empresas inidôneas e suspeitas](http://www.portaltransparencia.gov.br/ceis/empresa/08370039000102) do Portal da Transparência e impedida de participar em licitações por dois anos, após não cumprir os termos de um contrato firmado com a EBSERH - Empresa Brasileira de Serviços Hospitalares.
 
-Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios (nesse site)[http://www.empresascnpj.com/], descobrimos algumas coisas interessantes: Os sócios de ambas empresas contém o mesmo sobrenome, Fonseca Pires, e ambas já foram sediadas em um mesmo bloco de galpões.
+Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios [nesse site](http://www.empresascnpj.com/), descobrimos algumas coisas interessantes: Os sócios de ambas empresas contém o mesmo sobrenome, Fonseca Pires, e ambas já foram sediadas em um mesmo bloco de galpões.
 
 
 ## Onde atuam os diversos fornecedores de merenda?

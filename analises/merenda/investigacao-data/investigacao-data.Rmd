@@ -90,9 +90,9 @@ reais <- function(valor) {
 }
 ```
 
-Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando o as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
+Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
 
-Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem todos seus pagamentos registrados no mesmo dia do empenho em questão e os dados de seus credores.
+Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem todos seus pagamentos registrados no mesmo dia e os dados de seus credores.
 
 ### Esse fenômeno está mais relacionado a quais tipos de licitação?
 <br/>
@@ -155,7 +155,7 @@ plot_ly(empenhos.hist) %>%
     barmode = 'stack')
 ```
 
-Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia varia pouco em função do tempo. Aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ter havido licitação ou sob a justificativa de dispensa por valor, destacam-se das demais.
+Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia varia pouco em função do tempo. Aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ocorrência de processo licitatório ou sob a justificativa de dispensa por valor, destacam-se das demais.
 
 Como na visualização anterior, nesta os picos também são mais recorrentes no último mês do ano, o que nos faz acreditar ainda mais na justificativa apresentada. Mas essa "pressa" para fechar o orçamento pode indicar que o dinheiro público está sendo mal gasto pelos adminstradores municipais.
 
@@ -269,7 +269,9 @@ Vemos que a distribuição do número de empenhos é bastante regular entre os m
 
 ### Quais são os credores mais relacionados a esses empenhos?
 
-Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. Note que ambos os eixos do gráfico estão em uma escala logarítmica, com o intuito de facilitar a visualização de valores muito altos.
+Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. A CNAE ou Classificação nacional de atividades econômicas, é uma forma de classificar e padronizar em todo o território nacional, as atividades econômicas exercidas por todos os agentes que se engajam na produção de bens e serviços, como empresas e até organismos públicos ou privados. 
+
+Note que ambos os eixos do gráfico estão em uma escala logarítmica, com o intuito de facilitar a visualização de valores muito altos.
 
 #### Número de empenhos feitos versus valor total recebido para cada credor
 
@@ -315,10 +317,10 @@ top_n(empenhos.forn, 10000, n) %>%
 ```
 <br/>
 
-É interessante perceber que credores com atividades similares têm, em geral, um comportamento parecido, estando os ponto de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
+É interessante perceber que credores com atividades similares têm, em geral, um comportamento parecido, estando os pontos de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
 
-Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível recebê-lo no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
+Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários (folhas de pagamento, etc) e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível a entrega no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
 
-Uma coisa suspeita, no entanto, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Isso só seria aceitável, de certa forma, se essas empresas estiverem na verdade fornecendo materias de construção.
+No entanto, uma coisa suspeita, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Isso só seria aceitável, de certa forma, se essas empresas estiverem na verdade fornecendo materiais de construção.
 
 Também é necessário investigar os credores cujo CNAE não conhecemos, mas que aparecem em posições de relevância, como **ANTONIO COELHO AIRES E OUTROS** e **MARIA DA PENHA LUCINDO**. O primeiro no entretanto, está representando um grande número de pessoas que não possuem seu cadastro de CNPJ devidamente preenchidos.
