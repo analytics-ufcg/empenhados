@@ -31,7 +31,7 @@ library(dplyr)
 
 options(scipen = 999)
 
-source("../lib/load_dados_escolares.R")
+source("../../utils/lib/load_dados_escolares.R")
 ```
 
 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
@@ -166,7 +166,7 @@ A mediana obtida para esse tipo de gasto foi de R\$ `r round(median(gasto_munici
 No mapa abaixo podemos observar quanto cada um dos municípios da Paraíba gastou com merenda no ano de 2015. Os municípios na cor cinza são aqueles que não tiveram pagamentos realizados em 2015 que se encaixassem no filtro utilizado para captar os pagamentos referentes a alimentação escolar.
 
 ```{r results = 'hide'}
-mapa_paraiba <- readOGR("../dados/mapa_paraiba_ibge/Municipios.shp")
+mapa_paraiba <- readOGR("../../utils/dados/mapa_paraiba_ibge/Municipios.shp")
 
 # Municípios que mudaram de nome ou que estão com o nome errado
 levels_mapa = levels(mapa_paraiba@data$Nome_Munic)

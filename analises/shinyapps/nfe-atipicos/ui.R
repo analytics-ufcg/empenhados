@@ -17,7 +17,7 @@ query <- sql('
 ncm_cod <- tbl(notas, query) %>%
   collect(n = Inf)
 
-ncm <- read.csv("NCMatualizada13072017.csv", sep=";", stringsAsFactors = F, colClasses = c(NCM = "character")) %>%
+ncm <- read.csv("../../utils/dados/NCMatualizada13072017.csv", sep=";", stringsAsFactors = F, colClasses = c(NCM = "character")) %>%
   semi_join(ncm_cod, by = c("NCM" = "NCM_prod"))
 
 ui <- dashboardPage(
