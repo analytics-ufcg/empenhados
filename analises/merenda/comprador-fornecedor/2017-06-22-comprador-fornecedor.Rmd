@@ -315,6 +315,26 @@ kable(
   align = c('c'))
 ```
 
+A quantidade de licitações e empenhos realizados no município de Monteiro chamam a atenção quando comparados às demais cidades do ranking. Por causa disso, os valores dos empenhos destinados a merenda também foram analisados e foi constatado que os valores dos empenhos realizados no município costumam ser bem acima da média estadual, representada pela linha laranja no gráfico abaixo. 
+
+```{r}
+licitacoes_merenda.monteiro <- licitacoes_merenda %>% 
+  filter(de_Municipio == 'Monteiro')
+
+media_estadual_emp <- mean(licitacoes_merenda$valor_merenda)
+
+licitacoes_merenda.monteiro %>%
+  group_by(dt_Ano) %>%
+  summarise(valor_merenda = sum(valor_merenda)) %>%
+  plot_ly() %>%
+  add_bars(x = ~dt_Ano, y = ~valor_merenda, name = 'Valor Empenhado', showlegend = FALSE) %>%
+  add_lines(x= ~dt_Ano, y = ~media_estadual_emp, mode = 'lines', name = 'Média Estadual') %>%
+  layout(xaxis = list(title = "Ano"),
+         yaxis = list(title = "Valor empenhado para merenda (R$)"),
+         title = "Valores empenhados para merenda em Monteiro")
+```
+
+
 Também é possível verificar na tabela qual o número de empenhos associados a essas licitações 100% de merenda e quanto foi empenhado na soma de todas as licitações em cada município. Na pergunta seguinte iremos abordar um pouco mais sobre quanto é gasto com merenda nos municípios da Paraíba.
 
 É interessante notar o baixo número de licitações exclusivas para merenda realizadas no estado. `r nrow(paraiba_municipios) - nrow(paraiba_sumarizado)` municípios não realizaram nenhuma licitação desse tipo no período.
