@@ -482,12 +482,15 @@ A chamada pública é a modalidade da maioria dessas licitações. De acordo com
 Mais uma coisa que podemos observar na tabela anterior é que não parece haver uma relação entre o valor de uma licitação de merenda e o número de propostas obtidas por ela. Podemos verificar se isso é verdade ou não verificando a distribuição dos valores em um gráfico. Para melhorar os cálculos de correlação e a visualização, valores extremos de ambas características foram omitidos.
 
 ```{r}
-cor2 = with(filter(licitacoes_merenda,
-                   vl_Licitacao <= quantile(licitacoes_merenda$valor_merenda, .99) &
-                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
-            round(cor(valor_merenda, nu_Propostas), 2))
+licitacoes_merenda.logx <- licitacoes_merenda %>%
+  mutate(valor_merenda_log = log10(valor_merenda))
 
-plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoes_merenda$valor_merenda, .99) & nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
+cor2 = with(filter(licitacoes_merenda.logx,
+                   valor_merenda <= quantile(licitacoes_merenda$valor_merenda, .99) &
+                     nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
+            round(cor(valor_merenda, nu_Propostas, method = 'kendall'), 2))
+
+plot_ly(data = licitacoes_merenda.logx %>% filter(valor_merenda <= quantile(licitacoes_merenda$valor_merenda, .99) & nu_Propostas <= quantile(licitacoes_merenda$nu_Propostas, .99)),
         x = ~valor_merenda,
         y = ~nu_Propostas,
         alpha = 0.5,
@@ -496,14 +499,13 @@ plot_ly(data = licitacoes_merenda %>% filter(valor_merenda <= quantile(licitacoe
         text = ~paste('Valor: R$', valor_merenda, 'Propostas: ', nu_Propostas),
         hoverinfo = 'text') %>%
   layout(title = 'Número de propostas por valor total de licitação (99-percentil)',
-         xaxis = list(title = 'Valor da licitação'),
-         yaxis = list(title = 'Número de propostas'),
-         annotations = list(x = 0.5e+06, y = 15, showarrow = FALSE, text = paste('r = ', cor2)))
+         xaxis = list(title = 'Valor da licitação', type = 'log'),
+         yaxis = list(title = 'Número de propostas'))
 ```
 
-O valor de r, destacado no gráfico, indica o grau de correlação direta entre os dois fatores observados e deve variar entre -1 e 1. Quanto mais próximo de 0 é esse valor, menor é a possibilidade de haver correlação. 
+O valor de r, destacado no gráfico, indica o grau de correlação direta entre o total de propostas e a magnitude dos valores das licitações e deve variar entre -1 e 1. Quanto mais próximo de 0 é esse valor, menor é a possibilidade de haver correlação. 
 
-Em nosso caso, o valor obtido para r foi de `r cor2` e indica uma possibilidade quase inexistente de correlação direta entre os valores. Em outras palavras, não temos sinais de que o valor de uma licitação influencie na quantidade de propostas recebidas pela mesma.  
+Em nosso caso, o valor obtido para r foi de `r cor2` e indica uma possibilidade quase inexistente de correlação direta entre os valores. Em outras palavras, não temos sinais de que o valor de uma licitação influencie significativamente na quantidade de propostas recebidas pela mesma.  
 
 ## Uma palavra final
 Muito mais pode ser feito com os dados disponíveis na plataforma SAGRES. Uma pequena amostra disso pode ser vista no [3º Hackfest Contra a Corrupção](http://hackfest.com.br/), onde vários projetos interessantes surgiram baseados nesses e em outros dados abertos. 
