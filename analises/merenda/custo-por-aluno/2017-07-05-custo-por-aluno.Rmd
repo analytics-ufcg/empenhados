@@ -31,7 +31,7 @@ library(dplyr)
 
 options(scipen = 999)
 
-source("../../utils/lib/load_dados_escolares.R")
+source("../../utils/lib/load_dados_escolares.R", chdir = T)
 ```
 
 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site [Cidades](http://cidades.ibge.gov.br/xtras/uf.php?lang=&coduf=25&search=paraiba) do IBGE. 
@@ -48,8 +48,6 @@ municipios <- tbl(utils, 'municipio') %>%
   collect()
 
 dados_educacao <- load_dados_escolares() %>%
-  mutate(vl_Matriculas_Total = vl_Matriculas_Fundamental + vl_Matriculas_Medio + vl_Matriculas_Pre_Escolar) %>%
-  mutate(vl_Escolas_Total = vl_Escolas_Fundamental + vl_Escolas_Medio, vl_Matriculas_Pre_Escolar) %>%
   select(c(cd_IBGE, de_Municipio, dt_Ano, vl_Matriculas_Total, vl_Escolas_Total))
 
 matriculas_municipios <- dados_educacao %>%

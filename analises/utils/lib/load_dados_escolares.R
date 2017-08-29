@@ -5,8 +5,10 @@ load_dados_escolares <- function() {
   library(tidyr)
   library(stringr)
   
-  #Pasta de origem dos arquivos csv deve ser modificada aqui
-  file_names <- Sys.glob("../dados/dados_escolares/*/*.csv")
+  #Caminho relativo deve considerar que a origem é o diretório do arquivo que carrega a função
+  file_names <- Sys.glob("../../utils/dados/dados_escolares/*/*.csv")
+  
+  warning(file_names[1])
   
   dados <- data.frame()
   
@@ -48,9 +50,10 @@ load_dados_escolares <- function() {
      mutate(vl_Escolas_Total = vl_Escolas_Fundamental + vl_Escolas_Medio + vl_Escolas_Pre_Escolar) %>%
      mutate(vl_Matriculas_Total = vl_Matriculas_Fundamental + vl_Matriculas_Medio + vl_Matriculas_Pre_Escolar)
   
-  dados <- dados[c("cd_IBGE", "de_Municipio", "dt_Ano", "vl_Docentes_Fundamental", "vl_Docentes_Medio", "vl_Docentes_Pre_Escolar", 
-                  "vl_Escolas_Fundamental", "vl_Escolas_Medio", "vl_Escolas_Pre_Escolar", 
-                  "vl_Matriculas_Fundamental", "vl_Matriculas_Medio", "vl_Matriculas_Pre_Escolar")]
+  dados <- dados[c("cd_IBGE", "de_Municipio", "dt_Ano", 
+                   "vl_Docentes_Total", "vl_Docentes_Fundamental", "vl_Docentes_Medio", "vl_Docentes_Pre_Escolar",
+                   "vl_Escolas_Total", "vl_Escolas_Fundamental", "vl_Escolas_Medio", "vl_Escolas_Pre_Escolar",
+                   "vl_Matriculas_Total", "vl_Matriculas_Fundamental", "vl_Matriculas_Medio", "vl_Matriculas_Pre_Escolar")]
   
   return(dados)
 }

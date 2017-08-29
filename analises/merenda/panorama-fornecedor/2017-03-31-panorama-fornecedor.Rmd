@@ -7,7 +7,7 @@ published: true
 comments: true
 ---
 
-#### **Atualizado em 22/06/2017**
+##### **Atualizado em 22/06/2017**
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(
@@ -305,14 +305,18 @@ lucros %>%
 
 Como dito anteriormente, vamos agora fazer um estudo mais criterioso dos casos em que um fornecedor ganha um número maior de vezes do que o número de vezes que participou, vale lembrar que esta inconsistência pode ter ocorrido por diversos fatores, como por exemplo, erro na inserção do CPF ou CNPJ de um fornecedor.
 A tabela a seguir mostra os fornecedores que se encaixam na descrição anterior.
+
 ```{r}
 ganhamais <- lucros %>% filter(participou < ganhou_l) %>%
   left_join(fornecedores %>%
               mutate(no_Fornecedor = toupper(no_Fornecedor)), by = "nu_CPFCNPJ") %>%
   select(nu_CPFCNPJ, no_Fornecedor, ganhou, participou, perdeu, valor)
+```
 
+```{r}
 kable(ganhamais)
 ```
+
 Observa-se que os 3 casos o nome do Fornecedor consta como _NA_ o que indica que estes CPF's ou CNPJ's não constam nos nossos dados de fornecedores de merenda. 
 Fazendo uma busca pelo CNPJ no [site da fazenda](https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/cnpjreva_solicitacao2.asp) verificamos que _02323033000106_ diz respeito a empresa __UNIDAS VEICULOS E SERVICOS LTDA__ de João Pessoa-PB que foi contratada pelo município de Água Branca para fornecer um veículo adaptado a unidade itinerante de ensino com o valor exibido na tabela de R$ 410.000 através de uma licitação descrita como AQUISICAO DE GENEROS ALIMENTICIOS DESTINADOS A MERENDA DOS ALUNOS DA REDE DE ESCOLAS PUBLICAS DO MUNICIPIO.
 

@@ -192,7 +192,7 @@ empenhos.mapa <- empenhos %>%
 ```
 
 ```{r results = 'hide'}
-mapa.paraiba <- readOGR('../dados/mapa_paraiba_ibge/Municipios.shp')
+mapa.paraiba <- readOGR('../../utils/dados/mapa_paraiba_ibge/Municipios.shp')
 
 # Municípios que mudaram de nome ou que estão com o nome errado
 levels.mapa <- levels(mapa.paraiba@data$Nome_Munic)
