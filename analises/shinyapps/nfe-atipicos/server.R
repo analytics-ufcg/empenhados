@@ -7,9 +7,18 @@ server <- function(input, output, session){
   dados_nfe <- reactive({
     ncm_input = ncm_input()
     
-    tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), 'nota_fiscal') %>%
-      filter(ncm_input == NCM_prod) %>%
-      select(Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, Nome_razao_social_dest, Valor_total_da_nota, Unid_prod) %>%
+    template <- ('
+    SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, Nome_razao_social_dest, 
+                  Valor_total_da_nota, Unid_prod
+    FROM nota_fiscal_melhor
+    WHERE NCM_prod = %s
+  ')
+    
+    query <- template %>%
+      sprintf(ncm_input) %>%
+      sql()
+    
+    tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), query) %>%
       collect(n = Inf)
   })  
   
@@ -25,17 +34,19 @@ server <- function(input, output, session){
     dados_nfe <- dados_nfe() %>%
       filter(Unid_prod == input$select_unid)
     
-    mediana_total = median(dados_nfe$Valor_unit_prod)
+    quantile = quantile(dados_nfe$Valor_unit_prod, probs = c(0.9))
     
     dados_nfe %>%
-      plot_ly(x0 = ~as.factor(NCM_prod), y = ~Valor_unit_prod, type = "scatter", mode = "markers",
+      mutate(dummy = seq(nrow(dados_nfe))) %>% 
+      mutate(atipico = ifelse(Valor_unit_prod > quantile, "Atípico", "Típico")) %>% 
+      plot_ly(x = ~dummy, y = ~Valor_unit_prod, type = "scatter", mode = "markers", color = ~atipico,
               text = ~paste('Descrição: ', Descricao_do_Produto_ou_servicos,
                             '<br>Emitente: ', Nome_razao_social_emit,
                             '<br>Destino: ', Nome_razao_social_dest,
                             '<br>Valor Unitário: R$', Valor_unit_prod,
                             '<br>Valor total da Nota: R$', Valor_total_da_nota
               ),
-              hoverinfo = 'text', name = 'Valor Unitário')  %>%
+              hoverinfo = 'text')  %>%
       layout(xaxis = list(title = input$busca, showticklabels = FALSE),
              yaxis = list(title = 'Valor unitário em Reais'))
   })
