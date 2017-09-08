@@ -44,8 +44,9 @@ server <- function(input, output, session){
 
     if (nrow(dados_nfe) != 0) {
       dados_nfe %>%
-        mutate(dummy = seq(nrow(dados_nfe))) %>%
-        mutate(atipico = ifelse(Valor_unit_prod > quantile, "Atípico", "Típico")) %>%
+        mutate(dummy = seq(nrow(dados_nfe)), 
+               atipico = ifelse(Valor_unit_prod > quantile, "Atípico", "Típico"),
+               Metrica = round(Metrica, 3)) %>%
         plot_ly(x = ~dummy, y = ~Valor_unit_prod, type = "scatter", mode = "markers", color = ~atipico, colors = "Set1",
                 text = ~paste('Descrição: ', Descricao_do_Produto_ou_servicos,
                               '<br>Emitente: ', Nome_razao_social_emit,
@@ -65,7 +66,10 @@ server <- function(input, output, session){
     
   })
   
-  output$table <- renderDataTable(dados_nfe() %>% filter(Unid_prod == input$select_unid, isNCM == FALSE) %>% select(-c(Unid_prod, NCM_prod, isNCM)),
+  output$table <- renderDataTable(arrange(dados_nfe() %>% 
+                                            filter(Unid_prod == input$select_unid, isNCM == FALSE) %>% 
+                                            select(-c(Unid_prod, NCM_prod, isNCM)), 
+                                          desc(Metrica)),
                                   options = list(scrollX = TRUE, pageLength = 10))
 
 }
