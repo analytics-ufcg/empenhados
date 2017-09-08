@@ -7,6 +7,7 @@ library(plotly)
 library(tidyr)
 library(stringr)
 library(shinydashboard)
+library(RColorBrewer)
 
 notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
 
@@ -28,10 +29,11 @@ ui <- dashboardPage(
         box(width = 12, status = "primary",
           selectInput(inputId = "busca", 
                       label = "Código NCM", 
-                      choices = (ncm[["Descricao"]])),
+                      choices = (ncm[["Descricao"]]),
+                      selected = "10064000 - ARROZ QUEBRADO"),
           selectInput(inputId = "select_unid",
                       label = "Unidade",
-                      choices = c("UND"))
+                      choices = c("KG"))
         )
     ),
     fluidRow(
@@ -40,7 +42,7 @@ ui <- dashboardPage(
         )
     ),
     fluidRow(
-      box(width = 12, status = "primary", solidHeader = TRUE, title = "Dados",
+      box(width = 12, status = "primary", solidHeader = TRUE, title = "Notas fiscais não selecionadas",
           collapsible = TRUE, collapsed = TRUE,           
           dataTableOutput("table")
       )
