@@ -11,7 +11,7 @@ server <- function(input, output, session){
     
     template <- ('
     SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, Nome_razao_social_dest, 
-                  Valor_total_da_nota, Data_de_emissao, Unid_prod, Metrica
+                  Valor_total_da_nota, Data_de_emissao, Unid_prod, Metrica, Confiavel
     FROM nota_fiscal
     WHERE NCM_prod = "%s"
   ')
@@ -20,11 +20,9 @@ server <- function(input, output, session){
       sprintf(ncm_input) %>%
       sql()
     
-    nfe <- tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), query) %>% 
+    nfe <- tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), query) %>%
       collect(n = Inf) %>% 
-      rowwise() %>% 
-      mutate(isNCM = sample(c(TRUE, FALSE), size = 1, replace = TRUE, prob = c(Metrica, 1 - Metrica))) %>% 
-      ungroup()
+      mutate(Confiavel = ifelse(Confiavel == "TRUE", TRUE, FALSE))
       
   })  
   
@@ -38,16 +36,13 @@ server <- function(input, output, session){
   output$scatter <- renderPlotly({
     
     dados_nfe <- dados_nfe() %>%
-      filter(Unid_prod == input$select_unid, isNCM == TRUE)
+      filter(Unid_prod == input$select_unid, Confiavel == TRUE)
 
-    quantile = quantile(dados_nfe$Valor_unit_prod, probs = c(0.9))
-
-    if (nrow(dados_nfe) != 0) {
+    if (nrow(dados_nfe) > 1) {
       dados_nfe %>%
-        mutate(dummy = seq(nrow(dados_nfe)), 
-               atipico = ifelse(Valor_unit_prod > quantile, "Atípico", "Típico"),
+        mutate(atipico = ifelse(t.test(Valor_unit_prod, alternative = 'less', conf.level = 0.99)$conf.int[2] < Valor_unit_prod, "Atípico", "Típico"),
                Metrica = round(Metrica, 3)) %>%
-        plot_ly(x = ~dummy, y = ~Valor_unit_prod, type = "scatter", mode = "markers", color = ~atipico, colors = "Set1",
+        plot_ly(x = ~Data_de_emissao, y = ~Valor_unit_prod, type = "scatter", mode = "markers", color = ~atipico, colors = "Set1",
                 text = ~paste('Descrição: ', Descricao_do_Produto_ou_servicos,
                               '<br>Emitente: ', Nome_razao_social_emit,
                               '<br>Destino: ', Nome_razao_social_dest,
@@ -67,8 +62,8 @@ server <- function(input, output, session){
   })
   
   output$table <- renderDataTable(arrange(dados_nfe() %>% 
-                                            filter(Unid_prod == input$select_unid, isNCM == FALSE) %>% 
-                                            select(-c(Unid_prod, NCM_prod, isNCM)), 
+                                            filter(Unid_prod == input$select_unid, Confiavel == FALSE) %>% 
+                                            select(-c(Unid_prod, NCM_prod)), 
                                           desc(Metrica)),
                                   options = list(scrollX = TRUE, pageLength = 10))
 
