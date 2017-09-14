@@ -1,6 +1,6 @@
 server <- function(input, output, session){
   set.seed(123)
-  #options(warn = -1)
+  options(warn = -1)
   
   ncm_input <- reactive({
     str_sub(input$busca, 1, 8)
@@ -38,11 +38,9 @@ server <- function(input, output, session){
     dados_nfe <- dados_nfe() %>%
       filter(Unid_prod == input$select_unid, Confiavel == TRUE)
 
-    quantile = quantile(dados_nfe$Valor_unit_prod, probs = c(0.9))
-
-    if (nrow(dados_nfe) != 0) {
+    if (nrow(dados_nfe) > 1) {
       dados_nfe %>%
-        mutate(atipico = ifelse(Valor_unit_prod > quantile, "Atípico", "Típico"),
+        mutate(atipico = ifelse(t.test(Valor_unit_prod, alternative = 'less', conf.level = 0.99)$conf.int[2] < Valor_unit_prod, "Atípico", "Típico"),
                Metrica = round(Metrica, 3)) %>%
         plot_ly(x = ~Data_de_emissao, y = ~Valor_unit_prod, type = "scatter", mode = "markers", color = ~atipico, colors = "Set1",
                 text = ~paste('Descrição: ', Descricao_do_Produto_ou_servicos,
