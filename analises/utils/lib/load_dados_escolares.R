@@ -6,9 +6,7 @@ load_dados_escolares <- function() {
   library(stringr)
   
   #Caminho relativo deve considerar que a origem é o diretório do arquivo que carrega a função
-  file_names <- Sys.glob("../../utils/dados/dados_escolares/*/*.csv")
-  
-  warning(file_names[1])
+  file_names <- Sys.glob("../dados/dados_escolares/*/*.csv")
   
   dados <- data.frame()
   
@@ -18,6 +16,8 @@ load_dados_escolares <- function() {
                                 sep = ";", dec = ",", stringsAsFactors = FALSE, na.strings = c("Não informado", "Não existente"))
     
     path_chunks <- str_split(file_name, "/")[[1]]
+    
+    codcid <- dados_escolares[2] %>% select(V2) %>% filter(row_number() == 1) %>% mutate(V2 = str_sub(V2, -7))
     
     dados_escolares <- dados_escolares %>%
       select(c(V1, V2)) %>%
@@ -32,10 +32,8 @@ load_dados_escolares <- function() {
       mutate(V2 = as.integer(V2)) %>%
       spread(V1, V2)
     
-    codcid <- str_sub(path_chunks[5], end = 6)
-    
     dados_escolares <- dados_escolares %>%
-      mutate(codcidade = codcid)
+      mutate(codcidade = as.character(codcid))
     
     colnames(dados_escolares) <- 
       c("de_Municipio","dt_Ano", "vl_Docentes_Fundamental", "vl_Docentes_Medio", "vl_Docentes_Pre_Escolar", 

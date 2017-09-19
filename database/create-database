@@ -37,7 +37,8 @@ mysqlimport -p$password \
   --lines-terminated-by='\n' \
   --local utils \
     empresa.csv \
-    municipio.csv
+    municipio.csv \
+    indicadores_escolares.csv
 
 mysqlimport -p$password \
   --ignore-lines=1 \
