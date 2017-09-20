@@ -38,7 +38,8 @@ mysqlimport -p$password \
   --local utils \
     empresa.csv \
     municipio.csv \
-    indicadores_escolares.csv
+    indicadores_escolares.csv \
+    cnae.csv
 
 mysqlimport -p$password \
   --ignore-lines=1 \
