@@ -18,7 +18,10 @@ query <- sql('
 ncm_cod <- tbl(notas, query) %>%
   collect(n = Inf)
 
-ncm <- read.csv("../../utils/dados/NCMatualizada13072017.csv", sep=";", stringsAsFactors = F, colClasses = c(NCM = "character")) %>%
+ncm <- read.csv("../../utils/dados/NCMatualizada13072017.csv",
+                sep=";",
+                stringsAsFactors = F,
+                colClasses = c(NCM = "character")) %>%
   semi_join(ncm_cod, by = c("NCM" = "NCM_prod"))
 
 ui <- dashboardPage(
@@ -42,9 +45,19 @@ ui <- dashboardPage(
         )
     ),
     fluidRow(
-      box(width = 12, status = "primary", solidHeader = TRUE, title = "Notas fiscais não selecionadas",
+      box(width = 12, status = "primary", solidHeader = TRUE, title = "Notas Fiscais Ocultadas da Visualização",
           collapsible = TRUE, collapsed = TRUE,           
           dataTableOutput("table")
+      )
+    ),
+    fluidRow(
+      box(width = 12, status = "primary", solidHeader = TRUE, title = "Exportação de Dados",
+          collapsible = TRUE, collapsed = TRUE, align = "center",
+          p("Abaixo é possível realizar o download dos dados referentes ao NCM selecionado."),
+          p("O campo confiável indica se um item foi considerado como pertencente ou não ao NCM indicado.
+            Apenas itens considerados confiáveis foram exibidos na visualização acima"),
+          downloadButton(outputId = "down_csv",
+                         label = "Exportar CSV")
       )
     )
   )
