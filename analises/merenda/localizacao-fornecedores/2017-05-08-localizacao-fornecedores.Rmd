@@ -39,7 +39,7 @@ options(scipen = 999)
 
 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
 
-Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3546 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 9000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
+Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3551 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 11000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
 
 ```{r}
 ganhadores <- load_fornecedores_merenda()
@@ -110,9 +110,7 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
              clusterOptions = markerClusterOptions())
 ```
 
-Como talvez já pudesse ser esperado, a maioria dos fornecedores de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos fornecedores.  
-
-Um número considerável, ainda, está localizado em estados vizinhos como Pernambuco, Rio Grande do Norte e Ceará. Existem também fornecedores em estados mais distantes como em São Paulo, Rio de Janeiro e Paraná. Há também alguns bancos com empenhos relacionados a alimentação escolar, localizados no Distrito Federal, a explicação para isso está geralmente nas taxas pagas ao banco por parte do município.
+Como talvez já pudesse ser esperado, a maioria dos fornecedores de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos fornecedores. Uma parcela dos fornecedores está localizada em estados vizinhos como Pernambuco e Rio Grande do Norte.
 
 Descubra quais os fornecedores de merenda que se localizam na sua cidade ou próximo a você e comente no final desse post o que você encontrou e reconheceu.
 
@@ -134,7 +132,7 @@ licitantes_cimprovaveis <- localizacao_licitantes %>%
            valor_total_pag > quantile(localizacao_licitantes$valor_total_pag, .9))
 ```
 
-Foram encontrados 26 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
+Foram encontrados 18 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
 
 ```{r}
 leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
