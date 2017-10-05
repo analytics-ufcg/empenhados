@@ -44,5 +44,8 @@ load_fornecedores_merenda <- function() {
     distinct(cd_Credor, de_Municipio, .keep_all = TRUE) %>%
     filter(cd_Credor != '00000000000000')
   
-  return(vitorias)
+  empenhos <- empenhos %>%
+    mutate(de_Municipio = get.municipio(cd_UGestora))
+  
+  return(list(empenhos = empenhos, vitorias = vitorias))
 }
