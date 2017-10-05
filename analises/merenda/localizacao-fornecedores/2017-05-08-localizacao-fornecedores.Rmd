@@ -227,7 +227,7 @@ Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios [
 
 
 ## Onde atuam os diversos fornecedores de merenda?
-Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuam em um grupo de cidades geográficamente próximas.
+Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuar em um grupo de cidades geográficamente próximas.
 
 Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha uma forma de visualização.
 
