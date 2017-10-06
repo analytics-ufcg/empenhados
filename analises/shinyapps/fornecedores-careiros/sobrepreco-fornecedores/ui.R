@@ -12,7 +12,10 @@ ui <- dashboardPage(
                          choices = NULL,
                          multiple = FALSE,
                          options = list(maxOptions = 5,
-                                        placeholder = 'Insira um código NCM ou descrição de produto'))
+                                        placeholder = 'Insira um código NCM ou descrição de produto')),
+          selectInput(inputId = "select_unid",
+                      label = "Unidade",
+                      choices = c("KG"))
       )
     ),
     
@@ -20,6 +23,11 @@ ui <- dashboardPage(
       box(width = 12, status = "primary", solidHeader = TRUE,
           title = "Fornecedores que vendem com sobrepreço no NCM"
           #Add visualização (decidir entre gráfico ou tabela)
+      )
+    ),
+    fluidRow(
+      box(width = 12, status = "primary",              
+          plotlyOutput("scatter")
       )
     ),
     
