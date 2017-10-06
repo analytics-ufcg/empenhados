@@ -32,6 +32,7 @@ library(stringr)
 library(shiny)
 library(plotly)
 library(knitr)
+library(DT)
 source('../../utils/lib/load_fornecedores_merenda.R')
 
 options(scipen = 999)
@@ -39,10 +40,13 @@ options(scipen = 999)
 
 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
 
-Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3546 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 9000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
+Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3551 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 11000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
 
 ```{r}
-ganhadores <- load_fornecedores_merenda()
+fornecedores <- load_fornecedores_merenda()
+
+empenhos <- fornecedores[[1]]
+ganhadores <- fornecedores[[2]]
 ```
 
 ```{r}
@@ -84,9 +88,6 @@ localizacao_licitantes <- ganhadores %>%
 ```
 
 ```{r}
-
-
-##### Não tenho certeza se isso ainda é necessário #####
 # Endereço incorreto retornado pela API de busca
 localizacao_licitantes <- localizacao_licitantes %>%
   filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
@@ -110,9 +111,7 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
              clusterOptions = markerClusterOptions())
 ```
 
-Como talvez já pudesse ser esperado, a maioria dos fornecedores de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos fornecedores.  
-
-Um número considerável, ainda, está localizado em estados vizinhos como Pernambuco, Rio Grande do Norte e Ceará. Existem também fornecedores em estados mais distantes como em São Paulo, Rio de Janeiro e Paraná. Há também alguns bancos com empenhos relacionados a alimentação escolar, localizados no Distrito Federal, a explicação para isso está geralmente nas taxas pagas ao banco por parte do município.
+Como talvez já pudesse ser esperado, a maioria dos fornecedores de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos fornecedores. Uma parcela dos fornecedores está localizada em estados vizinhos como Pernambuco e Rio Grande do Norte.
 
 Descubra quais os fornecedores de merenda que se localizam na sua cidade ou próximo a você e comente no final desse post o que você encontrou e reconheceu.
 
@@ -134,7 +133,7 @@ licitantes_cimprovaveis <- localizacao_licitantes %>%
            valor_total_pag > quantile(localizacao_licitantes$valor_total_pag, .9))
 ```
 
-Foram encontrados 26 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
+Foram encontrados 18 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
 
 ```{r}
 leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
@@ -150,9 +149,31 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
                "Valor pago: R$", licitantes_cimprovaveis$valor_total_pag
              ),
              clusterOptions = markerClusterOptions())
-```
+```  
 
 A mediana da população nesses municípios é de `r median(licitantes_cimprovaveis$vl_Populacao)` habitantes, enquanto que a mediana do que foi pago ao fornecedores é de `r median(licitantes_cimprovaveis$valor_total_pag)` reais. Existem os casos em que os fornecedores fornecem apenas para o município onde se localiza, mas há fornecedores que estão em cidades pequenas e participam dos empenhos de outras cidades.
+
+A tabela abaixo apresenta as licitações em que ocorrem estes fornecimentos improváveis
+
+```{r}
+empenhos_cimprovaveis <- empenhos %>%
+  inner_join(licitantes_cimprovaveis %>%
+              select(cidade, cd_Credor),
+            by = c("de_Municipio" = "cidade", "cd_Credor" = "cd_Credor")) 
+
+empenhos_cimprovaveis.group <- empenhos_cimprovaveis %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(n = n())
+
+sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+
+licitacoes_improvaveis <- tbl(sagres, 'Licitacao') %>%
+  collect() %>%
+  inner_join(empenhos_cimprovaveis.group %>%
+               select(-c(n)))
+
+datatable(licitacoes_improvaveis)
+```
 
 **Existe uma correlação entre o valor pago aos fornecedores e a população do município de suas empresas?**
 
@@ -229,7 +250,7 @@ Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios [
 
 
 ## Onde atuam os diversos fornecedores de merenda?
-Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuam em um grupo de cidades geográficamente próximas.
+Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuar em um grupo de cidades geográficamente próximas.
 
 Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha uma forma de visualização.
 
