@@ -43,7 +43,7 @@ write.csv(metrica_careiros, "../dados/metrica_careiros.csv",
 
 
 
-dados_careiros_forn <- dados_careiros_all %>%
+dados_careiros_comp <- dados_careiros_all %>%
   group_by(NCM_prod, CPF_CNPJ_emit, CPF_CNPJ_dest, Unid_prod) %>%
   summarise(Preco_medio = mean(Valor_unit_prod)) %>%
   ungroup() %>%
@@ -54,7 +54,7 @@ dcg_nomes_dest <- tbl(notas, 'nota_fiscal') %>%
   collect() %>%
   distinct(CPF_CNPJ_dest, .keep_all = TRUE)
 
-metrica_careiros_forn <- dados_careiros_forn %>%
+metrica_careiros_comp <- dados_careiros_comp %>%
   filter(!is.na(NCM_prod), NCM_prod != "NA") %>%
   group_by(NCM_prod, Unid_prod) %>%
   mutate(Atipico = (Preco_medio - quantile(Preco_medio, 0.75) + IQR(Preco_medio) * 1.5) / IQR(Preco_medio)) %>%
@@ -74,6 +74,6 @@ metrica_careiros_forn <- dados_careiros_forn %>%
            NCMs_atuacao, Atipicidade_media, Atipicidade_maxima, Atipicidade_minima
   ))
 
-write.csv(metrica_careiros_forn, "../dados/metrica_careiros_forn.csv", 
+write.csv(metrica_careiros_comp, "../dados/metrica_careiros_comp.csv", 
           row.names = F, na = "",
           quote = TRUE, fileEncoding = "latin1")
