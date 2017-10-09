@@ -21,7 +21,7 @@ shinyServer <- function(input, output, session) {
   updateSelectizeInput(session, "busca",
                        choices = ncm[["Descricao"]],
                        server = TRUE,
-                       selected = "10064000 - ARROZ QUEBRADO")
+                       selected = "21011110 - CAFÉ SOLÚVEL DESCAFEINADO")
   
   ncm_input <- reactive({
     str_sub(input$busca, 1, 8)
@@ -60,17 +60,26 @@ shinyServer <- function(input, output, session) {
     dados_nfe <- dados_nfe() %>%
       filter(Unid_prod == input$select_unid, Confiavel == TRUE) %>%
       group_by(NCM_prod, Nome_razao_social_emit) %>%
-      summarise(preco_medio = mean(Valor_unit_prod)) %>%
+      summarise(preco_medio = mean(Valor_unit_prod),
+                observacoes = n(),
+                max = max(Valor_unit_prod),
+                min = min(Valor_unit_prod)) %>%
+      mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, "Sobrepreço", "Preço típico")) %>%
       ungroup()
-    
+      
     dados_nfe %>%
       plot_ly(x = ~Nome_razao_social_emit, y = ~preco_medio, type = "scatter", mode = "markers",
+              color = ~tipo, colors = c("#0066CC", "#FF0000"),
               text = ~paste("Fornecedor:", Nome_razao_social_emit,
-                            "<br> Preço Médio: ", round(preco_medio, 2)),
+                            "<br> Preço Médio: ", round(preco_medio, 2),
+                            "<br> Preço Máximo: ", round(max, 2),
+                            "<br> Preço Mínimo: ", round(min, 2),
+                            "<br> Número de vendas: ", observacoes),
               hoverinfo = "text") %>%
       layout(title = paste(input$busca, "-" ,input$select_unid),
             xaxis = list(title = "Fornecedores",  showticklabels = FALSE),
             yaxis = list(title = 'Preço médio'))
+    
   })
   
   tabela_careiros <- read.csv("../../dados/metrica_careiros.csv")

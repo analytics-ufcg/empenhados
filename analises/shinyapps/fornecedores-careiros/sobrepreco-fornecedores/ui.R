@@ -19,14 +19,11 @@ ui <- dashboardPage(
                                         placeholder = 'Insira um código NCM ou descrição de produto')),
           selectInput(inputId = "select_unid",
                       label = "Unidade",
-                      choices = c("KG"))
-      )
-    ),
-    
-    fluidRow(
-      box(width = 12, status = "primary", solidHeader = TRUE,
-          title = "Fornecedores que vendem com sobrepreço no NCM",
-          plotlyOutput("scatter")
+                      choices = c("KG")),
+          box(width = 12, status = "primary", solidHeader = TRUE,
+              title = "Fornecedores que vendem com sobrepreço no NCM",
+              plotlyOutput("scatter")
+          )
       )
     ),
     
