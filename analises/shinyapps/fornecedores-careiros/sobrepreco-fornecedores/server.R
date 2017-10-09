@@ -33,9 +33,9 @@ shinyServer <- function(input, output, session) {
     template <- ('
     SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
                   CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest, Valor_total_da_nota, 
-                  Data_de_emissao, Unid_prod, Metrica, Confiavel
+                  Data_de_emissao, Unid_prod, Metrica
     FROM nota_fiscal
-    WHERE NCM_prod = "%s"
+    WHERE NCM_prod = "%s" AND Confiavel = "TRUE"
   ')
     
     query <- template %>%
@@ -43,9 +43,7 @@ shinyServer <- function(input, output, session) {
       sql()
     
     nfe <- tbl(notas, query) %>%
-      collect(n = Inf) %>% 
-      mutate(Confiavel = ifelse(Confiavel == "TRUE", TRUE, FALSE))
-    
+      collect(n = Inf) 
   })
   
   observe({
@@ -58,7 +56,7 @@ shinyServer <- function(input, output, session) {
   output$scatter <- renderPlotly({
     
     dados_nfe <- dados_nfe() %>%
-      filter(Unid_prod == input$select_unid, Confiavel == TRUE) %>%
+      filter(Unid_prod == input$select_unid) %>%
       group_by(NCM_prod, Nome_razao_social_emit) %>%
       summarise(preco_medio = mean(Valor_unit_prod),
                 observacoes = n(),
