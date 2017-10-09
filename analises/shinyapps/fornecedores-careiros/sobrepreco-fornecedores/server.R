@@ -42,11 +42,11 @@ shinyServer <- function(input, output, session) {
       sprintf(ncm_input) %>%
       sql()
     
-    nfe <- tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), query) %>%
+    nfe <- tbl(notas, query) %>%
       collect(n = Inf) %>% 
       mutate(Confiavel = ifelse(Confiavel == "TRUE", TRUE, FALSE))
     
-  })  
+  })
   
   observe({
     dados_nfe <- dados_nfe()
@@ -60,7 +60,8 @@ shinyServer <- function(input, output, session) {
     dados_nfe <- dados_nfe() %>%
       filter(Unid_prod == input$select_unid, Confiavel == TRUE) %>%
       group_by(NCM_prod, Nome_razao_social_emit) %>%
-      summarise(preco_medio = mean(Valor_unit_prod))
+      summarise(preco_medio = mean(Valor_unit_prod)) %>%
+      ungroup()
     
     dados_nfe %>%
       plot_ly(x = ~Nome_razao_social_emit, y = ~preco_medio, type = "scatter", mode = "markers",
@@ -72,6 +73,13 @@ shinyServer <- function(input, output, session) {
             yaxis = list(title = 'Preço médio'))
   })
   
+  tabela_careiros <- read.csv("../../dados/metrica_careiros.csv")
+  
+  output$careiros_geral <- renderDataTable(
+    tabela_careiros %>%
+      arrange(desc(Atipicidade_media)),
+    options = list(scrollX = TRUE, pageLength = 10)
+  )
 
 
 }

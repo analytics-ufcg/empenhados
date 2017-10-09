@@ -1,6 +1,10 @@
 library(shiny)
 library(shinydashboard)
 
+library(dplyr)
+library(plotly)
+library(stringr)
+
 ui <- dashboardPage(
   dashboardHeader(title = "Fornecedores que praticam sobrepreço", titleWidth = 450),
   dashboardSidebar(disable = TRUE),
@@ -21,12 +25,7 @@ ui <- dashboardPage(
     
     fluidRow(
       box(width = 12, status = "primary", solidHeader = TRUE,
-          title = "Fornecedores que vendem com sobrepreço no NCM"
-          #Add visualização (decidir entre gráfico ou tabela)
-      )
-    ),
-    fluidRow(
-      box(width = 12, status = "primary",              
+          title = "Fornecedores que vendem com sobrepreço no NCM",
           plotlyOutput("scatter")
       )
     ),
@@ -34,8 +33,8 @@ ui <- dashboardPage(
     fluidRow(
       box(width = 12, status = "primary",
           collapsible = TRUE, collapsed = TRUE, solidHeader = TRUE,
-          title = "Fornecedores que vendem com sobrepreço no geral"
-          #Add visualização (decidir entre gráfico ou tabela)
+          title = "Fornecedores que vendem com sobrepreço no geral",
+          dataTableOutput("careiros_geral")
       )
     ),
     
