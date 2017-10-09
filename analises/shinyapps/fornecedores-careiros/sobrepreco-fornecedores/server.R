@@ -89,6 +89,36 @@ shinyServer <- function(input, output, session) {
       arrange(desc(Atipicidade_media)),
     options = list(scrollX = TRUE, pageLength = 10)
   )
+  
+  output$download_csv1 <- downloadHandler(
+    filename = function(){
+      paste("export-careiros.csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(tabela_careiros %>% mutate_all(funs(as.character(.))),
+                file, row.names = F)
+    },
+    contentType = "text/csv"
+  )
+  
+  tabela_careiros_comp <- read.csv("../../dados/metrica_careiros_comp.csv")
+  
+  output$careiros_geral_comp <- renderDataTable(
+    tabela_careiros_comp %>%
+      arrange(desc(Atipicidade_media)),
+    options = list(scrollX = TRUE, pageLength = 10)
+  )
+  
+  output$download_csv2 <- downloadHandler(
+    filename = function(){
+      paste("export-careiros-pareado.csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(tabela_careiros_comp %>% mutate_all(funs(as.character(.))),
+                file, row.names = F)
+    },
+    contentType = "text/csv"
+  )
 
 
 }

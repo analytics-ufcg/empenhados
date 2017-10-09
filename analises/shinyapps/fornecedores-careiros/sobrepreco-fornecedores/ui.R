@@ -29,18 +29,23 @@ ui <- dashboardPage(
     
     fluidRow(
       box(width = 12, status = "primary",
-          collapsible = TRUE, collapsed = TRUE, solidHeader = TRUE,
+          collapsible = TRUE, solidHeader = TRUE,
           title = "Fornecedores que vendem com sobrepreço no geral",
-          dataTableOutput("careiros_geral")
+          dataTableOutput("careiros_geral"),
+          tags$div(align = "right",
+          downloadButton(outputId = "download_csv1",
+                         label = "Exportar Dados"))
       )
     ),
     
     fluidRow(
-      box(width = 12, status = "primary", solidHeader = TRUE,
-          collapsible = TRUE, collapsed = TRUE,
-          title = "Exportar dados", align = "center",
-          downloadButton(outputId = "download_csv",
-                         label = "Exportar CSV")
+      box(width = 12, status = "primary",
+          collapsible = TRUE, solidHeader = TRUE,
+          title = "Pares de fornecedores e compradores onde ocorre sobrepreço",
+          dataTableOutput("careiros_geral_comp"),
+          tags$div(align = "right",
+                   downloadButton(outputId = "download_csv2",
+                                  label = "Exportar Dados"))
       )
     )
   )
