@@ -18,7 +18,8 @@ shinyServer <- function(input, output, session) {
                   colClasses = c(NCM = "character")) %>%
     semi_join(ncm_cod, by = c("NCM" = "NCM_prod"))
 
-  updateSelectizeInput(session, "busca",
+  updateSelectizeInput(session, 
+                       "busca",
                        choices = ncm[["Descricao"]],
                        server = TRUE,
                        selected = "21011110 - CAFÉ SOLÚVEL DESCAFEINADO")
@@ -62,10 +63,21 @@ shinyServer <- function(input, output, session) {
                 observacoes = n(),
                 max = max(Valor_unit_prod),
                 min = min(Valor_unit_prod)) %>%
-      mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, "Sobrepreço", "Preço típico")) %>%
+      mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
+                           "Sobrepreço", "Preço típico")) %>%
       ungroup()
-      
+    
+    tryCatch(
     dados_nfe %>%
+      bind_rows(data.frame(
+        NCM_prod = input$select_unid, 
+        Nome_razao_social_emit = c(NA, NA),
+        preco_medio = c(NA, NA),
+        observacoes = c(NA, NA),
+        max = c(NA, NA),
+        min = c(NA, NA),
+        tipo = c("Sobrepreço", "Preço típico")
+      )) %>%
       plot_ly(x = ~Nome_razao_social_emit, y = ~preco_medio, type = "scatter", mode = "markers",
               color = ~tipo, colors = c("#0066CC", "#FF0000"),
               text = ~paste("Fornecedor:", Nome_razao_social_emit,
@@ -76,8 +88,10 @@ shinyServer <- function(input, output, session) {
               hoverinfo = "text") %>%
       layout(title = paste(input$busca, "-" ,input$select_unid),
             xaxis = list(title = "Fornecedores",  showticklabels = FALSE),
-            yaxis = list(title = 'Preço médio'))
+            yaxis = list(title = 'Preço médio')),
     
+    error = function(e) { plot_ly() }
+    )
   })
   
   tabela_careiros <- read.csv("../../dados/metrica_careiros.csv")
