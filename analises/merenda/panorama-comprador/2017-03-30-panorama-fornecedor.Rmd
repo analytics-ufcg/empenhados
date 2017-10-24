@@ -1,5 +1,5 @@
 ---
-title: "Descrição dos compradores e fornecedores de merenda"
+title: "Descrição dos compradores de merenda"
 subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 layout: post
