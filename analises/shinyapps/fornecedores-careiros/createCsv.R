@@ -19,21 +19,23 @@ dcg_nomes_emit <- tbl(notas, 'nota_fiscal') %>%
   collect() %>%
   distinct(CPF_CNPJ_emit, .keep_all = TRUE)
 
-metrica_careiros <- dados_careiros %>%
+metrica_careiros_unid <- dados_careiros %>%
   filter(!is.na(NCM_prod), NCM_prod != "NA") %>%
   group_by(NCM_prod, Unid_prod) %>%
   mutate(Atipico = (Preco_medio - quantile(Preco_medio, 0.75) + IQR(Preco_medio) * 1.5) / IQR(Preco_medio)) %>%
   ungroup() %>%
-  filter(!is.nan(Atipico), !is.infinite(Atipico)) %>%
-  group_by(CPF_CNPJ_emit) %>%
-  summarise(NCMs_atuacao = n(),
-            Atipicidade_media = mean(Atipico, na.rm = TRUE),
-            Atipicidade_maxima = max(Atipico, na.rm = TRUE),
-            Atipicidade_minima = min(Atipico, na.rm = TRUE)) %>%
+  filter(!is.nan(Atipico), !is.infinite(Atipico)) 
+
+#dados passados para fornecedores_ncm() devem ter esse formato
+metrica_careiros <- metrica_careiros_unid %>%
+  group_by(NCM_prod, CPF_CNPJ_emit) %>%
+  summarise(Atipicidade = mean(Atipico, na.rm = TRUE)) %>%
+  ungroup() %>%
   left_join(dcg_nomes_emit) %>%
   select(c(CNPJ = CPF_CNPJ_emit,
            Razao_Social = Nome_razao_social_emit,
-           NCMs_atuacao, Atipicidade_media, Atipicidade_maxima, Atipicidade_minima
+           NCM_prod,
+           Atipicidade
   ))
 
 write.csv(metrica_careiros, "../dados/metrica_careiros.csv", 

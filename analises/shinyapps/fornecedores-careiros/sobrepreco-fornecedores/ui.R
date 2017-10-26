@@ -1,12 +1,14 @@
 library(shiny)
 library(shinydashboard)
+library(shinyBS)
 
 library(dplyr)
 library(plotly)
 library(stringr)
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Fornecedores que praticam sobrepreço", titleWidth = 450),
+  dashboardHeader(title = "Fornecedores que praticam sobrepreço",
+                  titleWidth = 450),
   dashboardSidebar(disable = TRUE),
   dashboardBody(
     fluidRow(
