@@ -31,6 +31,12 @@ ui <- dashboardPage(
       box(width = 12, status = "primary",
           collapsible = TRUE, solidHeader = TRUE,
           title = "Fornecedores que vendem com sobrepreço no geral",
+          footer = "*Atipicidade: A atipicidade de um fornecedor 
+                    para um NCM é calculada considerando a distância normalizada entre o preço 
+                    médio praticado pelo fornecedor e o maior preço médio
+                    que não é classificado como ponto extremo. As atipicidades mínimas, médias e máximas
+                    utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
+                    o fornecedor atua.",
           dataTableOutput("careiros_geral"),
           tags$div(align = "right",
           downloadButton(outputId = "download_csv1",
