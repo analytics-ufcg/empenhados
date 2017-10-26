@@ -1,0 +1,42 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(DT)
+```
+
+```{r}
+sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+
+query <- sql('
+  SELECT e.*
+  FROM Empenhos as e INNER JOIN (
+    SELECT *
+    FROM Propostas
+    WHERE st_Proposta = 2) as p 
+  ON (e.cd_UGestora = p.cd_UGestora AND 
+      e.nu_Licitacao = p.nu_Licitacao AND 
+      e.tp_Licitacao = p.tp_Licitacao AND 
+      e.cd_Credor = p.nu_CPFCNPJ)
+')
+
+empenhos_para_perdedores <- tbl(sagres, query) %>%
+  collect()
+```
+
+```{r}
+licitacoes_p_perdedores <- empenhos_para_perdedores %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(n = n())
+
+fornecedores <- empenhos_para_perdedores %>%
+  group_by(cd_Credor) %>%
+  summarise(n = n())
+```
+
+
