@@ -24,7 +24,7 @@ ui <- dashboardPage(
                       choices = c("KG")),
           box(width = 12, status = "primary", solidHeader = TRUE,
               title = "Fornecedores que vendem com sobrepreço no NCM",
-              plotlyOutput("vis_forn_ncm")
+              plotlyOutput("scatter")
           )
       )
     ),

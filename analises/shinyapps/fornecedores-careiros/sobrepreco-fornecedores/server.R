@@ -1,5 +1,7 @@
 library(shiny)
 
+source("../plotFunctions.R")
+
 shinyServer <- function(input, output, session) {
   library(lubridate)
   
@@ -94,7 +96,7 @@ shinyServer <- function(input, output, session) {
     )
   })
   
-  output$vis_forn_ncm <- renderPlotly({
+  output$fornecedor_ncm <- renderPlotly({
     
     dados_nfe <- dados_nfe() %>%
       filter(Unid_prod == input$select_unid) %>%
@@ -112,7 +114,7 @@ shinyServer <- function(input, output, session) {
           preco_medio = c(NA, NA),
           tipo = c("Sobrepreço", "Preço típico")
         )) %>%
-      plot_forn_ncm(titulo = paste(input$busca, "-" ,input$select_unid)),
+      fornecedor_ncm(titulo = paste(input$busca, "-" ,input$select_unid)),
       error = function(e) { plot_ly() }
     )
   })
@@ -154,32 +156,5 @@ shinyServer <- function(input, output, session) {
     },
     contentType = "text/csv"
   )
-  
-  plot_forn_ncm <- function(dados_nfe, titulo = ""){
-    p1 <- dados_nfe %>% 
-      filter(tipo == "Sobrepreço") %>% 
-      plot_ly() %>% 
-      add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, type= "scatter", mode = "markers", color = I('#FF0000'),
-                text = ~paste("Fornecedor:", Nome_razao_social_emit,
-                              "<br> Preço Médio: ", round(preco_medio, 2)),
-                hoverinfo = "text")
-    
-    p2 <- dados_nfe %>% 
-      plot_ly() %>% 
-      add_trace(x = ~preco_medio, type = "box", name = "Todos",
-                hoverinfo = "x",
-                line = list(color = 'rgb(9,56,125)')
-      )
-    
-    sp <- subplot(p1, p2, nrows = 2, shareX = TRUE, shareY = FALSE) %>% 
-      layout(title = titulo,
-        yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
-        xaxis = list(title = 'Preço médio'), 
-        showlegend = FALSE)
-    
-    return(sp)
-    
-  }
-
 
 }
