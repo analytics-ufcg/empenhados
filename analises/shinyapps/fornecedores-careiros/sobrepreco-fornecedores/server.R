@@ -105,7 +105,14 @@ shinyServer <- function(input, output, session) {
       ungroup()
     
     tryCatch(
-      plot_forn_ncm(dados_nfe, titulo = paste(input$busca, "-" ,input$select_unid)),
+      dados_nfe %>%
+        bind_rows(data.frame(
+          NCM_prod = input$select_unid, 
+          Nome_razao_social_emit = c(NA, NA),
+          preco_medio = c(NA, NA),
+          tipo = c("Sobrepreço", "Preço típico")
+        )) %>%
+      plot_forn_ncm(titulo = paste(input$busca, "-" ,input$select_unid)),
       error = function(e) { plot_ly() }
     )
   })
