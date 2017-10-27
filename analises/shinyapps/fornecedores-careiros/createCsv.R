@@ -31,11 +31,15 @@ metrica_careiros <- metrica_careiros_unid %>%
   group_by(NCM_prod, CPF_CNPJ_emit) %>%
   summarise(Atipicidade = mean(Atipico, na.rm = TRUE)) %>%
   ungroup() %>%
+  group_by(CPF_CNPJ_emit) %>%
+  mutate(Atipicidade_media = mean(Atipicidade)) %>%
+  ungroup() %>%
   left_join(dcg_nomes_emit) %>%
   select(c(CNPJ = CPF_CNPJ_emit,
            Razao_Social = Nome_razao_social_emit,
            NCM_prod,
-           Atipicidade
+           Atipicidade,
+           Atipicidade_media
   ))
 
 write.csv(metrica_careiros, "../dados/metrica_careiros.csv", 
