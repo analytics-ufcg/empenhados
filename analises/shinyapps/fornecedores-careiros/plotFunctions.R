@@ -6,9 +6,15 @@
 fornecedores_ncms <- function(dados){
   library(plotly)
   
-  grafico <- dados %>%
+  forn_mais_atipicos <- dados %>%
+    distinct(CNPJ, Atipicidade_media) %>%
     arrange(desc(Atipicidade_media)) %>%
-    head(200) %>%
+    head(100)
+    
+  
+  grafico <- dados %>%
+    semi_join(forn_mais_atipicos) %>%
+    arrange(desc(Atipicidade_media)) %>%
     plot_ly() %>%
     add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                 y = ~Atipicidade,
@@ -27,8 +33,13 @@ fornecedores_ncms <- function(dados){
   
 }
 
-fornecedores_ncm <- function(dados, titulo = ""){
+
+
+fornecedores_ncm <- function(dados, ncm, unidade){
   library(plotly)
+  
+  dados <- dados %>%
+    filter(NCM_prod == ncm, Unid_prod == unidade)
   
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
@@ -46,7 +57,7 @@ fornecedores_ncm <- function(dados, titulo = ""){
     )
   
   grafico <- subplot(p1, p2, nrows = 2, shareX = TRUE, shareY = FALSE) %>% 
-    layout(title = titulo,
+    layout(title = ~paste("Vendas com NCM", NCM_prod),
            yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
            xaxis = list(title = 'Preço médio'), 
            showlegend = FALSE)
@@ -54,6 +65,8 @@ fornecedores_ncm <- function(dados, titulo = ""){
   return(grafico)
   
 }
+
+
 
 # Ações:  Tipo de uso: consumo de informação > apresentação
 #         Tipo de consulta: navegação
