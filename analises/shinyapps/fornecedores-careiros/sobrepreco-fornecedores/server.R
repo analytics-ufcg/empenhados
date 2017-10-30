@@ -4,6 +4,7 @@ source("../plotFunctions.R")
 
 shinyServer <- function(input, output, session) {
   library(lubridate)
+  library(readr)
   
   notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
   
@@ -33,8 +34,16 @@ shinyServer <- function(input, output, session) {
   
   tabela_careiros <- read.csv("../../dados/fornecedores_ncms.csv", encoding = "latin1")
   
+  # É necessário ter o csv com a tabela nfe
+  #nfe_confiavel <- read_csv("../../dados/nfe_confiavel.csv", locale = locale(encoding = "latin1"))
+  
   output$scatter1 <- renderPlotly({
     fornecedores_ncms(tabela_careiros)
+  })
+  
+  output$scatter_boxplot <- renderPlotly({
+    ## Exemplo de uso
+    fornecedores_ncm(nfe_confiavel, 21011110, "UND")
   })
   
   

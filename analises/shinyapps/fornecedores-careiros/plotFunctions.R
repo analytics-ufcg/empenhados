@@ -39,7 +39,12 @@ fornecedores_ncm <- function(dados, ncm, unidade){
   library(plotly)
   
   dados <- dados %>%
-    filter(NCM_prod == ncm, Unid_prod == unidade)
+    filter(NCM_prod == ncm, Unid_prod == unidade) %>% 
+    group_by(Nome_razao_social_emit) %>%
+    summarise(preco_medio = mean(Valor_unit_prod)) %>% 
+    mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
+                         "Sobrepreço", "Preço típico")) %>%
+    ungroup()
   
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
@@ -57,7 +62,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
     )
   
   grafico <- subplot(p1, p2, nrows = 2, shareX = TRUE, shareY = FALSE) %>% 
-    layout(title = ~paste("Vendas com NCM", NCM_prod),
+    layout(title = ~paste("Vendas com NCM", ncm),
            yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
            xaxis = list(title = 'Preço médio'), 
            showlegend = FALSE)
