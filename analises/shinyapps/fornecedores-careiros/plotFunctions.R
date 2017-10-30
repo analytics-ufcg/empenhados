@@ -3,7 +3,7 @@
 #         Tipo de busca: sumarização
 #
 # Alvo:   Distribuição
-fornecedores_ncm <- function(dados){
+fornecedores_ncms <- function(dados){
   library(plotly)
   
   grafico <- dados %>%
@@ -21,13 +21,15 @@ fornecedores_ncm <- function(dados){
                               "Atipicidade média:", round(Atipicidade_media, 2), "<br>",
                               "Atipicidade no NCM:", round(Atipicidade, 2), "<br>")) %>%
     layout(xaxis = list(title = "Fornecedor", showticklabels = FALSE),
-           yaxis = list(fixedrange = TRUE))
+           yaxis = list(fixedrange = TRUE, rangemode = "nonnegative"))
     
   return(grafico)
   
 }
 
-fornecedor_ncm <- function(dados, titulo = ""){
+fornecedores_ncm <- function(dados, titulo = ""){
+  library(plotly)
+  
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
     plot_ly() %>% 
@@ -53,6 +55,31 @@ fornecedor_ncm <- function(dados, titulo = ""){
   
 }
 
-fornecedor_ncm_compradores <- function(){
+# Ações:  Tipo de uso: consumo de informação > apresentação
+#         Tipo de consulta: navegação
+#         Tipo de busca: identificar
+#
+# Alvo:   Pontos extremos
+fornecedor_ncm_compradores <- function(dados, cnpj_fornecedor, ncm, unidade){
+  library(plotly)
   
+  dados <- dados %>%
+    filter(CPF_CNPJ_emit == cnpj_fornecedor, NCM_prod == ncm) %>%
+    plot_ly() %>%
+    add_trace(x = ~reorder(CPF_CNPJ_dest, -Preco_medio), y = ~Preco_medio,
+              type = "scatter", mode = "markers",
+              hoverinfo = "text",
+              text = ~paste(
+                "Comprador:", Nome_razao_social_dest, "<br>",
+                "CNPJ:", CPF_CNPJ_dest, "<br>",
+                "Unidade:", Unid_prod, "<br>",
+                "Preço Médio: R$", round(Preco_medio, 2))) %>%
+    layout(title = ~paste("Vendas com NCM", NCM_prod,
+                          "efetuadas por", "<br>", Nome_razao_social_emit, "<br>",
+                          "(", CPF_CNPJ_emit, ")"),
+           xaxis = list(title = "Comprador", showTickLabels = FALSE),
+           yaxis = list(title = "Preço Médio (R$)", range = c(0, ~max(Preco_medio) * 1.2)),
+           margin = list(l = 50))
+    
+  return(grafico)
 }

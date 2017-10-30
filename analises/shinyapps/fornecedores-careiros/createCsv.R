@@ -26,7 +26,7 @@ metrica_careiros_unid <- dados_careiros %>%
   ungroup() %>%
   filter(!is.nan(Atipico), !is.infinite(Atipico)) 
 
-#dados passados para fornecedores_ncm() devem ter esse formato
+#dados passados para fornecedores_ncms() devem ter esse formato
 metrica_careiros <- metrica_careiros_unid %>%
   group_by(NCM_prod, CPF_CNPJ_emit) %>%
   summarise(Atipicidade = mean(Atipico, na.rm = TRUE)) %>%
