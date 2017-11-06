@@ -41,11 +41,76 @@ shinyServer <- function(input, output, session) {
     fornecedores_ncms(tabela_careiros)
   })
   
+
   output$scatter_boxplot <- renderPlotly({
-    ## Exemplo de uso
-    fornecedores_ncm(nfe_confiavel, 21011110, "UND")
+    event.data <- event_data("plotly_click", source = "A")
+    
+    event.data <<- event.data
+    
+    if(is.null(event.data) == T) return(NULL)
+    
+    forn_selec <- tabela_careiros %>%
+      filter(CNPJ == event.data$x, round(Atipicidade, 3) == round(event.data$y, 3))
+    
+    forn_selec <<- forn_selec
+    
+    notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+    
+    template <- ('
+    SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
+                  CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest, Valor_total_da_nota, 
+                  Data_de_emissao, Unid_prod, Metrica
+    FROM nota_fiscal
+    WHERE NCM_prod = "%s" AND Confiavel = "TRUE"
+  ')
+    
+    query <- template %>%
+      sprintf(forn_selec$NCM_prod) %>%
+      sql()
+    
+    nfe <- tbl(notas, query) %>%
+      collect(n = Inf) 
+    
+    nfe <<- nfe
+    
+    unidade <- nfe %>%
+      group_by(Unid_prod) %>%
+      summarise(n = n())
+    
+    unid_max <- unidade %>%
+      filter(n == max(n))
+    
+    
+    fornecedores_ncm(nfe, forn_selec$NCM_prod, unid_max$Unid_prod)
+
   })
   
-  
+  output$tabela <- renderDataTable({
+    
+    event.data2 <- event_data("plotly_click", source = "B")
+    
+    if(is.null(event.data2) == T) return(NULL)
+    
+  #   notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+  #   
+  #   template <- ('
+  #   SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
+  #                 CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest, Valor_total_da_nota, 
+  #                 Data_de_emissao, Unid_prod, Metrica
+  #   FROM nota_fiscal
+  #   WHERE NCM_prod = "%s" AND Nome_razao_social_emit = "%s" AND Confiavel = "TRUE"
+  # ')
+  #   
+  #   query <- template %>%
+  #     sprintf(forn_selec$NCM_prod, event.data2$y) %>%
+  #     sql()
+  #   
+  #   nfe1 <- tbl(notas, query) %>%
+  #     collect(n = Inf) 
+    
+    nfe %>%
+      filter(Nome_razao_social_emit == event.data2$y)
+    
+  })
 
 }

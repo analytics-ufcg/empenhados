@@ -21,6 +21,12 @@ ui <- dashboardPage(
                     utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
                     o fornecedor atua.",
           plotlyOutput("scatter1", height = 700)
+      ),
+      box(width = 12, status = "primary", solidHeader = TRUE,
+          plotlyOutput("scatter_boxplot", height = 700)
+      ),
+      box(width = 12, status = "primary", solidHeader = TRUE,
+          dataTableOutput("tabela")
       )
     )
   )

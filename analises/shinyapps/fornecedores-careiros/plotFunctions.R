@@ -15,9 +15,10 @@ fornecedores_ncms <- function(dados){
   grafico <- dados %>%
     semi_join(forn_mais_atipicos) %>%
     arrange(desc(Atipicidade_media)) %>%
-    plot_ly() %>%
+    plot_ly(source = "A") %>%
     add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                 y = ~Atipicidade,
+                size = ~NCM_prod,
                 type = "scatter",
                 mode = "markers",
                 hoverinfo = "text",
@@ -48,7 +49,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
   
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
-    plot_ly() %>% 
+    plot_ly(source = "B") %>% 
     add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, type= "scatter", mode = "markers", color = I('#FF0000'),
               text = ~paste("Fornecedor:", Nome_razao_social_emit,
                             "<br> Preço Médio: ", round(preco_medio, 2)),
@@ -67,10 +68,9 @@ fornecedores_ncm <- function(dados, ncm, unidade){
            xaxis = list(title = 'Preço médio'), 
            showlegend = FALSE)
   
-  return(grafico)
+  return(p1)
   
 }
-
 
 
 # Ações:  Tipo de uso: consumo de informação > apresentação
