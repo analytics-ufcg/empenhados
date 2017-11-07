@@ -18,7 +18,6 @@ fornecedores_ncms <- function(dados){
     plot_ly(source = "A") %>%
     add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                 y = ~Atipicidade,
-                size = ~NCM_prod,
                 type = "scatter",
                 mode = "markers",
                 hoverinfo = "text",
@@ -56,7 +55,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
               hoverinfo = "text")
   
   p2 <- dados %>% 
-    plot_ly() %>% 
+    plot_ly(source = "B") %>% 
     add_trace(x = ~preco_medio, type = "box", name = "Todos",
               hoverinfo = "x",
               line = list(color = 'rgb(9,56,125)')
@@ -68,7 +67,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
            xaxis = list(title = 'Preço médio'), 
            showlegend = FALSE)
   
-  return(p1)
+  return(grafico)
   
 }
 
