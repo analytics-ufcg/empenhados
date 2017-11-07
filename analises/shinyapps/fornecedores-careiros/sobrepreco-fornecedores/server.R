@@ -1,4 +1,5 @@
 library(shiny)
+library(readr)
 
 source("../plotFunctions.R")
 
@@ -31,10 +32,22 @@ shinyServer <- function(input, output, session) {
   #   contentType = "text/csv"
   # )
   
-  tabela_careiros <- read.csv("../../dados/fornecedores_ncms.csv", encoding = "latin1")
+  dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
+                                      locale = locale(encoding = "latin1"))
   
-  output$scatter1 <- renderPlotly({
-    fornecedores_ncms(tabela_careiros)
+  output$fornecedores_ncms <- renderPlotly({
+    fornecedores_ncms(dados_fornecedores_ncms)
+  })
+  
+  dados_fornecedor_ncm_compradores <- read_csv("../../dados/fornecedor_ncm_compradores.csv",
+                                               locale = locale(encoding = "latin1"))
+  
+  output$fornecedor_ncm_compradores <- renderPlotly({
+    data <- event_data("plotly_click", source = "forn_ncms")
+    vars <- c(data[["x"]], data[["y"]])
+    
+    fornecedor_ncm_compradores(dados_fornecedor_ncm_compradores,
+                               vars[1], "10000000", "UND")
   })
   
   

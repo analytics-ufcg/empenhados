@@ -15,7 +15,7 @@ fornecedores_ncms <- function(dados){
   grafico <- dados %>%
     semi_join(forn_mais_atipicos) %>%
     arrange(desc(Atipicidade_media)) %>%
-    plot_ly() %>%
+    plot_ly(source = "forn_ncms") %>%
     add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                 y = ~Atipicidade,
                 type = "scatter",
@@ -26,7 +26,8 @@ fornecedores_ncms <- function(dados){
                               "NCM:", NCM_prod, "<br>",
                               "Atipicidade média:", round(Atipicidade_media, 2), "<br>",
                               "Atipicidade no NCM:", round(Atipicidade, 2), "<br>")) %>%
-    layout(xaxis = list(title = "Fornecedor", showticklabels = FALSE),
+    layout(title = "Fornecedores de Maior Atipicidade",
+           xaxis = list(title = "Fornecedor", showticklabels = FALSE),
            yaxis = list(fixedrange = TRUE, rangemode = "nonnegative"))
     
   return(grafico)
@@ -76,7 +77,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
 fornecedor_ncm_compradores <- function(dados, cnpj_fornecedor, ncm, unidade){
   library(plotly)
   
-  dados <- dados %>%
+  grafico <- dados %>%
     filter(CPF_CNPJ_emit == cnpj_fornecedor, NCM_prod == ncm) %>%
     plot_ly() %>%
     add_trace(x = ~reorder(CPF_CNPJ_dest, -Preco_medio), y = ~Preco_medio,
