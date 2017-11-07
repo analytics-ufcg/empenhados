@@ -20,8 +20,13 @@ ui <- dashboardPage(
                     que não é classificado como ponto extremo. As atipicidades mínimas, médias e máximas
                     utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
                     o fornecedor atua.",
-          plotlyOutput("fornecedores_ncms", height = 700),
-          plotlyOutput("fornecedor_ncm_compradores", height = 700)
+          plotlyOutput("scatter1", height = 700)
+      ),
+      box(width = 12, status = "primary", solidHeader = TRUE,
+          plotlyOutput("scatter_boxplot", height = 700)
+      ),
+      box(width = 12, status = "primary", solidHeader = TRUE,
+          dataTableOutput("tabela")
       )
     )
   )

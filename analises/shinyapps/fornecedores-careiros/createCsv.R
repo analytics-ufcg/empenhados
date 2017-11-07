@@ -69,3 +69,23 @@ dados_careiros_comp <- dados_careiros_comp %>%
 write.csv(dados_careiros_comp, "../dados/fornecedor_ncm_compradores.csv", 
           row.names = F, na = "",
           quote = TRUE, fileEncoding = "latin1")
+
+
+notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+
+template <- ('
+    SELECT Valor_unit_prod, NCM_prod, Unid_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
+                  CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest
+    FROM nota_fiscal
+    WHERE Confiavel = "TRUE"
+  ')
+
+query <- template %>%
+  sql()
+
+nfe <- tbl(notas, query) %>%
+  collect(n = Inf) 
+
+write.csv(nfe, "../dados/nfe_confiavel.csv", 
+          row.names = F, na = "",
+          quote = TRUE, fileEncoding = "latin1")
