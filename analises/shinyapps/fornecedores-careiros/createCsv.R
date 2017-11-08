@@ -34,6 +34,8 @@ metrica_careiros <- metrica_careiros_unid %>%
   group_by(CPF_CNPJ_emit) %>%
   mutate(Atipicidade_media = mean(Atipicidade)) %>%
   ungroup() %>%
+  mutate(Atipicidade = round(Atipicidade, 6)) %>%
+  mutate(Atipicidade_media = round(Atipicidade_media, 6)) %>%
   left_join(dcg_nomes_emit) %>%
   select(c(CNPJ = CPF_CNPJ_emit,
            Razao_Social = Nome_razao_social_emit,
@@ -64,7 +66,8 @@ dcg_nomes_dest <- tbl(notas, 'nota_fiscal') %>%
 dados_careiros_comp <- dados_careiros_comp %>%
   filter(!is.na(NCM_prod), NCM_prod != "NA", NCM_prod != "0") %>%
   left_join(dcg_nomes_emit) %>%
-  left_join(dcg_nomes_dest) 
+  left_join(dcg_nomes_dest) %>%
+  mutate(Preco_medio = round(Preco_medio, 2))
 
 write.csv(dados_careiros_comp, "../dados/fornecedor_ncm_compradores.csv", 
           row.names = F, na = "",
