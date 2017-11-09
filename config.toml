@@ -12,12 +12,12 @@
 # For developpers, if you modify this theme, put your images in `source/images` folder and
 # use grunt task `build` to synchronize assets
 
-baseURL = "https://analytics-ufcg.github.io/licitacoes-pb/"
+baseURL = "/licitacoes-pb"
 languageCode = "pt-br"
 defaultContentLanguage = "pt-br"
 title = "Empenhados"
 theme = "hugo-tranquilpeak-theme"
-disqusShortname = "Empenhados"
+disqusShortname = "empenhados"
 relativeUrls = true
 # googleAnalytics = "UA-123-45"
 paginate = 7
