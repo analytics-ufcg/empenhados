@@ -572,6 +572,162 @@ O que você precisa saber para ler esse relatório é de que ao lançar uma lici
 </article>
 
           
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="../2017/04/untitled/">
+          Untitled
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-04-10T00:00:00Z">
+        
+  Abril 10, 2017
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .
+      <p>
+        <a href="../2017/04/untitled/" class="postShorten-excerpt_link link">Continuar leitura</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="../2017/03/descricao-fornecedores-merenda/">
+          Descrição dos fornecedores de merenda
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-03-31T00:00:00Z">
+        
+  Março 31, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>em</span>
+    
+      <a class="category-link" href="../categories/merenda">merenda</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      Atualizado em 22/06/2017 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.
+      <p>
+        <a href="../2017/03/descricao-fornecedores-merenda/" class="postShorten-excerpt_link link">Continuar leitura</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="../2017/03/descricao-compradores-merenda/">
+          Descrição dos compradores de merenda
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-03-30T00:00:00Z">
+        
+  Março 30, 2017
+
+      </time>
+    
+    
+  
+  
+    <span>em</span>
+    
+      <a class="category-link" href="../categories/merenda">merenda</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      Atualizado em 22/06/2017 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.
+      <p>
+        <a href="../2017/03/descricao-compradores-merenda/" class="postShorten-excerpt_link link">Continuar leitura</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
           
   <div class="pagination-bar">
     <ul class="pagination">
@@ -835,7 +991,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
     
   
     
-    <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    <div id="cover" style="background-image:url('https://analytics-ufcg.github.io/licitacoes-pb/images/cover.jpg');"></div>
   
 
 
