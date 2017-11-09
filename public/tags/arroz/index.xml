@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Arroz on Empenhados</title>
+    <link>/tags/arroz/</link>
+    <description>Recent content in Arroz on Empenhados</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Thu, 18 May 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/arroz/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Variação do preço de arroz nas Notas Fiscais</title>
+      <link>/2017/05/variacao-preco-arroz/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/05/variacao-preco-arroz/</guid>
+      <description>O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, se refere a comprar um produto por um preço bem acima do mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
+Art. 3o A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</description>
+    </item>
+    
+  </channel>
+</rss>

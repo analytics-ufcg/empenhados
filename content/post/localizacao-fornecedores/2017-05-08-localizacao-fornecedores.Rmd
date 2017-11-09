@@ -1,0 +1,266 @@
+---
+title: "Distribuição Geográfica dos Licitantes"
+subtitle: "Merenda Escolar"
+author: "Laboratório Analytics"
+slug: "distribuicao-geografica-licitantes"
+disqusIdentifier: "distribuicao-geografica-licitantes"
+date: 2017-05-08
+tags: ["merenda", "licitantes", "localizacao"]
+categories: ["merenda"]
+comments: true
+---
+
+##### **Atualizado em 28/07/2017**
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.align = 'center',
+  screenshot.force = FALSE,
+  fig.width = 7)
+```
+
+```{r}
+library(methods)
+library(dplyr)
+library(ggfortify)
+library(rgdal)
+library(maps)
+library(ggmap)
+library(leaflet)
+library(tidyr)
+library(stringr)
+library(shiny)
+library(plotly)
+library(knitr)
+library(DT)
+source('../../../utils/lib/load_fornecedores_merenda.R')
+
+options(scipen = 999)
+```
+
+Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
+
+Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3551 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 11000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
+
+```{r}
+fornecedores <- load_fornecedores_merenda()
+
+empenhos <- fornecedores[[1]]
+ganhadores <- fornecedores[[2]]
+```
+
+```{r}
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+cep_licitantes <- tbl(utils, "empresa") %>%
+  collect() %>%
+  mutate(longitude = as.numeric(longitude)) %>%
+  mutate(latitude = as.numeric(latitude)) %>%
+  select(c(cep, cnpj)) %>%
+  rename(nu_CEP = cep) %>%
+  rename(nu_CPFCNPJ = cnpj)
+
+dados_cep <- tbl(utils, "empresa") %>%
+  collect() %>%
+  mutate(longitude = as.numeric(longitude)) %>%
+  mutate(latitude = as.numeric(latitude))
+```
+
+```{r}
+localizacao_licitantes_municipios <- ganhadores %>%
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "") %>%
+  ungroup()
+```
+
+```{r}
+localizacao_licitantes <- ganhadores %>%
+  group_by(cd_Credor, no_Credor) %>%
+  summarise(ganhou = sum(ganhou),
+            valor_total_emp = sum(valor_total_emp),
+            valor_mediana_emp = median(valor_mediana_emp),
+            valor_total_pag = sum(valor_total_pag, na.rm = TRUE),
+            num_municipios = n()) %>%
+  left_join(dados_cep %>%
+              select(cnpj, cep, latitude, longitude, estado, cidade), by = c('cd_Credor' = 'cnpj')) %>%
+  filter(!is.na(cep), cep != "")
+```
+
+```{r}
+# Endereço incorreto retornado pela API de busca
+localizacao_licitantes <- localizacao_licitantes %>%
+  filter(!(cd_Credor %in% c("07150557000158", "07129849000109", "09149258000129", "10462503000132", "09296872000113", "11968320000156", "00387408000168", "07316478000174", "05031301000287", "35591957000134", "08195834000101", "08031919000154", "07513602000191"))) %>%
+  filter(!(!is.na(cep) & is.na(latitude)))
+```
+
+Abaixo você pode conferir a localização dos fornecedores de merenda na Paraíba. Inicialmente você observará grupos de fornecedores que estão juntos em uma mesma área, conforme você vai aumentando o zoom, mais informação de mais áreas se tornam disponíveis. Ao aproximar o zoom no nível das cidades é possível observar a localização do fornecedor individualmente (marcador em azul). Você também pode clicar sobre ele e obter informações mais específicas como nome, CNPJ/CPF, cidade, número de munícipios nos quais já forneceu e o valor total pago a esse fornecedor.
+
+```{r}
+leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
+  addTiles() %>%
+  addMarkers(data = localizacao_licitantes,
+             label = ~str_to_upper(no_Credor), 
+             popup = paste(
+               "Nome:", str_to_upper(localizacao_licitantes$no_Credor), "</br>",
+               "CNPJ/CPF:", localizacao_licitantes$cd_Credor, "</br>",
+               "Cidade:", localizacao_licitantes$cidade, " - ", localizacao_licitantes$estado, "</br>",
+               "Número de Municípios:", localizacao_licitantes$num_municipios, "</br>",
+               "Valor pago: R$", localizacao_licitantes$valor_total_pag
+             ),
+             clusterOptions = markerClusterOptions())
+```
+
+Como talvez já pudesse ser esperado, a maioria dos fornecedores de merenda está localizada em cidades da Paraíba. Dentro do estado, observa-se ainda que as cidades de maior porte concentram a maioria dos fornecedores. Uma parcela dos fornecedores está localizada em estados vizinhos como Pernambuco e Rio Grande do Norte.
+
+Descubra quais os fornecedores de merenda que se localizam na sua cidade ou próximo a você e comente no final desse post o que você encontrou e reconheceu.
+
+## Verificando a existência de grandes fornecedores em cidades improváveis
+Será que existem fornecedores com altos valores pagos de merenda em cidades pequenas da Paraíba? O critério utilizado para determinar quais cidades são pequenas é a população, são classificadas como pequenas aquelas que estão incluídas no grupo das 10% cidades com menor população da Paraíba. Um fornecedor é considerado com altos pagamentos quando se encaixa na lista de fornecedores dos 10% que mais receberam pagamentos de empenhos de merenda.
+
+```{r}
+utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
+
+municipios <- tbl(utils, 'municipio') %>%
+    select(de_Municipio, vl_Populacao) %>%
+    collect()
+
+localizacao_licitantes <- localizacao_licitantes %>%
+  left_join(municipios, by = c('cidade' = 'de_Municipio'))
+
+licitantes_cimprovaveis <- localizacao_licitantes %>%
+  filter(vl_Populacao < quantile(localizacao_licitantes$vl_Populacao, .1, na.rm = TRUE) &
+           valor_total_pag > quantile(localizacao_licitantes$valor_total_pag, .9))
+```
+
+Foram encontrados 18 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
+
+```{r}
+leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
+  addTiles() %>%
+  addMarkers(data = licitantes_cimprovaveis,
+             label = ~str_to_upper(no_Credor),
+             popup = paste(
+               "Nome:", str_to_upper(licitantes_cimprovaveis$no_Credor), "</br>",
+               "CNPJ/CPF:", licitantes_cimprovaveis$cd_Credor, "</br>",
+               "Cidade:", licitantes_cimprovaveis$cidade, " - ", licitantes_cimprovaveis$estado, "</br>",
+               "População:", licitantes_cimprovaveis$vl_Populacao, "</br>",
+               "Número de Municípios:", licitantes_cimprovaveis$num_municipios, "</br>",
+               "Valor pago: R$", licitantes_cimprovaveis$valor_total_pag
+             ),
+             clusterOptions = markerClusterOptions())
+```  
+
+A mediana da população nesses municípios é de `r median(licitantes_cimprovaveis$vl_Populacao)` habitantes, enquanto que a mediana do que foi pago ao fornecedores é de `r median(licitantes_cimprovaveis$valor_total_pag)` reais. Existem os casos em que os fornecedores fornecem apenas para o município onde se localiza, mas há fornecedores que estão em cidades pequenas e participam dos empenhos de outras cidades.
+
+A tabela abaixo apresenta as licitações em que ocorrem estes fornecimentos improváveis
+
+```{r}
+empenhos_cimprovaveis <- empenhos %>%
+  inner_join(licitantes_cimprovaveis %>%
+              select(cidade, cd_Credor),
+            by = c("de_Municipio" = "cidade", "cd_Credor" = "cd_Credor")) 
+
+empenhos_cimprovaveis.group <- empenhos_cimprovaveis %>%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
+  summarise(n = n())
+
+sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+
+licitacoes_improvaveis <- tbl(sagres, 'Licitacao') %>%
+  collect() %>%
+  inner_join(empenhos_cimprovaveis.group %>%
+               select(-c(n)))
+
+datatable(licitacoes_improvaveis)
+```
+
+**Existe uma correlação entre o valor pago aos fornecedores e a população do município de suas empresas?**
+
+Dentre as empresas que se localizam em cidades da Paraíba, iremos verificar abaixo se existe essa correlação.
+
+```{r}
+cor2 <- with(localizacao_licitantes, round(cor(valor_total_pag, vl_Populacao, use = "pairwise.complete.obs"), 2))
+
+plot_ly(data = localizacao_licitantes,
+        x = ~vl_Populacao,
+        y = ~valor_total_pag,
+        alpha = 0.5,
+        type = 'scatter',
+        mode = 'markers',
+        text = ~paste('Fornecedor: ', no_Credor, "<br>", 
+                      'Cidade: ', cidade, "<br>" ,
+                      'Valor: R$', valor_total_pag),
+        hoverinfo = 'text') %>%
+  layout(title = 'População da cidade do fornecedor por valor total pago',
+         xaxis = list(title = 'População da cidade do fornecedor'),
+         yaxis = list(title = 'Valor total pago'),
+         annotations = list(x = 200000, y = 5000000, showarrow = FALSE, text = paste('r = ', cor2)))
+```
+
+Como mostrado na visualização acima, ao considerarmos Campina Grande e João Pessoa, que são as duas linhas de fornecedores mais à direita, temos uma correlação linear fraca entre as duas variáveis (r = `r cor2`). O que aconteceria se considerássemos as demais cidades com exceção de João Pessoa e Campina Grande?
+
+```{r}
+cor3 <- with(localizacao_licitantes %>% filter(!(cidade %in% c("João Pessoa", "Campina Grande"))), round(cor(valor_total_pag, vl_Populacao, use = "pairwise.complete.obs"), 2))
+
+plot_ly(data = localizacao_licitantes %>% 
+          filter(!(cidade %in% c("João Pessoa", "Campina Grande"))),
+        x = ~vl_Populacao,
+        y = ~valor_total_pag,
+        alpha = 0.5,
+        type = 'scatter',
+        mode = 'markers',
+        text = ~paste('Fornecedor: ', no_Credor, "<br>", 
+                      'Cidade: ', cidade, "<br>" ,
+                      'Valor: R$', valor_total_pag),
+        hoverinfo = 'text') %>%
+  layout(title = 'População da cidade do fornecedor por valor total pago',
+         xaxis = list(title = 'População da cidade do fornecedor'),
+         yaxis = list(title = 'Valor total pago'),
+         annotations = list(x = 40000, y = 4000000, showarrow = FALSE, text = paste('r = ', cor3)))
+```
+
+A correlação fica ainda menor atingindo `r cor3`. Ou seja, não parece haver uma correlação linear entre a população de um município no qual se localiza uma empresa e o quanto essa empresa recebeu por empenhos de merenda. É possível explorar o gráfico e obter mais informações sobre os fornecedores em cada faixa de população dos municípios observando a presença de outliers em vários casos como, por exemplo, em Bayeux, Cabedelo e Guarabira.
+
+
+## Observando os grandes fornecedores
+Continuando nossa análise sobre grandes fornecedores, decidimos investigar um pouco mais a história dos dois fornecedores que assinaram contratos com mais municípios no período. Alguns detalhes desses fornecedores são listados abaixo.
+
+```{r}
+maiores_fornecedores <- ganhadores %>% 
+  group_by(cd_Credor) %>% 
+  summarise(municipios = n()) %>% 
+  arrange(desc(municipios)) %>% 
+  left_join(ganhadores, 'cd_Credor') %>%
+  distinct(cd_Credor, no_Credor, municipios) %>%
+  rename(CPNJ = cd_Credor) %>%
+  rename(Fornecedor = no_Credor) %>%
+  rename(Municipios = municipios) %>%
+  head(2)
+  
+kable(maiores_fornecedores, align = "c")
+```
+
+Uma busca pelo CNPJ do fornecedor *Raimundo Adelmar Fonseca Pires* indica que ele já esteve envolvido em irregularidades anteriormente. Segundo [este documento](http://www.centraldecompras.pb.gov.br/appls/ccompras/central.nsf/ffornecedoressuspensos?OpenForm) da Central de Compras do Governo Estadual, tal fornecedor foi suspenso de licitar com a administração pública estadual por cinco anos em 2013, devido a irregularidades ocorridas no pregão presencial [175/2012](https://www.clickpb.com.br/static/filebrowser/edital-de-registro-de-preco-no-1752012-aquisicao-de-carnefrango-e-peixe-seap.pdf), que licitava carnes para os detentos do estado.
+Esse [documento](http://publicacao.tce.pb.gov.br/9c207dcfe37c4887431f3fed06454860) do TCE oferece mais detalhes sobre a condenação desse fornecedor.
+
+Já uma busca pelo CNPJ do segundo fornecedor, nos mostra que a empresa *Mega Master Comercial de Alimentos Ltda.* encontra-se atualmente no [cadastro de empresas inidôneas e suspeitas](http://www.portaltransparencia.gov.br/ceis/empresa/08370039000102) do Portal da Transparência e impedida de participar em licitações por dois anos, após não cumprir os termos de um contrato firmado com a EBSERH - Empresa Brasileira de Serviços Hospitalares.
+
+Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios [nesse site](http://www.empresascnpj.com/), descobrimos algumas coisas interessantes: Os sócios de ambas empresas contém o mesmo sobrenome, Fonseca Pires, e ambas já foram sediadas em um mesmo bloco de galpões.
+
+
+## Onde atuam os diversos fornecedores de merenda?
+Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuar em um grupo de cidades geográficamente próximas.
+
+Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha uma forma de visualização.
+
+* Na primeira opção de visualização, por total de vitórias, é possível observar a quantidade de vitórias do fornecedor selecionado em cada município do estado;
+
+* Na segunda opção, visualização por valor recebido, é possível observar os valores recebidos pelo fornecedor em cada um dos municípios do estado.
+
+Quando disponível, a localização dos fornecedores também é destacada no mapa e um marcador é adicionado a cada uma das sedes da empresa no período analisado.
+
+<iframe src="http://150.165.85.32:3838/localizacao-fornecedores/"></iframe>

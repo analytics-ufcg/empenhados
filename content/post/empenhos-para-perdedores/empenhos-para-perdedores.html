@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+subtitle: "Untitled"
+author: "Laboratório Analytics"
+slug: "untitled"
+disqusIdentifier: "untitled"
+date: 2017-04-10
+tags: []
+categories: []
+comments: true
+---
+
+
+
+
+
+<pre class="r"><code>sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL)
+
+query &lt;- sql(&#39;
+  SELECT e.*
+  FROM Empenhos as e INNER JOIN (
+    SELECT *
+    FROM Propostas
+    WHERE st_Proposta = 2) as p 
+  ON (e.cd_UGestora = p.cd_UGestora AND 
+      e.nu_Licitacao = p.nu_Licitacao AND 
+      e.tp_Licitacao = p.tp_Licitacao AND 
+      e.cd_Credor = p.nu_CPFCNPJ)
+&#39;)
+
+empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;%
+  collect()</code></pre>
+<pre><code>## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported
+## as numeric</code></pre>
+<pre><code>## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21
+## imported as numeric</code></pre>
+<pre><code>## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported
+## as numeric</code></pre>
+<pre><code>## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21
+## imported as numeric</code></pre>
+<pre class="r"><code>licitacoes_p_perdedores &lt;- empenhos_para_perdedores %&gt;%
+  group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %&gt;%
+  summarise(n = n())
+
+fornecedores &lt;- empenhos_para_perdedores %&gt;%
+  group_by(cd_Credor) %&gt;%
+  summarise(n = n())</code></pre>

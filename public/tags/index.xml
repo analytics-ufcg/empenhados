@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Empenhados</title>
+    <link>/tags/</link>
+    <description>Recent content in Tags on Empenhados</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Mon, 31 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Administracao Publica</title>
+      <link>/tags/administracao-publica/</link>
+      <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/administracao-publica/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Arroz</title>
+      <link>/tags/arroz/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/arroz/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Compradores</title>
+      <link>/tags/compradores/</link>
+      <pubDate>Thu, 30 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/compradores/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Custo</title>
+      <link>/tags/custo/</link>
+      <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/custo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Execucao Orcamentaria</title>
+      <link>/tags/execucao-orcamentaria/</link>
+      <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/execucao-orcamentaria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Fornecedores</title>
+      <link>/tags/fornecedores/</link>
+      <pubDate>Fri, 31 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/fornecedores/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Licitantes</title>
+      <link>/tags/licitantes/</link>
+      <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/licitantes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Localizacao</title>
+      <link>/tags/localizacao/</link>
+      <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/localizacao/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Merenda</title>
+      <link>/tags/merenda/</link>
+      <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/merenda/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Notas Fiscais</title>
+      <link>/tags/notas-fiscais/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/notas-fiscais/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Precos</title>
+      <link>/tags/precos/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/precos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Preços</title>
+      <link>/tags/pre%C3%A7os/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pre%C3%A7os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Processo De Despesa</title>
+      <link>/tags/processo-de-despesa/</link>
+      <pubDate>Mon, 22 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/processo-de-despesa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Realinhamento</title>
+      <link>/tags/realinhamento/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/realinhamento/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
