@@ -80,10 +80,27 @@ shinyServer <- function(input, output, session) {
     
     unid_max <- unidade %>%
       filter(n == max(n))
-    
-    
+
     fornecedores_ncm(nfe, forn_selec$NCM_prod, unid_max$Unid_prod)
 
+  })
+  
+  output$scatter_vendas <- renderPlotly({
+    event.data_vendas <- event_data("plotly_click", source = "B")
+    
+    event.data_vendas <<- event.data_vendas
+    
+    if(is.null(event.data_vendas) == T) return(NULL)
+    
+    nfe_vendas <- nfe %>% 
+      filter(CPF_CNPJ_emit == event.data_vendas$key) %>% 
+      group_by(CPF_CNPJ_emit, CPF_CNPJ_dest, Unid_prod) %>% 
+      summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
+                Nome_razao_social_dest = first(Nome_razao_social_dest),
+                NCM_prod = first(NCM_prod),
+                Preco_medio = mean(Valor_unit_prod))
+
+    fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
   
   output$tabela <- renderDataTable({
@@ -92,25 +109,29 @@ shinyServer <- function(input, output, session) {
     
     if(is.null(event.data2) == T) return(NULL)
     
-  #   notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
-  #   
-  #   template <- ('
-  #   SELECT Valor_unit_prod, NCM_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
-  #                 CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest, Valor_total_da_nota, 
-  #                 Data_de_emissao, Unid_prod, Metrica
-  #   FROM nota_fiscal
-  #   WHERE NCM_prod = "%s" AND Nome_razao_social_emit = "%s" AND Confiavel = "TRUE"
-  # ')
-  #   
-  #   query <- template %>%
-  #     sprintf(forn_selec$NCM_prod, event.data2$y) %>%
-  #     sql()
-  #   
-  #   nfe1 <- tbl(notas, query) %>%
-  #     collect(n = Inf) 
-    
     nfe %>%
       filter(Nome_razao_social_emit == event.data2$y)
+    
+  })
+  
+  output$messageMenu <- renderMenu({
+    notification = notificationItem(text = "O que é atipicidade?",
+                           icon("info"),
+                           status = "success",
+                           href="#")
+    notification$children[[1]]=a(href="#","onclick"=paste0("clickFunction('","notify","'); return false;"),notification$children[[1]]$children)
+    
+    dropdownMenu(type = "messages", icon = icon("info"), headerText = "Atipicidade", badgeStatus = "success",
+                   notification
+                 )
+  })
+  
+  observeEvent(input$linkClicked == "atipica",{
+    showNotification("A atipicidade de um fornecedor para um NCM é calculada considerando a distância normalizada entre o preço 
+                    médio praticado pelo fornecedor e o maior preço médio
+                    que não é classificado como ponto extremo. As atipicidades mínimas, médias e máximas
+                    utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
+                    o fornecedor atua.", duration = NULL)
     
   })
 
