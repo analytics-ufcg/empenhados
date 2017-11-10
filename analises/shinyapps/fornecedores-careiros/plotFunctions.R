@@ -84,7 +84,7 @@ fornecedor_ncm_compradores <- function(dados, cnpj_fornecedor, ncm, unidade){
   
   grafico <- dados %>%
     filter(CPF_CNPJ_emit == cnpj_fornecedor, NCM_prod == ncm) %>%
-    plot_ly() %>%
+    plot_ly(source = "C") %>%
     add_trace(x = ~reorder(CPF_CNPJ_dest, -Preco_medio), y = ~Preco_medio,
               type = "scatter", mode = "markers",
               hoverinfo = "text",
