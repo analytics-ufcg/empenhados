@@ -12,7 +12,7 @@
 # For developpers, if you modify this theme, put your images in `source/images` folder and
 # use grunt task `build` to synchronize assets
 
-baseURL = "https://jslucassf.github.io/licitacoes-pb/"
+baseURL = "https://analytics-ufcg.github.io/licitacoes-pb/"
 languageCode = "pt-br"
 defaultContentLanguage = "pt-br"
 title = "Empenhados"
