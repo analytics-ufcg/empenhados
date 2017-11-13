@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Custo on Empenhados</title>
-    <link>/tags/custo/</link>
+    <link>https://analytics-ufcg.github.io/licitacoes-pb/tags/custo/</link>
     <description>Recent content in Custo on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Wed, 05 Jul 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/custo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/licitacoes-pb/tags/custo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Custo de alimentação por aluno</title>
-      <link>/2017/07/custo-por-aluno/</link>
+      <link>https://analytics-ufcg.github.io/licitacoes-pb/2017/07/custo-por-aluno/</link>
       <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/07/custo-por-aluno/</guid>
+      <guid>https://analytics-ufcg.github.io/licitacoes-pb/2017/07/custo-por-aluno/</guid>
       <description>Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</description>
     </item>
     
