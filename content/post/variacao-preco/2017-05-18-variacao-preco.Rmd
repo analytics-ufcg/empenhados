@@ -4,6 +4,8 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "variacao-preco-arroz"
 disqusIdentifier: "variacao-preco-arroz"
+thumbnailImage: "/images/posts/variacao-preco-arroz/thumb.jpg"
+thumbnailImagePosition: "left"
 date: 2017-05-18
 tags: ["merenda", "preços", "arroz", "notas fiscais"]
 categories: ["merenda"]

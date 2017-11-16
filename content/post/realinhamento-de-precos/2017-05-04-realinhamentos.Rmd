@@ -4,6 +4,8 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "realinhamento-de-precos"
 disqusIdentifier: "realinhamento-de-precos"
+thumbnailImage: "/images/posts/realinhamento-de-precos/thumb.jpg"
+thumbnailImagePosition: "left"
 date: 2017-05-04
 tags: ["merenda", "precos", "realinhamento"]
 categories: ["merenda"]

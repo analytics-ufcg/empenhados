@@ -4,6 +4,8 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "descricao-compradores-merenda"
 disqusIdentifier: "descricao-compradores-merenda"
+thumbnailImage: "/images/posts/descricao-compradores-merenda/thumb.jpg"
+thumbnailImagePosition: "left"
 date: 2017-03-30
 tags: ["merenda", "compradores"]
 categories: ["merenda"]

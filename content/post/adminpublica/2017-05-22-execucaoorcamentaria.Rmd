@@ -4,6 +4,8 @@ subtitle: "Despesa Pública"
 author: "Laboratório Analytics"
 slug: "processo-despesa"
 disqusIdentifier: "processo-despesa"
+thumbnailImage: "/images/posts/processo-despesa/thumb.jpg"
+thumbnailImagePosition: "left"
 date: 2017-05-22
 tags: ["administracao publica", "processo de despesa"]
 categories: ["administracao publica"]

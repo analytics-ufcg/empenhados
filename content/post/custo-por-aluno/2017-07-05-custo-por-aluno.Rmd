@@ -4,6 +4,8 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "custo-por-aluno"
 disqusIdentifier: "custo-por-aluno"
+thumbnailImage: "/images/posts/custo-por-aluno/thumb.jpg"
+thumbnailImagePosition: "left"
 date: 2017-07-05
 tags: ["merenda", "custo"]
 categories: ["merenda"]
