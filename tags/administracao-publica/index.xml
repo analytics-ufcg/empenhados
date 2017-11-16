@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Administracao Publica on Empenhados</title>
+    <link>https://analytics-ufcg.github.io/licitacoes-pb/tags/administracao-publica/</link>
+    <description>Recent content in Administracao Publica on Empenhados</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Mon, 31 Jul 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://analytics-ufcg.github.io/licitacoes-pb/tags/administracao-publica/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Execução orçamentária em um dia só</title>
+      <link>https://analytics-ufcg.github.io/licitacoes-pb/2017/07/execucao-orcamentaria-em-um-dia-so/</link>
+      <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://analytics-ufcg.github.io/licitacoes-pb/2017/07/execucao-orcamentaria-em-um-dia-so/</guid>
+      <description>Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</description>
+    </item>
+    
+    <item>
+      <title>Processo de Despesa Pública</title>
+      <link>https://analytics-ufcg.github.io/licitacoes-pb/2017/05/processo-despesa/</link>
+      <pubDate>Mon, 22 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://analytics-ufcg.github.io/licitacoes-pb/2017/05/processo-despesa/</guid>
+      <description>Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
+1 Licitação
+2 Empenho
+3 Contrato
+4 Liquidação
+5 Pagamento
+Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços.
+1 Licitação A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação.</description>
+    </item>
+    
+  </channel>
+</rss>
