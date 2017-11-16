@@ -43,16 +43,20 @@ fornecedores_ncm <- function(dados, ncm, unidade){
   
   dados <- dados %>%
     filter(NCM_prod == ncm, Unid_prod == unidade) %>% 
-    group_by(CPF_CNPJ_emit) %>%
-    summarise(Nome_razao_social_emit = first(Nome_razao_social_emit), preco_medio = mean(Valor_unit_prod)) %>% 
+    
+    group_by(CPF_CNPJ_emit, forn_selected) %>%
+    summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
+              preco_medio = mean(Valor_unit_prod)) %>% 
+    ungroup() %>% 
+    
     mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
-                         "Sobrepreço", "Preço típico")) %>%
-    ungroup()
-  
+                         "Sobrepreço", "Preço típico"))
+
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
     plot_ly(source = "B") %>% 
-    add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers", color = I('#FF0000'),
+    add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers", 
+              color = ~forn_selected, colors = c("#FF0000", "#41ab5d"),
               text = ~paste("Fornecedor:", Nome_razao_social_emit,
                             "<br> Preço Médio: ", round(preco_medio, 2)),
               hoverinfo = "text")
@@ -68,8 +72,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
     layout(title = ~paste("Preço médio para vendas com NCM", ncm),
            yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
            xaxis = list(title = paste(descricao, " <br>", "Unidade: ", unidade)), 
-           margin = list(b = 80),
-           showlegend = FALSE)
+           margin = list(b = 80))
   
   return(grafico)
   

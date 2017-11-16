@@ -71,7 +71,8 @@ shinyServer <- function(input, output, session) {
     nfe <- tbl(notas, query) %>%
       collect(n = Inf) %>% 
       left_join(ncm %>% select(NCM, Descricao), by = c("NCM_prod" = "NCM")) %>% 
-      mutate(Descricao = substr(Descricao, 12, nchar(Descricao)))
+      mutate(Descricao = substr(Descricao, 12, nchar(Descricao))) %>% 
+      mutate(forn_selected = if_else(CPF_CNPJ_emit == event.data$x, "Selecionado", "Demais"))
     
     nfe <<- nfe
     
