@@ -1,6 +1,8 @@
 library(shiny)
 
 source("../plotFunctions.R")
+last_event <<- ""
+last_event2 <<- "" 
 
 shinyServer <- function(input, output, session) {
   library(lubridate)
@@ -33,6 +35,11 @@ shinyServer <- function(input, output, session) {
   
   dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
+  
+  forn_mais_atipicos <- dados_fornecedores_ncms %>%
+    distinct(CNPJ, Atipicidade_media) %>%
+    arrange(desc(Atipicidade_media)) %>%
+    head(75)
   
   # É necessário ter o csv com a tabela nfe
   #nfe_confiavel <- read_csv("../../dados/nfe_confiavel.csv", locale = locale(encoding = "latin1"))
@@ -81,9 +88,34 @@ shinyServer <- function(input, output, session) {
     
     unid_max <- unidade %>%
       filter(n == max(n))
+    
+    unid_selected <<- unid_max$Unid_prod
 
     fornecedores_ncm(nfe, forn_selec$NCM_prod, unid_max$Unid_prod)
 
+  })
+  
+  
+  output$text <- renderText({
+    event <- event_data("plotly_click", source = "B")
+
+    if(is.null(event)) {
+      return("")
+    }
+    
+    nfe_max <- nfe %>%
+      filter(CPF_CNPJ_emit == event$key) %>%
+      filter(Unid_prod == unid_selected)
+    
+    preco_max <- max(nfe_max$Valor_unit_prod)
+    
+    nfe_max <- nfe_max %>%
+      filter(Valor_unit_prod == preco_max) %>%
+      head(1)
+    
+    texto <- paste("O(A) fornecedor(a)", nfe_max$Nome_razao_social_emit, "forneceu", 
+                   nfe_max$Descricao, "(", nfe_max$Unid_prod, ") por R$", round(nfe_max$Valor_unit_prod, 2), "para o(a)", nfe_max$Nome_razao_social_dest)
+    return(texto)
   })
   
   output$scatter_vendas <- renderPlotly({
@@ -101,39 +133,24 @@ shinyServer <- function(input, output, session) {
                 NCM_prod = first(NCM_prod),
                 Descricao = first(Descricao),
                 Preco_medio = mean(Valor_unit_prod))
+    
+    nfe_vendas <<- nfe_vendas
 
     fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
   
-  output$tabela <- renderDataTable({
+  output$tabela <- renderTable({
     
-    event.data2 <- event_data("plotly_click", source = "B")
+    event <- event_data("plotly_click", source = "B")
     
-    if(is.null(event.data2) == T) return(NULL)
+    if(is.null(event) == T) return(NULL)
     
-    nfe %>%
-      filter(Nome_razao_social_emit == event.data2$y)
+    nfe_vendas <- nfe %>%
+      filter(CPF_CNPJ_emit == event$key) %>%
+      arrange(desc(Valor_unit_prod))
     
-  })
-  
-  output$messageMenu <- renderMenu({
-    notification = notificationItem(text = "O que é atipicidade?",
-                           icon("info"),
-                           status = "success",
-                           href="#")
-    notification$children[[1]]=a(href="#","onclick"=paste0("clickFunction('","notify","'); return false;"),notification$children[[1]]$children)
+    nfe_vendas <<- nfe_vendas
     
-    dropdownMenu(type = "messages", icon = icon("info"), headerText = "Atipicidade", badgeStatus = "success",
-                   notification
-                 )
-  })
-  
-  observeEvent(input$linkClicked == "atipica",{
-    showNotification("A atipicidade de um fornecedor para um NCM é calculada considerando a distância normalizada entre o preço 
-                    médio praticado pelo fornecedor e o maior preço médio
-                    que não é classificado como ponto extremo. As atipicidades mínimas, médias e máximas
-                    utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
-                    o fornecedor atua.", duration = NULL)
     
   })
 

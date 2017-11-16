@@ -18,6 +18,7 @@ fornecedores_ncms <- function(dados){
     plot_ly(source = "A") %>%
     add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                 y = ~Atipicidade,
+                key = ~CNPJ,
                 type = "scatter",
                 mode = "markers",
                 hoverinfo = "text",
@@ -34,7 +35,47 @@ fornecedores_ncms <- function(dados){
   
 }
 
-
+fornecedores_ncm_facet <- function(dados, ncm) {
+  library(plotly)
+  
+  descricao <- levels(as.factor(nfe$Descricao))
+  
+  dados <- dados %>%
+    filter(NCM_prod == ncm) %>%
+    group_by(CPF_CNPJ_emit, Unid_prod) %>%
+    summarise(Nome_razao_social_emit = first(Nome_razao_social_emit), preco_medio = mean(Valor_unit_prod)) %>% 
+    mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
+                         "Sobrepreço", "Preço típico")) %>%
+    ungroup()
+  
+  View(dados)
+  p1 <- dados %>% 
+    filter(tipo == "Sobrepreço") %>% 
+    plot_ly(source = "B") %>% 
+    add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers", color = I('#FF0000'),
+              text = ~paste("Fornecedor:", Nome_razao_social_emit,
+                            "<br> Preço Médio: ", round(preco_medio, 2)),
+              hoverinfo = "text",
+              xaxis = ~paste0("x", Unid_prod))
+  
+  p2 <- dados %>% 
+    plot_ly(source = "B") %>% 
+    add_trace(x = ~preco_medio, type = "box", name = "Todos",
+              key = ~CPF_CNPJ_emit,
+              hoverinfo = "x",
+              line = list(color = 'rgb(9,56,125)'),
+              xaxis = ~paste0("x", Unid_prod)
+    )
+  
+  grafico <- subplot(p1, p2, nrows = 2, shareX = TRUE, shareY = FALSE) %>% 
+    layout(title = ~paste("Preço médio para vendas com NCM", ncm),
+           yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
+           xaxis = list(title = paste(descricao, " <br>", "Unidade: ", unidade)), 
+           margin = list(b = 80),
+           showlegend = FALSE)
+  
+  return(grafico)
+}
 
 fornecedores_ncm <- function(dados, ncm, unidade){
   library(plotly)
