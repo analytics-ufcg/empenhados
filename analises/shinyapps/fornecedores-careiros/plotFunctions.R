@@ -39,6 +39,8 @@ fornecedores_ncms <- function(dados){
 fornecedores_ncm <- function(dados, ncm, unidade){
   library(plotly)
   
+  descricao <- levels(as.factor(nfe$Descricao))
+  
   dados <- dados %>%
     filter(NCM_prod == ncm, Unid_prod == unidade) %>% 
     group_by(CPF_CNPJ_emit) %>%
@@ -63,9 +65,10 @@ fornecedores_ncm <- function(dados, ncm, unidade){
     )
   
   grafico <- subplot(p1, p2, nrows = 2, shareX = TRUE, shareY = FALSE) %>% 
-    layout(title = ~paste("Vendas com NCM", ncm),
+    layout(title = ~paste("Preço médio para vendas com NCM", ncm),
            yaxis = list(title = "Fornecedores atípicos",  showticklabels = FALSE),
-           xaxis = list(title = paste('Preço médio', "Unidade: ", unidade)), 
+           xaxis = list(title = paste(descricao, " <br>", "Unidade: ", unidade)), 
+           margin = list(b = 80),
            showlegend = FALSE)
   
   return(grafico)

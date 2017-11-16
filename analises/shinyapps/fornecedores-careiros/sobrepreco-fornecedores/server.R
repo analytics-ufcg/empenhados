@@ -18,8 +18,7 @@ shinyServer <- function(input, output, session) {
   ncm <- read.csv("../../../utils/dados/NCMatualizada13072017.csv",
                   sep=";",
                   stringsAsFactors = F,
-                  colClasses = c(NCM = "character")) %>%
-    semi_join(ncm_cod, by = c("NCM" = "NCM_prod"))
+                  colClasses = c(NCM = "character"))
   
   # output$download_csv2 <- downloadHandler(
   #   filename = function(){
@@ -70,7 +69,9 @@ shinyServer <- function(input, output, session) {
       sql()
     
     nfe <- tbl(notas, query) %>%
-      collect(n = Inf) 
+      collect(n = Inf) %>% 
+      left_join(ncm %>% select(NCM, Descricao), by = c("NCM_prod" = "NCM")) %>% 
+      mutate(Descricao = substr(Descricao, 12, nchar(Descricao)))
     
     nfe <<- nfe
     
@@ -98,6 +99,7 @@ shinyServer <- function(input, output, session) {
       summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
                 Nome_razao_social_dest = first(Nome_razao_social_dest),
                 NCM_prod = first(NCM_prod),
+                Descricao = first(Descricao),
                 Preco_medio = mean(Valor_unit_prod))
 
     fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
