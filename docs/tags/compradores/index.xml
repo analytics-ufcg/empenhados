@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Compradores on Empenhados</title>
-    <link>https://analytics-ufcg.github.io/licitacoes-pb/tags/compradores/</link>
+    <link>https://analytics-ufcg.github.io/empenhados/tags/compradores/</link>
     <description>Recent content in Compradores on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Thu, 30 Mar 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://analytics-ufcg.github.io/licitacoes-pb/tags/compradores/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/compradores/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Descrição dos compradores de merenda</title>
-      <link>https://analytics-ufcg.github.io/licitacoes-pb/2017/03/descricao-compradores-merenda/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/</link>
       <pubDate>Thu, 30 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/licitacoes-pb/2017/03/descricao-compradores-merenda/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/</guid>
       <description>Atualizado em 22/06/2017 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
 Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</description>
     </item>
