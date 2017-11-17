@@ -3,36 +3,58 @@
 #         Tipo de busca: sumarização
 #
 # Alvo:   Distribuição
-fornecedores_ncms <- function(dados){
+fornecedores_ncms <- function(dados, event){
   library(plotly)
   
   forn_mais_atipicos <- dados %>%
-    distinct(CNPJ, Atipicidade_media) %>%
+    distinct(CNPJ, Atipicidade_media, forn_selected) %>%
     arrange(desc(Atipicidade_media)) %>%
     head(75)
-    
   
-  grafico <- dados %>%
-    semi_join(forn_mais_atipicos) %>%
-    arrange(desc(Atipicidade_media)) %>%
-    plot_ly(source = "A") %>%
-    add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
-                y = ~Atipicidade,
-                key = ~CNPJ,
-                type = "scatter",
-                mode = "markers",
-                hoverinfo = "text",
-                text = ~paste("Fornecedor:", Razao_Social, "<br>",
-                              "CNPJ:", CNPJ, "<br>",
-                              "NCM:", NCM_prod, "<br>",
-                              "Atipicidade média:", round(Atipicidade_media, 2), "<br>",
-                              "Atipicidade no NCM:", round(Atipicidade, 2), "<br>")) %>%
-    layout(title = "Fornecedores de Maior Atipicidade",
-           xaxis = list(title = "Fornecedor", showticklabels = FALSE),
-           yaxis = list(fixedrange = TRUE, rangemode = "nonnegative"))
-    
+  if (is.null(event)) {
+    grafico <- dados %>%
+      semi_join(forn_mais_atipicos) %>%
+      arrange(desc(Atipicidade_media)) %>%
+      plot_ly(source = "A") %>%
+      add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
+                  y = ~Atipicidade,
+                  key = ~NCM_prod,
+                  type = "scatter",
+                  mode = "markers",
+                  hoverinfo = "text",
+                  text = ~paste("Fornecedor:", Razao_Social, "<br>",
+                                "CNPJ:", CNPJ, "<br>",
+                                "NCM:", NCM_prod, "<br>",
+                                "Atipicidade média:", round(Atipicidade_media, 2), "<br>",
+                                "Atipicidade no NCM:", round(Atipicidade, 2), "<br>")) %>%
+      layout(title = "Fornecedores de Maior Atipicidade",
+             xaxis = list(title = "Fornecedor", showticklabels = FALSE),
+             yaxis = list(fixedrange = TRUE, rangemode = "nonnegative"))
+  } else {
+    grafico <- dados %>%
+      semi_join(forn_mais_atipicos) %>%
+      arrange(desc(Atipicidade_media)) %>%
+      mutate(forn_selected = if_else(CNPJ == event$x & NCM_prod == event$key, "Selecionado", "Demais")) %>%
+      plot_ly(source = "A") %>%
+      add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
+                  y = ~Atipicidade,
+                  key = ~NCM_prod,
+                  color = ~forn_selected,
+                  colors = c("#0066CC", "#FF0000"),
+                  type = "scatter",
+                  mode = "markers",
+                  hoverinfo = "text",
+                  showlegend = FALSE,
+                  text = ~paste("Fornecedor:", Razao_Social, "<br>",
+                                "CNPJ:", CNPJ, "<br>",
+                                "NCM:", NCM_prod, "<br>",
+                                "Atipicidade média:", round(Atipicidade_media, 2), "<br>",
+                                "Atipicidade no NCM:", round(Atipicidade, 2), "<br>")) %>%
+      layout(title = "Fornecedores de Maior Atipicidade",
+             xaxis = list(title = "Fornecedor", showticklabels = FALSE),
+             yaxis = list(fixedrange = TRUE, rangemode = "nonnegative"))
+  }
   return(grafico)
-  
 }
 
 fornecedores_ncm_facet <- function(dados, ncm) {
@@ -48,7 +70,6 @@ fornecedores_ncm_facet <- function(dados, ncm) {
                          "Sobrepreço", "Preço típico")) %>%
     ungroup()
   
-  View(dados)
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
     plot_ly(source = "B") %>% 

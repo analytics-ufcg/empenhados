@@ -1,8 +1,17 @@
 library(shiny)
 
 source("../plotFunctions.R")
-last_event <<- ""
-last_event2 <<- "" 
+last_event_A <- NULL
+last_event_B <- NULL
+
+compara_eventos <-function(event1, event2) {
+  if(is.null(event1) || is.null(event2))
+    return(FALSE)
+  for (i in 1:ncol(event1))
+    if (event1[i] != event2[i])
+      return(FALSE)
+  return(TRUE)
+}
 
 shinyServer <- function(input, output, session) {
   library(lubridate)
@@ -21,28 +30,20 @@ shinyServer <- function(input, output, session) {
                   sep=";",
                   stringsAsFactors = F,
                   colClasses = c(NCM = "character"))
+
   
   dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
   
-  forn_mais_atipicos <- dados_fornecedores_ncms %>%
-    distinct(CNPJ, Atipicidade_media) %>%
-    arrange(desc(Atipicidade_media)) %>%
-    head(75)
-
   
   output$scatter1 <- renderPlotly({
-    fornecedores_ncms(dados_fornecedores_ncms)
+    event_1 <- event_data("plotly_click", source = "A")
+    fornecedores_ncms(dados_fornecedores_ncms, event_1)
   })
-  
-  
-  
   
 
   output$scatter_boxplot <- renderPlotly({
     event.data <- event_data("plotly_click", source = "A")
-    
-    event.data <<- event.data
     
     if(is.null(event.data) == T) return(NULL)
     
@@ -88,31 +89,33 @@ shinyServer <- function(input, output, session) {
   
   
   output$text <- renderText({
-    event <- event_data("plotly_click", source = "B")
-
-    if(is.null(event)) {
-      return("")
+    event_A <- event_data("plotly_click", source = "A")
+    event_B <- event_data("plotly_click", source = "B")
+    
+    if (is.null(event_B) & is.null(event_A)) {
+      return(NULL)
+    } else if(!compara_eventos(event_A, last_event_A)){
+      nfe_max <- nfe %>%
+        filter(CPF_CNPJ_emit == event_A$x) %>%
+        filter(Unid_prod == unid_selected)
+    } else if(!compara_eventos(event_B, last_event_B)) {
+      nfe_max <- nfe %>%
+        filter(CPF_CNPJ_emit == event_B$key) %>%
+        filter(Unid_prod == unid_selected)
     }
-    
-    nfe_max <- nfe %>%
-      filter(CPF_CNPJ_emit == event$key) %>%
-      filter(Unid_prod == unid_selected)
-    
+
     preco_max <- max(nfe_max$Valor_unit_prod)
     
     nfe_max <- nfe_max %>%
       filter(Valor_unit_prod == preco_max) %>%
       head(1)
-    
-    texto <- paste("O(A) fornecedor(a)", nfe_max$Nome_razao_social_emit, "forneceu", 
+    texto <- paste("O(A) fornecedor(a) ", nfe_max$Nome_razao_social_emit, "forneceu", 
                    nfe_max$Descricao, "(", nfe_max$Unid_prod, ") por R$", round(nfe_max$Valor_unit_prod, 2), "para o(a)", nfe_max$Nome_razao_social_dest)
     return(texto)
   })
   
   output$scatter_vendas <- renderPlotly({
     event.data_vendas <- event_data("plotly_click", source = "B")
-    
-    event.data_vendas <<- event.data_vendas
     
     if(is.null(event.data_vendas) == T) return(NULL)
     
@@ -130,18 +133,36 @@ shinyServer <- function(input, output, session) {
     fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
   
-  output$tabela <- renderTable({
+  output$tabela <- renderDataTable({
+    event_A <- event_data("plotly_click", source = "A")
     
-    event <- event_data("plotly_click", source = "B")
+    event_B <- event_data("plotly_click", source = "B")
+    print(event_B)
+    if (is.null(event_B) & is.null(event_A)) {
+      return(NULL)
+    } else if(!compara_eventos(event_A, last_event_A)){
+      last_event_A <<- event_A
+      nfe_vendas <- nfe %>%
+        filter(CPF_CNPJ_emit == event_A$x)
+    } else if(!compara_eventos(event_B, last_event_B)) {
+      last_event_B <<- event_B
+      nfe_vendas <- nfe %>%
+        filter(CPF_CNPJ_emit == event_B$key)
+    }
+
+    nfe_vendas <- nfe_vendas %>%
+      arrange(desc(Valor_unit_prod)) %>%
+      select(-c(Metrica, forn_selected)) %>%
+      select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest,
+             Descricao_do_Produto_ou_servicos, Unid_prod, NCM_prod, Descricao, Valor_unit_prod, 
+             Valor_total_da_nota, Data_de_emissao)
     
-    if(is.null(event) == T) return(NULL)
-    
-    nfe_vendas <- nfe %>%
-      filter(CPF_CNPJ_emit == event$key) %>%
-      arrange(desc(Valor_unit_prod))
-    
+    names(nfe_vendas) <- c("CPF/CNPJ Emitente", "Nome do Emitente", "CPF/CNPJ Destinatário", "Nome do Destinatário",
+                           "Descrição da Nota", "Unidade", "NCM", "Descrição do NCM", "Valor do produto", 
+                           "Valor total da nota", "Data de emissão da nota")
     nfe_vendas <<- nfe_vendas
     
+    return(nfe_vendas)
     
   })
   
