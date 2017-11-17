@@ -21,17 +21,17 @@ ui <- dashboardPage(
           plotlyOutput("scatter_boxplot", height = 500)
       ),
       box(width = 10, status = "primary", solidHeader = TRUE,
-          div(style = 'overflow-x: scroll', tableOutput("tabela"))
+          title = "Relação de Vendas",
+          div(tableOutput("tabela"))
       ),
       fixedRow(width = 2,
-      box(title = "O que é Atipicidade?",
-          width = 2, status = "success", solidHeader = TRUE, "A atipicidade de um fornecedor para um NCM é calculada considerando a distância normalizada entre o preço 
+               box(width = 2, status = "danger",textOutput("text")),
+               box(title = "O que é Atipicidade?",
+                    width = 2, status = "primary", solidHeader = TRUE, p("A", strong('atipicidade'), "de um fornecedor para um NCM é calculada considerando a distância normalizada entre o preço 
                     médio praticado pelo fornecedor e o maior preço médio
                     que não é classificado como ponto extremo. As atipicidades mínimas, médias e máximas
                     utilizadas acima são sumarizações da atipicidade calculada nos NCM's em que 
-                    o fornecedor atua.", collapsible = TRUE, collapsed = TRUE),
-      box(width = 2, status = "warning", solidHeader = TRUE,
-          textOutput("text"))
+                    o fornecedor atua."), collapsible = TRUE, collapsed = TRUE)
       )
     )
   )

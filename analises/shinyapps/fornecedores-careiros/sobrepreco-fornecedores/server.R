@@ -114,7 +114,7 @@ shinyServer <- function(input, output, session) {
       filter(Valor_unit_prod == preco_max) %>%
       head(1)
     
-    texto <- paste("O(A) fornecedor(a)", nfe_max$Nome_razao_social_emit, "forneceu", 
+    texto <- paste("O(A) fornecedor(a) ", nfe_max$Nome_razao_social_emit, "forneceu", 
                    nfe_max$Descricao, "(", nfe_max$Unid_prod, ") por R$", round(nfe_max$Valor_unit_prod, 2), "para o(a)", nfe_max$Nome_razao_social_dest)
     return(texto)
   })
@@ -148,7 +148,15 @@ shinyServer <- function(input, output, session) {
     
     nfe_vendas <- nfe %>%
       filter(CPF_CNPJ_emit == event$key) %>%
-      arrange(desc(Valor_unit_prod))
+      arrange(desc(Valor_unit_prod)) %>%
+      select(-c(Metrica, forn_selected)) %>%
+      select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest,
+             Descricao_do_Produto_ou_servicos, Unid_prod, NCM_prod, Descricao, Valor_unit_prod, 
+             Valor_total_da_nota, Data_de_emissao)
+    
+    names(nfe_vendas) <- c("CPF/CNPJ Emitente", "Nome do Emitente", "CPF/CNPJ Destinatário", "Nome do Destinatário",
+                           "Descrição da Nota", "Unidade", "NCM", "Descrição do NCM", "Valor do produto", 
+                           "Valor total da nota", "Data de emissão da nota")
     
     nfe_vendas <<- nfe_vendas
     
