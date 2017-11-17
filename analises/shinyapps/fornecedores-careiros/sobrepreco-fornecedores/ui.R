@@ -20,7 +20,8 @@ ui <- dashboardPage(
           plotlyOutput("scatter1", height = 500)
       ),
       box(width = 6, status = "primary", solidHeader = TRUE, title = "Sumarização",
-          plotlyOutput("scatter_boxplot", height = 500)
+          plotlyOutput("scatter_atipicos", height = 250),
+          plotlyOutput("scatter_boxplot", height = 250)
       ),
       box(width = 12, status = "primary", solidHeader = TRUE,
           plotlyOutput("scatter_vendas")

@@ -41,8 +41,11 @@ shinyServer <- function(input, output, session) {
     fornecedores_ncms(dados_fornecedores_ncms)
   })
   
-
-  output$scatter_boxplot <- renderPlotly({
+  dados_nfe <- reactive({
+    nfe <- nfe
+  })  
+  
+  output$scatter_atipicos <- renderPlotly({
     event.data <- event_data("plotly_click", source = "A")
     
     event.data <<- event.data
@@ -83,8 +86,28 @@ shinyServer <- function(input, output, session) {
     unid_max <- unidade %>%
       filter(n == max(n))
 
-    fornecedores_ncm(nfe, forn_selec$NCM_prod, unid_max$Unid_prod)
+    fornecedores_ncm_unidades(nfe, forn_selec$NCM_prod)
 
+  })
+  
+  output$scatter_boxplot <- renderPlotly({
+    event.data <- event_data("plotly_click", source = "A")
+    
+    event.data <<- event.data
+    
+    if(is.null(event.data) == T) return(NULL)
+    
+    nfe_boxplot <- dados_nfe()
+    
+    unidade <- nfe_boxplot %>%
+      group_by(Unid_prod) %>%
+      summarise(n = n())
+    
+    unid_max <- unidade %>%
+      filter(n == max(n))
+    
+    fornecedores_ncm_unidades_boxplot(nfe, forn_selec$NCM_prod)
+    
   })
   
   output$scatter_vendas <- renderPlotly({
@@ -105,6 +128,7 @@ shinyServer <- function(input, output, session) {
 
     fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
+  
   
   output$tabela <- renderDataTable({
     

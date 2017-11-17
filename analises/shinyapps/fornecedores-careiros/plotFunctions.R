@@ -39,7 +39,7 @@ fornecedores_ncms <- function(dados){
 fornecedores_ncm <- function(dados, ncm, unidade){
   library(plotly)
   
-  descricao <- levels(as.factor(nfe$Descricao))
+  descricao <- levels(as.factor(dados$Descricao))
   
   dados <- dados %>%
     filter(NCM_prod == ncm, Unid_prod == unidade) %>% 
@@ -51,7 +51,7 @@ fornecedores_ncm <- function(dados, ncm, unidade){
     
     mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
                          "Sobrepreço", "Preço típico"))
-
+  
   p1 <- dados %>% 
     filter(tipo == "Sobrepreço") %>% 
     plot_ly(source = "B") %>% 
@@ -107,4 +107,79 @@ fornecedor_ncm_compradores <- function(dados, cnpj_fornecedor, ncm, unidade){
            margin = list(l = 50))
     
   return(grafico)
+}
+
+fornecedores_ncm_unidades <- function(dados, ncm){
+  library(plotly)
+  
+  descricao <- levels(as.factor(dados$Descricao))
+  
+  dados <- dados %>%
+    group_by(CPF_CNPJ_emit, forn_selected, Unid_prod) %>%
+    summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
+              preco_medio = mean(Valor_unit_prod)) %>% 
+    ungroup() %>% 
+    
+    group_by(Unid_prod) %>% 
+    mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
+                           "Sobrepreço", "Preço típico")) %>% 
+    mutate(tem_sobrepreco = ifelse(n_distinct(tipo) == 2, TRUE, FALSE))
+  
+  unidades <- dados %>% filter(tem_sobrepreco) %>% select(Unid_prod)
+  unidades <- levels(as.factor(unidades$Unid_prod))
+  
+  list_scatter_sobrepreco <- map(unidades, function(x){
+
+    p1 <- dados %>% 
+      filter(Unid_prod == x, tipo == "Sobrepreço") %>% 
+      
+      plot_ly(source = "B") %>% 
+      add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers",
+                color = ~forn_selected, colors = c("#FF0000", "#41ab5d"),
+                text = ~paste("Fornecedor:", Nome_razao_social_emit,
+                              "<br> Preço Médio: ", round(preco_medio, 2),
+                              "<br> Unidade: ", x),
+                hoverinfo = "text") %>% 
+      layout(yaxis = list(title = x, showticklabels = FALSE))
+    
+  })
+  
+  grafico_atipicos <- subplot(list_scatter_sobrepreco, nrows = length(unidades), shareX = TRUE, shareY = FALSE, titleY = TRUE) %>% 
+    layout(title = "Fornecedores com preço médio atípico",
+           xaxis = list(title = ""))
+  
+  return(grafico_atipicos)
+  
+}
+
+fornecedores_ncm_unidades_boxplot <- function(dados, ncm){
+  library(plotly)
+  
+  descricao <- levels(as.factor(dados$Descricao))
+  
+  dados <- dados %>%
+    group_by(CPF_CNPJ_emit, forn_selected, Unid_prod) %>%
+    summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
+              preco_medio = mean(Valor_unit_prod)) %>% 
+    ungroup() %>% 
+    
+    group_by(Unid_prod) %>% 
+    mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
+                         "Sobrepreço", "Preço típico")) %>% 
+    mutate(tem_sobrepreco = ifelse(n_distinct(tipo) == 2, TRUE, FALSE))
+  
+  unidades <- dados %>% filter(tem_sobrepreco) %>% select(Unid_prod)
+  unidades <- levels(as.factor(unidades$Unid_prod))
+  
+  grafico <- dados %>%
+    filter(Unid_prod %in% unidades) %>%
+    
+    plot_ly() %>%
+    add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ",
+              hoverinfo = "x") %>% 
+    layout(title = "Todos os fornecedores do NCM",
+           xaxis = list(title = paste("NCM: ", descricao)))
+
+  return(grafico)
+  
 }
