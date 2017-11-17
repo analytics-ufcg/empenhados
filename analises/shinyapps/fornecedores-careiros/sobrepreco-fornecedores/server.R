@@ -193,7 +193,7 @@ shinyServer <- function(input, output, session) {
       paste("export-fornecedor-comprador.csv", sep = "")
     },
     content = function(file) {
-      write.csv(nfe_vendas %>% select(-forn_selected) %>% mutate_all(funs(as.character(.))),
+      write.csv(nfe_vendas %>% mutate_all(funs(as.character(.))),
                 file, row.names = F)
     },
     contentType = "text/csv"
