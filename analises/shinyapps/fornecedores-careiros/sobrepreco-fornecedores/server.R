@@ -1,8 +1,17 @@
 library(shiny)
 
 source("../plotFunctions.R")
-last_event <<- ""
-last_event2 <<- "" 
+last_event_A <<- NULL
+last_event_B <<- NULL
+
+compara_eventos <-function(event1, event2) {
+  if(is.null(event1) || is.null(event2))
+    return(FALSE)
+  for (i in 1:ncol(event1))
+    if (event1[i] != event2[i])
+      return(FALSE)
+  return(TRUE)
+}
 
 shinyServer <- function(input, output, session) {
   library(lubridate)
@@ -22,21 +31,10 @@ shinyServer <- function(input, output, session) {
                   stringsAsFactors = F,
                   colClasses = c(NCM = "character"))
   
-  # output$download_csv2 <- downloadHandler(
-  #   filename = function(){
-  #     paste("export-careiros-pareado.csv", sep = "")
-  #   },
-  #   content = function(file) {
-  #     write.csv(tabela_careiros_comp %>% mutate_all(funs(as.character(.))),
-  #               file, row.names = F)
-  #   },
-  #   contentType = "text/csv"
-  # )
-  
   dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
   
-  forn_mais_atipicos <- dados_fornecedores_ncms %>%
+  forn_mais_atipicos <<- dados_fornecedores_ncms %>%
     distinct(CNPJ, Atipicidade_media) %>%
     arrange(desc(Atipicidade_media)) %>%
     head(75)
@@ -96,16 +94,20 @@ shinyServer <- function(input, output, session) {
 
   })
   
-  
   output$text <- renderText({
-    event <- event_data("plotly_click", source = "B")
-
-    if(is.null(event)) {
-      return("")
+    event_A <- event_data("plotly_click", source = "A")
+    event_B <- event_data("plotly_click", source = "B")
+    
+    if (is.null(event) || is.null(event_A)) {
+      return(NULL)
+    } else if(!compara_eventos(event_A, last_event_A)){
+      new_event <- event_A
+    } else if(!compara_eventos(event_B, last_event_B)) {
+      new_event <- event_B
     }
     
     nfe_max <- nfe %>%
-      filter(CPF_CNPJ_emit == event$key) %>%
+      filter(CPF_CNPJ_emit == new_event$key) %>%
       filter(Unid_prod == unid_selected)
     
     preco_max <- max(nfe_max$Valor_unit_prod)
@@ -140,14 +142,23 @@ shinyServer <- function(input, output, session) {
     fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
   
-  output$tabela <- renderTable({
+  output$tabela <- renderDataTable({
+    event_A <- event_data("plotly_click", source = "A")
     
-    event <- event_data("plotly_click", source = "B")
+    event_B <- event_data("plotly_click", source = "B")
     
-    if(is.null(event) == T) return(NULL)
-    
+    if (is.null(event) || is.null(event_A)) {
+      return(NULL)
+    } else if(!compara_eventos(event_A, last_event_A)){
+      last_event_A <<- event_A
+      new_event <- event_A
+    } else if(!compara_eventos(event_B, last_event_B)) {
+      last_event_B <<- event_B
+      new_event <- event_B
+    }
+
     nfe_vendas <- nfe %>%
-      filter(CPF_CNPJ_emit == event$key) %>%
+      filter(CPF_CNPJ_emit == new_event$key) %>%
       arrange(desc(Valor_unit_prod)) %>%
       select(-c(Metrica, forn_selected)) %>%
       select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest,
@@ -160,7 +171,7 @@ shinyServer <- function(input, output, session) {
     
     nfe_vendas <<- nfe_vendas
     
+    return(nfe_vendas)
     
   })
-
 }

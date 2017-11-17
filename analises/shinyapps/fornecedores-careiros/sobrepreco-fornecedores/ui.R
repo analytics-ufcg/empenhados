@@ -5,7 +5,7 @@ library(shinyBS)
 library(dplyr)
 library(plotly)
 library(stringr)
-
+library(DT)
 ui <- dashboardPage(
 
   dashboardHeader(title = "Fornecedores que praticam sobrepreço",
@@ -22,7 +22,7 @@ ui <- dashboardPage(
       ),
       box(width = 10, status = "primary", solidHeader = TRUE,
           title = "Relação de Vendas",
-          div(tableOutput("tabela"))
+          div(dataTableOutput("tabela"))
       ),
       fixedRow(width = 2,
                box(width = 2, status = "danger",textOutput("text")),
