@@ -22,17 +22,6 @@ shinyServer <- function(input, output, session) {
                   stringsAsFactors = F,
                   colClasses = c(NCM = "character"))
   
-  # output$download_csv2 <- downloadHandler(
-  #   filename = function(){
-  #     paste("export-careiros-pareado.csv", sep = "")
-  #   },
-  #   content = function(file) {
-  #     write.csv(tabela_careiros_comp %>% mutate_all(funs(as.character(.))),
-  #               file, row.names = F)
-  #   },
-  #   contentType = "text/csv"
-  # )
-  
   dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
   
@@ -40,13 +29,14 @@ shinyServer <- function(input, output, session) {
     distinct(CNPJ, Atipicidade_media) %>%
     arrange(desc(Atipicidade_media)) %>%
     head(75)
-  
-  # É necessário ter o csv com a tabela nfe
-  #nfe_confiavel <- read_csv("../../dados/nfe_confiavel.csv", locale = locale(encoding = "latin1"))
+
   
   output$scatter1 <- renderPlotly({
     fornecedores_ncms(dados_fornecedores_ncms)
   })
+  
+  
+  
   
 
   output$scatter_boxplot <- renderPlotly({
@@ -154,5 +144,38 @@ shinyServer <- function(input, output, session) {
     
     
   })
+  
+  output$download1 <- downloadHandler(
+    filename = function(){
+      paste("export-atipicidade.csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(dados_fornecedores_ncms %>% mutate_all(funs(as.character(.))),
+                file, row.names = F)
+    },
+    contentType = "text/csv"
+  )
+  
+  output$download2 <- downloadHandler(
+    filename = function(){
+      paste("export-sumarizacao.csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(nfe %>% select(-forn_selected) %>% mutate_all(funs(as.character(.))),
+                file, row.names = F)
+    },
+    contentType = "text/csv"
+  )
+  
+  output$download3 <- downloadHandler(
+    filename = function(){
+      paste("export-fornecedor-comprador.csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(nfe_vendas %>% select(-forn_selected) %>% mutate_all(funs(as.character(.))),
+                file, row.names = F)
+    },
+    contentType = "text/csv"
+  )
 
 }
