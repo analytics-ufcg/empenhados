@@ -1,8 +1,8 @@
 library(shiny)
 
 source("../plotFunctions.R")
-last_event_A <<- NULL
-last_event_B <<- NULL
+last_event_A <- NULL
+last_event_B <- NULL
 
 compara_eventos <-function(event1, event2) {
   if(is.null(event1) || is.null(event2))
@@ -34,23 +34,17 @@ shinyServer <- function(input, output, session) {
   dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
   
-  forn_mais_atipicos <<- dados_fornecedores_ncms %>%
-    distinct(CNPJ, Atipicidade_media) %>%
-    arrange(desc(Atipicidade_media)) %>%
-    head(75)
-  
   # É necessário ter o csv com a tabela nfe
   #nfe_confiavel <- read_csv("../../dados/nfe_confiavel.csv", locale = locale(encoding = "latin1"))
   
   output$scatter1 <- renderPlotly({
-    fornecedores_ncms(dados_fornecedores_ncms)
+    event_1 <- event_data("plotly_click", source = "A")
+    fornecedores_ncms(dados_fornecedores_ncms, event_1)
   })
   
 
   output$scatter_boxplot <- renderPlotly({
     event.data <- event_data("plotly_click", source = "A")
-    
-    event.data <<- event.data
     
     if(is.null(event.data) == T) return(NULL)
     
@@ -98,24 +92,23 @@ shinyServer <- function(input, output, session) {
     event_A <- event_data("plotly_click", source = "A")
     event_B <- event_data("plotly_click", source = "B")
     
-    if (is.null(event) || is.null(event_A)) {
+    if (is.null(event_B) & is.null(event_A)) {
       return(NULL)
     } else if(!compara_eventos(event_A, last_event_A)){
-      new_event <- event_A
+      nfe_max <- nfe %>%
+        filter(CPF_CNPJ_emit == event_A$x) %>%
+        filter(Unid_prod == unid_selected)
     } else if(!compara_eventos(event_B, last_event_B)) {
-      new_event <- event_B
+      nfe_max <- nfe %>%
+        filter(CPF_CNPJ_emit == event_B$key) %>%
+        filter(Unid_prod == unid_selected)
     }
-    
-    nfe_max <- nfe %>%
-      filter(CPF_CNPJ_emit == new_event$key) %>%
-      filter(Unid_prod == unid_selected)
-    
+
     preco_max <- max(nfe_max$Valor_unit_prod)
     
     nfe_max <- nfe_max %>%
       filter(Valor_unit_prod == preco_max) %>%
       head(1)
-    
     texto <- paste("O(A) fornecedor(a) ", nfe_max$Nome_razao_social_emit, "forneceu", 
                    nfe_max$Descricao, "(", nfe_max$Unid_prod, ") por R$", round(nfe_max$Valor_unit_prod, 2), "para o(a)", nfe_max$Nome_razao_social_dest)
     return(texto)
@@ -123,8 +116,6 @@ shinyServer <- function(input, output, session) {
   
   output$scatter_vendas <- renderPlotly({
     event.data_vendas <- event_data("plotly_click", source = "B")
-    
-    event.data_vendas <<- event.data_vendas
     
     if(is.null(event.data_vendas) == T) return(NULL)
     
@@ -146,19 +137,20 @@ shinyServer <- function(input, output, session) {
     event_A <- event_data("plotly_click", source = "A")
     
     event_B <- event_data("plotly_click", source = "B")
-    
-    if (is.null(event) || is.null(event_A)) {
+    print(event_B)
+    if (is.null(event_B) & is.null(event_A)) {
       return(NULL)
     } else if(!compara_eventos(event_A, last_event_A)){
       last_event_A <<- event_A
-      new_event <- event_A
+      nfe_vendas <- nfe %>%
+        filter(CPF_CNPJ_emit == event_A$x)
     } else if(!compara_eventos(event_B, last_event_B)) {
       last_event_B <<- event_B
-      new_event <- event_B
+      nfe_vendas <- nfe %>%
+        filter(CPF_CNPJ_emit == event_B$key)
     }
 
-    nfe_vendas <- nfe %>%
-      filter(CPF_CNPJ_emit == new_event$key) %>%
+    nfe_vendas <- nfe_vendas %>%
       arrange(desc(Valor_unit_prod)) %>%
       select(-c(Metrica, forn_selected)) %>%
       select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest,
@@ -168,10 +160,10 @@ shinyServer <- function(input, output, session) {
     names(nfe_vendas) <- c("CPF/CNPJ Emitente", "Nome do Emitente", "CPF/CNPJ Destinatário", "Nome do Destinatário",
                            "Descrição da Nota", "Unidade", "NCM", "Descrição do NCM", "Valor do produto", 
                            "Valor total da nota", "Data de emissão da nota")
-    
     nfe_vendas <<- nfe_vendas
     
     return(nfe_vendas)
     
   })
+
 }
