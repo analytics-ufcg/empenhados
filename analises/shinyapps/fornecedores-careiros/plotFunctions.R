@@ -123,24 +123,30 @@ fornecedores_ncm_unidades <- function(dados, ncm){
     group_by(Unid_prod) %>% 
     mutate(tipo = ifelse(preco_medio > quantile(preco_medio, .75) + IQR(preco_medio) * 1.5, 
                            "Sobrepreço", "Preço típico")) %>% 
-    mutate(tem_sobrepreco = ifelse(n_distinct(tipo) == 2, TRUE, FALSE))
+    mutate(tem_sobrepreco = ifelse(n_distinct(tipo) == 2, TRUE, FALSE)) %>% 
+    ungroup()
   
   unidades <- dados %>% filter(tem_sobrepreco) %>% select(Unid_prod)
   unidades <- levels(as.factor(unidades$Unid_prod))
+  print(unidades)
+  last_unidade <- unidades[length(unidades)] 
   
   list_scatter_sobrepreco <- map(unidades, function(x){
-
-    p1 <- dados %>% 
-      filter(Unid_prod == x, tipo == "Sobrepreço") %>% 
-      
-      plot_ly(source = "B") %>% 
-      add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers",
-                color = ~forn_selected, colors = c("#FF0000", "#41ab5d"),
-                text = ~paste("Fornecedor:", Nome_razao_social_emit,
-                              "<br> Preço Médio: ", round(preco_medio, 2),
-                              "<br> Unidade: ", x),
-                hoverinfo = "text") %>% 
-      layout(yaxis = list(title = x, showticklabels = FALSE))
+    
+      p1 <- dados %>% 
+        filter(Unid_prod == x, tipo == "Sobrepreço") %>% 
+        mutate(color = ifelse(forn_selected == "Selecionado", "#41ab5d", "#FF0000")) %>% 
+        
+        plot_ly(source = "B") %>% 
+        add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers",
+                  #name= ~forn_selected,
+                  showlegend=FALSE,
+                  marker = list(color = ~color),
+                  text = ~paste("Fornecedor:", Nome_razao_social_emit,
+                                "<br> Preço Médio: ", round(preco_medio, 2),
+                                "<br> Unidade: ", x),
+                  hoverinfo = "text") %>% 
+        layout(yaxis = list(title = x, showticklabels = FALSE))
     
   })
   
@@ -174,11 +180,12 @@ fornecedores_ncm_unidades_boxplot <- function(dados, ncm){
   grafico <- dados %>%
     filter(Unid_prod %in% unidades) %>%
     
-    plot_ly() %>%
+    plot_ly(source = "Z") %>%
     add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ",
               hoverinfo = "x") %>% 
     layout(title = "Todos os fornecedores do NCM",
-           xaxis = list(title = paste("NCM: ", descricao)))
+           xaxis = list(title = paste("NCM: ", descricao)),
+           showlegend=FALSE)
 
   return(grafico)
   
