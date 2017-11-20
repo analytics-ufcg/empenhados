@@ -190,8 +190,6 @@ fornecedores_ncm_unidades <- function(dados, ncm){
   
   unidades <- dados %>% filter(tem_sobrepreco) %>% select(Unid_prod)
   unidades <- levels(as.factor(unidades$Unid_prod))
-  print(unidades)
-  last_unidade <- unidades[length(unidades)] 
   
   list_scatter_sobrepreco <- map(unidades, function(x){
     
@@ -200,7 +198,7 @@ fornecedores_ncm_unidades <- function(dados, ncm){
         mutate(color = ifelse(forn_selected == "Selecionado", "#41ab5d", "#FF0000")) %>% 
         
         plot_ly(source = "B") %>% 
-        add_trace(x = ~preco_medio, y = ~Nome_razao_social_emit, key = ~CPF_CNPJ_emit, type= "scatter", mode = "markers",
+        add_trace(x = ~preco_medio, y = ~CPF_CNPJ_emit, key = ~Unid_prod, type= "scatter", mode = "markers",
                   #name= ~forn_selected,
                   showlegend=FALSE,
                   marker = list(color = ~color),

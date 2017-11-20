@@ -13,6 +13,21 @@ compara_eventos <-function(event1, event2) {
   return(TRUE)
 }
 
+max_unid <- function(data){
+  
+  unid_max <- data %>% 
+    group_by(Unid_prod) %>%
+    summarise(n = n())
+  
+  unidade_max <- unid_max %>% 
+    filter(n == max(n))
+  
+  unidade_max <- unidade_max$Unid_prod
+  
+  return(unid_max$Unid_prod)
+  
+}
+
 shinyServer <- function(input, output, session) {
   library(lubridate)
   library(readr)
@@ -122,16 +137,20 @@ shinyServer <- function(input, output, session) {
       return(NULL)
     } else if(!compara_eventos(event_A, last_event_A)){
       nfe_max <- nfe %>%
-        filter(CPF_CNPJ_emit == event_A$x) %>%
+        filter(CPF_CNPJ_emit == event_A$x)
+      
+      unid_selected <- max_unid(nfe_max)
+      
+      nfe_max <- nfe_max %>% 
         filter(Unid_prod == unid_selected)
     } else if(!compara_eventos(event_B, last_event_B)) {
       nfe_max <- nfe %>%
-        filter(CPF_CNPJ_emit == event_B$key) %>%
-        filter(Unid_prod == unid_selected)
+        filter(CPF_CNPJ_emit == event_B$y) %>%
+        filter(Unid_prod == event_B$key)
     }
 
     preco_max <- max(nfe_max$Valor_unit_prod)
-    
+
     nfe_max <- nfe_max %>%
       filter(Valor_unit_prod == preco_max) %>%
       head(1)
@@ -148,7 +167,7 @@ shinyServer <- function(input, output, session) {
     if(is.null(event.data_vendas) == T) return(NULL)
     
     nfe_vendas <- nfe %>% 
-      filter(CPF_CNPJ_emit == event.data_vendas$key) %>% 
+      filter(CPF_CNPJ_emit == event.data_vendas$y) %>% 
       group_by(CPF_CNPJ_emit, CPF_CNPJ_dest, Unid_prod) %>% 
       summarise(Nome_razao_social_emit = first(Nome_razao_social_emit),
                 Nome_razao_social_dest = first(Nome_razao_social_dest),
@@ -158,7 +177,7 @@ shinyServer <- function(input, output, session) {
     
     nfe_vendas <<- nfe_vendas
 
-    fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$key, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
+    fornecedor_ncm_compradores(nfe_vendas, event.data_vendas$y, levels(as.factor(nfe$NCM_prod)), unid_max$Unid_prod)
   })
   
   
@@ -176,7 +195,7 @@ shinyServer <- function(input, output, session) {
     } else if(!compara_eventos(event_B, last_event_B)) {
       last_event_B <<- event_B
       nfe_vendas <- nfe %>%
-        filter(CPF_CNPJ_emit == event_B$key)
+        filter(CPF_CNPJ_emit == event_B$y)
     }
 
     nfe_vendas <- nfe_vendas %>%
