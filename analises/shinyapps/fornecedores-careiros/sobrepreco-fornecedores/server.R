@@ -138,11 +138,6 @@ shinyServer <- function(input, output, session) {
     } else if(!compara_eventos(event_A, last_event_A)){
       nfe_max <- nfe %>%
         filter(CPF_CNPJ_emit == event_A$x)
-      
-      unid_selected <- max_unid(nfe_max)
-      
-      nfe_max <- nfe_max %>% 
-        filter(Unid_prod == unid_selected)
     } else if(!compara_eventos(event_B, last_event_B)) {
       nfe_max <- nfe %>%
         filter(CPF_CNPJ_emit == event_B$y) %>%
@@ -195,7 +190,8 @@ shinyServer <- function(input, output, session) {
     } else if(!compara_eventos(event_B, last_event_B)) {
       last_event_B <<- event_B
       nfe_vendas <- nfe %>%
-        filter(CPF_CNPJ_emit == event_B$y)
+        filter(CPF_CNPJ_emit == event_B$y) %>% 
+        filter(Unid_prod == event_B$key)
     }
 
     nfe_vendas <- nfe_vendas %>%
