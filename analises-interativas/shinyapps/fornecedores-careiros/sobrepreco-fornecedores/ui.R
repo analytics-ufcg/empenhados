@@ -6,6 +6,7 @@ library(dplyr)
 library(plotly)
 library(stringr)
 library(DT)
+library(purrr)
 
 ui <- dashboardPage(
 
