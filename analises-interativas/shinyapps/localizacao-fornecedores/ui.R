@@ -3,7 +3,7 @@ library(leaflet)
 library(shiny)
 library(shinydashboard)
 
-ganhadores <- ganhadores <- read.csv("../../utils/dados/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
+ganhadores <- ganhadores <- read.csv("../../../utils/dados/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 

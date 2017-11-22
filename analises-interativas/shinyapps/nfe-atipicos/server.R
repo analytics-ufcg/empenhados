@@ -13,7 +13,7 @@ server <- function(input, output, session){
   ncm_cod <- tbl(notas, query) %>%
     collect(n = Inf)
   
-  ncm <- read.csv("../../utils/dados/NCMatualizada13072017.csv",
+  ncm <- read.csv("../../../utils/dados/NCMatualizada13072017.csv",
                   sep=";",
                   stringsAsFactors = F,
                   colClasses = c(NCM = "character")) %>%

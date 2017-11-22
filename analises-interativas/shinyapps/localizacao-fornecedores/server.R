@@ -17,7 +17,7 @@ library(leaflet)
 library(stringr)
 library(shiny)
 
-ganhadores <- read.csv("../../utils/dados/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
+ganhadores <- read.csv("../../../utils/dados/fornecedores.csv", stringsAsFactors = FALSE, colClasses=c("cd_Credor"="character"))
 
 utils <- src_mysql('utils', group='ministerio-publico', password=NULL)
 
@@ -36,7 +36,7 @@ localizacao_licitantes_municipios <- ganhadores %>%
 
 server <- function(input, output, session){
   
-  mapa_paraiba <- readOGR("../../utils/dados/mapa_paraiba_ibge/Municipios.shp")
+  mapa_paraiba <- readOGR("../../../utils/dados/mapa_paraiba_ibge/Municipios.shp")
   
   # Atualizando nome de municípios que mudaram de nome nos últimos anos
   levels_mapa = levels(mapa_paraiba@data$Nome_Munic)

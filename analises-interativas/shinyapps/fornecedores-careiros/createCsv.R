@@ -19,24 +19,32 @@ dcg_nomes_emit <- tbl(notas, 'nota_fiscal') %>%
   collect() %>%
   distinct(CPF_CNPJ_emit, .keep_all = TRUE)
 
-metrica_careiros <- dados_careiros %>%
+metrica_careiros_unid <- dados_careiros %>%
   filter(!is.na(NCM_prod), NCM_prod != "NA") %>%
   group_by(NCM_prod, Unid_prod) %>%
   mutate(Atipico = (Preco_medio - quantile(Preco_medio, 0.75) + IQR(Preco_medio) * 1.5) / IQR(Preco_medio)) %>%
   ungroup() %>%
-  filter(!is.nan(Atipico), !is.infinite(Atipico)) %>%
+  filter(!is.nan(Atipico), !is.infinite(Atipico)) 
+
+#dados passados para fornecedores_ncms() devem ter esse formato
+metrica_careiros <- metrica_careiros_unid %>%
+  group_by(NCM_prod, CPF_CNPJ_emit) %>%
+  summarise(Atipicidade = mean(Atipico, na.rm = TRUE)) %>%
+  ungroup() %>%
   group_by(CPF_CNPJ_emit) %>%
-  summarise(NCMs_atuacao = n(),
-            Atipicidade_media = mean(Atipico, na.rm = TRUE),
-            Atipicidade_maxima = max(Atipico, na.rm = TRUE),
-            Atipicidade_minima = min(Atipico, na.rm = TRUE)) %>%
+  mutate(Atipicidade_media = mean(Atipicidade)) %>%
+  ungroup() %>%
+  mutate(Atipicidade = round(Atipicidade, 6)) %>%
+  mutate(Atipicidade_media = round(Atipicidade_media, 6)) %>%
   left_join(dcg_nomes_emit) %>%
   select(c(CNPJ = CPF_CNPJ_emit,
            Razao_Social = Nome_razao_social_emit,
-           NCMs_atuacao, Atipicidade_media, Atipicidade_maxima, Atipicidade_minima
+           NCM_prod,
+           Atipicidade,
+           Atipicidade_media
   ))
 
-write.csv(metrica_careiros, "../dados/metrica_careiros.csv", 
+write.csv(metrica_careiros, "../dados/fornecedores_ncms.csv", 
           row.names = F, na = "",
           quote = TRUE, fileEncoding = "latin1")
 
@@ -54,26 +62,33 @@ dcg_nomes_dest <- tbl(notas, 'nota_fiscal') %>%
   collect() %>%
   distinct(CPF_CNPJ_dest, .keep_all = TRUE)
 
-metrica_careiros_comp <- dados_careiros_comp %>%
-  filter(!is.na(NCM_prod), NCM_prod != "NA") %>%
-  group_by(NCM_prod, Unid_prod) %>%
-  mutate(Atipico = (Preco_medio - quantile(Preco_medio, 0.75) + IQR(Preco_medio) * 1.5) / IQR(Preco_medio)) %>%
-  ungroup() %>%
-  filter(!is.nan(Atipico), !is.infinite(Atipico)) %>%
-  group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
-  summarise(NCMs_atuacao = n(),
-            Atipicidade_media = mean(Atipico, na.rm = TRUE),
-            Atipicidade_maxima = max(Atipico, na.rm = TRUE),
-            Atipicidade_minima = min(Atipico, na.rm = TRUE)) %>%
+#dados passados para fornecedor_ncm_compradores
+dados_careiros_comp <- dados_careiros_comp %>%
+  filter(!is.na(NCM_prod), NCM_prod != "NA", NCM_prod != "0") %>%
   left_join(dcg_nomes_emit) %>%
   left_join(dcg_nomes_dest) %>%
-  select(c(CNPJ_Vendedor = CPF_CNPJ_emit,
-           Razao_Social_Vendedor = Nome_razao_social_emit,
-           CNPJ_Comprador = CPF_CNPJ_dest,
-           Razao_Social_Comprador = Nome_razao_social_dest,
-           NCMs_atuacao, Atipicidade_media, Atipicidade_maxima, Atipicidade_minima
-  ))
+  mutate(Preco_medio = round(Preco_medio, 2))
 
-write.csv(metrica_careiros_comp, "../dados/metrica_careiros_comp.csv", 
+write.csv(dados_careiros_comp, "../dados/fornecedor_ncm_compradores.csv", 
+          row.names = F, na = "",
+          quote = TRUE, fileEncoding = "latin1")
+
+
+notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+
+template <- ('
+    SELECT Valor_unit_prod, NCM_prod, Unid_prod, Descricao_do_Produto_ou_servicos, Nome_razao_social_emit, 
+                  CPF_CNPJ_emit, Nome_razao_social_dest, CPF_CNPJ_dest
+    FROM nota_fiscal
+    WHERE Confiavel = "TRUE"
+  ')
+
+query <- template %>%
+  sql()
+
+nfe <- tbl(notas, query) %>%
+  collect(n = Inf) 
+
+write.csv(nfe, "../dados/nfe_confiavel.csv", 
           row.names = F, na = "",
           quote = TRUE, fileEncoding = "latin1")
