@@ -138,7 +138,7 @@ kable(
   align = c('c'))
 ```
 
-Algumas dessas empresas já foram citadas em outros [relatórios](https://analytics-ufcg.github.io/licitacoes-pb/), como a MEGA MASTER e a RAIMUNDO A. FONSECA PIRES.
+Algumas dessas empresas já foram citadas em outros [relatórios](https://analytics-ufcg.github.io/empenhados/), como a MEGA MASTER e a RAIMUNDO A. FONSECA PIRES.
 
 ## É possível identificar a variação no preço do arroz?
 

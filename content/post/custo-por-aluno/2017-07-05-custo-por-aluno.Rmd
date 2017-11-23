@@ -148,7 +148,7 @@ gasto_municipios$Valor_Aluno_Lvl <- cut(gasto_municipios$Valor_Aluno,
 ## Distribuição do valor gasto em merenda por aluno
 Os dados escolares que coletamos são referentes ao ano de 2015, então por meio dos dados obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) coletamos os pagamentos realizados pelos municípios da Paraíba nesse mesmo ano. 
 
-Esclarecimento: Caso seu município tenha realizado algum pagamento em 2015 referente a um empenho que aponta para a alimentação escolar então o mesmo aparecerá nesse relatório. Caso você queira saber mais sobre o processo de execução orçamentária, o processo de despesa pública e o vocabulário utilizado na área, consulte nosso [post](https://analytics-ufcg.github.io/licitacoes-pb//2017/05/execucaoorcamentaria.html) sobre o assunto.
+Esclarecimento: Caso seu município tenha realizado algum pagamento em 2015 referente a um empenho que aponta para a alimentação escolar então o mesmo aparecerá nesse relatório. Caso você queira saber mais sobre o processo de execução orçamentária, o processo de despesa pública e o vocabulário utilizado na área, consulte nosso [post](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/) sobre o assunto.
 
 
 ```{r}
