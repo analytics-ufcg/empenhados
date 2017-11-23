@@ -4,7 +4,7 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "descricao-fornecedores-merenda"
 disqusIdentifier: "descricao-fornecedores-merenda"
-thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.jpg"
+thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.png"
 thumbnailImagePosition: "left"
 date: 2017-03-31
 tags: ["merenda", "fornecedores"]
@@ -101,7 +101,7 @@ levels_mapa[200] = "São Vicente do Seridó"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 ```
 
-No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
+No nosso [relatório anterior](https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/) nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
 
 Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda. Ou seja, todos os empenhos dessa licitação são destinados a alimentação escolar, quaisquer empresas ou pessoas físicas que lançaram propostas para tais licitações serão consideradas fornecedores de merenda.
 
@@ -266,7 +266,7 @@ lucros <- lucros %>%
 lucros %>%
   group_by(participou, ganhou_l) %>%
   dplyr::summarise(freq = n()) %>%
-    mutate(total = cut(freq, 
+    mutate(total = cut(freq,
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
   ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
@@ -282,7 +282,7 @@ lucros %>%
       color = 'Ocorrências') +
   theme_minimal()
 ```
-    
+
 
 Como existem alguns valores extremos que tornam a escala difícil de visualizar, também pode ser vista abaixo uma versão do gráfico com apenas a parte que corresponde a maior parte dos fornecedores.
 

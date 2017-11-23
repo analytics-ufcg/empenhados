@@ -1,177 +1,177 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/07/execucao-orcamentaria-em-um-dia-so/</loc>
+    <loc>/2017/07/execucao-orcamentaria-em-um-dia-so/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/07/custo-por-aluno/</loc>
+    <loc>/2017/07/custo-por-aluno/</loc>
     <lastmod>2017-07-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/</loc>
+    <loc>/2017/05/processo-despesa/</loc>
     <lastmod>2017-05-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/05/variacao-preco-arroz/</loc>
+    <loc>/2017/05/variacao-preco-arroz/</loc>
     <lastmod>2017-05-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-licitantes/</loc>
+    <loc>/2017/05/distribuicao-geografica-licitantes/</loc>
     <lastmod>2017-05-08T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/05/realinhamento-de-precos/</loc>
+    <loc>/2017/05/realinhamento-de-precos/</loc>
     <lastmod>2017-05-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/</loc>
+    <loc>/2017/04/classificacao-licitantes/</loc>
     <lastmod>2017-04-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/</loc>
+    <loc>/2017/04/untitled/</loc>
+    <lastmod>2017-04-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2017/03/descricao-fornecedores-merenda/</loc>
     <lastmod>2017-03-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/</loc>
+    <loc>/2017/03/descricao-compradores-merenda/</loc>
     <lastmod>2017-03-30T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/1/01/</loc>
-  </url>
-  
-  <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/categories/administracao-publica/</loc>
+    <loc>/tags/administracao-publica/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/administracao-publica/</loc>
+    <loc>/categories/administracao-publica/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/archives/</loc>
+    <loc>/archives/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/arroz/</loc>
+    <loc>/tags/arroz/</loc>
     <lastmod>2017-05-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/categories/</loc>
+    <loc>/categories/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/compradores/</loc>
+    <loc>/tags/compradores/</loc>
     <lastmod>2017-03-30T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/custo/</loc>
+    <loc>/tags/custo/</loc>
     <lastmod>2017-07-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/</loc>
+    <loc>/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/execucao-orcamentaria/</loc>
+    <loc>/tags/execucao-orcamentaria/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/fornecedores/</loc>
+    <loc>/tags/fornecedores/</loc>
     <lastmod>2017-03-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/licitantes/</loc>
+    <loc>/tags/licitantes/</loc>
     <lastmod>2017-05-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/localizacao/</loc>
+    <loc>/tags/localizacao/</loc>
     <lastmod>2017-05-08T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/categories/merenda/</loc>
+    <loc>/tags/merenda/</loc>
     <lastmod>2017-07-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/merenda/</loc>
+    <loc>/categories/merenda/</loc>
     <lastmod>2017-07-05T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/notas-fiscais/</loc>
+    <loc>/tags/notas-fiscais/</loc>
     <lastmod>2017-05-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/post/</loc>
+    <loc>/post/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/precos/</loc>
+    <loc>/tags/precos/</loc>
     <lastmod>2017-05-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/pre%C3%A7os/</loc>
+    <loc>/tags/pre%C3%A7os/</loc>
     <lastmod>2017-05-18T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/processo-de-despesa/</loc>
+    <loc>/tags/processo-de-despesa/</loc>
     <lastmod>2017-05-22T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/realinhamento/</loc>
+    <loc>/tags/realinhamento/</loc>
     <lastmod>2017-05-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://analytics-ufcg.github.io/empenhados/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2017-07-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

@@ -177,7 +177,8 @@ licitacoes_improvaveis <- tbl(sagres, 'Licitacao') %>%
   inner_join(empenhos_cimprovaveis.group %>%
                select(-c(n)))
 
-datatable(licitacoes_improvaveis)
+datatable(licitacoes_improvaveis,
+          options = list(scrollX = TRUE, pageLength = 10))
 ```
 
 **Existe uma correlação entre o valor pago aos fornecedores e a população do município de suas empresas?**
