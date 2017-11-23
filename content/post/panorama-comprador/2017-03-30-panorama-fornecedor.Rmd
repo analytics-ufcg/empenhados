@@ -123,7 +123,7 @@ empenhos <- tbl(sagres, 'Empenhos') %>%
 
 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
 
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este [outro post](https://analytics-ufcg.github.io/licitacoes-pb//2017/05/execucaoorcamentaria.html) preparado por nós, explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este [outro post](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/) preparado por nós, explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios
 
 Os dados utilizados nesse relatório foram obtidos a partir da plataforma [SAGRES](https://sagres.tce.pb.gov.br/) do [Tribunal de Contas do Estado da Paraíba](https://portal.tce.pb.gov.br/) e a parcela deles que foi utilizada compreende informações sobre o **processo de gastos públicos dos 223 municípios do estado entre os anos de 2003 e 2016.**
 
