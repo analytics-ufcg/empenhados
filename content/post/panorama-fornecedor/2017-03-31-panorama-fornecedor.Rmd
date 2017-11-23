@@ -4,7 +4,7 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "descricao-fornecedores-merenda"
 disqusIdentifier: "descricao-fornecedores-merenda"
-thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.jpg"
+thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.png"
 thumbnailImagePosition: "left"
 date: 2017-03-31
 tags: ["merenda", "fornecedores"]
@@ -266,7 +266,7 @@ lucros <- lucros %>%
 lucros %>%
   group_by(participou, ganhou_l) %>%
   dplyr::summarise(freq = n()) %>%
-    mutate(total = cut(freq, 
+    mutate(total = cut(freq,
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
   ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
@@ -282,7 +282,7 @@ lucros %>%
       color = 'Ocorrências') +
   theme_minimal()
 ```
-    
+
 
 Como existem alguns valores extremos que tornam a escala difícil de visualizar, também pode ser vista abaixo uma versão do gráfico com apenas a parte que corresponde a maior parte dos fornecedores.
 
