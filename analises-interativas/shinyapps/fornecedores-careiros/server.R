@@ -1,6 +1,6 @@
 library(shiny)
 
-source("../plotFunctions.R")
+source("../lib/plotFunctions.R")
 last_event_A <- NULL
 last_event_B <- NULL
 
@@ -41,13 +41,13 @@ shinyServer <- function(input, output, session) {
   ncm_cod <- tbl(notas, query) %>%
     collect(n = Inf)
   
-  ncm <- read.csv("../../../../utils/dados/NCMatualizada13072017.csv",
+  ncm <- read.csv("../../../utils/dados/NCMatualizada13072017.csv",
                   sep=";",
                   stringsAsFactors = F,
                   colClasses = c(NCM = "character"))
 
   
-  dados_fornecedores_ncms <- read_csv("../../dados/fornecedores_ncms.csv",
+  dados_fornecedores_ncms <- read_csv("../dados/fornecedores_ncms.csv",
                                       locale = locale(encoding = "latin1"))
   
   # É necessário ter o csv com a tabela nfe
