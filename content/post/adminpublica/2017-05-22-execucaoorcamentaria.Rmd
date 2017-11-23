@@ -10,11 +10,10 @@ date: 2017-05-22
 tags: ["administracao publica", "processo de despesa"]
 categories: ["administracao publica"]
 comments: true
-output: 
+output:
   html_document:
     fig_width: 7
     fig_height: 6
-
 ---
 
 ```{r setup, include=FALSE}
@@ -29,9 +28,9 @@ Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
 4 Liquidação  
 5 Pagamento  
 
-Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços. 
+Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços.
 
-### 1  Licitação 
+### 1  Licitação
 
 A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação. A licitação **NÃO PODE** acontecer de maneira sigilosa, sempre deverá ser pública, respeitando o direito da publicidade, acessível a qualquer cidadão. O processo licitatório é regido pela [LEI Nº 8.666, DE 21 DE JUNHO DE 1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm). Mais detalhes [aqui](http://www.revistas.unifacs.br/index.php/redu/article/viewFile/1892/1439).
 
@@ -48,7 +47,7 @@ Após concluída a licitação ou os procedimentos de dispensa ou inexigibilidad
 
 ### 3  Contrato
 
-Após o empenho a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado. 
+Após o empenho a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado.
 
 ### 4  Liquidação
 
@@ -58,8 +57,8 @@ Esta consiste na comprovação de que o credor cumpriu todas as obrigações con
 
 A liquidação envolve, portanto, todos os atos de verificação e conferência, desde a entrega do material ou a prestação do serviço até o reconhecimento da despesa. Ao fazer a entrega do material ou a prestação do serviço, o credor deverá apresentar a nota fiscal, fatura ou conta correspondente, acompanhada da primeira via da nota de empenho, devendo o funcionário competente atestar o recebimento do material ou a prestação do serviço correspondente, no verso da nota fiscal, fatura ou conta.
 
-De acordo com o artigo 63 da Lei 4.320, de 1964, 
-“A liquidação consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e os documentos comprobatórios do respectivo crédito. 
+De acordo com o artigo 63 da Lei 4.320, de 1964,
+“A liquidação consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e os documentos comprobatórios do respectivo crédito.
 Essa verificação tem por fim apurar:
 I – a origem e o objeto do que se deve pagar;
 II – a importância exata a pagar;

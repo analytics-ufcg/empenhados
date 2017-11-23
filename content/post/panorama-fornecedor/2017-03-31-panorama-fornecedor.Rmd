@@ -4,7 +4,7 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "descricao-fornecedores-merenda"
 disqusIdentifier: "descricao-fornecedores-merenda"
-thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.jpg"
+thumbnailImage: "/images/posts/descricao-fornecedores-merenda/thumb.png"
 thumbnailImagePosition: "left"
 date: 2017-03-31
 tags: ["merenda", "fornecedores"]
@@ -101,7 +101,7 @@ levels_mapa[200] = "São Vicente do Seridó"
 levels(mapa_paraiba@data$Nome_Munic) = levels_mapa
 ```
 
-No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__. 
+No nosso [relatório anterior](https://analytics-ufcg.github.io/licitacoes-pb//2017/03/comprador-fornecedor.html) nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, __os fornecedores__.
 
 Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda. Ou seja, todos os empenhos dessa licitação são destinados a alimentação escolar, quaisquer empresas ou pessoas físicas que lançaram propostas para tais licitações serão consideradas fornecedores de merenda.
 
@@ -138,14 +138,14 @@ library(leaflet)
 colors <- colorFactor('OrRd', mapa_paraiba@data$total_lvl)
 
 labs <- lapply(seq(nrow(mapa_paraiba@data)), function(i) {
-  paste0('Município: ', mapa_paraiba@data[i, "Nome_Munic"], '</br>', 
-        'Número de fornecedores: ', mapa_paraiba@data[i, "total"]) 
+  paste0('Município: ', mapa_paraiba@data[i, "Nome_Munic"], '</br>',
+        'Número de fornecedores: ', mapa_paraiba@data[i, "total"])
 })
 
 leaflet(data = mapa_paraiba) %>%
   addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
-  addPolygons(opacity = 0.5, 
-              weight = 1, 
+  addPolygons(opacity = 0.5,
+              weight = 1,
               fillColor = colors(mapa_paraiba@data$total_lvl),
               color = 'black',
               label = lapply(labs, htmltools::HTML),
@@ -266,7 +266,7 @@ lucros <- lucros %>%
 lucros %>%
   group_by(participou, ganhou_l) %>%
   dplyr::summarise(freq = n()) %>%
-    mutate(total = cut(freq, 
+    mutate(total = cut(freq,
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
   ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
@@ -282,7 +282,7 @@ lucros %>%
       color = 'Ocorrências') +
   theme_minimal()
 ```
-    
+
 
 Como existem alguns valores extremos que tornam a escala difícil de visualizar, também pode ser vista abaixo uma versão do gráfico com apenas a parte que corresponde a maior parte dos fornecedores.
 
@@ -291,7 +291,7 @@ lucros %>%
   filter(participou < 20) %>%
   group_by(participou, ganhou_l) %>%
   dplyr::summarise(freq = n()) %>%
-    mutate(total = cut(freq, 
+    mutate(total = cut(freq,
                      breaks = c(1, 25, 50, 100, 200, 500, 518),
                      include.lowest = T)) %>%
   ggplot(aes(x=participou, y=ganhou_l, size=total, color = total)) +
@@ -322,7 +322,7 @@ ganhamais <- lucros %>% filter(participou < ganhou_l) %>%
 kable(ganhamais)
 ```
 
-Observa-se que os 3 casos o nome do Fornecedor consta como _NA_ o que indica que estes CPF's ou CNPJ's não constam nos nossos dados de fornecedores de merenda. 
+Observa-se que os 3 casos o nome do Fornecedor consta como _NA_ o que indica que estes CPF's ou CNPJ's não constam nos nossos dados de fornecedores de merenda.
 Fazendo uma busca pelo CNPJ no [site da fazenda](https://www.receita.fazenda.gov.br/pessoajuridica/cnpj/cnpjreva/cnpjreva_solicitacao2.asp) verificamos que _02323033000106_ diz respeito a empresa __UNIDAS VEICULOS E SERVICOS LTDA__ de João Pessoa-PB que foi contratada pelo município de Água Branca para fornecer um veículo adaptado a unidade itinerante de ensino com o valor exibido na tabela de R$ 410.000 através de uma licitação descrita como AQUISICAO DE GENEROS ALIMENTICIOS DESTINADOS A MERENDA DOS ALUNOS DA REDE DE ESCOLAS PUBLICAS DO MUNICIPIO.
 
 Os outros 2 fornecedores, ao que parece, são identificados pelo CPF então não conseguimos identificar o nome deles, mas eles referem para uma mesma licitação realizada pelo município de __PRATA-PB__ com a descrição AQUISIÇÃO DE CARNES, FRANGOS E OVOS, DESTINADOS PARA A MERENDA DAS ESCOLAS DA REDE MUNICIPAL DO MUNICÍPIO DE PRATA - PB.
