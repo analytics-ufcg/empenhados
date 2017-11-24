@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Processo De Despesa on Empenhados</title>
-    <link>/tags/processo-de-despesa/</link>
+    <link>https://analytics-ufcg.github.io/empenhados/tags/processo-de-despesa/</link>
     <description>Recent content in Processo De Despesa on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Mon, 22 May 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/processo-de-despesa/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/processo-de-despesa/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Processo de Despesa Pública</title>
-      <link>/2017/05/processo-despesa/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/</link>
       <pubDate>Mon, 22 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/05/processo-despesa/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/</guid>
       <description>Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
 1 Licitação
 2 Empenho
