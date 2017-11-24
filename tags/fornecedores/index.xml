@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Fornecedores on Empenhados</title>
-    <link>/tags/fornecedores/</link>
+    <link>https://analytics-ufcg.github.io/empenhados/tags/fornecedores/</link>
     <description>Recent content in Fornecedores on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Fri, 31 Mar 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/fornecedores/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/fornecedores/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Descrição dos fornecedores de merenda</title>
-      <link>/2017/03/descricao-fornecedores-merenda/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/</link>
       <pubDate>Fri, 31 Mar 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/03/descricao-fornecedores-merenda/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/</guid>
       <description>Atualizado em 22/06/2017 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
 Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</description>
     </item>
