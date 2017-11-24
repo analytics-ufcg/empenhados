@@ -4,7 +4,7 @@ subtitle: "Execução orçamentária"
 author: "Laboratório Analytics"
 slug: "execucao-orcamentaria-em-um-dia-so"
 disqusIdentifier: "execucao-orcamentaria-em-um-dia-so"
-thumbnailImage: "/images/posts/execucao-orcamentaria-em-um-dia-so/thumb.jpg"
+thumbnailImage: "images/posts/execucao-orcamentaria-em-um-dia-so/thumb.jpg"
 thumbnailImagePosition: "left"
 date: 2017-07-31
 tags: ["execucao orcamentaria", "administracao publica"]

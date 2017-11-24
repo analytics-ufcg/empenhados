@@ -4,7 +4,7 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "classificacao-licitantes"
 disqusIdentifier: "classificacao-licitantes"
-thumbnailImage: "/images/posts/classificacao-licitantes/thumb.jpg"
+thumbnailImage: "images/posts/classificacao-licitantes/thumb.jpg"
 thumbnailImagePosition: "left"
 date: 2017-04-10
 tags: ["merenda", "licitantes"]
