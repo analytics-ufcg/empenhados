@@ -4,7 +4,7 @@ subtitle: "Merenda Escolar"
 author: "Laboratório Analytics"
 slug: "distribuicao-geografica-licitantes"
 disqusIdentifier: "distribuicao-geografica-licitantes"
-thumbnailImage: "images/posts/distribuicao-geografica-licitantes/thumb.jpg"
+thumbnailImage: "images/posts/distribuicao-geografica-licitantes/thumb.png"
 thumbnailImagePosition: "left"
 date: 2017-05-08
 tags: ["merenda", "licitantes", "localizacao"]
