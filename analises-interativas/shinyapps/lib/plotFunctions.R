@@ -195,7 +195,7 @@ fornecedores_ncm_unidades <- function(dados, ncm){
     
       p1 <- dados %>% 
         filter(Unid_prod == x, tipo == "Sobrepreço") %>% 
-        mutate(color = ifelse(forn_selected == "Selecionado", "#41ab5d", "#FF0000")) %>% 
+        mutate(color = ifelse(forn_selected == "Selecionado", "#FF0000", "#0066CC")) %>% 
         
         plot_ly(source = "B") %>% 
         add_trace(x = ~preco_medio, y = ~CPF_CNPJ_emit, key = ~Unid_prod, type= "scatter", mode = "markers",
@@ -211,8 +211,7 @@ fornecedores_ncm_unidades <- function(dados, ncm){
   })
   
   grafico_atipicos <- subplot(list_scatter_sobrepreco, nrows = length(unidades), shareX = TRUE, shareY = FALSE, titleY = TRUE) %>% 
-    layout(title = "Fornecedores com preço médio atípico",
-           xaxis = list(title = ""))
+    layout(xaxis = list(title = "Preço Médio (R$)"))
   
   return(grafico_atipicos)
   
@@ -241,11 +240,12 @@ fornecedores_ncm_unidades_boxplot <- function(dados, ncm){
     filter(Unid_prod %in% unidades) %>%
     
     plot_ly(source = "Z") %>%
-    add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ",
+    add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ", boxpoints = FALSE, 
               hoverinfo = "x") %>% 
-    layout(title = "Todos os fornecedores do NCM",
-           xaxis = list(title = paste("NCM: ", descricao)),
-           showlegend=FALSE)
+    layout(title = "Todos os fornecedores deste produto",
+           xaxis = list(title = paste("Produto: ", descricao)),
+           showlegend=FALSE,
+           margin = list(t = 50))
 
   return(grafico)
   

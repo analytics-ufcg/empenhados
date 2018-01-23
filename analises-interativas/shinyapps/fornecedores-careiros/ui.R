@@ -23,7 +23,7 @@ ui <- dashboardPage(
       ),
       
       box(width = 6, status = "primary", solidHeader = TRUE, 
-          title = span("Sumarização",
+          title = span("Atuação de fornecedores no produto selecionado",
                        downloadButton("download2", label = "", class = NULL)),
           plotlyOutput("scatter_atipicos", height = 250),
 	        plotlyOutput("scatter_boxplot", height = 250)
