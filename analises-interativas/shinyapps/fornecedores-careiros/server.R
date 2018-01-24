@@ -206,7 +206,8 @@ shinyServer <- function(input, output, session) {
                            "Valor total da nota", "Data de emissão da nota")
     nfe_vendas <<- nfe_vendas
     
-    return(nfe_vendas)
+    datatable(nfe_vendas,
+              options = list(scrollX = TRUE, pageLength = 10))
     
   })
   
