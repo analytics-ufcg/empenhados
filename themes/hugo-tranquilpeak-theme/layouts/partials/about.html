@@ -10,6 +10,11 @@
     {{ with .Site.Author.bio }}
       <div id="about-card-bio">{{ . | markdownify }}</div>
     {{ end }}
+    {{ with ($.Scratch.Get "authorPicture") }}
+    <img id="about-card-picture" src="{{ "/images/LOGO_MPPB.png" }}{{ if in . "//www.gravatar.com/avatar/" }}?s=110{{ end }}" alt="{{ i18n "global.author_picture" }}" />
+    <img id="about-card-picture" src="{{ "/images/LOGO_LAB.png" }}{{ if in . "//www.gravatar.com/avatar/" }}?s=110{{ end }}" alt="{{ i18n "global.author_picture" }}" />
+    <img id="about-card-picture" src="{{ "/images/LOGO_UFCG.jpg" }}{{ if in . "//www.gravatar.com/avatar/" }}?s=110{{ end }}" alt="{{ i18n "global.author_picture" }}" />
+    {{ end }}
     {{ with .Site.Author.job }}
       <div id="about-card-job">
         <i class="fa fa-briefcase"></i>
