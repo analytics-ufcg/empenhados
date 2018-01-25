@@ -43,7 +43,7 @@ source('../../../utils/lib/load_fornecedores_merenda.R')
 options(scipen = 999)
 ```
 
-Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder. 
+Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
 
 Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município. Utilizamos uma base de dados na qual conseguimos identificar a localização geográfica através do CEP de 3551 fornecedores. No entanto, esse número não é o total de fornecedores com empenhos de merenda (mais de 11000). Decidimos ignorar os demais fornecedores pois não possuímos os dados de localização deles.
 
@@ -102,10 +102,10 @@ localizacao_licitantes <- localizacao_licitantes %>%
 Abaixo você pode conferir a localização dos fornecedores de merenda na Paraíba. Inicialmente você observará grupos de fornecedores que estão juntos em uma mesma área, conforme você vai aumentando o zoom, mais informação de mais áreas se tornam disponíveis. Ao aproximar o zoom no nível das cidades é possível observar a localização do fornecedor individualmente (marcador em azul). Você também pode clicar sobre ele e obter informações mais específicas como nome, CNPJ/CPF, cidade, número de munícipios nos quais já forneceu e o valor total pago a esse fornecedor.
 
 ```{r}
-leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>% 
+leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 4)  %>%
   addTiles() %>%
   addMarkers(data = localizacao_licitantes,
-             label = ~str_to_upper(no_Credor), 
+             label = ~str_to_upper(no_Credor),
              popup = paste(
                "Nome:", str_to_upper(localizacao_licitantes$no_Credor), "</br>",
                "CNPJ/CPF:", localizacao_licitantes$cd_Credor, "</br>",
@@ -164,7 +164,7 @@ A tabela abaixo apresenta as licitações em que ocorrem estes fornecimentos imp
 empenhos_cimprovaveis <- empenhos %>%
   inner_join(licitantes_cimprovaveis %>%
               select(cidade, cd_Credor),
-            by = c("de_Municipio" = "cidade", "cd_Credor" = "cd_Credor")) 
+            by = c("de_Municipio" = "cidade", "cd_Credor" = "cd_Credor"))
 
 empenhos_cimprovaveis.group <- empenhos_cimprovaveis %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
@@ -194,7 +194,7 @@ plot_ly(data = localizacao_licitantes,
         alpha = 0.5,
         type = 'scatter',
         mode = 'markers',
-        text = ~paste('Fornecedor: ', no_Credor, "<br>", 
+        text = ~paste('Fornecedor: ', no_Credor, "<br>",
                       'Cidade: ', cidade, "<br>" ,
                       'Valor: R$', valor_total_pag),
         hoverinfo = 'text') %>%
@@ -209,14 +209,14 @@ Como mostrado na visualização acima, ao considerarmos Campina Grande e João P
 ```{r}
 cor3 <- with(localizacao_licitantes %>% filter(!(cidade %in% c("João Pessoa", "Campina Grande"))), round(cor(valor_total_pag, vl_Populacao, use = "pairwise.complete.obs"), 2))
 
-plot_ly(data = localizacao_licitantes %>% 
+plot_ly(data = localizacao_licitantes %>%
           filter(!(cidade %in% c("João Pessoa", "Campina Grande"))),
         x = ~vl_Populacao,
         y = ~valor_total_pag,
         alpha = 0.5,
         type = 'scatter',
         mode = 'markers',
-        text = ~paste('Fornecedor: ', no_Credor, "<br>", 
+        text = ~paste('Fornecedor: ', no_Credor, "<br>",
                       'Cidade: ', cidade, "<br>" ,
                       'Valor: R$', valor_total_pag),
         hoverinfo = 'text') %>%
@@ -233,17 +233,17 @@ A correlação fica ainda menor atingindo `r cor3`. Ou seja, não parece haver u
 Continuando nossa análise sobre grandes fornecedores, decidimos investigar um pouco mais a história dos dois fornecedores que assinaram contratos com mais municípios no período. Alguns detalhes desses fornecedores são listados abaixo.
 
 ```{r}
-maiores_fornecedores <- ganhadores %>% 
-  group_by(cd_Credor) %>% 
-  summarise(municipios = n()) %>% 
-  arrange(desc(municipios)) %>% 
+maiores_fornecedores <- ganhadores %>%
+  group_by(cd_Credor) %>%
+  summarise(municipios = n()) %>%
+  arrange(desc(municipios)) %>%
   left_join(ganhadores, 'cd_Credor') %>%
   distinct(cd_Credor, no_Credor, municipios) %>%
   rename(CPNJ = cd_Credor) %>%
   rename(Fornecedor = no_Credor) %>%
   rename(Municipios = municipios) %>%
   head(2)
-  
+
 kable(maiores_fornecedores, align = "c")
 ```
 
@@ -266,4 +266,4 @@ Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha u
 
 Quando disponível, a localização dos fornecedores também é destacada no mapa e um marcador é adicionado a cada uma das sedes da empresa no período analisado.
 
-<iframe src="http://150.165.85.32:3838/localizacao-fornecedores/"></iframe>
+<iframe src="http://150.165.85.32:3838/localizacao-fornecedores/" class="app-fornecedores"></iframe>
