@@ -243,5 +243,32 @@ shinyServer <- function(input, output, session) {
     },
     contentType = "text/csv"
   )
-
-}
+  
+  observeEvent(input$message_atipicidade, {
+    showModal(modalDialog(
+      title = p(strong("Atipicidade")),
+      p(tags$div(style="text-align:justify",
+        tags$p("Essa visualização mostra os fornecedores com ", strong("maiores índices de atipicidade"), " dentre todos os produtos fornecidos em notas fiscais
+destinadas a entidades públicas do Estado da Paraíba. "), 
+        tags$p("É possível clicar em qualquer ponto para conhecer os fornecedores com maiores preços médios com relação ao produto (NCM) selecionado.")
+      )),
+      easyClose = TRUE,
+      size = "m",
+      footer = modalButton("Fechar")
+    ))
+  })
+  
+  observeEvent(input$message_atuacao, {
+    showModal(modalDialog(
+      title = p(strong("Atuação de fornecedores no produto selecionado")),
+      tags$div(style="text-align:justify",
+                 tags$p("A primeira visualização mostra os fornecedores com ", strong("preços médios considerados atípicos"), " para o produto selecionado. Para cada unidade um gráfico
+diferente é exibido contendo os fornecedores. O fornecedor selecionado na visualização Atipicidade está também destacado aqui em vermelho"),
+                 tags$p("A segunda visualização apresenta uma ", strong("sumarização de todos os fornecedores"), " do produto selecionado possibilitando comparar o quão mais caro os fornecedores
+      destacados na primeira visualização estão vendendo")
+      ),
+      easyClose = TRUE,
+      size = "m",
+      footer = modalButton("Fechar")
+    ))
+  })}
