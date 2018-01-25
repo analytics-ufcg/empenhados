@@ -103,11 +103,16 @@ fornecedores_ncm_unidades <- function(dados, ncm){
     
   })
   
-  grafico_atipicos <- subplot(list_scatter_sobrepreco, nrows = length(unidades), shareX = TRUE, shareY = FALSE, titleY = TRUE) %>% 
-    layout(title =  paste("Produto: ", descricao),
-           titlefont=list(size = 14),
-           xaxis = list(title = "Preço Médio para os fornecedores atípicos (R$)"),
-           margin = list(t = 45))
+  # Checa se existe vendas com sobrepreco
+  if(length(list_scatter_sobrepreco) != 0){
+    grafico_atipicos <- subplot(list_scatter_sobrepreco, nrows = length(unidades), shareX = TRUE, shareY = FALSE, titleY = TRUE) %>% 
+      layout(title =  paste("Produto: ", descricao),
+             titlefont=list(size = 14),
+             xaxis = list(title = "Preço Médio para os fornecedores atípicos (R$)"),
+             margin = list(t = 45))
+  } else{
+    grafico_atipicos <- plotly_empty()
+  }
   
   return(grafico_atipicos)
   
@@ -132,16 +137,20 @@ fornecedores_ncm_unidades_boxplot <- function(dados, ncm){
   unidades <- dados %>% filter(tem_sobrepreco) %>% select(Unid_prod)
   unidades <- levels(as.factor(unidades$Unid_prod))
   
-  grafico <- dados %>%
-    filter(Unid_prod %in% unidades) %>%
-    
-    plot_ly(source = "Z") %>%
-    add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ", boxpoints = FALSE, 
-              hoverinfo = "x") %>% 
-    layout(title = "",
-           xaxis = list(title = "Todos os fornecedores"),
-           showlegend=FALSE,
-           margin = list(t = 50))
+  if(!identical(a, character(0))){
+    grafico <- dados %>%
+      filter(Unid_prod %in% unidades) %>%
+      
+      plot_ly(source = "Z") %>%
+      add_trace(x = ~preco_medio, color = ~Unid_prod, type = "box", name = " ", boxpoints = FALSE, 
+                hoverinfo = "x") %>% 
+      layout(title = "",
+             xaxis = list(title = "Todos os fornecedores"),
+             showlegend=FALSE,
+             margin = list(t = 50))
+  } else{
+    grafico <- plotly_empty()
+  }
   
   return(grafico)
   

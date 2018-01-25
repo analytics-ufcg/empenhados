@@ -104,6 +104,7 @@ shinyServer <- function(input, output, session) {
       filter(n == max(n))
     
     unid_selected <<- unid_max$Unid_prod
+    print(paste("UNIDADE", unid_selected))
 
     fornecedores_ncm_unidades(nfe, forn_selec$NCM_prod)
 
