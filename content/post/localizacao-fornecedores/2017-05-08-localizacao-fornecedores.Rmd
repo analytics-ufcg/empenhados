@@ -178,7 +178,12 @@ licitacoes_improvaveis <- tbl(sagres, 'Licitacao') %>%
                select(-c(n)))
 
 datatable(licitacoes_improvaveis,
-          options = list(scrollX = TRUE, pageLength = 10))
+          options = list(scrollX = TRUE, pageLength = 10),
+          colnames = c("Unid. Gestora", "Ano", "Nº da Licitação", "Tipo da Licitação", 
+                       "Data de Homologação", "Nº de Propostas", "Valor da Licitação", 
+                       "Tipo do Objeto", "Descrição", "Data", "Registro CGE", 
+                       "Tipo de Regime de Execução"),
+          rownames = FALSE)
 ```
 
 **Existe uma correlação entre o valor pago aos fornecedores e a população do município de suas empresas?**
@@ -266,4 +271,4 @@ Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha u
 
 Quando disponível, a localização dos fornecedores também é destacada no mapa e um marcador é adicionado a cada uma das sedes da empresa no período analisado.
 
-<iframe src="http://150.165.85.32:3838/localizacao-fornecedores/"></iframe>
+<iframe class="iframe-lfornecedores" src="http://150.165.85.32:3838/localizacao-fornecedores/"></iframe>

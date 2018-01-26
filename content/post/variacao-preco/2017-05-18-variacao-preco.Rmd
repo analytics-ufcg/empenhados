@@ -78,7 +78,8 @@ plot_ly(nfe_arroz, y = ~Valor_unit_prod, x = ~NCM_prod, type = 'scatter', mode =
         hoverinfo = 'text') %>%
   layout(xaxis = list(title = 'Tipo de Arroz (Código NCM)'),
          yaxis = list(title = 'Valor unitário (em Reais)'),
-         title = "Distribuição do valor unitário de arroz por código NCM")
+         title = "Distribuição do valor unitário de arroz por código NCM",
+         margin = list(b = 100, l = 25))
 ```
 
 O Código NCM na visualização acima refere-se ao tipo específico de arroz. Todos começam com "1006", mas por exemplo 10061091 é o código para arroz parboilizado.
@@ -165,7 +166,8 @@ nfe_arroz %>%
     line = list(dash = 'dash'),
     opacity = 0.75) %>%
   layout(xaxis = list(title = 'Mês do ano'),
-         yaxis = list(title = 'Valor Unitário (em Reais)'))
+         yaxis = list(title = 'Valor Unitário (em Reais)'),
+         legend = list(orientation = 'h'))
 ```
 
 Como observado no gráfico acima, existem valores unitários em notas fiscais consideravelmente longe da mediana. O que faz com que seja possível encontrar variações estranhas no preço do arroz por kilograma ao longo de todo o ano de 2016.

@@ -240,7 +240,7 @@ Localizado na microrregião de Catolé do Rocha, São José do Brejo do Cruz pos
 
 Os dados do IDEB apresentados acima estão disponíveis [aqui](http://www.qedu.org.br/estado/115-paraiba/ideb/ideb-por-municipios) e se referem ao Índice de Desenvolvimento da Educação Básica das escolas públicas do município (municipais e estaduais). São josé do Brejo do Cruz possui índices no IDEB nas séries iniciais maior que a mediana do restante dos municípios (`r median(municipios$vl_IDEB_Anos_Iniciais)`), o mesmo é observado com o IDEB das séries finais (`r median(municipios$vl_IDEB_Anos_Finais)`).
 
-Quanto será que São José do Brejo do Cruz gastou com cada em outros anos?
+Quanto será que São José do Brejo do Cruz gastou com cada aluno em outros anos?
 
 Os dados disponíveis para o município dizem respeito a despesas realizadas entre os anos de 2009 e 2015 e nos gráficos a seguir é possível observar o valor total pago pelo município e valor gasto por aluno no mesmo período. A quantidade de alunos do município para os anos de 2010, 2011, 2013 e 2014 é fruto de estimativas.
 
@@ -270,7 +270,8 @@ plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
           opacity = 0.75) %>%
   layout(title = "Total pago em São José do Brejo do Cruz",
          yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
-         xaxis = list(title = 'Ano'))
+         xaxis = list(title = 'Ano'),
+         legend = list(orientation = 'h'))
 ```
 
 Agora que visualizamos o total pago no município, podemos visualizar também o valor pago pelo município para cada aluno.
@@ -288,7 +289,8 @@ plot_ly(data = gasto_sao_jose, x = ~as.factor(dt_Ano)) %>%
           opacity = 0.75) %>%
   layout(title = "Total por aluno em São José do Brejo do Cruz",
          yaxis = list(title = 'Total por Aluno (em milhares de reais)', hoverformat= '.2f'),
-         xaxis = list(title = 'Ano'))
+         xaxis = list(title = 'Ano'),
+         legend = list(orientation = 'h'))
 ```
 
 Com o auxílio dos gráficos, podemos ver que o valor por aluno segue as mesmas tendências do valor total nesse município no período analisado. 
@@ -350,7 +352,8 @@ plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
           opacity = 0.75) %>%
   layout(title = "Total pago em Serra Branca",
          yaxis = list(title = 'Total Pago (em milhares de reais)', hoverformat= '.2f'),
-         xaxis = list(title = 'Ano'))
+         xaxis = list(title = 'Ano'),
+         legend = list(orientation = 'h'))
 ```
 
 Como já dito anteriormente, Serra Branca gastou menos de 1 real por aluno em 2015 e no total gastou 849.97 reais. Ao compararmos ao ano vizinho de 2014, esse gasto foi 10 vezes menor. Ainda assim, o ano de 2009 apresenta o maior valor pago pelo município em empenhos relacionados a alimentação escolar.
@@ -361,7 +364,8 @@ Similar ao que fizemos para o município de São José do Brejo do Cruz, podemos
 valor_medio_por_aluno <- round(mean(gasto_serra_branca$custo_aluno), 2)
 
 plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
-  add_trace(y = ~custo_aluno, type = 'scatter', name = 'Total', mode = 'lines+markers', color='orange') %>%
+  add_trace(y = ~custo_aluno, type = 'scatter', name = 'Total', mode = 'lines+markers',
+            color=I('orange')) %>%
   add_trace(y = valor_medio_por_aluno, type = 'scatter', mode = 'lines',
           name = 'Média geral',
           text = ~paste('Valor médio: R$', valor_medio_por_aluno),
@@ -370,7 +374,8 @@ plot_ly(data = gasto_serra_branca, x = ~as.factor(dt_Ano)) %>%
           opacity = 0.75) %>%
   layout(title = "Total por aluno em Serra Branca",
          yaxis = list(title = 'Total por Aluno (em milhares de reais)', hoverformat= '.2f'),
-         xaxis = list(title = 'Ano'))
+         xaxis = list(title = 'Ano'),
+         legend = list(orientation = 'h'))
 ```
 
 Mais uma vez, o valor gasto por aluno tem comportamento similar ao valor total gasto. Isso se deve ao fato do total de alunos matriculados variar pouco, tanto em São José do Brejo do Cruz como em Serra Branca.

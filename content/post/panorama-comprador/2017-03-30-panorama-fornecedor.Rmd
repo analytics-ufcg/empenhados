@@ -183,7 +183,8 @@ p1 <- licitacoes %>%
     add_trace(x=~dt_Ano_Homologacao, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
     layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de licitações', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Ano')) 
+           xaxis = list(title = 'Ano'),
+           legend = list(orientation = 'h')) 
 ```
 
 ```{r}
@@ -196,7 +197,8 @@ p2 <- empenhos %>%
      add_trace(x=~dt_Ano, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
     layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
            yaxis = list(title = 'Número total de empenhos', hoverformat= '.0f', fixedrange = TRUE),
-           xaxis = list(title = 'Ano')) 
+           xaxis = list(title = 'Ano'),
+           legend = list(orientation = 'h')) 
 ```
 
 ```{r}
@@ -430,7 +432,7 @@ plot_ly(data = (licitacoes_merenda %>%
     title = 'Valor mediano de licitações por mês',
     xaxis = list(title = 'Mês'),
     yaxis = list(title = 'Valor mediano', fixedrange = TRUE),
-    legend = list(x = 100, y = 0.5)
+    legend = list(orientation = 'h')
   )
 ```
 
@@ -459,10 +461,11 @@ licitacoes_merenda %>%
   rename(dt_AnoHomologacao = 'year(dt_Homologacao)') %>%
   ungroup() %>%
   plot_ly() %>%
-  add_trace(x = ~dt_AnoHomologacao, y = ~total, color = ~de_TipoLicitacao, type = 'scatter', mode = 'lines') %>%
+  add_trace(x = ~as.factor(dt_AnoHomologacao), y = ~total, color = ~de_TipoLicitacao, type = 'scatter', mode = 'lines') %>%
   layout(title = 'Licitações de merenda por modalidade',
          yaxis = list(title = 'Total', fixedrange = TRUE),
-         xaxis = list(title = 'Ano'))
+         xaxis = list(title = 'Ano'),
+         legend = list(orientation = 'h'))
 ```
 
 A partir do gráfico acima podemos observar que as modalidades mais utilizadas nas licitações de merenda atualmente são a chamada pública e o pregão presencial. Esta última foi a modalidade mais utilizada para esse tipo de licitação até ser superada pela primeira em 2014, e é uma das modalidades mais suscetíveis à fraude, visto que é possível ocorrer, dentre outras coisas, acordo prévio entre os participantes e a coação de compertidores para fazê-los desistir. 

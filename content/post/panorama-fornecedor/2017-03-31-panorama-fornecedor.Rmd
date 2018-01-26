@@ -105,7 +105,7 @@ No nosso [relatório anterior](https://analytics-ufcg.github.io/empenhados/2017/
 
 Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda. Ou seja, todos os empenhos dessa licitação são destinados a alimentação escolar, quaisquer empresas ou pessoas físicas que lançaram propostas para tais licitações serão consideradas fornecedores de merenda.
 
-### 3.1 - Quantos são os fornecedores de merenda de cada município?
+### Quantos são os fornecedores de merenda de cada município?
 A partir do filtro, explicado acima, aplicado as licitações, o mapa abaixo aponta a quantidade de fornecedores de licitações por município na Paraíba. É preciso observar que não há garantia que esses fornecedores ganharam as licitações, apenas que os mesmos participaram, ou seja, lançaram propostas para licitações que são 100% de merenda.
 
 ```{r}
@@ -213,25 +213,31 @@ get.grandes.vencedores <- function(lower_bound, upper_bound){
   unique_nomes_vencedores = merge(unique_nomes_vencedores, vencedores, by = "nu_CPFCNPJ")
   return(unique_nomes_vencedores)
 }
-
-vencedores1 <- get.grandes.vencedores(5,10)
-kable(vencedores1[order(vencedores1$n),], caption = "Fornecedores que fecharam entre 6 e 10 contratos",
-      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
-
-vencedores2 <- get.grandes.vencedores(10,20)
-kable(vencedores2[order(vencedores2$n),], caption = "Fornecedores que fecharam entre 11 e 20 contratos",
-      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
-
 ```
 
-Uma atenção especial para os seguintes fornecedores, todos eles fecharam __mais de 20 contratos__, um número muito superior à media.
+* __Fornecedores que fecharam entre 6 e 10 contratos__
+```{r}
+vencedores1 <- get.grandes.vencedores(5,10)
+kable(vencedores1[order(vencedores1$n),], col.names = c("CPF/CNPJ", "Nome", 
+                                                        "Número de contratos"), row.names = FALSE)
+```
+
+* __Fornecedores que fecharam entre 11 e 20 contratos__
+```{r}
+vencedores2 <- get.grandes.vencedores(10,20)
+kable(vencedores2[order(vencedores2$n),], col.names = c("CPF/CNPJ", "Nome", 
+                                                        "Número de contratos"), row.names = FALSE)
+```
+
+* __Fornecedores que fecharam mais de 20 contratos__
+
+Uma atenção especial para os seguintes fornecedores, todos eles fecharam __mais de 20 contratos__, um número muito superior à média.
 
 ```{r}
 vencedores3 <- get.grandes.vencedores(20)
-kable(vencedores3[order(vencedores3$n),], caption = "Fornecedores que fecharam mais de 20 contratos",
-      col.names = c("CPF/CNPJ", "Nome", "Número de contratos"), row.names = FALSE)
+kable(vencedores3[order(vencedores3$n),], col.names = c("CPF/CNPJ", "Nome", 
+                                                        "Número de contratos"), row.names = FALSE)
 ```
-
 
 ### Os contratos de licitações são bem distribuidos entre os fornecedores?
 
@@ -315,11 +321,11 @@ A tabela a seguir mostra os fornecedores que se encaixam na descrição anterior
 ganhamais <- lucros %>% filter(participou < ganhou_l) %>%
   left_join(fornecedores %>%
               mutate(no_Fornecedor = toupper(no_Fornecedor)), by = "nu_CPFCNPJ") %>%
-  select(nu_CPFCNPJ, no_Fornecedor, ganhou, participou, perdeu, valor)
+  select(nu_CPFCNPJ, ganhou, participou, perdeu, valor)
 ```
 
 ```{r}
-kable(ganhamais)
+kable(ganhamais, col.names = c("CPF/CNPJ", "Vitórias", "Participações", "Derrotas", "Valor"))
 ```
 
 Observa-se que os 3 casos o nome do Fornecedor consta como _NA_ o que indica que estes CPF's ou CNPJ's não constam nos nossos dados de fornecedores de merenda. 

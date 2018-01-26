@@ -1,3 +1,25 @@
 #about #about-card {
     max-width:    700px;
 }
+.postShorten .postShorten-excerpt {
+    text-align: justify;
+}
+
+.plot-container .plotly {
+    margin: 10px 0 0 0;
+}
+
+.leaflet .html-widget .html-widget-static-bound .leaflet-container .leaflet-fade-anim {
+    margin: 10px 0 0 40px;
+}
+
+.main-content-wrap p {
+    text-align: justify;
+}
+
+.iframe-lfornecedores {
+    width: 90%;
+    height: 760px;
+    margin: 10px;
+    border: none;
+}

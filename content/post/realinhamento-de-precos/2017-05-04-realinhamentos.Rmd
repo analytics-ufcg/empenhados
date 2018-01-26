@@ -352,8 +352,12 @@ diag <- function(data, mapping, ...) {
     scale_x_log10(breaks=log.breaks, labels=log.labels)
 }
 
-licitacoes.alt %>%
-  select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento) %>%
+licitacoes.alt.rename <- licitacoes.alt %>%
+  select(vl_Licitacao, vl_Contrato, vl_Empenho, vl_Liquidacao, vl_Pagamento)
+
+names(licitacoes.alt.rename) <- c("Licitação", "Contrato", "Empenho", "Liquidação", "Pagamento")
+
+licitacoes.alt.rename %>%
   mutate_all(funs( replace(., . == 0, NA) )) %>%
   ggpairs(
     lower = list(continuous = lower),
