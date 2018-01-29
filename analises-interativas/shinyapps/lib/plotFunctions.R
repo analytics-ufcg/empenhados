@@ -15,6 +15,7 @@ fornecedores_ncms <- function(dados, event){
     grafico <- dados %>%
       semi_join(forn_mais_atipicos) %>%
       arrange(desc(Atipicidade_media)) %>%
+      filter(NCMTemSobrepreco, Atipicidade > 0) %>%
       plot_ly(source = "A") %>%
       add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
                   y = ~Atipicidade,
@@ -33,6 +34,7 @@ fornecedores_ncms <- function(dados, event){
     grafico <- dados %>%
       semi_join(forn_mais_atipicos) %>%
       arrange(desc(Atipicidade_media)) %>%
+      filter(NCMTemSobrepreco, Atipicidade > 0) %>%
       mutate(forn_selected = if_else(CNPJ == event$x & NCM_prod == event$key, "Selecionado", "Demais")) %>%
       plot_ly(source = "A") %>%
       add_markers(x = ~reorder(CNPJ, -Atipicidade_media),
