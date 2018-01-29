@@ -22,9 +22,15 @@ dcg_nomes_emit <- tbl(notas, 'nota_fiscal') %>%
 metrica_careiros_unid <- dados_careiros %>%
   filter(!is.na(NCM_prod), NCM_prod != "NA") %>%
   group_by(NCM_prod, Unid_prod) %>%
+  mutate(eSobrePreco = (Preco_medio > quantile(Preco_medio, .75) + IQR(Preco_medio) * 1.5)) %>% 
   mutate(Atipico = (Preco_medio - quantile(Preco_medio, 0.75) + IQR(Preco_medio) * 1.5) / IQR(Preco_medio)) %>%
   ungroup() %>%
   filter(!is.nan(Atipico), !is.infinite(Atipico)) 
+
+ncm_temsobrepreco <- metrica_careiros_unid %>% 
+  select(NCM_prod, eSobrePreco) %>% 
+  group_by(NCM_prod) %>% 
+  summarise(NCMTemSobrepreco = any(eSobrePreco))
 
 #dados passados para fornecedores_ncms() devem ter esse formato
 metrica_careiros <- metrica_careiros_unid %>%
@@ -37,11 +43,13 @@ metrica_careiros <- metrica_careiros_unid %>%
   mutate(Atipicidade = round(Atipicidade, 6)) %>%
   mutate(Atipicidade_media = round(Atipicidade_media, 6)) %>%
   left_join(dcg_nomes_emit) %>%
+  left_join(ncm_temsobrepreco) %>% 
   select(c(CNPJ = CPF_CNPJ_emit,
            Razao_Social = Nome_razao_social_emit,
            NCM_prod,
            Atipicidade,
-           Atipicidade_media
+           Atipicidade_media,
+           NCMTemSobrepreco
   ))
 
 write.csv(metrica_careiros, "../dados/fornecedores_ncms.csv", 
