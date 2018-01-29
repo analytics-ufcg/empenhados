@@ -87,6 +87,17 @@ fornecedores_ncm_unidades <- function(dados, ncm){
     p1 <- dados %>%
       filter(Unid_prod == x, tipo == "Sobrepreço") %>%
       mutate(cor = ifelse(forn_selected == "Selecionado", "#FF0000", "#0066CC")) %>%
+      
+      bind_rows(data.frame(
+        CPF_CNPJ_emit = c("1", "2"),
+        forn_selected = c("Selecionado", "Demais"),
+        Unid_prod = c(NA, NA),
+        Nome_razao_social_emit = c(NA, NA),
+        preco_medio = c(Inf, Inf), 
+        tipo = c("Sobrepreço", "Preço típico"),
+        tem_sobrepreco = c(NA, NA),
+        cor = c("#FF0000", "#0066CC")
+      )) %>%
 
       plot_ly(source = "B") %>%
       add_trace(x = ~preco_medio, y = ~CPF_CNPJ_emit, key = ~Unid_prod, type= "scatter", mode = "markers",
