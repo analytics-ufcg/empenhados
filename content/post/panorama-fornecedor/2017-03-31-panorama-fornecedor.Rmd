@@ -214,24 +214,27 @@ get.grandes.vencedores <- function(lower_bound, upper_bound){
   return(unique_nomes_vencedores)
 }
 ```
+</br>
 
-* __Fornecedores que fecharam entre 6 e 10 contratos__
+* __Fornecedores que fecharam entre 6 e 10 contratos__  
 ```{r}
 vencedores1 <- get.grandes.vencedores(5,10)
 kable(vencedores1[order(vencedores1$n),], col.names = c("CPF/CNPJ", "Nome", 
                                                         "Número de contratos"), row.names = FALSE)
 ```
+</br>
 
-* __Fornecedores que fecharam entre 11 e 20 contratos__
+* __Fornecedores que fecharam entre 11 e 20 contratos__  
 ```{r}
 vencedores2 <- get.grandes.vencedores(10,20)
 kable(vencedores2[order(vencedores2$n),], col.names = c("CPF/CNPJ", "Nome", 
                                                         "Número de contratos"), row.names = FALSE)
 ```
+</br>
 
-* __Fornecedores que fecharam mais de 20 contratos__
+* __Fornecedores que fecharam mais de 20 contratos__  
 
-Uma atenção especial para os seguintes fornecedores, todos eles fecharam __mais de 20 contratos__, um número muito superior à média.
+Uma atenção especial para os seguintes fornecedores, todos eles fecharam __mais de 20 contratos__, um número muito superior à média.  
 
 ```{r}
 vencedores3 <- get.grandes.vencedores(20)

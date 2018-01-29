@@ -34,7 +34,7 @@ def render_unlock_file(html_file):
     os.rename(folder_path + 'output.html', folder_path + 'index.html')
 
 def main():
-    html_files = glob.glob(os.getcwd() + '/docs/' + str(date.today().year) + '/**/*.html', recursive=True)
+    html_files = glob.glob(os.getcwd() + '/docs/201*/**/*.html', recursive=True)
     for i in html_files:
         render_unlock_file(i)
         print("Finished unlocking\n" + i)
