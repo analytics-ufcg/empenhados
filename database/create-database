@@ -29,6 +29,8 @@ mysql -p$password < SAGRES-keys.sql
 mysql -p$password < SAGRES-novo.sql
 mysql -p$password < utils.sql
 mysql -p$password < notas_fiscais.sql
+mysql -p$password < empresas.sql
+mysql -p$password < doadores_2002_2012.sql
 
 mysqlimport -p$password \
   --ignore-lines=1 \
@@ -48,6 +50,14 @@ mysqlimport -p$password \
   --lines-terminated-by='\n' \
   --local notas_fiscais \
     nota_fiscal.csv
+    
+mysqlimport -p$password \
+  --ignore-lines=1 \
+  --fields-enclosed-by='"' \
+  --fields-terminated-by=',' \
+  --lines-terminated-by='\n' \
+  --local empresas \
+    cnpj_pb.csv
 
 cd ..
 rm -r tmp
