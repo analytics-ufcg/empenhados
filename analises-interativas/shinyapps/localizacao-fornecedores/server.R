@@ -35,6 +35,10 @@ localizacao_licitantes_municipios <- ganhadores %>%
   ungroup()
 
 server <- function(input, output, session){
+  output$keepAlive <- renderText({
+    req(input$count)
+    paste("keep alive ", input$count)
+  })
   
   mapa_paraiba <- readOGR("../../../utils/dados/mapa_paraiba_ibge/Municipios.shp")
   
