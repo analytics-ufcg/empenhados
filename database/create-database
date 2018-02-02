@@ -49,7 +49,9 @@ mysqlimport -p$password \
   --fields-terminated-by=',' \
   --lines-terminated-by='\n' \
   --local notas_fiscais \
-    nota_fiscal.csv
+    nota_fiscal.csv \
+    ncm.csv \
+    medicamentos_nota_fiscal.csv
     
 mysqlimport -p$password \
   --ignore-lines=1 \
