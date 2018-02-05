@@ -14,7 +14,6 @@ ui <- dashboardPage(
                   titleWidth = 450, dropdownMenuOutput("messageMenu")),
   dashboardSidebar(disable = TRUE),
   dashboardBody(
-    tags$head(tags$link(rel="shortcut icon", href="tce-cropped.png")),
     tags$head(
       HTML(
         "<script>

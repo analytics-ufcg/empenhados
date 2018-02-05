@@ -13,7 +13,6 @@ ui <- dashboardPage(
   dashboardHeader(title = "Notas fiscais atípicas"),
   dashboardSidebar(disable = TRUE),
   dashboardBody(
-    tags$head(tags$link(rel="shortcut icon", href="tce-cropped.png")),
     tags$head(
       HTML(
         "<script>
