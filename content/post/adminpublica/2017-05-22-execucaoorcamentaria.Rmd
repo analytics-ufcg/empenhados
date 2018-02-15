@@ -16,6 +16,8 @@ output:
     fig_height: 6
 ---
 
+##### **Atualizado em 15/02/2018**
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -23,12 +25,12 @@ knitr::opts_chunk$set(echo = TRUE)
 Em termos gerais o Processo de Despesa Pública trata das seguintes fases:  
 
 1 Licitação  
-2 Empenho  
-3 Contrato  
+2 Contrato  
+3 Empenho
 4 Liquidação  
 5 Pagamento  
 
-Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços.
+Fases pelas quais todos os órgãos da administração pública, sem exceção, devem passar para a compra de bens ou serviços.
 
 ### 1  Licitação
 
@@ -40,14 +42,13 @@ Existem diversas modalidades de licitação, são algumas: pregão eletrônico, 
 
 Para participação em certames licitatórios, as empresas devem estar habilitadas, certificadas e cadastradas no SICAF - Sistema de Cadastramento Unificado de Fornecedores. Mais informações [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/dicas-cadastramento/), [aqui](https://sicafnet.com.br/sicaf-cadastramento-comprasnet/) e [aqui](http://www.justicaeleitoral.jus.br/arquivos/tre-ma-perguntas-frequentes-faq-cadastro-no-sicaf).
 
+### 2  Contrato
 
-### 2  Empenho
+Após concluída a licitação ou os procedimentos de dispensa ou inexigibilidade a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado.
 
-Após concluída a licitação ou os procedimentos de dispensa ou inexigibilidade ocorre o empenho, fase em que a administração pública se compromete a reservar o valor licitado para cobrir as possíveis despesas com a aquisição de bens e/ou serviços contratados. É uma garantia ao credor de que há recurso orçamentário disponível para pagar a despesa. É nesta etapa que é gerada a obrigação de pagamento da parte da administração. Mais detalhes [aqui](http://www.zenite.blog.br/quando-deve-ser-realizado-o-empenho/).
+### 3  Empenho
 
-### 3  Contrato
-
-Após o empenho a administração adotará as providências necessárias para celebração do respectivo contrato, carta-contrato ou entrega de nota de empenho da despesa, mediante recibo, ou da ordem de execução do serviço, ou da autorização de compra, ou de documento equivalente. No contrato devem estar estabelecidas com clareza e precisão as cláusulas com os direitos, obrigações e responsabilidade da Administração e do particular. É comum em muitos editais de licitações, acompanhar em anexo, minuta do contrato a ser celebrado.
+Posteriormente, com a finalização do processo de contratação e respectiva homologação, a Administração deverá realizar o empenho da despesa, fase em que a administração pública se compromete a reservar o valor licitado para cobrir as possíveis despesas com a aquisição de bens e/ou serviços contratados. É uma garantia ao credor de que há recurso orçamentário disponível para pagar a despesa. É nesta etapa que é gerada a obrigação de pagamento da parte da administração. Mais detalhes [aqui](http://www.zenite.blog.br/quando-deve-ser-realizado-o-empenho/).
 
 ### 4  Liquidação
 
@@ -60,9 +61,10 @@ A liquidação envolve, portanto, todos os atos de verificação e conferência,
 De acordo com o artigo 63 da Lei 4.320, de 1964,
 “A liquidação consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e os documentos comprobatórios do respectivo crédito.
 Essa verificação tem por fim apurar:
-I – a origem e o objeto do que se deve pagar;
-II – a importância exata a pagar;
-III – a quem se deve pagar a importância, para extinguir a obrigação.”
+
+1. a origem e o objeto do que se deve pagar;
+2. a importância exata a pagar;
+3. a quem se deve pagar a importância, para extinguir a obrigação.”
 
 
 ### 5  Pagamento
@@ -70,20 +72,13 @@ III – a quem se deve pagar a importância, para extinguir a obrigação.”
 O último estágio da despesa é o pagamento e consiste na entrega de numerário ao credor do Estado, extinguindo dessa forma o débito ou obrigação. Esse procedimento normalmente é efetuado por tesouraria, mediante registro no SIAFI do documento Ordem Bancária – OB, que deve ter como favorecido o credor do empenho. Este pagamento normalmente é efetuado por meio de crédito em conta bancária do favorecido
 
 
-
-
-
 Uma confusão comum ocorre entre o Processo de Despesa Pública e o Processo de Execução Orçamentária. De certo modo o Processo de Execução Orçamentária está contido no que aqui chamamos de Processo de Despesa Pública. Execução orçamentária (EO) é a utilização dos créditos consignados no Orçamento Geral da União (ou Lei Orçamentária Anual - LOA) e nos créditos adicionais, visando à realização dos subprojetos e/ou subatividades atribuídos às unidades orçamentárias (órgãos, geralmente). Assim, a execução orçamentária trata da execução das receitas e despesas públicas. Na EO estão contidas apenas as fases de empenho, liquidação e pagamento, efetivamente.
 
-
 ----
-
 
 ### Perguntas & Respostas
 
 - #### Em que situação pode haver dispensa de uma *licitação*?
-
-
 
 Em casos excepcionais pode haver a dispensa da licitação no processo de aquisição de bens ou serviços pela administração pública. Casos como: situações de emergência, contratação de pequeno valor, ausência de interessados, imóvel destinado a administração, gêneros perecíveis, dentre outros. Mais detalhes [aqui](http://www.cidadaniafiscal.com.br/backup/informativo/16.pdf).
 
@@ -96,12 +91,15 @@ Nunca. O empenho **SEMPRE** deve ocorrer no processo de despesa pública.
 
 Em alguns casos o processo de despesa pública pode abrir mão do contrato. Casos comuns são: artigos que não necessitam de garantia (por exemplo, a compra de uma caixa de maçãs). Em geral o contrato é feito para salvaguardar os interesses dos participantes, por exemplo, quando uma escola compra computadores e estes necessitam de garantia - neste caso o contrato é feito como prova de que a garantia existe. <!--(revisar isso)-->
 
-
 - ####  Podem haver muitos empenhos para a mesma *licitação*? E *contratos*?
 
-Sim, é possível que existam diversos empenhos relacionados a uma mesma licitação. Isso ocorre porque após a ocorrência da licitação (eleição do vencedor) o órgão responsável pela mesma pode optar por realizar empenhos (separar o dinheiro do orçamento) na medida que ache necessário e ir gastando aos poucos. Por exemplo: Suponha que a Prefeitura de Campina Grande realiza uma licitação de vassouras para limpar a cidade. A licitação total tem um valor fictício de 2 mil reais e a empresa José ME é a vencedora desta licitação. Mesmo que o valor total da licitação seja de 2 mil reais, a Prefeitura pode optar por empenhar apenas 1 mil reais, firmar o contrato e, caso ache necessário (faltem vassouras) fazer outro empenho mais à frente.
+Sim, é possível que existam diversos empenhos relacionados a uma mesma licitação. Isso ocorre porque após a ocorrência da licitação (eleição do vencedor) o órgão responsável pela mesma pode optar por realizar empenhos (separar o dinheiro do orçamento) na medida que ache necessário e ir gastando aos poucos. 
+
+Por exemplo: Suponha que a Prefeitura de Campina Grande realiza uma licitação de vassouras para limpar a cidade. A licitação total tem um valor de 2 mil reais e a empresa José ME é a vencedora desta licitação. Mesmo que o valor total da licitação seja de 2 mil reais, a Prefeitura pode optar por empenhar apenas 1 mil reais, firmar o contrato e, caso ache necessário (faltem vassouras) fazer outro empenho mais à frente.
 
 O mesmo pode acontecer com contratos. Tomando o exemplo acima, caso a Prefeitura decida por fazer outro empenho, será gerado outro contrato. Assim, podemos ter mais de um empenho ou contrato relacionados a mesma licitação.
+
+Outro cenário possível é quando mais de um fornecedor ganha a mesma licitação (para fornecerem itens diferentes), neste caso, serão gerados contratos e empenhos diferentes para cada fornecedor.
 
 
 - ####  O que ocorre se o pagamento realizado ao credor for indevido ou maior do que o acordado?
@@ -112,7 +110,6 @@ Se houver importância paga a mais ou indevidamente, sua reposição aos órgão
 - ####  Como funciona a *Ata de Registro de Preço*?
 
 Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qual, os respectivos produtos ou serviços poderão ser adquiridos ou contratados pelos órgãos públicos gerenciadores e os órgãos participantes do SRP. Outros órgãos públicos também podem "pegar carona" nestes preços, bastando para isso, pertencer à mesma esfera administrativa. O registro de preço é regulamentado por este [decreto](https://www.licitacao.net/legislacao_detalhes.asp?id=101).
-
 
 
 ----
