@@ -158,7 +158,7 @@ leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
              clusterOptions = markerClusterOptions())
 ```  
 
-A mediana da população nesses municípios é de `r median(licitantes_cimprovaveis$vl_Populacao)` habitantes, enquanto que a mediana do que foi pago ao fornecedores é de `r median(licitantes_cimprovaveis$valor_total_pag)` reais. Existem os casos em que os fornecedores fornecem apenas para o município onde se localiza, mas há fornecedores que estão em cidades pequenas e participam dos empenhos de outras cidades.
+A mediana da população nesses municípios é de `r median(licitantes_cimprovaveis$vl_Populacao)` habitantes, enquanto que a mediana do que foi pago aos fornecedores é de `r median(licitantes_cimprovaveis$valor_total_pag)` reais. Existem os casos em que os mesmos fornecem apenas para o município onde se localiza, mas há fornecedores que estão em cidades pequenas e participam dos empenhos de outras cidades.
 
 A tabela abaixo apresenta as licitações em que ocorrem estes fornecimentos improváveis
 
@@ -261,7 +261,7 @@ Já uma busca pelo CNPJ do segundo fornecedor, nos mostra que a empresa *Mega Ma
 
 Além disso, ao pesquisar um pouco mais sobre ambas as empresas e seus sócios [nesse site](http://www.empresascnpj.com/), descobrimos algumas coisas interessantes: Os sócios de ambas empresas contém o mesmo sobrenome, Fonseca Pires, e ambas já foram sediadas em um mesmo bloco de galpões.
 
-
+<!--
 ## Onde atuam os diversos fornecedores de merenda?
 Como última parte da análise, buscamos verificar o local de atuação dos fornecedores de merenda dos municípios do estado. Essa visualização pode ajudar a identificar fornecedores que atuam em municípios longe de suas matrizes ou que costumam atuar em um grupo de cidades geográficamente próximas.
 
@@ -274,3 +274,4 @@ Para buscar um fornecedor na lista, digite sua razão social ou CNPJ e escolha u
 Quando disponível, a localização dos fornecedores também é destacada no mapa e um marcador é adicionado a cada uma das sedes da empresa no período analisado.
 
 <iframe src="http://150.165.85.32:3838/localizacao-fornecedores/" class="app-fornecedores"></iframe>
+-->
