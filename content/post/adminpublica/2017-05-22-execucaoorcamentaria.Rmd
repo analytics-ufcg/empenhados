@@ -34,13 +34,13 @@ Fases pelas quais todos os órgãos da administração pública, sem exceção, 
 
 ### 1  Licitação
 
-A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação. A licitação **NÃO PODE** acontecer de maneira sigilosa, sempre deverá ser pública, respeitando o direito da publicidade, acessível a qualquer cidadão. O processo licitatório é regido pela [LEI Nº 8.666, DE 21 DE JUNHO DE 1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm). Mais detalhes [aqui](http://www.revistas.unifacs.br/index.php/redu/article/viewFile/1892/1439).
+A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação. A licitação **NÃO PODE** acontecer de maneira sigilosa, sempre deverá ser pública, respeitando o direito da publicidade, acessível a qualquer cidadão. O processo licitatório é regido pela [LEI Nº 8.666, DE 21 DE JUNHO DE 1993](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm).
 
 
-Existem diversas modalidades de licitação, são algumas: pregão eletrônico, pregão presencial, carta convite, tomada de preços, concorrência pública, concurso, dentre outras. Mais detalhes podem ser vistos na *Lei Geral de Licitações* ou na *Lei Geral de Instituição do Pregão* (mais informações [aqui](https://www.comprasgovernamentais.gov.br/images/conteudo/ArquivosCGNOR/SEBRAE/PREGO-PRESENCIAL-E-ELETRNICO.pdf) e [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/sobre-pregao/)).
+Existem diversas modalidades de licitação, são algumas: pregão eletrônico, pregão presencial, carta convite, tomada de preços, concorrência pública, concurso, dentre outras. Mais detalhes podem ser vistos na *Lei Geral de Licitações* ou na *Lei Geral de Instituição do Pregão* (mais informações [aqui](https://www.comprasgovernamentais.gov.br/images/conteudo/ArquivosCGNOR/SEBRAE/PREGO-PRESENCIAL-E-ELETRNICO.pdf)).
 
 
-Para participação em certames licitatórios, as empresas devem estar habilitadas, certificadas e cadastradas no SICAF - Sistema de Cadastramento Unificado de Fornecedores. Mais informações [aqui](https://portal.conlicitacao.com.br/o-que-e-licitacao/dicas-cadastramento/), [aqui](https://sicafnet.com.br/sicaf-cadastramento-comprasnet/) e [aqui](http://www.justicaeleitoral.jus.br/arquivos/tre-ma-perguntas-frequentes-faq-cadastro-no-sicaf).
+Para participação em certames licitatórios, as empresas devem estar habilitadas, certificadas e cadastradas no SICAF - Sistema de Cadastramento Unificado de Fornecedores. Mais informações [aqui](http://www.justicaeleitoral.jus.br/arquivos/tre-ma-perguntas-frequentes-faq-cadastro-no-sicaf).
 
 ### 2  Contrato
 
@@ -48,7 +48,7 @@ Após concluída a licitação ou os procedimentos de dispensa ou inexigibilidad
 
 ### 3  Empenho
 
-Posteriormente, com a finalização do processo de contratação e respectiva homologação, a Administração deverá realizar o empenho da despesa, fase em que a administração pública se compromete a reservar o valor licitado para cobrir as possíveis despesas com a aquisição de bens e/ou serviços contratados. É uma garantia ao credor de que há recurso orçamentário disponível para pagar a despesa. É nesta etapa que é gerada a obrigação de pagamento da parte da administração. Mais detalhes [aqui](http://www.zenite.blog.br/quando-deve-ser-realizado-o-empenho/).
+Posteriormente, com a finalização do processo de contratação e respectiva homologação, a Administração deverá realizar o empenho da despesa, fase em que a administração pública se compromete a reservar o valor licitado para cobrir as possíveis despesas com a aquisição de bens e/ou serviços contratados. É uma garantia ao credor de que há recurso orçamentário disponível para pagar a despesa. É nesta etapa que é gerada a obrigação de pagamento da parte da administração. Mais detalhes [aqui](http://www.portaltransparencia.gov.br/glossario/DetalheGlossario.asp?letra=e) e [aqui](http://www.planalto.gov.br/ccivil_03/Leis/L4320.htm#art58).
 
 ### 4  Liquidação
 
@@ -80,7 +80,7 @@ Uma confusão comum ocorre entre o Processo de Despesa Pública e o Processo de 
 
 - #### Em que situação pode haver dispensa de uma *licitação*?
 
-Em casos excepcionais pode haver a dispensa da licitação no processo de aquisição de bens ou serviços pela administração pública. Casos como: situações de emergência, contratação de pequeno valor, ausência de interessados, imóvel destinado a administração, gêneros perecíveis, dentre outros. Mais detalhes [aqui](http://www.cidadaniafiscal.com.br/backup/informativo/16.pdf).
+Em casos excepcionais pode haver a dispensa da licitação no processo de aquisição de bens ou serviços pela administração pública. Casos como: situações de emergência, contratação de pequeno valor, ausência de interessados, imóvel destinado a administração, gêneros perecíveis, dentre outros. Mais detalhes [aqui](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm#art24).
 
 
 - ####  Em que situação pode haver dispensa do *empenho*?
@@ -109,7 +109,7 @@ Se houver importância paga a mais ou indevidamente, sua reposição aos órgão
 
 - ####  Como funciona a *Ata de Registro de Preço*?
 
-Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qual, os respectivos produtos ou serviços poderão ser adquiridos ou contratados pelos órgãos públicos gerenciadores e os órgãos participantes do SRP. Outros órgãos públicos também podem "pegar carona" nestes preços, bastando para isso, pertencer à mesma esfera administrativa. O registro de preço é regulamentado por este [decreto](https://www.licitacao.net/legislacao_detalhes.asp?id=101).
+Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qual, os respectivos produtos ou serviços poderão ser adquiridos ou contratados pelos órgãos públicos gerenciadores e os órgãos participantes do SRP. Outros órgãos públicos também podem "pegar carona" nestes preços, bastando para isso, pertencer à mesma esfera administrativa. O registro de preço é regulamentado por este [decreto](http://www.planalto.gov.br/ccivil_03/_Ato2011-2014/2013/Decreto/D7892.htm).
 
 
 ----
@@ -119,11 +119,7 @@ Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qu
 
 * [Lei 8.666/1993 (Lei Geral de Licitações e Contratos Administrativos)](http://www.planalto.gov.br/ccivil_03/leis/L8666cons.htm)  
 * [Lei 10.520/2002 (Lei Geral que instituiu o Pregão)](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm)  
-* [O que é licitação?](https://www.licitacao.net/o_que_e_licitacao.asp)  
-* [O que é licitação? - Introdução](https://portal.conlicitacao.com.br/o-que-e-licitacao/introducao/)  
-* [Modalidades de Licitações](http://esquemaria.com.br/modalidades-de-licitacoes-mapas-mentais/)  
 * [Glossário - Despesa](http://transparencia.prefeitura.sp.gov.br/contas/arquivos/Liquida%C3%A7%C3%B5es/glossario.pdf)  
-* [TCU Aponta 18 irregularidades no sistema de licitação](http://www.gazetadopovo.com.br/vida-publica/tcu-aponta-18-irregularidades-no-sistema-de-licitacoes-bf5vbyxu09ww9pl6cy3q827ny)  
 * [Execução Orçamentária](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)  
-* [Execução de Despesa Pública](http://www2.unicentro.br/proaf/files/2013/05/CARTILHA_NO_ES_B_SICAS_DA_EXECU_O_DA_DESPESA_P_BLICA_55ba8cc85fe6f.pdf)  
+* [Execução de Despesa Pública]()  
 * [Licitações & Contratos - Orientações e Jurisprudência do TCU](http://portal.tcu.gov.br/lumis/portal/file/fileDownload.jsp?inline=1&fileId=8A8182A24D6E86A4014D72AC81CA540A)
