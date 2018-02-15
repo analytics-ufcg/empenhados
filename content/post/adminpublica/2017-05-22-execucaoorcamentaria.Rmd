@@ -121,5 +121,4 @@ Os preços registrados poderão ter uma validade de 6 ou 12 meses período no qu
 * [Lei 10.520/2002 (Lei Geral que instituiu o Pregão)](http://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm)  
 * [Glossário - Despesa](http://transparencia.prefeitura.sp.gov.br/contas/arquivos/Liquida%C3%A7%C3%B5es/glossario.pdf)  
 * [Execução Orçamentária](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)  
-* [Execução de Despesa Pública]()  
 * [Licitações & Contratos - Orientações e Jurisprudência do TCU](http://portal.tcu.gov.br/lumis/portal/file/fileDownload.jsp?inline=1&fileId=8A8182A24D6E86A4014D72AC81CA540A)
