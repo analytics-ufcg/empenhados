@@ -12,6 +12,8 @@ categories: ["administracao publica"]
 comments: true
 ---
 
+##### **Atualizado em 15/02/2017**
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -96,7 +98,7 @@ reais <- function(valor) {
 }
 ```
 
-Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.
+Um possível problema administrativo que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez. Contudo também existem casos em que a realização dos três passos da execução no mesmo dia é considerada comum e não indício de problemas.
 
 Para verificar se isso realmente é uma observação relevante, faremos uma análise utilizando os empenhos que possuem todos seus pagamentos registrados no mesmo dia e os dados de seus credores.
 
@@ -135,9 +137,9 @@ plot_ly(empenhos.hist) %>%
 
 Observamos que a prática de empenhar e pagar no mesmo dia é recorrente ao longo dos anos na administração pública e acontece massivamente nos casos em que o empenho ocorre sem licitação prévia. Mas existem também observações significativas em licitações do tipo Dispensa por Valor e Convite.
 
-Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto podem ser realizados no ato da compra, algo similar a uma compra à vista com pronta entrega. No entanto, não encontramos justificativas convincentes para que a prática ocorra em licitações do tipo Convite.
+Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto podem ser realizados no ato da compra, algo similar a uma compra à vista com pronta entrega.
 
-Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provávelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
+Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provavelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
 
 #### Valor total gasto ao longo dos meses por tipo de licitação
 
@@ -163,7 +165,7 @@ plot_ly(empenhos.hist) %>%
 
 Foi visto no gráfico anterior que o número de empenhos com pagamentos no mesmo dia varia pouco em função do tempo. Aqui o que percebemos é que os valores dos empenhos tem crescido ao longo do tempo, o que indica que os empenhos deste tipo estão ficando cada vez mais caros. Mais uma vez despesas que não provêm do processo licitatório, seja por não ocorrência de processo licitatório ou sob a justificativa de dispensa por valor, destacam-se das demais.
 
-Como na visualização anterior, nesta os picos também são mais recorrentes no último mês do ano, o que nos faz acreditar ainda mais na justificativa apresentada. Mas essa "pressa" para fechar o orçamento pode indicar que o dinheiro público está sendo mal gasto pelos adminstradores municipais.
+Como na visualização anterior, nesta os picos também são mais recorrentes no último mês do ano, o que nos faz acreditar ainda mais na justificativa apresentada.
 
 ### Em quais municípios isso mais ocorre?
 
@@ -271,11 +273,11 @@ leaflet(data = mapa.paraiba) %>%
 ```
 <br/>
 
-Vemos que a distribuição do número de empenhos é bastante regular entre os municípios (apenas o município de **Mogeiro** parece fugir ao padrão). O mesmo ocorre para a distribuição do gasto per capita, com algumas poucas exceções: cidades bem pequenas como **Areia de Baraúnas** e **São José do Brejo do Cruz** gastam relativamente muito mais com empenhos cujo pagamento é feito no mesmo dia de sua realização do que todas as outras cidades. É necessário investigar mais a fundo para descobrir por que isso ocorre.
+Vemos que a distribuição do número de empenhos é bastante regular entre os municípios (apenas o município de **Mogeiro** parece fugir ao padrão). O mesmo ocorre para a distribuição do gasto per capita, com algumas poucas exceções: cidades bem pequenas como **Areia de Baraúnas** e **São José do Brejo do Cruz** gastam relativamente muito mais com empenhos cujo pagamento é feito no mesmo dia de sua realização do que todas as outras cidades.
 
 ### Quais são os credores mais relacionados a esses empenhos?
 
-Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. A CNAE ou Classificação nacional de atividades econômicas, é uma forma de classificar e padronizar em todo o território nacional, as atividades econômicas exercidas por todos os agentes que se engajam na produção de bens e serviços, como empresas e até organismos públicos ou privados. 
+Abaixo estão representados os 10.000 credores que fizeram o maior número de empenhos com algum pagamento no mesmo dia. A cor de cada um deles indica qual o tipo de atividades que eles exercem de acordo com seus registros no CNAE. A CNAE ou Classificação Nacional de Atividades Econômicas, é uma forma de classificar e padronizar em todo o território nacional, as atividades econômicas exercidas por todos os agentes que se engajam na produção de bens e serviços, como empresas e até organismos públicos ou privados. 
 
 Note que ambos os eixos do gráfico estão em uma escala logarítmica, com o intuito de facilitar a visualização de valores muito altos.
 
@@ -325,8 +327,6 @@ top_n(empenhos.forn, 10000, n) %>%
 
 É interessante perceber que credores com atividades similares têm, em geral, um comportamento parecido, estando os pontos de mesma cor relativamente próximos uns dos outros. Além disso, temos que os CNAEs que aparecem de forma mais relevante, seja com grande número de ocorrências ou com alto valor total de empenhos, são os relativos a administração pública, construção, comércio e atividades financeiras.
 
-Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários (folhas de pagamento, etc) e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível a entrega no mesmo dia do pedido. Entretanto, pode ser necessário verificar isso mais a fundo.
+Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários (folhas de pagamento, etc) e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível a entrega no mesmo dia do pedido.
 
-No entanto, uma coisa suspeita, é a ocorrência desse fenômeno com tanta frequência em construtoras, pois os serviços que elas oferecem são demorados e não é normal que seus produtos sejam recebidos e pagos no mesmo dia em que são requisitados. Isso só seria aceitável, de certa forma, se essas empresas estiverem na verdade fornecendo materiais de construção.
-
-Também é necessário investigar os credores cujo CNAE não conhecemos, mas que aparecem em posições de relevância, como **ANTONIO COELHO AIRES E OUTROS** e **MARIA DA PENHA LUCINDO**. O primeiro no entretanto, está representando um grande número de pessoas que não possuem seu cadastro de CNPJ devidamente preenchidos.
+Algo que chama atenção é a ocorrência dos empenhos e pagamentos no mesmo dia com tanta frequência em construtoras, pois os serviços que elas oferecem são, em geral, demorados. Logo, não é sempre normal que seus produtos sejam empenhados e pagos no mesmo dia. Uma possível justificativa seria apenas se essas empresas estão fornecendo materiais de construção.
