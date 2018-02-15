@@ -12,7 +12,7 @@ categories: ["merenda"]
 comments: true
 ---
 
-##### **Atualizado em 04/07/2017**
+##### **Atualizado em 15/02/2018**
 
 ```{r setup, include=FALSE}
 options(scipen = 999)
@@ -226,8 +226,6 @@ De acordo com o site do Tesouro Nacional [[1](http://www.tesouro.fazenda.gov.br/
 
 O empenho é o primeiro estágio da despesa e pode ser conceituado como sendo o ato emanado de autoridade competente que cria para o Estado a obrigação de pagamento, pendente ou não, de implemento de condição, ou seja, é a garantia de que foi feita a reserva orçamentária necessária para o pagamento do que esta sendo contratado. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)], [[2](https://www.pjf.mg.gov.br/subsecretarias/controle_interno/documentos/treinamento/05_execucao_ABRIL_2013.pdf)]
 
-O empenho deve sempre anteceder a realização de qualquer despesa, o que implica que este deve ser feito antes ou contemporâneo à assinatura do contrato. [[3](http://www.zenite.blog.br/quando-deve-ser-realizado-o-empenho/)]
-
 ### Liquidação
 
 O segundo estágio da despesa pública é a liquidação, que consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e documentos comprobatórios do respectivo crédito, ou seja, é a comprovação de que o credor cumpriu todas as obrigações constantes do empenho. A finalidade é reconhecer ou apurar a origem e o objeto do que se deve pagar, a importância exata a pagar e a quem se deve pagar para extinguir a obrigação. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)]
@@ -300,7 +298,7 @@ plot_ly(licitacoes.alt, x = ~vl_Empenho+1, y = ~vl_Liquidacao+1, alpha = 0.3) %>
 ```
 <br/>
 
-Comparativamente à relação anterior, esta apresenta mais dados em conformidade com o esperado, visto que há uma concentração maior de observações sobre a reta traçada. Essa identifica os casos em que o valor do empenho é exatamente igual ao valor da liquidação.
+Comparativamente à relação anterior, esta apresenta mais dados em conformidade com o esperado, visto que há uma concentração maior de observações sobre a reta traçada. Esta identifica os casos em que o valor do empenho é exatamente igual ao valor da liquidação.
 
 Existem ainda assim valores que não estão sobre a reta, quer seja abaixo dela, implicando que o valor empenhado foi maior que o liquidado, quer seja acima, significando exatamente o oposto. No entanto, existem poucas observações com este comportamento e as que o apresentam estão próximas à reta, indicando que as diferenças entre as variáveis são pequenas.
 
