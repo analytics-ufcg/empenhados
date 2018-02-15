@@ -12,6 +12,8 @@ categories: ["merenda"]
 comments: true
 ---
 
+##### **Atualizado em 15/02/2018**
+
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -40,17 +42,17 @@ dados_nfe <- tbl(notas, 'nota_fiscal') %>%
   collect(n = Inf)
 ```
 
-O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, se refere a comprar um produto por um preço bem acima do mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
+O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, refere-se a comprar um produto por um preço bem acima do preço de mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
 
-*Art. 3o  A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.*
+*A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.*
 
-**A seleção da proposta mais vantajosa para a administração**, se algo é comprado com superfaturamento, geralmente, não será a proposta mais vantajosa.
+Com destaque para o trecho: **"a seleção da proposta mais vantajosa para a administração"**, pois se algo é comprado com superfaturamento, geralmente, não será a proposta mais vantajosa.
 
-Com os dados de notas fiscais de compras feitas pela Adminstração Pública de municípios e diversas secretarias da Paraíba, é possível identificar até que ponto houve superfaturamento na aquisição de produtos.
+Com os dados de notas fiscais de compras feitas pela Administração Pública de municípios e diversas secretarias da Paraíba, é possível identificar até que ponto houve superfaturamento na aquisição de produtos.
 
-As notas fiscais obrigatoriamente precisam apresentar um código chamado **NCM** (Nomenclatura Comum do Mercosul). O NCM foi proposto pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional. A partir do [serviço](https://www4.receita.fazenda.gov.br/simulador/PesquisarNCM.jsp) da Receita Federal, o código NCM relacionado a **arroz** inicia com "1006".
+As notas fiscais obrigatoriamente precisam apresentar um código chamado **NCM** (Nomenclatura Comum do Mercosul). O NCM foi proposto pelo Governo Brasileiro para identificar a natureza das mercadorias e promover o desenvolvimento do comércio internacional. A partir do [serviço](https://www4.receita.fazenda.gov.br/simulador/PesquisarNCM.jsp) da Receita Federal, o código NCM relacionado ao **arroz** inicia com "1006".
 
-Tentamos estabelecer uma conexão entre os dados de notas fiscais analisados nesse relatório e os dados de merenda, em especial, disponíveis no SAGRES, no entanto o cruzamento não pode ser feito pois não há uma conexão efetiva entre as duas bases de dados.
+Tentamos estabelecer uma conexão entre os dados de notas fiscais analisados nesse relatório e os dados de merenda, em especial, disponíveis no SAGRES, no entanto o cruzamento não pôde ser feito pois não há uma conexão efetiva entre as duas bases de dados.
 
 Todas as notas fiscais de arroz tem data de emissão no ano de *2016*.
 
@@ -84,7 +86,7 @@ plot_ly(nfe_arroz, y = ~Valor_unit_prod, x = ~NCM_prod, type = 'scatter', mode =
 
 O Código NCM na visualização acima refere-se ao tipo específico de arroz. Todos começam com "1006", mas por exemplo 10061091 é o código para arroz parboilizado.
 
-Como observado, ainda existem alguns valores bem acima dos demais. Algumas notas fiscais que possuem valor unitário de arroz em kilogramas acima dos 25 reais estão apresentadas a seguir.
+Como observado, ainda existem alguns valores bem acima dos demais. Algumas notas fiscais que possuem valor unitário de arroz em quilogramas acima dos 25 reais estão apresentadas a seguir.
 
 ```{r}
 kable(
@@ -108,7 +110,7 @@ nfe_arroz_empresas <- nfe_arroz %>%
   distinct(CPF_CNPJ_emit, .keep_all = TRUE)
 ```
 
-Considerando o CNPJ das empresas emitentes das notas fiscais, é possível identificar `r nrow(nfe_arroz_empresas)` diferentes empresas com notas fiscais de arroz. A seguir é apresentado informações sobre algumas delas.
+Considerando o CNPJ das empresas emitentes das notas fiscais, é possível identificar `r nrow(nfe_arroz_empresas)` diferentes empresas com notas fiscais de arroz. A seguir são apresentadas informações sobre algumas delas.
 
 ```{r}
 plot_ly(nfe_arroz_empresas, x = ~total_notas, type = "histogram") %>%
@@ -130,7 +132,7 @@ plot_ly(nfe_arroz_empresas, x = ~CPF_CNPJ_emit, y = ~valor_total, type = 'bar',
          title = "Valor total das notas fiscais de arroz por empresa")
 ```
 
-Como observado na visualização acima, algumas empresas se destacam das demais no valor total das notas fiscais de arroz. Abaixo está o TOP 5 de empresas que mais emitiram notas fiscais (NF) de arroz com unidade em kilogramas.
+Como observado na visualização acima, algumas empresas se destacam das demais no valor total das notas fiscais de arroz. Abaixo está o TOP 5 de empresas que mais emitiram notas fiscais (NF) de arroz com unidade em quilogramas.
 
 ```{r}
 kable(
@@ -139,7 +141,7 @@ kable(
   align = c('c'))
 ```
 
-Algumas dessas empresas já foram citadas em outros [relatórios](https://analytics-ufcg.github.io/empenhados/), como a MEGA MASTER e a RAIMUNDO A. FONSECA PIRES.
+Algumas dessas empresas já foram citadas em outros [relatórios](https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/), como a MEGA MASTER e a RAIMUNDO A. FONSECA PIRES.
 
 ## É possível identificar a variação no preço do arroz?
 
@@ -148,7 +150,7 @@ nfe_arroz <- nfe_arroz %>%
   separate(Data_de_emissao, c('dt_AnoEmissao', 'dt_MesEmissao', 'dt_DiaEmissao', 'dt_Hora', 'dt_Minuto', 'dt_Segundo')) 
 ```
 
-Considerando apenas as notas fiscais nas quais o valor unitário está abaixo de 20 reais. O que provavelmente indicará que não houve erro nos dados e realmente a nota se refere ao kilograma de arroz. A seguir é mostrado como ao longo dos meses de 2016 o valor unitário dos produtos se distribui. Toma-se como parâmetro também a mediana geral do valor unitário durante todo o ano.
+Considerando apenas as notas fiscais nas quais o valor unitário está abaixo de 20 reais. O que provavelmente indicará que não houve erro nos dados e realmente a nota se refere ao quilograma de arroz. A seguir é mostrado como ao longo dos meses de 2016 o valor unitário dos produtos se distribui. Toma-se como parâmetro também a mediana geral do valor unitário durante todo o ano.
 
 ```{r}
 mediana_total = median(nfe_arroz$Valor_unit_prod)
@@ -170,4 +172,4 @@ nfe_arroz %>%
          legend = list(orientation = 'h'))
 ```
 
-Como observado no gráfico acima, existem valores unitários em notas fiscais consideravelmente longe da mediana. O que faz com que seja possível encontrar variações estranhas no preço do arroz por kilograma ao longo de todo o ano de 2016.
+Como observado no gráfico acima, existem valores unitários em notas fiscais consideravelmente longe da mediana. O que faz com que seja possível encontrar variações estranhas no preço do arroz por quilograma ao longo de todo o ano de 2016.
