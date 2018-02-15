@@ -12,7 +12,7 @@ categories: ["merenda"]
 comments: true
 ---
 
-##### **Atualizado em 22/06/2017**
+##### **Atualizado em 15/02/2018**
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(
@@ -166,7 +166,7 @@ n_propostas_group <- licitacoes_merenda %>%
   dplyr::summarise(n = n())
 lic_sem_concorrentes <- subset(licitacoes_merenda, nu_Propostas <= 1)
 ```
-A média de fornecedores por licitação de merenda é de __`r round(mean(licitacoes_merenda$nu_Propostas), 2)`__ enquanto a mediana é de `r median(licitacoes_merenda$nu_Propostas)` o que significa que existem licitações com valores extremos para o número de interessados que fazem a média subir, em geral, essas licitações são chamadas públicas para aquisição de gêneros alimentícios provenientes de agricultura familiar.
+A média de fornecedores por licitação de merenda é de __`r round(mean(licitacoes_merenda$nu_Propostas), 2)`__ enquanto a mediana é de `r median(licitacoes_merenda$nu_Propostas)` o que significa que existem licitações com valores extremos para o número de interessados, fazendo assim a média subir. Em geral essas licitações são chamadas públicas para aquisição de gêneros alimentícios provenientes de agricultura familiar.
 
 Percebe-se que em geral, as licitações contam com um número pequeno de competidores, indicando que existe baixa concorrência nas licitações de merenda; Notou-se ainda que `r length(lic_sem_concorrentes$cd_Municipio)` (`r round(length(lic_sem_concorrentes$cd_Municipio)/length(licitacoes_merenda$cd_Municipio)*100, 2)`%) licitações receberam nenhuma ou apenas uma proposta, ou seja, não tiveram concorrência.
 
