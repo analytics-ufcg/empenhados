@@ -65,7 +65,7 @@ ganhadores <- dados$vitorias
 
 Considerando a forma como a administração pública investe o dinheiro, o objetivo desse relatório é identificar dentre as pessoas físicas e jurídicas que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como *k-means*. 
 
-O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública, conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município. Nesse processo, o dinheiro destinado a empresa será empenhado, e a medida que a empresa vai executando corretamente o fornecimento do que foi acordado esse dinheiro é liquidado e pago. Mais sobre esse processo pode ser lido [aqui](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/). 
+O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município. Nesse processo, o dinheiro destinado a empresa será empenhado, e a medida que a empresa vai executando corretamente o fornecimento do que foi acordado esse dinheiro é liquidado e pago. Mais sobre esse processo pode ser lido [aqui](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/). 
 
 ## Licitantes
 Neste relatório estamos interessados em agrupar empresas sob duas perspectivas. Na primeira delas, é considerado o conjunto de empresas/pessoas físicas que participaram de uma licitação que envolvia pelo menos *um item* de merenda. O critério estabelecido para determinar se existe um item de merenda é se pelo menos um empenho que está associado a essa licitação, é destinado a alimentação escolar. 
@@ -101,17 +101,9 @@ ganhadores.scaled <- ganhadores.log %>%
   mutate_each(funs(scale(.) %>% c), -c(cd_Credor, no_Credor))
 ```
 
-Para nos auxiliar na escolha do número de grupos nos quais classificaremos os licitantes de merenda, usaremos uma visualização que nos mostra a soma do quadrado das distâncias dentro dos grupos em função do número de grupos. O desejado é a menor distância possível, pois indica que temos grupos bastante coesos, com um número de grupos que sejamos capazes de diferenciar e interpretar.
+Aqui, estamos mais interessados na visão geral dos agrupamentos de licitantes do que nos valores exatos dos pontos e a distribuição dos licitantes em cada grupo pode ser vista no gráfico de PCA abaixo. 
 
-```{r}
-wssplot(licitantes.scaled %>%
-  select(-nu_CPFCNPJ, -no_Fornecedor), 
-  nc = 20)
-```
-
-A visualização indica que com __6 grupos__ obtemos um melhor agrupamento já que com mais grupos que isto não temos grandes impactos na qualidade dos grupos. Em função disso optamos por classificar licitantes de merenda nesses grupos.
-
-Aqui, estamos mais interessados na visão geral dos agrupamentos de licitantes do que nos valores exatos dos pontos e a distribuição dos licitantes em cada grupo pode ser vista no gráfico de PCA abaixo.
+De acordo com a *soma dos quadrados das distâncias intragrupos*, a representação mais compreensível dos licitantes pode ser feita dividindo-os em 6 grupos. Mais detalhes sobre essa técnica podem ser encontrados em uma leitura opcional no fim deste artigo.
 
 ```{r}
 set.seed(12346) # Garantir que o k-means gere o mesmo resultado
@@ -129,7 +121,7 @@ licitantes.km.long <- licitantes.km %>%
   gather('variable', 'value', -c(nu_CPFCNPJ, no_Fornecedor), -cluster, factor_key=T)
 ```
 
-A seguir, pode ser observado o comportamento das 6 variáveis analisadas em cada um dos seis grupos obtidos.
+A seguir, pode ser observado o comportamento das variáveis analisadas em cada um dos seis grupos obtidos.
 
 ```{r fig.height=10, fig.width=10}
 ggplot(licitantes.km.long, aes(x = variable, y = value, colour = variable)) +
@@ -164,7 +156,7 @@ Mesmo participando mais que a maioria, esses licitantes em geral não conseguem 
 Esses estão aprendendo com os nutricionistas ainda. Participam de poucas licitações e em um número reduzido de municípios mas ganham bem com isso - um pouco menos que os verdadeiros nutricionistas, mas ainda sim tem seus lucros.
 
 ## Ganhadores
-Na segunda perspectiva utilizada no agrupamento, o interesse está em analisar apenas licitantes que estão associados a empenhos de alimentação escolar. Ou seja, apenas os ganhadores dos itens das licitações que envolveram merenda. Sob essa perspectiva é possível afirmar com segurança de que os fornecedores aqui agrupados fizeram propostas para itens da licitação relacionados a merenda escolar. 
+Na segunda perspectiva utilizada no agrupamento, o interesse está em analisar apenas licitantes que estão associados a empenhos de alimentação escolar. Ou seja, apenas os ganhadores dos itens das licitações que envolveram merenda. Sob essa perspectiva é possível afirmar com segurança de que os fornecedores agrupados fizeram propostas para itens da licitação relacionados a merenda escolar. 
 
 ### Descrição das variáveis
 Foram analisados `r nrow(ganhadores)` fornecedores que ganharam licitações e possuem empenhos associados a alimentação escolar.
@@ -183,17 +175,7 @@ Os critérios considerados para a realização do agrupamento foram:
 
 Como o interesse é agrupar os fornecedores ganhadores de merenda, não foi considerada a participação desses fornecedores em licitações que não ganharam.
 
-Assim como na seção anterior, foram aplicadas técnicas de transformação e padronização nos dados a fim de obter os melhores resultados e visualizações possíveis.
-
-```{r}
-wssplot(ganhadores.scaled %>%
-  select(-c(cd_Credor, no_Credor)), 
-  nc = 20)
-```
-
-Acima podemos observar uma métrica que pode ser utilizada para determinar o número de grupos escolhidos para a divisão dos fornecedores. A escolha ideal do número de grupos estaria entre 5 e 10.
-
-Considerando que quanto mais grupos maior será a dificuldade para interpretar como cada grupo consegue condensar o perfil de seus integrantes, a partir da visualização abaixo e da silhueta mais adiante, determinamos que o número de grupos como igual a 6.
+Assim como na seção anterior, foram aplicadas técnicas de transformação e padronização nos dados a fim de obter os melhores resultados e visualizações possíveis. A quantidade ideal de grupos, 6, também foi encontrada utilizando a mesma técnica utilizada anteriormente.
 
 É possível observar a distribuição dos grupos de fornecedores considerando as 5 variáveis citadas acima no gráfico PCA abaixo.
  
@@ -204,17 +186,6 @@ km_gan <- kmeans(select(ganhadores.scaled, -c(cd_Credor, no_Credor)), centers = 
 autoplot(km_gan, data = ganhadores.scaled, size = 2, main = 'Grupos obtidos utilizando o k-means', alpha = .6) +
   scale_color_brewer(palette='Set2') + 
   labs(colour = 'Grupos')
-```
-
-Abaixo, está disponível o gráfico de silhueta desse agrupamento. Esse gráfico tem o objetivo de descrever quão parecidos são os componentes dentro de um grupo. O ideal é que todos os grupos tenham um valor de silhueta elevado, no entanto observa-se que alguns ganhadores estão em grupos mas caraterísticas diferentes do grupo. Uma das explicações para isso, seria o fato que esses ganhadores não se encaixam muito bem em nenhum dos grupos propostos.
-
-Outro fator importante que pode ser observado através desta visualização é o número de observações de cada grupo. Percebe-se a de um grupo maior (1) com 3719 ganhadores, já o menor grupo (4) tem 205.
-
-```{r}
-dists <- dist(select(ganhadores.scaled, -c(cd_Credor, no_Credor)), method = 'euclidean')
-
-colors <- brewer.pal(6, 'Set2')
-plot(silhouette(km_gan$cluster, dists), col = colors, border = NA, main = 'Silhueta dos grupos usando o K-means')
 ```
 
 ```{r}
@@ -258,3 +229,27 @@ Neste grupo, apesar do valor total dos empenhos estar próximo a maioria do que 
 
 #### Grupo 6 - Arroz com ovo
 Os participantes desse grupo possuem variáveis atreladas ao dinheiro com valores mais baixos do que a maioria dos fornecedores de merenda.
+
+
+## Opcional: Soma dos Quadrados das Distâncias Intragrupos
+Para nos auxiliar na escolha do número de grupos utilizados na classificação das empresas que participaram e das que ganharam licitações de merenda foi analisado o valor da *soma dos quadrados das distâncias entre os pontos de um mesmo grupo* em função do número de grupos escolhido. 
+
+De acordo com essa técnica, o desejado é obter a menor distância possível - que indica que temos grupos bastante coesos - utilizando um número de grupos que sejamos capazes de diferenciar e interpretar.
+
+No caso do agrupamento de todos os licitantes de merenda, a soma indica que com **6 grupos** obtemos um melhor agrupamento já que com mais grupos que isto não teríamos grande impacto na qualidade dos grupos (a soma não diminuiria muito).
+
+```{r}
+wssplot(licitantes.scaled %>%
+  select(-nu_CPFCNPJ, -no_Fornecedor), 
+  nc = 20)
+```
+
+Já no caso do agrupamento dos ganhadores (gráfico abaixo), podemos observar que a escolha ideal do número de grupos estaria entre 5 e 10. 
+
+Considerando que quanto maior a quantidade de grupos, maior será a dificuldade para interpretar como cada grupo consegue representar o perfil de seus integrantes, a partir da análise da soma determinou-se que o número de grupos que levaria a resultados mais compreensíveis também seria de **6 grupos**.
+
+```{r}
+wssplot(ganhadores.scaled %>%
+  select(-c(cd_Credor, no_Credor)), 
+  nc = 20)
+```
