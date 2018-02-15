@@ -139,7 +139,7 @@ Observamos que a prática de empenhar e pagar no mesmo dia é recorrente ao long
 
 Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto podem ser realizados no ato da compra, algo similar a uma compra à vista com pronta entrega.
 
-Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provavelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
+Um outro comportamento encontrado é que a maioria dos picos no número de despesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provavelmente decorre do fato de ser este mês o prazo limite para que a administração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
 
 #### Valor total gasto ao longo dos meses por tipo de licitação
 
