@@ -214,17 +214,17 @@ licitacoes.alt <- licitacoes.full %>%
 
 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
 
-Este relátório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda? O quanto variam os valores entre os estágios consecutivos do processo de execução orçamentária?
+Este relatório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda? O quanto variam os valores entre os estágios consecutivos do processo de execução orçamentária?
 
 Para tal, decidimos estudar as compras de merenda na Paraíba no período de 2011 à 2015. Foram analisados dados de 1031 licitações, em conjunto com os dados de interesse de seus respectivos empenhos, contratos, liquidações, pagamentos, além dos valores de aditivos e de estorno de cada um dos estágios citados.
 
 ## Execução Orçamentária
 
-De acordo com o site do Tesouro Nacional [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)] a execução orçamerntária ocorre paralelamente à execução financeira e compreende na utilização dos créditos consignados na Lei Orçamentária Anual (LOA). Executar o orçamento é, portanto, realizar as despesas públicas nele previstas, seguindo à risca os três estágios da execução de despesas previstos na Lei nº 4320/64: empenho, liquidação e pagamento.
+De acordo com o site do [Tesouro Nacional](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria) a execução orçamentária ocorre paralelamente à execução financeira e compreende na utilização dos créditos consignados na Lei Orçamentária Anual (LOA). Executar o orçamento é, portanto, realizar as despesas públicas nele previstas, seguindo à risca os três estágios da execução de despesas previstos na Lei nº 4320/64: empenho, liquidação e pagamento.
 
 ### Empenho
 
-O empenho é o primeiro estágio da despesa e pode ser conceituado como sendo o ato emanado de autoridade competente que cria para o Estado a obrigação de pagamento, pendente ou não, de implemento de condição, ou seja, é a garantia de que foi feita a reserva orçamentária necessária para o pagamento do que esta sendo contratado. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)], [[2](https://www.pjf.mg.gov.br/subsecretarias/controle_interno/documentos/treinamento/05_execucao_ABRIL_2013.pdf)]
+O empenho é o primeiro estágio da despesa e pode ser conceituado como sendo o ato emanado de autoridade competente que cria para o Estado a obrigação de pagamento, pendente ou não, de implemento de condição, ou seja, é a garantia de que foi feita a reserva orçamentária necessária para o pagamento do que esta sendo contratado. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)].
 
 ### Liquidação
 
@@ -234,9 +234,11 @@ O segundo estágio da despesa pública é a liquidação, que consiste na verifi
 
 O último estágio da despesa é o pagamento e consiste na entrega de numerário ao credor do Estado, extinguindo dessa forma o débito ou obrigação. [[1](http://www.tesouro.fazenda.gov.br/execucao-orcamentaria)]
 
+Mais detalhes sobre o processo de execução orçamentária podem ser encontrados nesse [nosso post](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/) sobre o tema.
+
 ## Comparando os valores entre os estágios da execução orçamentária
 
-A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, aos quais foi aplicada uma escala logarítma na base 10 para facilitar a visualização dos dados. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
+A seguir serão estudados os valores descritos em cada fase do processo de execução orçamentária, aos quais foi aplicada uma escala logarítmica na base 10 para facilitar a visualização dos dados. Nos gráficos de dispersão, cada ponto representa uma das 1031 licitações estudadas.
 
 ### Valor da licitação versus valor do contrato
 
@@ -276,7 +278,7 @@ plot_ly(licitacoes.alt, x = ~vl_Contrato+1, y = ~vl_Empenho+1, alpha = 0.3) %>%
 ```
 <br/>
 
-Podemos perceber que na maioria dos casos o valor contratado é superior ao valor empenhado, isso indica que está sendo reservado menos dinheiro do que seria, a príncípio, necessário para fazer face à despesa contratada.
+Podemos perceber que na maioria dos casos o valor contratado é superior ao valor empenhado, isso indica que está sendo reservado menos dinheiro do que seria, a princípio, necessário para fazer face à despesa contratada.
 
 Assim como no caso acima, há muitos pontos sobre os eixos do gráfico. Esses ocorrem porque os empenhos em questão não estão relacionados a nenhum contrato.
 
