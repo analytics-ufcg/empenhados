@@ -12,7 +12,7 @@ categories: ["merenda"]
 comments: true
 ---
 
-##### **Atualizado em 22/06/2017**
+##### **Atualizado em 15/02/2018**
 
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(
