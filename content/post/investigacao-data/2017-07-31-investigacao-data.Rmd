@@ -12,7 +12,7 @@ categories: ["administracao publica"]
 comments: true
 ---
 
-##### **Atualizado em 15/02/2017**
+##### **Atualizado em 15/02/2018**
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -139,7 +139,7 @@ Observamos que a prática de empenhar e pagar no mesmo dia é recorrente ao long
 
 Suspeitamos que a razão para realizar o empenho e o pagamento no mesmo dia nos casos em que a licitação não é realizada seja porque esses casos remetam à compra de produtos de entrega imediata, onde o recebimento e verificação do produto podem ser realizados no ato da compra, algo similar a uma compra à vista com pronta entrega.
 
-Um outro comportamento encontrado é que a maiora dos picos no número de depesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provavelmente decorre do fato de ser este mês o prazo limite para que a adminstração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
+Um outro comportamento encontrado é que a maioria dos picos no número de despesas públicas que são empenhadas e pagas no mesmo dia ocorre no mês de dezembro, o que muito provavelmente decorre do fato de ser este mês o prazo limite para que a administração do município execute o orçamento planejado para todo o ano. Ou seja, é momento de "fechar as contas" do município.
 
 #### Valor total gasto ao longo dos meses por tipo de licitação
 
@@ -329,4 +329,4 @@ top_n(empenhos.forn, 10000, n) %>%
 
 Faz sentido que gastos já previstos e recorrentes, como previdência social, serviços bancários (folhas de pagamento, etc) e distribuição de eletricidade ou água, sejam pagos no mesmo dia do empenho, visto que não há muito o que verificar. Com relação a serviços de comércio, dependendo do produto e da quantidade também não é surpreendente que isso aconteça, visto que pode ser possível a entrega no mesmo dia do pedido.
 
-Algo que chama atenção é a ocorrência dos empenhos e pagamentos no mesmo dia com tanta frequência em construtoras, pois os serviços que elas oferecem são, em geral, demorados. Logo, não é sempre normal que seus produtos sejam empenhados e pagos no mesmo dia. Uma possível justificativa seria apenas se essas empresas estão fornecendo materiais de construção.
+Algo que chama atenção é a ocorrência dos empenhos e pagamentos no mesmo dia com tanta frequência em construtoras, pois os serviços que elas oferecem são, em geral, demorados. Logo, não é sempre normal que seus produtos sejam empenhados e pagos no mesmo dia. Uma possível justificativa seria a alegação de que essas empresas estão fornecendo materiais de construção.
