@@ -152,6 +152,8 @@ Os dados escolares que coletamos são referentes ao ano de 2015, então por meio
 
 *Esclarecimento*: Caso seu município tenha realizado, em 2015, algum pagamento referente a um empenho que aponta para a alimentação escolar então o mesmo aparecerá nesse relatório. Caso você queira saber mais sobre o processo de execução orçamentária, o processo de despesa pública e o vocabulário utilizado na área, consulte nosso [post](https://analytics-ufcg.github.io/empenhados/2017/05/processo-despesa/) sobre o assunto.
 
+Alguns municípios apresentam valores muito baixos, ou até mesmo inexistentes, para o gasto com merenda escolar em 2015, isso pode ocorrer por mal preenchimento dos campos usados para filtrarmos os dados ou mesmo por que os investimentos em alimentação escolar naquele município no ano em questão tenham sido realmente abaixo da média dos gastos dos demais.
+
 
 ```{r}
 plot_ly(data = gasto_municipios) %>%
@@ -209,7 +211,7 @@ leaflet(data = mapa_paraiba) %>%
 
 ```
 
-Já encontrou seu município no mapa? Clique sobre ele e veja o quanto exatamente ele gastou por aluno durante o ano de 2015 e quantos alunos estão matriculados na rede municipal de ensino. Comente no final desse post o que você sabe sobre a merenda do seu município.
+Já encontrou seu município no mapa? Clique sobre ele e veja o quanto ele gastou por aluno durante o ano de 2015 e quantos alunos estão matriculados na rede municipal de ensino. Comente no final desse post o que você sabe sobre a merenda do seu município.
 
 ### Os municípios que mais gastaram no período
 Deu pra perceber no mapa que alguns municípios são bem escuros, ou seja gastaram 400 reais ou mais por aluno em 2015. Abaixo listamos os 6 municípios que mais gastaram por aluno.
@@ -240,7 +242,7 @@ Localizado na microrregião de Catolé do Rocha, São José do Brejo do Cruz pos
     )
 ```
 
-Os dados do IDEB apresentados acima estão disponíveis [aqui](http://www.qedu.org.br/estado/115-paraiba/ideb/ideb-por-municipios) e se referem ao Índice de Desenvolvimento da Educação Básica das escolas públicas do município (municipais e estaduais). São José do Brejo do Cruz possui índices no IDEB nas séries iniciais maior que a mediana do restante dos municípios (`r median(municipios$vl_IDEB_Anos_Iniciais)`), o mesmo é observado com o IDEB das séries finais (`r median(municipios$vl_IDEB_Anos_Finais)`).
+Os dados do IDEB apresentados acima foram obtidos  [aqui](http://www.qedu.org.br/estado/115-paraiba/ideb/ideb-por-municipios) e se referem ao Índice de Desenvolvimento da Educação Básica das escolas públicas do município (municipais e estaduais). São José do Brejo do Cruz possui índices no IDEB nas séries iniciais maior que a mediana do restante dos municípios (`r median(municipios$vl_IDEB_Anos_Iniciais)`), o mesmo é observado com o IDEB das séries finais (`r median(municipios$vl_IDEB_Anos_Finais)`).
 
 Quanto será que São José do Brejo do Cruz gastou com cada aluno em outros anos?
 
