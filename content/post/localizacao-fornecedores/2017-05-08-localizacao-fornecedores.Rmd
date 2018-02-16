@@ -12,6 +12,12 @@ categories: ["merenda"]
 comments: true
 ---
 
+<style>
+table {
+  white-space: nowrap;
+}
+</style>
+
 ##### **Atualizado em 28/07/2017**
 
 ```{r global_options, include=FALSE}
@@ -140,7 +146,7 @@ licitantes_cimprovaveis <- localizacao_licitantes %>%
            valor_total_pag > quantile(localizacao_licitantes$valor_total_pag, .9))
 ```
 
-Foram encontrados 18 fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
+Foram encontrados `r nrow(licitantes_cimprovaveis)` fornecedores que atendem aos critérios descritos acima, a maioria deles no sertão do estado. A distribuição geográfica deles pode ser visualizada no mapa abaixo.
 
 ```{r}
 leaflet() %>% setView(lng = -36.623, lat = -7.548, zoom = 7)  %>%
@@ -174,18 +180,28 @@ empenhos_cimprovaveis.group <- empenhos_cimprovaveis %>%
 
 sagres <- src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
 
+modalidade_licitacao <- tbl(sagres, 'Tipo_Modalidade_Licitacao') %>% 
+  collect()
+
 licitacoes_improvaveis <- tbl(sagres, 'Licitacao') %>%
   collect() %>%
   inner_join(empenhos_cimprovaveis.group %>%
-               select(-c(n)))
+               select(-c(n))) %>% 
+  select(cd_UGestora, dt_Ano, nu_Licitacao, tp_Licitacao, dt_Homologacao, de_Obs) %>% 
+  mutate(dt_Homologacao = as.Date(dt_Homologacao)) %>% 
+  mutate(dt_Homologacao = format(dt_Homologacao, format = "%d/%m/%Y"))
+
+licitacoes_improvaveis <- licitacoes_improvaveis %>% 
+  inner_join(modalidade_licitacao, by = c("tp_Licitacao")) %>% 
+  select(-c(tp_Licitacao))
+
+rm(modalidade_licitacao)
 
 DT::datatable(licitacoes_improvaveis,
-          options = list(scrollX = TRUE, pageLength = 10),
-          colnames = c("Unid. Gestora", "Ano", "Nº da Licitação", "Tipo da Licitação", 
-                       "Data de Homologação", "Nº de Propostas", "Valor da Licitação", 
-                       "Tipo do Objeto", "Descrição", "Data", "Registro CGE", 
-                       "Tipo de Regime de Execução"),
-          rownames = FALSE)
+          options = list(scrollX = TRUE, pageLength = 10, language),
+          colnames = c("Unid. Gestora", "Ano", "Nº da Licitação", 
+                       "Data de Homologação", "Descrição", "Tipo da Licitação"),
+          rownames = FALSE, class = 'cell-border stripe', filter = "top")
 ```
 
 **Existe uma correlação entre o valor pago aos fornecedores e a população do município de suas empresas?**
