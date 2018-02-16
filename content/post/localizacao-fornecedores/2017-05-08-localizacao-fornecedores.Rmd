@@ -6,7 +6,7 @@ slug: "distribuicao-geografica-licitantes"
 disqusIdentifier: "distribuicao-geografica-licitantes"
 thumbnailImage: "images/posts/distribuicao-geografica-licitantes/thumb.png"
 thumbnailImagePosition: "left"
-date: 2017-05-08
+date: 2017-05-01
 tags: ["merenda", "licitantes", "localizacao"]
 categories: ["merenda"]
 comments: true
