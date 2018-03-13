@@ -32,11 +32,22 @@ ncm <- tbl(notas, "ncm") %>%
   collect(n = Inf) %>%
   mutate(NCM = ifelse(nchar(NCM) == 8, NCM, str_c("0",NCM)))
 
+# Dados de CNPJ - Nome 
+cnpj_nome <- tbl(notas, "nota_fiscal") %>% 
+  distinct(CPF_CNPJ_emit, CPF_CNPJ_dest, Nome_razao_social_emit, Nome_razao_social_dest) %>% 
+  collect(n = Inf) %>% 
+  
+  group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>% 
+  summarise(Nome_razao_social_emit = first(Nome_razao_social_emit), 
+            Nome_razao_social_dest = first(Nome_razao_social_dest)) %>% 
+  ungroup()
+
 #Orgãos que mais compram nos fornecedores
 set.seed(123)
 compras_fornecedor_comprador <- tbl(notas, "nota_fiscal") %>%
   group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
-  summarise(Total_Compras = n_distinct(Chave_de_acesso)) %>%
+  summarise(
+    Total_Compras = n_distinct(Chave_de_acesso)) %>%
   collect(n = Inf) %>%
   ungroup() %>%
   
@@ -48,7 +59,10 @@ compras_fornecedor_comprador <- tbl(notas, "nota_fiscal") %>%
   arrange(CPF_CNPJ_emit, desc(Total_Compras)) %>% 
   group_by(CPF_CNPJ_emit) %>% 
   slice(1:3) %>% 
-  ungroup()
+  ungroup() %>% 
+  
+  left_join(cnpj_nome) %>% 
+  select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest, Total_Compras)
 
 #NCMs onde os fornecedores mais atuam
 set.seed(123)
