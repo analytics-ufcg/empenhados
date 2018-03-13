@@ -3,21 +3,21 @@ library(tidyr)
 library(readr)
 library(stringr)
 
-fornecedor_ncm_compradores <- read_csv("../../shinyapps/dados/fornecedor_ncm_compradores.csv", 
+fornecedor_ncm_compradores <- read_csv("../../analises-interativas/shinyapps/dados/fornecedor_ncm_compradores.csv", 
                                        locale=locale(encoding="latin1"), col_types = "c??????") %>%
   mutate(NCM_prod = ifelse(nchar(NCM_prod) == 8, NCM_prod, str_c("0",NCM_prod)))
 
-fornecedores_ncms <- read_csv("../../shinyapps/dados/fornecedores_ncms.csv", 
+fornecedores_ncms <- read_csv("../../analises-interativas/shinyapps/dados/fornecedores_ncms.csv", 
                               locale=locale(encoding="latin1"), col_types = "??c???") %>%
   mutate(NCM_prod = ifelse(nchar(NCM_prod) == 8, NCM_prod, str_c("0",NCM_prod)))
 
-metrica_careiros <- read_csv("../../shinyapps/dados/metrica_careiros.csv", 
+metrica_careiros <- read_csv("../../analises-interativas/shinyapps/dados/metrica_careiros.csv", 
                              locale=locale(encoding="latin1"))
 
-metrica_careiros_comp <- read_csv("../../shinyapps/dados/metrica_careiros_comp.csv", 
+metrica_careiros_comp <- read_csv("../../analises-interativas/shinyapps/dados/metrica_careiros_comp.csv", 
                                   locale=locale(encoding="latin1"))
 
-ceis <- read.csv("../../../utils/dados/20180312_CEIS.csv", sep = ";", encoding = "latin1", 
+ceis <- read.csv("../../utils/dados/20180312_CEIS.csv", sep = ";", encoding = "latin1", 
                  colClasses = c(CPF.ou.CNPJ.do.Sancionado = "character")) %>%
   select(CNPJ = CPF.ou.CNPJ.do.Sancionado, 
          Sancao_CEIS = Tipo.Sanção,
@@ -33,33 +33,56 @@ ncm <- tbl(notas, "ncm") %>%
   mutate(NCM = ifelse(nchar(NCM) == 8, NCM, str_c("0",NCM)))
 
 #Orgãos que mais compram nos fornecedores
+set.seed(123)
 compras_fornecedor_comprador <- tbl(notas, "nota_fiscal") %>%
   group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
-  summarise(Total_Compras = n()) %>%
+  summarise(Total_Compras = n_distinct(Chave_de_acesso)) %>%
   collect(n = Inf) %>%
   ungroup() %>%
-  arrange(CPF_CNPJ_emit, desc(Total_Compras)) %>%
+  
+  sample_n(nrow(.)) %>% 
   group_by(CPF_CNPJ_emit) %>% 
   top_n(3, Total_Compras) %>%
+  ungroup() %>% 
+  
+  arrange(CPF_CNPJ_emit, desc(Total_Compras)) %>% 
+  group_by(CPF_CNPJ_emit) %>% 
+  slice(1:3) %>% 
   ungroup()
 
 #NCMs onde os fornecedores mais atuam
+set.seed(123)
 compras_fornecedor_ncm <- tbl(notas, "nota_fiscal") %>%
   group_by(CPF_CNPJ_emit, NCM_prod) %>%
+  
   summarise(Total_NCM = n()) %>%
   collect(n = Inf) %>%
   ungroup() %>% 
-  arrange(CPF_CNPJ_emit, desc(Total_NCM)) %>%
+  
+  sample_n(nrow(.)) %>% 
   group_by(CPF_CNPJ_emit) %>% 
   top_n(3, Total_NCM) %>%
+  ungroup() %>% 
+  
+  arrange(CPF_CNPJ_emit, desc(Total_NCM)) %>%
+  group_by(CPF_CNPJ_emit) %>% 
+  slice(1:3) %>% 
   ungroup()
 
 #NCMs de maior atipicidade para os fornecedores
+set.seed(123)
 ncm_maior_atipicidade <- fornecedores_ncms %>%
+  
+  sample_n(nrow(.)) %>% 
   group_by(CNPJ) %>%
   top_n(1, Atipicidade) %>%
   select(CNPJ, NCM_Atipicidade_Maxima = NCM_prod) %>%
   ungroup() %>%
+  
+  group_by(CNPJ) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  
   left_join(
     ncm %>%
       select(NCM_Atipicidade_Maxima = NCM, 
