@@ -19,9 +19,7 @@ metrica_careiros_comp <- read_csv("../../analises-interativas/shinyapps/dados/me
 
 ceis <- read.csv("../../utils/dados/20180312_CEIS.csv", sep = ";", encoding = "latin1", 
                  colClasses = c(CPF.ou.CNPJ.do.Sancionado = "character")) %>%
-  select(CNPJ = CPF.ou.CNPJ.do.Sancionado, 
-         Sancao_CEIS = Tipo.Sanção,
-         Fundamentacao_CEIS = Fundamentação.Legal)
+  select(CNPJ = CPF.ou.CNPJ.do.Sancionado)
 
 notas <-  src_mysql('notas_fiscais', 
                     group='ministerio-publico',
@@ -44,7 +42,7 @@ cnpj_nome <- tbl(notas, "nota_fiscal") %>%
 
 #Orgãos que mais compram nos fornecedores
 set.seed(123)
-compras_fornecedor_comprador <- tbl(notas, "nota_fiscal") %>%
+dados_fornecedores_compradores <- tbl(notas, "nota_fiscal") %>%
   group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
   summarise(
     Total_Compras = n_distinct(Chave_de_acesso)) %>%
@@ -79,9 +77,38 @@ compras_fornecedor_ncm <- tbl(notas, "nota_fiscal") %>%
   ungroup() %>% 
   
   arrange(CPF_CNPJ_emit, desc(Total_NCM)) %>%
-  group_by(CPF_CNPJ_emit) %>% 
-  slice(1:3) %>% 
-  ungroup()
+  group_by(CPF_CNPJ_emit) %>%
+  slice(1:3) 
+
+
+ncm_wide <- compras_fornecedor_ncm %>%
+  select(-Total_NCM) %>%
+  tibble::rowid_to_column() %>%
+  mutate(Posicao = ifelse(n() == 3 & rowid == max(rowid), "NCM_Frequente_3",
+                  ifelse(n() == 3 & rowid == min(rowid), "NCM_Frequente_1",
+                  ifelse(n() == 3 & rowid != max(rowid) & rowid != min(rowid), "NCM_Frequente_2",
+                  ifelse(n() == 2 & rowid == min(rowid), "NCM_Frequente_1",
+                  ifelse(n() == 2 & rowid != min(rowid), "NCM_Frequente_2",
+                  "NCM_Frequente_1")))))) %>% 
+  select(-rowid) %>% 
+  spread(Posicao, NCM_prod) %>%
+  ungroup() %>%
+  rename(CNPJ = CPF_CNPJ_emit)
+
+
+total_ncm_wide <- compras_fornecedor_ncm %>%
+  select(-NCM_prod) %>%
+  tibble::rowid_to_column() %>%
+  mutate(Posicao = ifelse(n() == 3 & rowid == max(rowid), "Total_NCM_Frequente_3",
+                   ifelse(n() == 3 & rowid == min(rowid), "Total_NCM_Frequente_1",
+                   ifelse(n() == 3 & rowid != max(rowid) & rowid != min(rowid), "Total_NCM_Frequente_2",
+                   ifelse(n() == 2 & rowid == min(rowid), "Total_NCM_Frequente_1",
+                   ifelse(n() == 2 & rowid != min(rowid), "Total_NCM_Frequente_2",
+                   "Total_NCM_Frequente_1")))))) %>% 
+  select(-rowid) %>% 
+  spread(Posicao, Total_NCM) %>%
+  ungroup() %>%
+  rename(CNPJ = CPF_CNPJ_emit)
 
 #NCMs de maior atipicidade para os fornecedores
 set.seed(123)
@@ -132,20 +159,17 @@ dados_fornecedores <- dados_fornecedores %>%
   mutate(Presente_CEIS = factor(Presente_CEIS, levels = c(0,1), labels = c("Não", "Sim")))
 
 dados_fornecedores <- dados_fornecedores %>%
-  left_join(ceis, by = c("CNPJ_temp" = "CNPJ")) %>%
-  select(-CNPJ_temp)
-# 
-# dados_fornecedores <- dados_fornecedores %>%
-#   left_join(
-#     fornecedores_ncms %>%
-#       group_by(CNPJ) %>%
-#       top_n(1, Atipicidade) %>%
-#       select(CNPJ, NCM_Atipicidade_Maxima = NCM_prod)
-#   )
-# 
-# dados_fornecedores <- dados_fornecedores %>%
-#   left_join(
-#     ncm %>%
-#       select(NCM_Atipicidade_Maxima = NCM, 
-#              NCM_Atipicidade_Maxima_Desc = Descricao)
-#   )
+  left_join(ceis, by = c("CNPJ_temp" = "CNPJ"))
+
+dados_fornecedores <- dados_fornecedores %>%
+  left_join(ncm_maior_atipicidade)
+
+dados_fornecedores <- dados_fornecedores %>%
+  left_join(ncm_wide) %>%
+  left_join(total_ncm_wide) %>%
+  select(-CNPJ_temp) %>%
+  rename(CPF_CNPJ_emit = CNPJ)
+
+dados_fornecedores <- dados_fornecedores %>%
+  arrange(desc(Atipicidade_media)) %>%
+  head(200)
