@@ -198,7 +198,7 @@ licitacoes_improvaveis <- licitacoes_improvaveis %>%
 rm(modalidade_licitacao)
 
 DT::datatable(licitacoes_improvaveis,
-          options = list(scrollX = TRUE, pageLength = 10, language),
+          options = list(scrollX = TRUE, pageLength = 10),
           colnames = c("Unid. Gestora", "Ano", "Nº da Licitação", 
                        "Data de Homologação", "Descrição", "Tipo da Licitação"),
           rownames = FALSE, class = 'cell-border stripe', filter = "top")

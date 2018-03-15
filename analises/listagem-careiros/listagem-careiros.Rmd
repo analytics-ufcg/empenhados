@@ -1,7 +1,26 @@
+---
+title: "Detalhes Sobre Fornecedores Careiros"
+author: "Laboratório Analytics"
+date: "March 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE, 
+                      warning = FALSE)
+```
+
+```{r}
 library(dplyr)
 library(tidyr)
 library(readr)
 library(stringr)
+library(DT)
+```
+
+```{r}
+set.seed(123)
 
 fornecedor_ncm_compradores <- read_csv("../../analises-interativas/shinyapps/dados/fornecedor_ncm_compradores.csv", 
                                        locale=locale(encoding="latin1"), col_types = "c??????") %>%
@@ -40,36 +59,15 @@ cnpj_nome <- tbl(notas, "nota_fiscal") %>%
             Nome_razao_social_dest = first(Nome_razao_social_dest)) %>% 
   ungroup()
 
-#Orgãos que mais compram nos fornecedores
-set.seed(123)
-dados_fornecedores_compradores <- tbl(notas, "nota_fiscal") %>%
-  group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
-  summarise(
-    Total_Compras = n_distinct(Chave_de_acesso)) %>%
-  collect(n = Inf) %>%
-  ungroup() %>%
-  
-  sample_n(nrow(.)) %>% 
-  group_by(CPF_CNPJ_emit) %>% 
-  top_n(3, Total_Compras) %>%
-  ungroup() %>% 
-  
-  arrange(CPF_CNPJ_emit, desc(Total_Compras)) %>% 
-  group_by(CPF_CNPJ_emit) %>% 
-  slice(1:3) %>% 
-  ungroup() %>% 
-  
-  left_join(cnpj_nome) %>% 
-  select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest, Total_Compras)
-
 #NCMs onde os fornecedores mais atuam
-set.seed(123)
 compras_fornecedor_ncm <- tbl(notas, "nota_fiscal") %>%
   group_by(CPF_CNPJ_emit, NCM_prod) %>%
   
   summarise(Total_NCM = n()) %>%
   collect(n = Inf) %>%
   ungroup() %>% 
+  
+  left_join(ncm %>% select(NCM, Descricao_NCM = Descricao), by = c("NCM_prod" = "NCM")) %>%
   
   sample_n(nrow(.)) %>% 
   group_by(CPF_CNPJ_emit) %>% 
@@ -78,8 +76,8 @@ compras_fornecedor_ncm <- tbl(notas, "nota_fiscal") %>%
   
   arrange(CPF_CNPJ_emit, desc(Total_NCM)) %>%
   group_by(CPF_CNPJ_emit) %>%
-  slice(1:3) 
-
+  slice(1:3) %>%
+  select(-NCM_prod)
 
 ncm_wide <- compras_fornecedor_ncm %>%
   select(-Total_NCM) %>%
@@ -91,13 +89,12 @@ ncm_wide <- compras_fornecedor_ncm %>%
                   ifelse(n() == 2 & rowid != min(rowid), "NCM_Frequente_2",
                   "NCM_Frequente_1")))))) %>% 
   select(-rowid) %>% 
-  spread(Posicao, NCM_prod) %>%
+  spread(Posicao, Descricao_NCM) %>%
   ungroup() %>%
   rename(CNPJ = CPF_CNPJ_emit)
 
-
 total_ncm_wide <- compras_fornecedor_ncm %>%
-  select(-NCM_prod) %>%
+  select(-Descricao_NCM) %>%
   tibble::rowid_to_column() %>%
   mutate(Posicao = ifelse(n() == 3 & rowid == max(rowid), "Total_NCM_Frequente_3",
                    ifelse(n() == 3 & rowid == min(rowid), "Total_NCM_Frequente_1",
@@ -111,7 +108,6 @@ total_ncm_wide <- compras_fornecedor_ncm %>%
   rename(CNPJ = CPF_CNPJ_emit)
 
 #NCMs de maior atipicidade para os fornecedores
-set.seed(123)
 ncm_maior_atipicidade <- fornecedores_ncms %>%
   
   sample_n(nrow(.)) %>% 
@@ -128,7 +124,13 @@ ncm_maior_atipicidade <- fornecedores_ncms %>%
     ncm %>%
       select(NCM_Atipicidade_Maxima = NCM, 
              NCM_Atipicidade_Maxima_Desc = Descricao)
-  )
+  ) %>%
+  select(-NCM_Atipicidade_Maxima) %>%
+  rename(NCM_Atipicidade_Maxima = NCM_Atipicidade_Maxima_Desc)
+```
+
+```{r}
+set.seed(123)
 
 dados_fornecedores <- fornecedores_ncms %>%
   distinct(CNPJ, Razao_Social, Atipicidade_media)
@@ -173,3 +175,80 @@ dados_fornecedores <- dados_fornecedores %>%
 dados_fornecedores <- dados_fornecedores %>%
   arrange(desc(Atipicidade_media)) %>%
   head(200)
+
+dados_fornecedores <- dados_fornecedores %>%
+  select(CPF_CNPJ_emit = CPF_CNPJ_emit, Razao_Social, 
+         Atipicidade_Media = Atipicidade_media,
+         Atipicidade_Total = Atipicidade_total,
+         Atipicidade_Maxima = Atipicidade_maxima, NCM_Atipicidade_Maxima,
+         NCMs_Atuacao = NCMs_atuacao, NCM_Frequente_1, Total_NCM_Frequente_1, 
+         NCM_Frequente_2, Total_NCM_Frequente_2, NCM_Frequente_3,
+         Total_NCM_Frequente_3, Presente_CEIS)
+```
+
+```{r}
+set.seed(123)
+
+#Orgãos que mais compram nos fornecedores
+dados_fornecedores_compradores <- tbl(notas, "nota_fiscal") %>%
+  group_by(CPF_CNPJ_emit, CPF_CNPJ_dest) %>%
+  summarise(
+    Total_Compras = n_distinct(Chave_de_acesso)) %>%
+  collect(n = Inf) %>%
+  ungroup() %>%
+  
+  sample_n(nrow(.)) %>% 
+  group_by(CPF_CNPJ_emit) %>% 
+  top_n(3, Total_Compras) %>%
+  ungroup() %>% 
+  
+  arrange(CPF_CNPJ_emit, desc(Total_Compras)) %>% 
+  group_by(CPF_CNPJ_emit) %>% 
+  slice(1:3) %>% 
+  ungroup() %>% 
+  
+  left_join(cnpj_nome) %>% 
+  select(CPF_CNPJ_emit, Nome_razao_social_emit, CPF_CNPJ_dest, Nome_razao_social_dest, Total_Compras)
+```
+
+Abaixo é possível observar a listagem com os 200 fornecedores que apresentaram o maior índice
+de atipicidade média durante nossas análises.
+
+As características presentes na listagem são:
+
+- CPF_CNPJ_emit, o CPF ou CNPJ do fornecedor;
+- Razao_Social, a razão social do fornecedor;
+- Atipicidade_Media, a média das atipicidades de todos os NCMs em que o fornecedor atua;
+- Atipicidade_Total, a soma das atipicidades de todos os NCMs em que o fornecedor atua;
+- Atipicidade_Maxima, a maior atipicidade entre todos os NCMs em que o fornecedor atua;
+- NCM_Atipicidade_Maxima, o NCM onde foi encontrada a maior atipicidade parao fornecedor;
+- NCMs_Atuacao, total de NCMs onde o fornecedor atua;
+- NCM_Frequente_1, NCM onde o fornecedor mais atua;
+- Total_NCM_Frequente_1, Total de produtos vendidos no NCM onde o fornecedor mais atua;
+- NCM_Frequente_2, Segundo NCM onde o fornecedor mais atua;
+- Total_NCM_Frequente_2, Total de produtos vendidos no segundo NCM onde o fornecedor mais atua;
+- NCM_Frequente_3, Terceiro NCM onde o fornecedor mais atua;
+- Total_NCM_Frequente_3, Total de produtos vendidos no terceiro NCM onde o fornecedor mais atua.
+
+Em casos de empate entre os NCMs mais frequentes, os NCMs exibidos foram 
+selecionados aleatoriamente entre os empatados.
+
+```{r}
+dados_fornecedores %>% datatable(
+          rownames = FALSE, class = 'cell-border stripe', filter = "top",
+          options = list(scrollX = TRUE, pageLength = 20))
+```
+
+<br>
+Para esses 200 fornecedores, é possível ainda verificar quem são os três compradores
+que mais fecharam negócios com o mesmo. Em casos de empate, os compradores exibidos foram 
+selecionados aleatoriamente entre os empatados.
+<br>
+
+```{r}
+dados_fornecedores_compradores %>%
+  semi_join(dados_fornecedores %>% distinct(CPF_CNPJ_emit)) %>%
+  datatable(
+          rownames = FALSE, class = 'cell-border stripe', filter = "top",
+          options = list(scrollX = TRUE, pageLength = 20))
+```
