@@ -176,8 +176,10 @@ dados_fornecedores <- dados_fornecedores %>%
          NCM_Atipicidade_Maxima, NCM_Atipicidade_Maxima_Desc, Presente_CEIS)
 ```
 
+O índice de *atipicidade* é um valor calculado para cada NCM presente nos dados de notas fiscais. Ele indica quão distante dos valores que seriam considerados comuns para o NCM está o valor cobrado por um produto. Como uma forma de sumarizar esses valores para cada fornecedor, foi calculada a *atipicidade média* de um fornecedor, que diz respeito à média dos índices de atipicidade de todos os NCMs onde tal fornecedor atua.
+
 Abaixo é possível observar a listagem com os `r n_fornecedores_observados` fornecedores que apresentaram o maior índice
-de atipicidade média durante nossas análises.
+de *atipicidade média* durante nossas análises.
 
 As características presentes na listagem são:
 
