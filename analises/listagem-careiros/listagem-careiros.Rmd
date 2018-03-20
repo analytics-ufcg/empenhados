@@ -232,8 +232,8 @@ notas_ncm_maior_atipicidade <- notas_fornecedores_selecionados %>%
          CPF_CNPJ_dest,
          Razao_social_dest = Nome_razao_social_dest, 
          NCM_prod = NCM_desc,
-         Desc_item = Descricao_do_Produto_ou_servicos,
-         Valor_unit_prod,
+         Descricao_prod = Descricao_do_Produto_ou_servicos,
+         Valor_venda_prod = Valor_unit_prod,
          Preco_Medio_NCM,
          Chave_nota = Chave_de_acesso, 
          Item_nota = Nr_item
