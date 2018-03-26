@@ -44,3 +44,16 @@ CREATE TABLE preco_maximo_ncm_atipico(
 
     PRIMARY KEY(CPF_CNPJ_emit, Chave_nota, Item_nota)
 );
+
+CREATE TABLE faturamento_empresas(
+	cd_UGestora CHAR(6),
+	cd_Credor VARCHAR(14),
+	dt_Ano INT(4),
+	no_Credor VARCHAR(82),
+	total_Empenhos DECIMAL(14, 2),
+	total_Pago DECIMAL(14, 2),
+	total_Estorno DECIMAL(13, 2),
+	total_Vitorias INT(3),
+
+	PRIMARY KEY(cd_UGestora, cd_Credor, dt_Ano)
+);
