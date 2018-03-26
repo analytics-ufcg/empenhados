@@ -31,6 +31,7 @@ mysql -p$password < utils.sql
 mysql -p$password < notas_fiscais.sql
 mysql -p$password < empresas.sql
 mysql -p$password < doadores_2002_2012.sql
+mysql -p$password < lava_jato.sql
 
 mysqlimport -p$password \
   --ignore-lines=1 \
@@ -52,7 +53,7 @@ mysqlimport -p$password \
     nota_fiscal.csv \
     ncm.csv \
     medicamentos_nota_fiscal.csv
-    
+
 mysqlimport -p$password \
   --ignore-lines=1 \
   --fields-enclosed-by='"' \
@@ -60,6 +61,17 @@ mysqlimport -p$password \
   --lines-terminated-by='\n' \
   --local empresas \
     cnpj_pb.csv
+
+mysqlimport -p$password \
+  --ignore-lines=1 \
+  --fields-enclosed-by='"' \
+  --fields-terminated-by=',' \
+  --lines-terminated-by='\n' \
+  --local lava_jato \
+    atuacao_fornecedores_ncm.csv \
+    atuacao_fornecedores_compradores.csv \
+    preco_maximo_ncm_atipico.csv
+
 
 cd ..
 rm -r tmp
