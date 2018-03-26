@@ -13,6 +13,7 @@ CREATE TABLE atuacao_fornecedores_compradores(
 );
 
 CREATE TABLE atuacao_fornecedores_ncm(
+    Ranking_atipicidade INT(11),
     CPF_CNPJ_emit VARCHAR(18),
     Razao_social VARCHAR(60),
     NCMs_atuacao INT(11),

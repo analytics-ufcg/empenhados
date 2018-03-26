@@ -22,7 +22,7 @@ library(DT)
 ```{r}
 set.seed(123)
 
-n_fornecedores_observados <- 20
+n_fornecedores_observados <- 40
 
 fornecedor_ncm_compradores <- read_csv("../../analises-interativas/shinyapps/dados/fornecedor_ncm_compradores.csv", 
                                        locale=locale(encoding="latin1"), col_types = "c??????") %>%
