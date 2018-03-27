@@ -72,7 +72,8 @@ mysqlimport -p$password \
     atuacao_fornecedores_compradores.csv \
     preco_maximo_ncm_atipico.csv \
     atipicidades_fornecedores.csv \
-    faturamento_empresas.csv
+    faturamento_empresas.csv \
+    metricas_2016.csv
 
 
 cd ..
