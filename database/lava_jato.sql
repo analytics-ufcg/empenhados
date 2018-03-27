@@ -56,3 +56,27 @@ CREATE TABLE faturamento_empresas(
 
 	PRIMARY KEY(cd_UGestora, cd_Credor, dt_Ano)
 );
+
+CREATE TABLE metricas_2016(
+	CNPJ VARCHAR(15),
+	fornecedor VARCHAR(82),
+	metrica_2 DECIMAL(4, 2),
+	metrica_3 DECIMAL(8, 4),
+	metrica_4 DECIMAL(4, 2),
+	metrica_5 DECIMAL(10, 5),
+	metrica_6 DECIMAL(10, 5),
+	metrica_8 DECIMAL(6, 2),
+	metrica_9 DECIMAL(10, 5),
+	metrica_final DECIMAL(12, 8),
+	ranking_metrica_2 INT(4),
+	ranking_metrica_3 INT(5),
+	ranking_metrica_4 INT(4),
+	ranking_metrica_5 INT(6),
+	ranking_metrica_6 INT(6),
+	ranking_metrica_8 INT(5),
+	ranking_metrica_9 INT(5),
+	ranking_metrica_final INT(6),
+	
+
+	PRIMARY KEY(CNPJ)
+);
