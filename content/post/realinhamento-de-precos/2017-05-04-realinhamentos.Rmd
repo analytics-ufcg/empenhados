@@ -41,7 +41,7 @@ library(rsagrespb)
 ```
 
 ```{r}
-sagres <-  src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
+sagres <-  src_mysql('sagres_municipal', group='ministerio-publico', password=NULL, username = "empenhados")
 
 licitacoes <- get_licitacoes(sagres, 12, 306, '02') %>%
   compute(name = 'lic') %>%

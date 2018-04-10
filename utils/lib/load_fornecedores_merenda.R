@@ -5,8 +5,8 @@ load_fornecedores_merenda <- function() {
   library(stringr)
   library(rsagrespb)
   
-  sagres = src_mysql('SAGRES_MUNICIPAL', group='ministerio-publico', password=NULL)
-  utils = src_mysql('utils', group='ministerio-publico', password=NULL)
+  sagres = src_mysql('sagres_municipal', group='ministerio-publico', password=NULL, username = "empenhados")
+  utils = src_mysql('utils', group='ministerio-publico', password=NULL, username = "empenhados")
   
   municipios = tbl(utils, 'municipio') %>%
     collect()

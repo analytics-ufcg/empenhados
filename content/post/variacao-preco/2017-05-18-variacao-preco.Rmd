@@ -35,7 +35,7 @@ theme_set(theme_bw())
 ```
 
 ```{r}
-notas = src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+notas = src_mysql('notas_fiscais', group='ministerio-publico', password=NULL, username = "empenhados")
 
 dados_nfe <- tbl(notas, 'nota_fiscal') %>%
   filter(substr(NCM_prod, 1, 4) == "1006") %>%
