@@ -79,7 +79,7 @@ licitacoes <- tbl(sagres, 'Licitacao') %>%
 ## Adicionando código do município a tabela de licitações
 licitacoes <- licitacoes %>%
   mutate(cd_UGestora_copy = cd_UGestora) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -3) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   select(-cd_UnGestora)
 
@@ -87,21 +87,21 @@ licitacoes_merenda <- get_licitacoes(sagres, cd_funcao = 12, cd_subfuncao = 306,
   collect() %>%
   left_join(tipos_licitacao, by = 'tp_Licitacao') %>%
   mutate(cd_UGestora_copy = cd_UGestora) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -3) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   select(-cd_UnGestora)
 
 empenhos_merenda <- get_empenhos_filtrados(dbcon = sagres, cd_funcao = 12, cd_subfuncao = 306, cd_subelemento = "02") %>%
   collect(n = Inf) %>%
   mutate(cd_UGestora_copy = cd_UGestora) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -3) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   mutate(cd_Municipio = as.integer(cd_Municipio)) %>%
   select(-cd_UnGestora)
 
 empenhos_merenda_group <- empenhos_merenda %>%
   group_by(cd_UGestora, nu_Licitacao, tp_Licitacao) %>%
-  summarise(valor_merenda = sum(vl_Empenho),
+  dplyr::summarise(valor_merenda = sum(vl_Empenho),
             total_emp_merenda = n())
 
 licitacoes_merenda <- licitacoes_merenda %>% 
@@ -116,7 +116,7 @@ empenhos <- tbl(sagres, 'Empenhos') %>%
   collect(n = Inf) %>%
   mutate(dt_Empenho = ymd_hms(dt_Empenho)) %>%
   filter(year(dt_Empenho) >= 2003 & year(dt_Empenho) <= 2016) %>%
-  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -4) %>%
+  separate(cd_UGestora_copy, c('cd_UnGestora', 'cd_Municipio'), -3) %>%
   left_join(municipios %>% select(cd_Municipio, de_Municipio), 'cd_Municipio') %>%
   select(-cd_UnGestora) 
 ```
@@ -152,7 +152,7 @@ Feita essa análise, descobrimos que dos cinco municípios que mais realizam lic
 ```{r}
 cinco_mais <- licitacoes %>%
   group_by(de_Municipio) %>%
-  summarise(total_licitacoes = n()) %>%
+  dplyr::summarise(total_licitacoes = n()) %>%
   arrange(desc(total_licitacoes)) %>%
   head(5) %>%
   select(de_Municipio)
@@ -160,7 +160,7 @@ cinco_mais <- licitacoes %>%
 licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
   group_by(de_Municipio) %>%
-  summarise(total_licitacoes = n()) %>%
+  dplyr::summarise(total_licitacoes = n()) %>%
   plot_ly() %>%
     add_bars(x=~total_licitacoes, y = ~reorder(de_Municipio, total_licitacoes)) %>%
     layout(title = "Municipios que mais licitaram",
@@ -180,7 +180,7 @@ p1 <- licitacoes %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
   mutate(dt_Ano_Homologacao = as.numeric(year(dt_Homologacao))) %>%
   group_by(de_Municipio, dt_Ano_Homologacao) %>%
-  summarise(total_por_ano = n()) %>%
+  dplyr::summarise(total_por_ano = n()) %>%
   plot_ly(legendgroup = ~de_Municipio,  showlegend = F) %>%
     add_trace(x=~dt_Ano_Homologacao, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
     layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
@@ -194,7 +194,7 @@ p2 <- empenhos %>%
   inner_join(cinco_mais, by = "de_Municipio") %>%
   mutate(dt_Ano) %>%
   group_by(de_Municipio, dt_Ano) %>%
-  summarise(total_por_ano = n()) %>%
+  dplyr::summarise(total_por_ano = n()) %>%
   plot_ly(legendgroup = ~de_Municipio) %>%
      add_trace(x=~dt_Ano, y=~total_por_ano, color=~de_Municipio, type = "scatter", mode="lines+markers") %>%
     layout(title = "Total de licitações e empenhos dos 5 municípios que mais licitaram",
@@ -266,7 +266,7 @@ paraiba = licitacoes_merenda %>%
 
 paraiba_sumarizado = paraiba %>%
   group_by(de_Municipio) %>%
-  summarize(total = n(),
+  dplyr::summarize(total = n(),
             valor_medio_emp = mean(valor_merenda),
             valor_total_emp = sum(valor_merenda),
             total_num = n(),
@@ -335,7 +335,7 @@ media_estadual_emp <- mean(licitacoes_merenda$valor_merenda)
 
 licitacoes_merenda.monteiro %>%
   group_by(dt_Ano) %>%
-  summarise(valor_merenda = sum(valor_merenda)) %>%
+  dplyr::summarise(valor_merenda = sum(valor_merenda)) %>%
   plot_ly() %>%
   add_bars(x = ~dt_Ano, y = ~valor_merenda, name = 'Valor Empenhado', showlegend = FALSE) %>%
   add_lines(x= ~dt_Ano, y = ~media_estadual_emp, mode = 'lines', name = 'Média Estadual') %>%
@@ -419,7 +419,7 @@ mediana_geral = median(licitacoes_merenda$valor_merenda)
 plot_ly(data = (licitacoes_merenda %>%
                   mutate(mes = month(dt_Homologacao)) %>%
                   group_by(mes) %>%
-                  summarize(mediana = median(valor_merenda)))) %>%
+                  dplyr::summarize(mediana = median(valor_merenda)))) %>%
   add_trace(x = ~as.factor(mes), y = ~mediana, type = 'scatter', mode = 'lines+markers',
             name = 'Mediana mensal',
             text = ~paste('Mês: ', mes, '', 'Mediana: R$', mediana),
@@ -459,7 +459,7 @@ levels(licitacoes_merenda$de_TipoLicitacao) = niveis
 
 licitacoes_merenda %>%
   group_by(year(dt_Homologacao), de_TipoLicitacao) %>%
-  summarise(total = n()) %>%
+  dplyr::summarise(total = n()) %>%
   rename(dt_AnoHomologacao = 'year(dt_Homologacao)') %>%
   ungroup() %>%
   plot_ly() %>%

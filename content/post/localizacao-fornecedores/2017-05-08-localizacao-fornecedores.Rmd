@@ -15,11 +15,11 @@ thumbnailImagePosition: left
 categories: merenda
 ---
 
-<style>
-table {
-  white-space: nowrap;
-}
-</style>
+<!-- <style> -->
+<!-- table { -->
+<!--   white-space: nowrap; -->
+<!-- } -->
+<!-- </style> -->
 
 ##### **Atualizado em 28/07/2017**
 

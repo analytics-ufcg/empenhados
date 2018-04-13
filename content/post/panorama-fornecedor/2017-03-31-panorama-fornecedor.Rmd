@@ -183,15 +183,24 @@ contratos_ordenados <- within(contratos,
 quartis_fornc <- quantile(data_fornecedores_groups$n)
 media <- mean(data_fornecedores_groups$n)
 
-ggplot(aes(x = nu_CPFCNPJ), data = contratos_ordenados) +
-  geom_histogram(stat = 'count', color = '#1E90FF') +
-  labs(title = 'Número de contratos celebrados por fornecedor', x = 'Fornecedores', y = 'Número de contratos') +
-  geom_hline(yintercept = media, linetype = 'dashed', color = 'blue') +
-  geom_text(aes(0, media, label = 'Média', vjust = -0.5, hjust = -0.1), size = 4) +
-  scale_y_continuous(breaks = seq(0, 80, 5)) +
-  theme(
-      axis.text.x=element_blank(),
-      axis.ticks.x=element_blank())
+forns <- get.fornecedor(contratos_ordenados$nu_CPFCNPJ) %>%
+  group_by(nu_CPFCNPJ) %>%
+  dplyr::summarise(fornecedor = gsub("[[:space:]][[:space:]]", "", first(no_Fornecedor)))
+
+contratos_ordenados %>%
+  left_join(forns) %>%
+  plot_ly(x = ~nu_CPFCNPJ, type = "histogram", text = ~paste("Fornecedor:", fornecedor),
+          hoverinfo = "text") %>%
+  add_trace(y = media, type = "scatter", mode = "lines", line = list(dash = 'dash'), name = "Média") %>%
+  layout(title = 'Número de contratos celebrados por fornecedor',
+         xaxis = list(title = "Fornecedores", showticklabels = FALSE),
+         yaxis = list(title = "Número de contratos"),
+         showlegend = FALSE,
+         annotations = list(y = media,  xref = "x", yref = "y", text = "Média", 
+                            showarrow = TRUE,
+                           arrowhead = 7,
+                           ax = 40,
+                           ay = -60))
 
 ```
 
@@ -343,16 +352,10 @@ lucros %>%
   arrange(-valor) %>%
   mutate(ordem=nrow(lucros) %>% seq) %>%
   head(400) %>%
-  ggplot(aes(x=ordem, y=valor)) +
-    geom_bar(width=1, stat='identity', color = "#1E90FF") +
-    scale_y_continuous(
-      breaks=pretty_breaks(5),
-      label=comma) +
-    labs(
-      title = 'Distribuição de licitações por fornecedor',
-      x = 'Fornecedor',
-      y = 'Total ganho (reais)') +
-  theme_minimal() +
-  theme(axis.text.x=element_blank())
-
+  plot_ly(x = ~ordem, y = ~valor, type = "bar", 
+          text = ~paste(ordem, "º : ", valor, sep = ""),
+          hoverinfo = "text") %>%
+  layout(title = 'Distribuição de licitações por fornecedor', 
+         xaxis = list(title = "Fornecedor"),
+         yaxis = list(title = "Total ganho (reais)"))
 ```
