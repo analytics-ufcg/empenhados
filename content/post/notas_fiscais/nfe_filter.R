@@ -1,9 +1,9 @@
 library(dplyr)
 library(readr)
 
-notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL, username = "empenhados")
 
-nfe_bd <- tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL), 'nota_fiscal') %>%
+nfe_bd <- tbl(src_mysql('notas_fiscais', group='ministerio-publico', password=NULL, username = "empenhados"), 'nota_fiscal') %>%
   #select(Chave_de_acesso, Nr_item, Descricao_do_Produto_ou_servicos, NCM_prod, Unid_prod) %>%
   collect(n = Inf)
 

@@ -28,15 +28,15 @@
     
 
     
-    <meta name="description" content="sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .">
-    <meta property="og:description" content="sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .">
+    <meta name="description" content="sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .">
+    <meta property="og:description" content="sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .">
     <meta property="og:type" content="blog">
     <meta property="og:title" content="Untitled">
     <meta property="og:url" content="/2017/04/untitled/">
     <meta property="og:site_name" content="Empenhados">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Empenhados">
-    <meta name="twitter:description" content="sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .">
+    <meta name="twitter:description" content="sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .">
     
     
 
@@ -69,6 +69,16 @@
 
     
       
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-117668599-1', 'auto');
+ga('send', 'pageview');
+</script>
+
     
     
   </head>
@@ -211,7 +221,7 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <pre class="r"><code>sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL)
+              <pre class="r"><code>sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;)
 
 query &lt;- sql(&#39;
   SELECT e.*
@@ -265,7 +275,7 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="../../../2017/03/descricao-fornecedores-merenda/" data-tooltip="Descrição dos fornecedores de merenda">
+                <a class="post-action-btn btn btn--disabled">
               
                   <span class="hide-xs hide-sm text-small icon-mr">ANTERIOR</span>
                   <i class="fa fa-angle-right"></i>
@@ -339,7 +349,7 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="../../../2017/03/descricao-fornecedores-merenda/" data-tooltip="Descrição dos fornecedores de merenda">
+                <a class="post-action-btn btn btn--disabled">
               
                   <span class="hide-xs hide-sm text-small icon-mr">ANTERIOR</span>
                   <i class="fa fa-angle-right"></i>
@@ -441,6 +451,64 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
           <div class="media">
             
             <div class="media-body">
+              <a class="link-unstyled" href="../../../2017/08/descricao-compradores-merenda/">
+                <h3 class="media-heading">Descrição dos compradores de merenda</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../../2017/08/descricao-fornecedores-merenda/">
+                <h3 class="media-heading">Descrição dos fornecedores de merenda</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../../2017/08/processo-despesa/">
+                <h3 class="media-heading">Processo de Despesa Pública</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
+Licitação
+ Contrato
+ Empenho Liquidação
+ Pagamento  Fases pelas quais todos os órgãos da administração pública, sem exceção, devem passar para a compra de bens ou serviços.
+ 1 - Licitação A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
               <a class="link-unstyled" href="../../../2017/07/execucao-orcamentaria-em-um-dia-so/">
                 <h3 class="media-heading">Execução orçamentária em um dia só</h3>
               </a>
@@ -449,7 +517,7 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
                   Jul 7, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Um possível problema administrativo que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -466,31 +534,7 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
                   Jul 7, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../../2017/05/processo-despesa/">
-                <h3 class="media-heading">Processo de Despesa Pública</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  May 5, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
-1 Licitação
-2 Empenho
-3 Contrato
-4 Liquidação
-5 Pagamento
-Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços.
-1 Licitação A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -507,8 +551,8 @@ Fases pelas quais todos os órgãos da administração pública, sem excessão, 
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, se refere a comprar um produto por um preço bem acima do mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
-Art. 3o A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, refere-se a comprar um produto por um preço bem acima do preço de mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
+A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -517,15 +561,15 @@ Art. 3o A licitação destina-se a garantir a observância do princípio constit
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="../../../2017/05/distribuicao-geografica-licitantes/">
-                <h3 class="media-heading">Distribuição Geográfica dos Licitantes</h3>
+              <a class="link-unstyled" href="../../../2017/05/distribuicao-geografica-fornecedores/">
+                <h3 class="media-heading">Distribuição Geográfica dos Fornecedores</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
+              <div class="media-content hide-xs font-merryweather">-- -- Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
 Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município.</div>
             </div>
             <div style="clear:both;"></div>
@@ -543,8 +587,8 @@ Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 04/07/2017 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
-Este relátório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda?</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
+Este relatório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda?</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -561,8 +605,8 @@ Este relátório busca compreender o processo de gasto do dinheiro público, a e
                   Apr 4, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 30/06/2017 Considerando a forma como a Administração Pública gasta o dinheiro, o objetivo desse relatório é identificar dentre as empresas/pessoas físicas, que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
-O que você precisa saber para ler esse relatório é de que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela Administração Pública, conforme critérios estabelecidos no Edital da licitação.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Considerando a forma como a administração pública investe o dinheiro, o objetivo desse relatório é identificar dentre as pessoas físicas e jurídicas que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
+O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -579,43 +623,7 @@ O que você precisa saber para ler esse relatório é de que ao lançar uma lici
                   Apr 4, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../../2017/03/descricao-fornecedores-merenda/">
-                <h3 class="media-heading">Descrição dos fornecedores de merenda</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Mar 3, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 22/06/2017 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
-Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../../2017/03/descricao-compradores-merenda/">
-                <h3 class="media-heading">Descrição dos compradores de merenda</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Mar 3, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 22/06/2017 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</div>
+              <div class="media-content hide-xs font-merryweather">sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .</div>
             </div>
             <div style="clear:both;"></div>
             <hr>

@@ -6,7 +6,7 @@ options(scipen = 999)
 
 nfe <- read.csv("notas-fiscais-refined.csv", stringsAsFactors = FALSE,  colClasses=c("Chave_de_acesso"="character"), encoding = "utf8")
 
-notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL)
+notas <-  src_mysql('notas_fiscais', group='ministerio-publico', password=NULL, username = "empenhados")
 
 query <- sql('
  SELECT DISTINCT lower(UTrib) UTrib FROM NCM

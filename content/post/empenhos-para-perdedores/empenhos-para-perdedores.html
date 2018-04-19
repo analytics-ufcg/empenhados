@@ -13,7 +13,7 @@ comments: true
 
 
 
-<pre class="r"><code>sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL)
+<pre class="r"><code>sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;)
 
 query &lt;- sql(&#39;
   SELECT e.*

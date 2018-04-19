@@ -2,82 +2,82 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Merenda on Empenhados</title>
-    <link>https://analytics-ufcg.github.io/empenhados/categories/merenda/</link>
+    <link>/categories/merenda/</link>
     <description>Recent content in Merenda on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
-    <lastBuildDate>Wed, 05 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 03 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://analytics-ufcg.github.io/empenhados/categories/merenda/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/merenda/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Descrição dos compradores de merenda</title>
+      <link>/2017/08/descricao-compradores-merenda/</link>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/descricao-compradores-merenda/</guid>
+      <description>Atualizado em 15/02/2018 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</description>
+    </item>
+    
+    <item>
+      <title>Descrição dos fornecedores de merenda</title>
+      <link>/2017/08/descricao-fornecedores-merenda/</link>
+      <pubDate>Wed, 02 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/08/descricao-fornecedores-merenda/</guid>
+      <description>Atualizado em 15/02/2018 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</description>
+    </item>
+    
+    <item>
       <title>Custo de alimentação por aluno</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/07/custo-por-aluno/</link>
+      <link>/2017/07/custo-por-aluno/</link>
       <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/07/custo-por-aluno/</guid>
+      <guid>/2017/07/custo-por-aluno/</guid>
       <description>Atualizado em 15/02/2018 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</description>
     </item>
     
     <item>
       <title>Variação do preço de arroz nas Notas Fiscais</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/05/variacao-preco-arroz/</link>
+      <link>/2017/05/variacao-preco-arroz/</link>
       <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/05/variacao-preco-arroz/</guid>
+      <guid>/2017/05/variacao-preco-arroz/</guid>
       <description>Atualizado em 15/02/2018 O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, refere-se a comprar um produto por um preço bem acima do preço de mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
 A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</description>
     </item>
     
     <item>
-      <title>Distribuição Geográfica dos Licitantes</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-licitantes/</link>
+      <title>Distribuição Geográfica dos Fornecedores</title>
+      <link>/2017/05/distribuicao-geografica-fornecedores/</link>
       <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-licitantes/</guid>
-      <description>Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
+      <guid>/2017/05/distribuicao-geografica-fornecedores/</guid>
+      <description>-- -- Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
 Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município.</description>
     </item>
     
     <item>
       <title>Realinhamento de Preços</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/05/realinhamento-de-precos/</link>
+      <link>/2017/05/realinhamento-de-precos/</link>
       <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/05/realinhamento-de-precos/</guid>
+      <guid>/2017/05/realinhamento-de-precos/</guid>
       <description>Atualizado em 15/02/2018 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
 Este relatório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda?</description>
     </item>
     
     <item>
       <title>Classificação dos licitantes de merenda</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/</link>
+      <link>/2017/04/classificacao-licitantes/</link>
       <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/</guid>
+      <guid>/2017/04/classificacao-licitantes/</guid>
       <description>Atualizado em 15/02/2018 Considerando a forma como a administração pública investe o dinheiro, o objetivo desse relatório é identificar dentre as pessoas físicas e jurídicas que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
 O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município.</description>
-    </item>
-    
-    <item>
-      <title>Descrição dos fornecedores de merenda</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/</link>
-      <pubDate>Fri, 31 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-fornecedores-merenda/</guid>
-      <description>Atualizado em 15/02/2018 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
-Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</description>
-    </item>
-    
-    <item>
-      <title>Descrição dos compradores de merenda</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/</link>
-      <pubDate>Thu, 30 Mar 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/03/descricao-compradores-merenda/</guid>
-      <description>Atualizado em 15/02/2018 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</description>
     </item>
     
   </channel>
