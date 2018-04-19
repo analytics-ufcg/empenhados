@@ -12,12 +12,6 @@ thumbnailImagePosition: "left"
 categories: ["merenda"]
 ---
 
-<!-- <style> -->
-<!-- table { -->
-<!--   white-space: nowrap; -->
-<!-- } -->
-<!-- </style> -->
-
 ##### **Atualizado em 28/07/2017**
 
 ```{r global_options, include=FALSE}
