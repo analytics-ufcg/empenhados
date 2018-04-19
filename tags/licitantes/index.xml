@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Licitantes on Empenhados</title>
-    <link>/tags/licitantes/</link>
+    <link>https://analytics-ufcg.github.io/empenhados/tags/licitantes/</link>
     <description>Recent content in Licitantes on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Mon, 10 Apr 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/licitantes/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/licitantes/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Classificação dos licitantes de merenda</title>
-      <link>/2017/04/classificacao-licitantes/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/</link>
       <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/04/classificacao-licitantes/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/</guid>
       <description>Atualizado em 15/02/2018 Considerando a forma como a administração pública investe o dinheiro, o objetivo desse relatório é identificar dentre as pessoas físicas e jurídicas que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
 O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município.</description>
     </item>
