@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Localizacao on Empenhados</title>
-    <link>https://analytics-ufcg.github.io/empenhados/tags/localizacao/</link>
+    <link>/tags/localizacao/</link>
     <description>Recent content in Localizacao on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Mon, 08 May 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/localizacao/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/localizacao/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Distribuição Geográfica dos Licitantes</title>
-      <link>https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-licitantes/</link>
+      <title>Distribuição Geográfica dos Fornecedores</title>
+      <link>/2017/05/distribuicao-geografica-fornecedores/</link>
       <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-licitantes/</guid>
-      <description>Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
+      <guid>/2017/05/distribuicao-geografica-fornecedores/</guid>
+      <description>-- -- Atualizado em 28/07/2017 Nesse relatório estamos interessados em conhecer mais sobre os fornecedores de merenda na Paraíba. Qual a localização da sede de suas empresas? Quantos e quais municípios já foram abastecidos pelos produtos desses fornecedores? Essas são algumas perguntas que buscaremos responder.
 Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui empenhos associados que foram classificados como destinados à alimentação escolar do município.</description>
     </item>
     
