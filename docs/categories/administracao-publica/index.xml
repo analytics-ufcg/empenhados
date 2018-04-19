@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Administracao Publica on Empenhados</title>
-    <link>/categories/administracao-publica/</link>
+    <link>https://analytics-ufcg.github.io/empenhados/categories/administracao-publica/</link>
     <description>Recent content in Administracao Publica on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Tue, 01 Aug 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/administracao-publica/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://analytics-ufcg.github.io/empenhados/categories/administracao-publica/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Processo de Despesa Pública</title>
-      <link>/2017/08/processo-despesa/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/08/processo-despesa/</link>
       <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/08/processo-despesa/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/08/processo-despesa/</guid>
       <description>Atualizado em 15/02/2018 Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
 Licitação
  Contrato
@@ -27,10 +27,10 @@ Licitação
     
     <item>
       <title>Execução orçamentária em um dia só</title>
-      <link>/2017/07/execucao-orcamentaria-em-um-dia-so/</link>
+      <link>https://analytics-ufcg.github.io/empenhados/2017/07/execucao-orcamentaria-em-um-dia-so/</link>
       <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/07/execucao-orcamentaria-em-um-dia-so/</guid>
+      <guid>https://analytics-ufcg.github.io/empenhados/2017/07/execucao-orcamentaria-em-um-dia-so/</guid>
       <description>Atualizado em 15/02/2018 Um possível problema administrativo que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</description>
     </item>
     
