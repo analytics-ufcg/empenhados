@@ -3,7 +3,7 @@
 Blog contendo as análises públicas resultantes da parceria entre o Laboratório Analytics (UFCG) e o
 Ministério Público da Paraíba. 
 
-As análises já realizadas podem ser encontradas no link: https://analytics-ufcg.github.io/empenhados/
+As análises já realizadas podem ser encontradas nos links: https://analytics-ufcg.github.io/empenhados/ e https://empenhados.mppb.mp.br
 
 ## Detalhes técnicos
 
