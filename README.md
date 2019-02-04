@@ -1,8 +1,12 @@
-# Licitações Paraíba
+# Blog Empenhados
 
-Este projeto é uma parceria do Laboratório Analytics (Ufcg) e o Ministério Público da Paraíba
+Blog contendo as análises públicas resultantes da parceria entre o Laboratório Analytics (UFCG) e o
+Ministério Público da Paraíba. 
 
-Nosso objetivo é criar análises, modelos e outras ferramentas que possam auxiliar o trabalho dos 
-auditores do Ministério Público. 
+As análises já realizadas podem ser encontradas no link: https://analytics-ufcg.github.io/empenhados/
 
-As análises já realizadas podem ser vistas no link: https://analytics-ufcg.github.io/empenhados/
+## Detalhes técnicos
+
+O blog foi gerado a partir de documentos RMarkdown utilizando a biblioteca `blogdown`, com temas da ferramenta [Hugo](https://gohugo.io).
+Após a geração do mesmo, fez-se necessária a execução do script `render_unlock.py`, que altera o local onde são importados os scripts em javascript
+que permitem a renderização correta de RMarkdown no blogdown e causam bloqueio de renderização quando carregados no início dos arquivos html.
