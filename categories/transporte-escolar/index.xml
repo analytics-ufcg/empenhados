@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>transporte escolar on Empenhados</title>
+    <link>/categories/transporte-escolar/</link>
+    <description>Recent content in transporte escolar on Empenhados</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Thu, 17 Oct 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/transporte-escolar/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Transporte escolar na Paraíba em 2016</title>
+      <link>/2019/10/transporte-escolar/</link>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/transporte-escolar/</guid>
+      <description>Nesse post realizaremos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.
+Licitações de transporte escolar Uma boa forma de começar é verificar quantas licitações sobre transporte escolar foram realizadas em 2016. Existem, ao todo, 103 licitações relacionadas ao transporte escolar, que representam apenas 1.</description>
+    </item>
+    
+  </channel>
+</rss>
