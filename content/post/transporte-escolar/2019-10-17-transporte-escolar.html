@@ -1,0 +1,118 @@
+---
+title: "Transporte escolar na Paraíba em 2016"
+subtitle: "Transporte Escolar"
+author: "Laboratório Analytics"
+slug: "transporte-escolar"
+disqusIdentifier: "transporte-escolar"
+thumbnailImage: "images/posts/transporte-escolar/thumb.jpeg"
+thumbnailImagePosition: "left"
+date: 2019-10-17
+tags: ["transporte escolar"]
+categories: ["transporte escolar"]
+comments: true
+output:
+  html_document:
+    fig_width: 7
+    fig_height: 6
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<p>Nesse post realizaremos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.</p>
+<div id="licitacoes-de-transporte-escolar" class="section level1">
+<h1>Licitações de transporte escolar</h1>
+<p>Uma boa forma de começar é verificar quantas licitações sobre transporte escolar foram realizadas em 2016. Existem, ao todo, 103 licitações relacionadas ao transporte escolar, que representam apenas 1.26% do total de licitações realizados nesse mesmo ano. Vejamos qual a época do ano onde foram realizadas mais licitações.</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>No gráfico acima, vemos que o mês de maio foi o que teve maior número de licitações de transporte escolar, seguido de junho e julho, respectivamente. Isso chama atenção, pois o esperado é que a maioria das licitações ocorram nos primeiros meses, quando são firmados os contratos do ano inteiro.</p>
+<div id="e-por-municipio-quantas-licitacoes-foram-realizadas" class="section level2">
+<h2>E por município, quantas licitações foram realizadas?</h2>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
+Como vemos acima, dentre os municípios que mais realizaram licitações, os que mais se destacaram foram Igaracy e Água Branca.
+As licitações de Igaracy ocorreram nos meses de março a junho, e todas para contratação de veículos com motoristas para transporte de estudantes da zona rural para as escolas situadas na zona urbana. Enquanto que em Água Branca, todas foram contratações de veículos destinados para o próprio município.</p>
+<p>A quantidade de municípios que fizeram alguma licitação é 74, representando aproximadamente 33.18% dos municípios da Paraíba.</p>
+</div>
+</div>
+<div id="descricao-das-licitacoes" class="section level1">
+<h1>Descrição das licitações</h1>
+<p>Agora que sabemos um pouco mais sobre as licitações de transporte escolar realizadas em 2016, é interessante investigar sobre o que são estas licitações. Realizamos, então, uma análise na descrição destas, e, a partir disto, nós as dividimos em três grupos: Locação, Contratação e Aquisição.</p>
+<p>Abaixo, descrevemos cada grupo.</p>
+<ol style="list-style-type: decimal">
+<li>Locação: neste grupo estão as licitações relacionadas às locações de veículos para transporte dos estudantes.</li>
+<li>Contratação: aqui as licitações são referentes à:
+<ul>
+<li>contratação de veículo para o transporte dos estudantes;</li>
+<li>contratação de serviços para o transporte escolar;</li>
+<li>contratação de empresa para a locação ou prestação de serviços para o transporte escolar;</li>
+<li>contratação de pesssoa física ou jurídica para locação de transporte ou execução de serviços relacionados ao transporte escolar.</li>
+</ul></li>
+<li>Aquisição: as licitações desse grupo são relacionadas à aquisição de veículos para o transporte escolar.</li>
+</ol>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["Aquisição","Contratação","Locação","Não atribuído"],[0.0485436893203883,0.728155339805825,0.194174757281553,0.029126213592233]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Título<\/th>\n      <th>Porcentagem<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nDTWidget.formatPercentage(this, row, data, 1, 2, 3, \",\", \".\");\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<p>Mais de 70% das licitações estão relacionadas à contratação de empresa, pessoa fisíca ou pessoa jurídica para prestar serviços ao transporte escolar dos municípios.</p>
+</div>
+<div id="modalidade-de-licitacao-mais-comum-na-execucao-dos-servicos-de-transporte-escolar" class="section level1">
+<h1>Modalidade de licitação mais comum na execução dos serviços de transporte escolar</h1>
+<p>A modalidade indica o procedimento que irá reger a licitação. No Brasil, atualmente, as modalidades de licitação são seis. Cinco delas estão descritas no artigo 22 da Lei de Licitações e Contratos, a lei nº 8666/93. São elas: concorrência, tomada de preço, convite, concurso e leilão. Já o pregão foi instituído em 2002, através da lei nº 10.520/02. Cada modalidade possui características específicas, e uma série de fatores são levados em consideração na hora de sua escolha, como, por exemplo, o valor da transação e o tipo de produto ou serviço que será adquirido pela administração pública.</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Observando o gráfico acima, vemos que a modalidade mais comum nas licitações sobre transporte escolar é o <strong>Pregão Presencial</strong>. Nas versões presencial e eletrônica, o pregão não determina limites para os valores, sendo que a disputa ocorre durante sessão pública. O vencedor é o concorrente que oferece o menor preço.</p>
+</div>
+<div id="existe-alguma-relacao-entre-o-numero-de-propostas-e-o-valor-de-uma-licitacao" class="section level1">
+<h1>Existe alguma relação entre o número de propostas e o valor de uma licitação?</h1>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Vemos que licitações de valores mais altos receberam mais propostas. Embora existam licitações de valor alto que receberam poucas propostas, não é possível ver no gráfico, por exemplo, licitações que receberam mais que 10 propostas com valor menor que R$ 100 mil.</p>
+</div>
+<div id="em-geral-qual-o-valor-de-uma-licitacao-esse-valor-varia-entre-cada-modalidade" class="section level1">
+<h1>Em geral, qual o valor de uma licitação? Esse valor varia entre cada modalidade?</h1>
+<p>Já que a mediana representa o valor que separa a metade menor e maior de um conjunto de dados, e, ao contrário da média, não é afetada por valores extremos, utilizaremos esta medida para representar o valor geral de uma licitação.</p>
+<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","data":[["Pregão Presencial","Adesão a Registro de Preço","Dispensa por outros motivos","Tomada de Preços","Concorrência","Convite"],[67142.5,640000,76425,215900,657690,42000]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Modalidade<\/th>\n      <th>Valor (Mediana)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":1}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nDTWidget.formatCurrency(this, row, data, 1, \"R$\", 2, 3, \".\", \",\", true);\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<p>Vejamos, agora, a distruibuição dos valores de licitações para cada modalidade.</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>No gráfico acima, a linha preta representa a mediana, e o tamanho do ponto a quantidade de licitações daquela modalidade com aquele valor. Com exceção das modalidades que possuem apenas uma observação, vemos que os valores das licitações não se concentram em uma mesma faixa. Vejamos mais detalhes sobre as licitações de valor mais alto.</p>
+<div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","data":[["000012016","000312016","206092016","000482016","000142016","000042016","000172016","000072016","280022016","280022016"],["AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE).","LOCACAO DE VEICULOS DESTINADOS AO TRANSPORTE DOS ESTUDANTES DA REDE MUNICIPAL E ESTADUAL DE ENSINO DESTE MUNICIPIO - BAN","CONTRATACAO DE EMPRESA ESPECIALIZADA NOS SERVICOS DE LOCACAO DE TRANSPORTE ESCOLAR VISANDO GARANTIR AOS ALUNOS DAS ESCOL","CONTRATACAO DE VEICULOS PARA TRANSPORTE ESCOLAR DA ZONA RURAL A ZONA URBANA NESTE MUNICIPIO","CONTRATACAO DE EMPRESA ESPECIALIZADA NA PRESTACAO DE SERVICOS DE TRANSPORTE ESCOLAR DE ESTUDANTES.","CONTRATACAO VISANDO A PRESTACAO DE SERVICO DE LOCACAO DE VEICULOS PARA O TRANSPORTE ESCOLAR, PARA ATENDER AS NECESSIDADE","LOCACAO DE ONIBUS E KOMBI COM MOTORISTA, MANUTENCAO E ABASTECIMENTO PARA O TRANSPORTE ESCOLAR, JUNTO A SECRETARIA DE EDU","CONTRATACAO DE PESSOA JURIDICA E PESSOA FISICA PARA LOCACAO DE TRANSPORTE ESCOLAR ATENDENDO AOS ALUNOS DA REDE MUNICIPAL","AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE","AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE"],[726300,688583.26,597720.2,587520,1112970,657690,1876512,1126050,640000,640000],["Alagoinha","Bananeiras","Campina Grande","Catolé do Rocha","Pocinhos","Queimadas","Santa Rita","Sousa","Monteiro","Monteiro"]],"container":"<table class=\"cell-border stripe\">\n  <thead>\n    <tr>\n      <th>Licitação<\/th>\n      <th>Descrição<\/th>\n      <th>Valor<\/th>\n      <th>Município<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nDTWidget.formatCurrency(this, row, data, 2, \"R$\", 2, 3, \".\", \",\", true);\n}"}},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<p>Olhando mais de perto a licitação mais cara, vemos que ela trata da locação e manutenção de ônibus e kombi com motorista para o transporte escolar na cidade de Santa Rita. O número de propostas recebidas por esta licitação foi 19, um número alto em comparação com outras licitações, e é o mesmo número de contratos associados a esta licitação. Ou seja, todos os 19 fornecedores que fizeram alguma proposta foram contratados para a prestação do serviço.</p>
+</div>
+<div id="gastos-com-transporte-escolar-em-2016" class="section level1">
+<h1>Gastos com transporte escolar em 2016</h1>
+<p>Agora que sabemos um pouco mais sobre estas licitações, vamos analisar mais de perto os gastos resultantes dos contratos que elas geraram.</p>
+<div id="municipios-que-mais-empenharam" class="section level2">
+<h2>Municípios que mais empenharam</h2>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>A média geral do valor empenhado para contratos, em 2016, foi de R$ 4646.93 e a mediana foi de R$ 2091.43. Não há uma distribuição igualitária entre os valores empenhados pelos municípios do estado; alguns municípios gastam muito mais que os outros. Monteiro e Sousa foram os municípios que empenharam mais dinheiro em comparação aos demais, pois a soma dos valores empenhados nesses ultrapassa R$ 1 mi.</p>
+</div>
+<div id="quais-os-fornecedores-que-receberam-mais-destes-empenhos" class="section level2">
+<h2>Quais os fornecedores que receberam mais destes empenhos?</h2>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>ALUYLSON PESSOA DOS SANTOS - ME foi o fornecedor com maior valor recebido dentre os empenhos de transporte escolar em 2016, com total aproximado de R$1.84 mi. Temos três licitações associadas a esse fornecedor, todas para contratação de empresa para locação de transporte para três cidades diferentes: Queimadas, Pocinhos e Campina Grande.</p>
+<p>Buscando pelo CNPJ de ALUYLSON PESSOA DOS SANTOS, 21636341000128, no site da fazenda, verificamos que o mesmo diz respeito à empresa SANTUR LOCACOES, de Campina Grande. Buscando, ainda, pelo CNPJ de JOSE WILSON SANTOS, 05445711000193, o segundo fornecedor com maior valor recebido, verificamos que o mesmo diz respeito à empresa PORTO SEGURO, também localizada em Campina Grande. As duas licitações associadas a este fornecedor tratam da contratação de empresa especializada para locação de transporte escolar. Os outros fornecedores são identificados pelo CPF e não foi possível localizá-los, mas todos se referem à mesma licitação, cuja descrição é contratação de pessoa jurídica e física para locação de transporte escolar atendendo aos alunos da rede municipal.</p>
+</div>
+<div id="valores-gastos-em-pagamentos" class="section level2">
+<h2>Valores gastos em pagamentos</h2>
+<p>A partir do que foi empenhado, procuramos os municípios que mais gastaram em pagamentos para estes serviços. Estamos considerando o valor gasto por município como sendo a soma dos valores de pagamentos referentes às licitações realizadas.</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>No gráfico acima temos os dez municípios que mais gastaram em pagamentos relacionados a contratos de transporte escolar. O município de Sousa é um dos municípios que mais gastou, o que faz sentido considerando que este município também está entre os que mais empenharam e mais licitaram em 2016. Analisando o número da população dos municípios listados acima, vemos que existe uma grande diferença entre eles. Isso nos leva a suspeitar que a população de uma cidade não influencia nos gastos com transporte escolar.</p>
+</div>
+<div id="municipios-que-mais-gastaram-por-aluno" class="section level2">
+<h2>Municípios que mais gastaram por aluno</h2>
+<p>Sabendo do total gasto por cada município, vejamos agora quanto deste valor foi gasto por aluno.</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Vemos que a maioria das cidades gastam no máximo até R$ 50,00 por aluno com transporte escolar durante um ano. Observamos, também, que poucos municípios gastam mais que R$ 100. Quais são esses municípios?</p>
+<p><img src="/post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>O total gasto por aluno varia de aproximadamente R$ 150.00 a R$ 300,00. O município de Alcantil foi o que mais gastou, totalizando um pouco mais de R$ 300,00. Ao considerarmos que um ano letivo tem aproximadamente 200 dias, cerca de R$ 1,50 foi gasto por dia para cada aluno. Notamos, ao analisar o IDEB deste município, que ele está entre os 25 municípios do estado que possuem os melhores índices de educação.</p>
+</div>
+</div>
+<div id="consideracoes" class="section level1">
+<h1>Considerações</h1>
+<p>A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R$ 50,00, ou seja, R$ 0.25 por dia letivo. Apenas um município do estado investe mais de R$ 300,00.</p>
+</div>
