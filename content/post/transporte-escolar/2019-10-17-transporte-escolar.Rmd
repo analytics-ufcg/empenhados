@@ -34,7 +34,6 @@ library(lubridate)
 library(here)
 library(ggplot2)
 library(readr)
-library(DT)
 library(knitr)
 library(hrbrthemes)
 
@@ -161,14 +160,12 @@ Abaixo, descrevemos cada grupo.
 ```{r}
 licitacoes %>%
   count(grupo_licitacao) %>%
-  mutate(porcentagem = n / sum(n)) %>%
-  select(-n) %>%
-  datatable(
-    rownames = FALSE,
-    class = "cell-border stripe",
-    colnames = c("Título", "Porcentagem")
-  ) %>%
-  formatPercentage("porcentagem", 2)
+  mutate(porcentagem = round((n / sum(n) * 100), 2)) %>%
+  select(-n) %>% 
+  kable(
+      col.names = c('Título', 'Porcentagem (%)'),
+      row.names = FALSE
+      )
 ```
 
 Mais de 70% das licitações estão relacionadas à contratação de empresa, pessoa fisíca ou pessoa jurídica para prestar serviços ao transporte escolar dos municípios.
@@ -233,21 +230,13 @@ licitacoes.mediana <- licitacoes %>%
   ) %>% 
   ungroup()
 
-licitacoes.mediana %>% 
-  select(de_TipoLicitacao, mediana) %>% 
-  mutate(mediana = mediana * 1000) %>% 
-  unique() %>% 
-  datatable(
-    rownames = FALSE,
-    class = "cell-border stripe",
-    colnames = c("Modalidade", "Valor (Mediana)")
-  ) %>%
-  formatCurrency("mediana",
-    currency = "R$",
-    digits = 2,
-    mark = ".",
-    dec.mark = ",",
-    interval = 3
+licitacoes.mediana %>%
+  select(de_TipoLicitacao, mediana) %>%
+  mutate(mediana = mediana * 1000) %>%
+  unique() %>%
+  kable(
+    row.names = FALSE,
+    col.names = c("Modalidade", "Mediana do Valor (R$)")
   )
 ```
 
@@ -301,18 +290,9 @@ licitacoes.caras %>%
     vl_Licitacao,
     de_Municipio
   ) %>%
-  datatable(
-    style = "default",
-    rownames = FALSE,
-    class = "cell-border stripe",
-    colnames = c("Licitação", "Descrição", "Valor", "Município")
-  ) %>%
-  formatCurrency("vl_Licitacao",
-    currency = "R$",
-    digits = 2,
-    mark = ".",
-    dec.mark = ",",
-    interval = 3
+  kable(
+    row.names = FALSE,
+    col.names = c("Licitação", "Descrição", "Valor (R$)", "Município")
   )
 ```
 
@@ -496,4 +476,4 @@ O total gasto por aluno varia de aproximadamente R\$ 150.00 a R\$ 300,00. O muni
 
 # Considerações
 
-A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R\$ 50,00, ou seja, R\$ 0.25 por dia letivo. Apenas um município do estado investe mais de R\$ 300,00.
+A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R\$ 50,00, ou seja, R\$ 0.25 por dia letivo. Apenas um município do estado investiu mais de R\$ 300,00 por aluno durante 2016.
