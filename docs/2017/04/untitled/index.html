@@ -19,7 +19,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.31 with theme Tranquilpeak 0.4.2-BETA">
+    <meta name="generator" content="Hugo 0.58.3 with theme Tranquilpeak 0.4.2-BETA">
     <title>Untitled</title>
     <meta name="author" content="Empenhados">
     <meta name="keywords" content="">
@@ -69,14 +69,17 @@
 
     
       
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-117668599-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-117668599-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -221,7 +224,10 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <pre class="r"><code>sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;)
+              
+
+
+<pre class="r"><code>sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;)
 
 query &lt;- sql(&#39;
   SELECT e.*
@@ -328,7 +334,7 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2018 Empenhados. All Rights Reserved
+    &copy; 2019 Empenhados. All Rights Reserved
   </span>
 </footer>
 
@@ -447,6 +453,24 @@ fornecedores &lt;- empenhos_para_perdedores %&gt;%
       <div class="no-result text-color-light text-center"></div>
       <div class="results">
         
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../../2019/10/transporte-escolar/">
+                <h3 class="media-heading">Transporte escolar na Paraíba em 2016</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Nesse post realizamos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.
+Licitações de transporte escolar Uma boa forma de começar é verificar quantas licitações sobre transporte escolar foram realizadas em 2016. Existem, ao todo, 103 licitações relacionadas ao transporte escolar, que representam apenas 1.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
         
           <div class="media">
             
@@ -612,23 +636,6 @@ O que você precisa saber para ler esse relatório é que ao lançar uma licita�
             <hr>
           </div>
         
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../../2017/04/untitled/">
-                <h3 class="media-heading">Untitled</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Apr 4, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
       </div>
     </div>
     <div class="modal-footer">
@@ -636,7 +643,7 @@ O que você precisa saber para ler esse relatório é que ao lançar uma licita�
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         10 posts found
+         11 posts found
       </p>
     </div>
   </div>

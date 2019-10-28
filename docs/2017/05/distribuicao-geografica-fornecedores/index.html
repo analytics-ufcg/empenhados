@@ -19,7 +19,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.31 with theme Tranquilpeak 0.4.2-BETA">
+    <meta name="generator" content="Hugo 0.58.3 with theme Tranquilpeak 0.4.2-BETA">
     <title>Distribuição Geográfica dos Fornecedores</title>
     <meta name="author" content="Empenhados">
     <meta name="keywords" content="">
@@ -47,11 +47,11 @@ Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui
     
 
     
-      <meta property="og:image" content="https://analytics-ufcg.github.io/empenhados/images/logo.png">
+      <meta property="og:image" content="/images/logo.png">
     
 
     
-      <meta property="og:image" content="https://analytics-ufcg.github.io/empenhados/images/posts/distribuicao-geografica-fornecedores/thumb.png">
+      <meta property="og:image" content="/images/posts/distribuicao-geografica-fornecedores/thumb.png">
     
     
     
@@ -68,20 +68,23 @@ Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui
     
     
       
-        <link rel="stylesheet" href="https://analytics-ufcg.github.io/empenhados/css/custom.css">
+        <link rel="stylesheet" href="../../../css/custom.css">
       
     
 
     
       
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-117668599-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-117668599-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -103,7 +106,7 @@ ga('send', 'pageview');
     
     
       
-        <img class="header-picture" src="https://analytics-ufcg.github.io/empenhados/images/logo.png" alt="Foto do autor" />
+        <img class="header-picture" src="../../../images/logo.png" alt="Foto do autor" />
       
     
     </a>
@@ -115,7 +118,7 @@ ga('send', 'pageview');
     
       <div class="sidebar-profile">
         <a href="../../../#about">
-          <img class="sidebar-profile-picture" src="https://analytics-ufcg.github.io/empenhados/images/logo.png" alt="Foto do autor" />
+          <img class="sidebar-profile-picture" src="../../../images/logo.png" alt="Foto do autor" />
         </a>
         <h4 class="sidebar-profile-name">Empenhados</h4>
       </div>
@@ -178,7 +181,7 @@ ga('send', 'pageview');
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/analytics-ufcg/empenhados/" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="https://github.com/analytics-ufcg/empenhados/">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -234,6 +237,37 @@ ga('send', 'pageview');
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
+              
+<script src="../../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../../rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="../../../rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="../../../rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<link href="../../../rmarkdown-libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/leaflet-label/leaflet.label.js"></script>
+<script src="../../../rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="../../../rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<script src="../../../rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+<link href="../../../rmarkdown-libs/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
+<link href="../../../rmarkdown-libs/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.js"></script>
+<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.layersupport-src.js"></script>
+<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.freezable-src.js"></script>
+<link href="../../../rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="../../../rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="../../../rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="../../../rmarkdown-libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="../../../rmarkdown-libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/selectize/selectize.min.js"></script>
+<link href="../../../rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<script src="../../../rmarkdown-libs/plotly-binding/plotly.js"></script>
+<script src="../../../rmarkdown-libs/typedarray/typedarray.min.js"></script>
+<link href="../../../rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="../../../rmarkdown-libs/plotlyjs/plotly-latest.min.js"></script>
 
 
 <div id="atualizado-em-28072017" class="section level5">
@@ -362,7 +396,7 @@ Quando disponível, a localização dos fornecedores também é destacada no map
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-fornecedores/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/05/distribuicao-geografica-fornecedores/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
@@ -397,7 +431,7 @@ Quando disponível, a localização dos fornecedores também é destacada no map
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2018 Empenhados. All Rights Reserved
+    &copy; 2019 Empenhados. All Rights Reserved
   </span>
 </footer>
 
@@ -436,7 +470,7 @@ Quando disponível, a localização dos fornecedores também é destacada no map
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-fornecedores/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/05/distribuicao-geografica-fornecedores/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
@@ -466,7 +500,7 @@ Quando disponível, a localização dos fornecedores também é destacada no map
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fanalytics-ufcg.github.io%2Fempenhados%2F2017%2F05%2Fdistribuicao-geografica-fornecedores%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2017%2F05%2Fdistribuicao-geografica-fornecedores%2F">
           <i class="fa fa-facebook-official"></i><span>Compartilhar no Facebook</span>
         </a>
       </li>
@@ -482,7 +516,7 @@ Quando disponível, a localização dos fornecedores também é destacada no map
       <i class="fa fa-remove"></i>
     </div>
     
-      <img id="about-card-picture" src="https://analytics-ufcg.github.io/empenhados/images/logo.png" alt="Foto do autor" />
+      <img id="about-card-picture" src="../../../images/logo.png" alt="Foto do autor" />
     
     <h4 id="about-card-name">Empenhados</h4>
     
@@ -520,7 +554,25 @@ Quando disponível, a localização dos fornecedores também é destacada no map
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/08/descricao-compradores-merenda/">
+              <a class="link-unstyled" href="../../../2019/10/transporte-escolar/">
+                <h3 class="media-heading">Transporte escolar na Paraíba em 2016</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Nesse post realizamos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.
+Licitações de transporte escolar Uma boa forma de começar é verificar quantas licitações sobre transporte escolar foram realizadas em 2016. Existem, ao todo, 103 licitações relacionadas ao transporte escolar, que representam apenas 1.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../../2017/08/descricao-compradores-merenda/">
                 <h3 class="media-heading">Descrição dos compradores de merenda</h3>
               </a>
               <span class="media-meta">
@@ -538,7 +590,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/08/descricao-fornecedores-merenda/">
+              <a class="link-unstyled" href="../../../2017/08/descricao-fornecedores-merenda/">
                 <h3 class="media-heading">Descrição dos fornecedores de merenda</h3>
               </a>
               <span class="media-meta">
@@ -556,7 +608,7 @@ Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, ne
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/08/processo-despesa/">
+              <a class="link-unstyled" href="../../../2017/08/processo-despesa/">
                 <h3 class="media-heading">Processo de Despesa Pública</h3>
               </a>
               <span class="media-meta">
@@ -578,7 +630,7 @@ Licitação
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/07/execucao-orcamentaria-em-um-dia-so/">
+              <a class="link-unstyled" href="../../../2017/07/execucao-orcamentaria-em-um-dia-so/">
                 <h3 class="media-heading">Execução orçamentária em um dia só</h3>
               </a>
               <span class="media-meta">
@@ -595,7 +647,7 @@ Licitação
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/07/custo-por-aluno/">
+              <a class="link-unstyled" href="../../../2017/07/custo-por-aluno/">
                 <h3 class="media-heading">Custo de alimentação por aluno</h3>
               </a>
               <span class="media-meta">
@@ -612,7 +664,7 @@ Licitação
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/05/variacao-preco-arroz/">
+              <a class="link-unstyled" href="../../../2017/05/variacao-preco-arroz/">
                 <h3 class="media-heading">Variação do preço de arroz nas Notas Fiscais</h3>
               </a>
               <span class="media-meta">
@@ -630,7 +682,7 @@ A licitação destina-se a garantir a observância do princípio constitucional 
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/05/distribuicao-geografica-fornecedores/">
+              <a class="link-unstyled" href="../../../2017/05/distribuicao-geografica-fornecedores/">
                 <h3 class="media-heading">Distribuição Geográfica dos Fornecedores</h3>
               </a>
               <span class="media-meta">
@@ -648,7 +700,7 @@ Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/05/realinhamento-de-precos/">
+              <a class="link-unstyled" href="../../../2017/05/realinhamento-de-precos/">
                 <h3 class="media-heading">Realinhamento de Preços</h3>
               </a>
               <span class="media-meta">
@@ -666,7 +718,7 @@ Este relatório busca compreender o processo de gasto do dinheiro público, a ex
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="https://analytics-ufcg.github.io/empenhados/2017/04/classificacao-licitantes/">
+              <a class="link-unstyled" href="../../../2017/04/classificacao-licitantes/">
                 <h3 class="media-heading">Classificação dos licitantes de merenda</h3>
               </a>
               <span class="media-meta">
@@ -688,7 +740,7 @@ O que você precisa saber para ler esse relatório é que ao lançar uma licita�
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         9 posts found
+         11 posts found
       </p>
     </div>
   </div>
@@ -696,7 +748,7 @@ O que você precisa saber para ler esse relatório é que ao lançar uma licita�
     
   
     
-    <div id="cover" style="background-image:url('https://analytics-ufcg.github.io/empenhados/images/empenhados-background.png');"></div>
+    <div id="cover" style="background-image:url('/images/empenhados-background.png');"></div>
   
 
 
@@ -729,7 +781,7 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/analytics-ufcg.github.io\/empenhados\/2017\/05\/distribuicao-geografica-fornecedores\/';
+          this.page.url = '\/2017\/05\/distribuicao-geografica-fornecedores\/';
           
             this.page.identifier = 'distribuicao-geografica-fornecedores';
           
@@ -754,36 +806,6 @@ $(document).ready(function() {
 
 
     
-              <script src="../../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
-<script src="../../../rmarkdown-libs/jquery/jquery.min.js"></script>
-<link href="../../../rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/leaflet/leaflet.js"></script>
-<link href="../../../rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
-<link href="../../../rmarkdown-libs/leaflet-label/leaflet.label.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/leaflet-label/leaflet.label.js"></script>
-<script src="../../../rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
-<script src="../../../rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
-<script src="../../../rmarkdown-libs/leaflet-binding/leaflet.js"></script>
-<link href="../../../rmarkdown-libs/leaflet-markercluster/MarkerCluster.css" rel="stylesheet" />
-<link href="../../../rmarkdown-libs/leaflet-markercluster/MarkerCluster.Default.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.js"></script>
-<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.layersupport-src.js"></script>
-<script src="../../../rmarkdown-libs/leaflet-markercluster/leaflet.markercluster.freezable-src.js"></script>
-<link href="../../../rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/datatables-binding/datatables.js"></script>
-<link href="../../../rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="../../../rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
-<link href="../../../rmarkdown-libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/nouislider/jquery.nouislider.min.js"></script>
-<link href="../../../rmarkdown-libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/selectize/selectize.min.js"></script>
-<link href="../../../rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
-<script src="../../../rmarkdown-libs/plotly-binding/plotly.js"></script>
-<script src="../../../rmarkdown-libs/typedarray/typedarray.min.js"></script>
-<link href="../../../rmarkdown-libs/plotlyjs/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="../../../rmarkdown-libs/plotlyjs/plotly-latest.min.js"></script>
   </body>
 </html>
 

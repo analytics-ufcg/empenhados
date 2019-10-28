@@ -15,7 +15,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.31 with theme Tranquilpeak 0.4.2-BETA">
+    <meta name="generator" content="Hugo 0.58.3 with theme Tranquilpeak 0.4.2-BETA">
     <title>Empenhados</title>
     <meta name="author" content="Empenhados">
     <meta name="keywords" content="">
@@ -67,6 +67,19 @@
 
     
       
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-117668599-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
     
     
   </head>
@@ -161,7 +174,7 @@
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/analytics-ufcg/empenhados">
+      <a class="sidebar-button-link " href="https://github.com/analytics-ufcg/empenhados/">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -190,63 +203,6 @@
             
   
     
-  
-
-
-  
-
-<article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="../../2017/03/descricao-compradores-merenda/">
-          Descrição dos compradores de merenda
-        </a>
-      </h1>
-      
-  <div class="postShorten-meta post-meta">
-    
-      <time itemprop="datePublished" datetime="2017-03-30T00:00:00Z">
-        
-  Março 30, 2017
-
-      </time>
-    
-    
-  
-  
-    <span>em</span>
-    
-      <a class="category-link" href="../../categories/merenda">merenda</a>
-    
-  
-
-  </div>
-
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      Atualizado em 22/06/2017 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este outro post preparado por nós, explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios
-      <p>
-        <a href="../../2017/03/descricao-compradores-merenda/" class="postShorten-excerpt_link link">Continuar leitura</a>
-        
-      </p>
-    </div>
-  </div>
-  
-    <a href="../../2017/03/descricao-compradores-merenda/">
-      <div class="postShorten-thumbnailimg">
-        <img alt="" itemprop="image" src="../../images/posts/descricao-compradores-merenda/thumb.png"/>
-      </div>
-    </a>
-  
-</article>
-
-          
-            
-  
-    
       
         
       
@@ -261,16 +217,16 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="../../1/01/">
-          
+        <a class="link-unstyled" href="../../2017/04/untitled/">
+          Untitled
         </a>
       </h1>
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="0001-01-01T00:00:00Z">
+      <time itemprop="datePublished" datetime="2017-04-10T00:00:00Z">
         
-  Janeiro 1, 1
+  Abril 10, 2017
 
       </time>
     
@@ -279,9 +235,9 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
 
     </div>
     <div class="postShorten-excerpt" itemprop="articleBody">
-      Descrição dos compradores de merenda                   code{white-space: pre;} pre:not([class]) { background-color: white; }  if (window.hljs && document.readyState && document.readyState === "complete") { window.setTimeout(function() { hljs.initHighlighting(); }, 0); }  h1 { font-size: 34px; } h1.title { font-size: 38px; } h2 { font-size: 30px; } h3 { font-size: 24px; } h4 { font-size: 18px; } h5 { font-size: 16px; } h6 { font-size: 12px; } .
+      sagres &lt;- src_mysql(&#39;sagres_municipal&#39;, group=&#39;ministerio-publico&#39;, password=NULL, username = &quot;empenhados&quot;) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .
       <p>
-        <a href="../../1/01/" class="postShorten-excerpt_link link">Continuar leitura</a>
+        <a href="../../2017/04/untitled/" class="postShorten-excerpt_link link">Continuar leitura</a>
         
       </p>
     </div>
@@ -312,7 +268,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
         </section>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2018 Empenhados. All Rights Reserved
+    &copy; 2019 Empenhados. All Rights Reserved
   </span>
 </footer>
 
@@ -363,6 +319,82 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
           <div class="media">
             
             <div class="media-body">
+              <a class="link-unstyled" href="../../2019/10/transporte-escolar/">
+                <h3 class="media-heading">Transporte escolar na Paraíba em 2016</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Nesse post realizamos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.
+Licitações de transporte escolar Uma boa forma de começar é verificar quantas licitações sobre transporte escolar foram realizadas em 2016. Existem, ao todo, 103 licitações relacionadas ao transporte escolar, que representam apenas 1.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../2017/08/descricao-compradores-merenda/">
+                <h3 class="media-heading">Descrição dos compradores de merenda</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
+Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../2017/08/descricao-fornecedores-merenda/">
+                <h3 class="media-heading">Descrição dos fornecedores de merenda</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
+Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="../../2017/08/processo-despesa/">
+                <h3 class="media-heading">Processo de Despesa Pública</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
+Licitação
+ Contrato
+ Empenho Liquidação
+ Pagamento  Fases pelas quais todos os órgãos da administração pública, sem exceção, devem passar para a compra de bens ou serviços.
+ 1 - Licitação A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
               <a class="link-unstyled" href="../../2017/07/execucao-orcamentaria-em-um-dia-so/">
                 <h3 class="media-heading">Execução orçamentária em um dia só</h3>
               </a>
@@ -371,7 +403,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
                   Jul 7, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Um possível indício de má administração que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Um possível problema administrativo que encontramos é a realização de empenhos, liquidações e pagamentos no mesmo dia. Isso poderia acontecer, por exemplo, quando as liquidações e pagamentos são feitos antes de o serviço ser concluído ou de o produto ser entregue, não havendo cuidado de verificar se o objeto licitado foi devidamente fornecido. Outro caso seria de compras serem realizadas sem seguir o protocolo de execução orçamentária como deveria ser feito, então quando existe a necessidade de prestar contas todos os passos do processo são executados de uma só vez.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -388,31 +420,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
                   Jul 7, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../2017/05/processo-despesa/">
-                <h3 class="media-heading">Processo de Despesa Pública</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  May 5, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Em termos gerais o Processo de Despesa Pública trata das seguintes fases:
-1 Licitação
-2 Empenho
-3 Contrato
-4 Liquidação
-5 Pagamento
-Fases pelas quais todos os órgãos da administração pública, sem excessão, devem passar para a compra de bens ou serviços.
-1 Licitação A licitação é uma ferramenta ou processo administrativo através da qual se pode realizar a aquisição de bens para a população. Na licitação é escolhida a proposta mais vantajosa, menos onerosa e com melhor qualidade possível, para a contratação de uma obra, de um serviço, da compra de um produto, locação ou alienação.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Você já se perguntou quanto o seu município gasta com a merenda de cada aluno de uma escola pública? Será que o seu município está na lista dos que mais gastam? Ou dos que menos gastam? Essas são algumas perguntas que essa análise busca responder. Os dados sobre a quantidade de alunos matriculados em cada município no ano de 2015 foram obtidos do site Cidades do IBGE.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -429,8 +437,8 @@ Fases pelas quais todos os órgãos da administração pública, sem excessão, 
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, se refere a comprar um produto por um preço bem acima do mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
-Art. 3o A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 O superfaturamento, infelizmente, é uma prática constante nas aquisições da Administração Pública. De maneira mais direta, refere-se a comprar um produto por um preço bem acima do preço de mercado e isso é ilegal. O artigo 3º da Lei 8.666, que regulamenta o processo licitatório no Brasil, diz que:
+A licitação destina-se a garantir a observância do princípio constitucional da isonomia, a seleção da proposta mais vantajosa para a administração e a promoção do desenvolvimento nacional sustentável e será processada e julgada em estrita conformidade com os princípios básicos da legalidade, da impessoalidade, da moralidade, da igualdade, da publicidade, da probidade administrativa, da vinculação ao instrumento convocatório, do julgamento objetivo e dos que lhes são correlatos.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -439,8 +447,8 @@ Art. 3o A licitação destina-se a garantir a observância do princípio constit
           <div class="media">
             
             <div class="media-body">
-              <a class="link-unstyled" href="../../2017/05/distribuicao-geografica-licitantes/">
-                <h3 class="media-heading">Distribuição Geográfica dos Licitantes</h3>
+              <a class="link-unstyled" href="../../2017/05/distribuicao-geografica-fornecedores/">
+                <h3 class="media-heading">Distribuição Geográfica dos Fornecedores</h3>
               </a>
               <span class="media-meta">
                 <span class="media-date text-small">
@@ -465,8 +473,8 @@ Antes de iniciarmos, precisamos definir que fornecedor é todo aquele que possui
                   May 5, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 04/07/2017 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
-Este relátório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda?</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 O gasto do dinheiro público é, para a maioria dos cidadãos, um processo confuso e complexo. No entanto, compreender como se desenrola esse método pode ser fundamental tanto para termos noção de como o nosso dinheiro é gasto quanto para identificarmos gastos fora do padrão.
+Este relatório busca compreender o processo de gasto do dinheiro público, a execução orçamentária, e responder questões como: Qual a variação entre o valor licitado e o valor efetivamente pago ao fornecedor de merenda?</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -483,61 +491,8 @@ Este relátório busca compreender o processo de gasto do dinheiro público, a e
                   Apr 4, 2017
                 </span>
               </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 30/06/2017 Considerando a forma como a Administração Pública gasta o dinheiro, o objetivo desse relatório é identificar dentre as empresas/pessoas físicas, que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
-O que você precisa saber para ler esse relatório é de que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela Administração Pública, conforme critérios estabelecidos no Edital da licitação.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../2017/04/untitled/">
-                <h3 class="media-heading">Untitled</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Apr 4, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">sagres &lt;- src_mysql(&#39;SAGRES_MUNICIPAL&#39;, group=&#39;ministerio-publico&#39;, password=NULL) query &lt;- sql(&#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &#39;) empenhos_para_perdedores &lt;- tbl(sagres, query) %&gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .local(conn, statement, ...): Unsigned INTEGER in col 21 ## imported as numeric ## Warning in .</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../2017/03/descricao-fornecedores-merenda/">
-                <h3 class="media-heading">Descrição dos fornecedores de merenda</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Mar 3, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 22/06/2017 No nosso relatório anterior nós observamos o comportamento dos municípios da Paraíba quanto aos gastos com merenda escolar, aqui vamos estudar a outra face dessa mesma moeda, os fornecedores.
-Um fornecedor é aquele que fornece mercadorias ou serviços a um consumidor, nesta análise em especial, considera-se como fornecedor toda empresa ou pessoa física que está ligada a uma licitação que é considerada 100% de merenda.</div>
-            </div>
-            <div style="clear:both;"></div>
-            <hr>
-          </div>
-        
-          <div class="media">
-            
-            <div class="media-body">
-              <a class="link-unstyled" href="../../2017/03/descricao-compradores-merenda/">
-                <h3 class="media-heading">Descrição dos compradores de merenda</h3>
-              </a>
-              <span class="media-meta">
-                <span class="media-date text-small">
-                  Mar 3, 2017
-                </span>
-              </span>
-              <div class="media-content hide-xs font-merryweather">Atualizado em 22/06/2017 Alguma vez você já se perguntou como os gestores de seu município empregam o dinheiro público? Nesse post começamos uma série de análises respondendo essa pergunta para um tipo de gasto muito importante em todo município: a merenda escolar.
-Antes de iniciarmos a analisar os gastos públicos, é importante entender que esses gastos geralmente ocorrem via licitações. Este outro post preparado por nós, explica com mais detalhes o papel das licitações no processo de despesa pública dos municípios</div>
+              <div class="media-content hide-xs font-merryweather">Atualizado em 15/02/2018 Considerando a forma como a administração pública investe o dinheiro, o objetivo desse relatório é identificar dentre as pessoas físicas e jurídicas que fornecem merenda ou que participaram de licitações que envolviam merenda, quais grupos de empresas tem comportamento parecido considerando algumas variáveis. Para isso utilizaremos uma técnica de agrupamento conhecida como k-means.
+O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município.</div>
             </div>
             <div style="clear:both;"></div>
             <hr>
@@ -550,7 +505,7 @@ Antes de iniciarmos a analisar os gastos públicos, é importante entender que e
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         12 posts found
+         11 posts found
       </p>
     </div>
   </div>

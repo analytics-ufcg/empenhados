@@ -2,138 +2,147 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Empenhados</title>
-    <link>https://analytics-ufcg.github.io/empenhados/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on Empenhados</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
-    <lastBuildDate>Tue, 01 Aug 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 17 Oct 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://analytics-ufcg.github.io/empenhados/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Administracao Publica</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/administracao-publica/</link>
-      <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
+      <title>transporte escolar</title>
+      <link>/tags/transporte-escolar/</link>
+      <pubDate>Thu, 17 Oct 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/administracao-publica/</guid>
+      <guid>/tags/transporte-escolar/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Arroz</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/arroz/</link>
-      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/arroz/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Compradores</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/compradores/</link>
+      <title>compradores</title>
+      <link>/tags/compradores/</link>
       <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/compradores/</guid>
+      <guid>/tags/compradores/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Custo</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/custo/</link>
-      <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
+      <title>merenda</title>
+      <link>/tags/merenda/</link>
+      <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/custo/</guid>
+      <guid>/tags/merenda/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Execucao Orcamentaria</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/execucao-orcamentaria/</link>
-      <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/execucao-orcamentaria/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fornecedores</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/fornecedores/</link>
+      <title>fornecedores</title>
+      <link>/tags/fornecedores/</link>
       <pubDate>Wed, 02 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/fornecedores/</guid>
+      <guid>/tags/fornecedores/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Licitantes</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/licitantes/</link>
-      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/licitantes/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Localizacao</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/localizacao/</link>
-      <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/localizacao/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Merenda</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/merenda/</link>
-      <pubDate>Thu, 03 Aug 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/merenda/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Notas Fiscais</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/notas-fiscais/</link>
-      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/notas-fiscais/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Precos</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/precos/</link>
-      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/precos/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Preços</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/pre%C3%A7os/</link>
-      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/pre%C3%A7os/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Processo De Despesa</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/processo-de-despesa/</link>
+      <title>administracao publica</title>
+      <link>/tags/administracao-publica/</link>
       <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/processo-de-despesa/</guid>
+      <guid>/tags/administracao-publica/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Realinhamento</title>
-      <link>https://analytics-ufcg.github.io/empenhados/tags/realinhamento/</link>
+      <title>processo de despesa</title>
+      <link>/tags/processo-de-despesa/</link>
+      <pubDate>Tue, 01 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/processo-de-despesa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>execucao orcamentaria</title>
+      <link>/tags/execucao-orcamentaria/</link>
+      <pubDate>Mon, 31 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/execucao-orcamentaria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>custo</title>
+      <link>/tags/custo/</link>
+      <pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/custo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>arroz</title>
+      <link>/tags/arroz/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/arroz/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>notas fiscais</title>
+      <link>/tags/notas-fiscais/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/notas-fiscais/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>preços</title>
+      <link>/tags/pre%C3%A7os/</link>
+      <pubDate>Thu, 18 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pre%C3%A7os/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>localizacao</title>
+      <link>/tags/localizacao/</link>
+      <pubDate>Mon, 08 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/localizacao/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>precos</title>
+      <link>/tags/precos/</link>
       <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://analytics-ufcg.github.io/empenhados/tags/realinhamento/</guid>
+      <guid>/tags/precos/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>realinhamento</title>
+      <link>/tags/realinhamento/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/realinhamento/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>licitantes</title>
+      <link>/tags/licitantes/</link>
+      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/licitantes/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,825 @@
+cd_UGestora,de_Ugestora,cd_IBGE,cd_Municipio,de_Municipio
+101001,Câmara Municipal de Água Branca,250010605,001,Água Branca
+101002,Câmara Municipal de Aguiar,250020505,002,Aguiar
+101003,Câmara Municipal de Alagoa Grande,250030405,003,Alagoa Grande
+101004,Câmara Municipal de Alagoa Nova,250040305,004,Alagoa Nova
+101005,Câmara Municipal de Alagoinha,250050205,005,Alagoinha
+101006,Câmara Municipal de Alcantil,250053605,006,Alcantil
+101007,Câmara Municipal de Algodão de Jandaíra,250057705,007,Algodão de Jandaíra
+101008,Câmara Municipal de Alhandra,250060105,008,Alhandra
+101009,Câmara Municipal de Amparo,250073405,009,Amparo
+101010,Câmara Municipal de Aparecida,250077505,010,Aparecida
+101011,Câmara Municipal de Araçagi,250080905,011,Araçagi
+101012,Câmara Municipal de Arara,250090805,012,Arara
+101013,Câmara Municipal de Araruna,250100505,013,Araruna
+101014,Câmara Municipal de Areia,250110405,014,Areia
+101015,Câmara Municipal de Areia de Baraúnas,250115305,015,Areia de Baraúnas
+101016,Câmara Municipal de Areial,250120305,016,Areial
+101017,Câmara Municipal de Aroeiras,250130205,017,Aroeiras
+101018,Câmara Municipal de Assunção,250135105,018,Assunção
+101019,Câmara Municipal de Baía da Traição,250140105,019,Baía da Traição
+101020,Câmara Municipal de Bananeiras,250150005,020,Bananeiras
+101021,Câmara Municipal de Baraúna,250153405,021,Baraúna
+101022,Câmara Municipal de Barra de Santa Rosa,250160905,022,Barra de Santa Rosa
+101023,Câmara Municipal de Barra de Santana,250157505,023,Barra de Santana
+101024,Câmara Municipal de Barra de São Miguel,250170805,024,Barra de São Miguel
+101025,Câmara Municipal de Bayeux,250180705,025,Bayeux
+101026,Câmara Municipal de Belém,250190605,026,Belém
+101027,Câmara Municipal de Belém do Brejo do Cruz,250200305,027,Belém do Brejo do Cruz
+101028,Câmara Municipal de Bernardino Batista,250205205,028,Bernardino Batista
+101029,Câmara Municipal de Boa Ventura,250210205,029,Boa Ventura
+101030,Câmara Municipal de Boa Vista,250215105,030,Boa Vista
+101031,Câmara Municipal de Bom Jesus,250220105,031,Bom Jesus
+101032,Câmara Municipal de Bom Sucesso,250230005,032,Bom Sucesso
+101033,Câmara Municipal de Bonito de Santa Fé,250240905,033,Bonito de Santa Fé
+101034,Câmara Municipal de Boqueirão,250250805,034,Boqueirão
+101035,Câmara Municipal de Borborema,250270605,035,Borborema
+101036,Câmara Municipal de Brejo do Cruz,250280505,036,Brejo do Cruz
+101037,Câmara Municipal de Brejo dos Santos,250290405,037,Brejo dos Santos
+101038,Câmara Municipal de Caaporã,250300105,038,Caaporã
+101039,Câmara Municipal de Cabaceiras,250310005,039,Cabaceiras
+101040,Câmara Municipal de Cabedelo,250320905,040,Cabedelo
+101041,Câmara Municipal de Cachoeira dos Índios,250330805,041,Cachoeira dos Índios
+101042,Câmara Municipal de Cacimba de Areia,250340705,042,Cacimba de Areia
+101043,Câmara Municipal de Cacimba de Dentro,250350605,043,Cacimba de Dentro
+101044,Câmara Municipal de Cacimbas,250355505,044,Cacimbas
+101045,Câmara Municipal de Caiçara,250360505,045,Caiçara
+101046,Câmara Municipal de Cajazeiras,250370405,046,Cajazeiras
+101047,Câmara Municipal de Cajazeirinhas,250375305,047,Cajazeirinhas
+101048,Câmara Municipal de Caldas Brandão,250380305,048,Caldas Brandão
+101049,Câmara Municipal de Camalaú,250390205,049,Camalaú
+101050,Câmara Municipal de Campina Grande,250400905,050,Campina Grande
+101051,Câmara Municipal de Tacima,251640905,051,Tacima
+101052,Câmara Municipal de Capim,250403305,052,Capim
+101053,Câmara Municipal de Caraúbas,250407405,053,Caraúbas
+101054,Câmara Municipal de Carrapateira,250410805,054,Carrapateira
+101055,Câmara Municipal de Casserengue,250415705,055,Casserengue
+101056,Câmara Municipal de Catingueira,250420705,056,Catingueira
+101057,Câmara Municipal de Catolé do Rocha,250430605,057,Catolé do Rocha
+101058,Câmara Municipal de Caturité,250435505,058,Caturité
+101059,Câmara Municipal de Conceição,250440505,059,Conceição
+101060,Câmara Municipal de Condado,250450405,060,Condado
+101061,Câmara Municipal de Conde,250460305,061,Conde
+101062,Câmara Municipal de Congo,250470205,062,Congo
+101063,Câmara Municipal de Coremas,250480105,063,Coremas
+101064,Câmara Municipal de Coxixola,250485005,064,Coxixola
+101065,Câmara Municipal de Cruz do Espírito Santo,250490005,065,Cruz do Espírito Santo
+101066,Câmara Municipal de Cubati,250500605,066,Cubati
+101067,Câmara Municipal de Cuité,250510505,067,Cuité
+101068,Câmara Municipal de Cuité de Mamanguape,250523805,068,Cuité de Mamanguape
+101069,Câmara Municipal de Cuitegi,250520405,069,Cuitegi
+101070,Câmara Municipal de Curral de Cima,250527905,070,Curral de Cima
+101071,Câmara Municipal de Curral Velho,250530305,071,Curral Velho
+101072,Câmara Municipal de Damião,250535205,072,Damião
+101073,Câmara Municipal de Desterro,250540205,073,Desterro
+101074,Câmara Municipal de Diamante,250560005,074,Diamante
+101075,Câmara Municipal de Dona Inês,250570905,075,Dona Inês
+101076,Câmara Municipal de Duas Estradas,250580805,076,Duas Estradas
+101077,Câmara Municipal de Emas,250590705,077,Emas
+101078,Câmara Municipal de Esperança,250600405,078,Esperança
+101079,Câmara Municipal de Fagundes,250610305,079,Fagundes
+101080,Câmara Municipal de Frei Martinho,250620205,080,Frei Martinho
+101081,Câmara Municipal de Gado Bravo,250625105,081,Gado Bravo
+101082,Câmara Municipal de Guarabira,250630105,082,Guarabira
+101083,Câmara Municipal de Gurinhém,250640005,083,Gurinhém
+101084,Câmara Municipal de Gurjão,250650905,084,Gurjão
+101085,Câmara Municipal de Ibiara,250660805,085,Ibiara
+101086,Câmara Municipal de Igaracy,250260705,086,Igaracy
+101087,Câmara Municipal de Imaculada,250670705,087,Imaculada
+101088,Câmara Municipal de Ingá,250680605,088,Ingá
+101089,Câmara Municipal de Itabaiana,250690505,089,Itabaiana
+101090,Câmara Municipal de Itaporanga,250700205,090,Itaporanga
+101091,Câmara Municipal de Itapororoca,250710105,091,Itapororoca
+101092,Câmara Municipal de Itatuba,250720005,092,Itatuba
+101093,Câmara Municipal de Jacaraú,250730905,093,Jacaraú
+101094,Câmara Municipal de Jericó,250740805,094,Jericó
+101095,Câmara Municipal de João Pessoa,250750705,095,João Pessoa
+101096,Câmara Municipal de Juarez Távora,250760605,096,Juarez Távora
+101097,Câmara Municipal de Juazeirinho,250770505,097,Juazeirinho
+101098,Câmara Municipal de Junco do Seridó,250780405,098,Junco do Seridó
+101099,Câmara Municipal de Juripiranga,250790305,099,Juripiranga
+101100,Câmara Municipal de Juru,250800005,100,Juru
+101101,Câmara Municipal de Lagoa,250810905,101,Lagoa
+101102,Câmara Municipal de Lagoa de Dentro,250820805,102,Lagoa de Dentro
+101103,Câmara Municipal de Lagoa Seca,250830705,103,Lagoa Seca
+101104,Câmara Municipal de Lastro,250840605,104,Lastro
+101105,Câmara Municipal de Livramento,250850505,105,Livramento
+101106,Câmara Municipal de Logradouro,250855405,106,Logradouro
+101107,Câmara Municipal de Lucena,250860405,107,Lucena
+101108,Câmara Municipal de Mãe d'Água,250870305,108,Mãe d'Água
+101109,Câmara Municipal de Malta,250880205,109,Malta
+101110,Câmara Municipal de Mamanguape,250890105,110,Mamanguape
+101111,Câmara Municipal de Manaíra,250900805,111,Manaíra
+101112,Câmara Municipal de Marcação,250905705,112,Marcação
+101113,Câmara Municipal de Mari,250910705,113,Mari
+101114,Câmara Municipal de Marizópolis,250915605,114,Marizópolis
+101115,Câmara Municipal de Massaranduba,250920605,115,Massaranduba
+101116,Câmara Municipal de Mataraca,250930505,116,Mataraca
+101117,Câmara Municipal de Matinhas,250933905,117,Matinhas
+101118,Câmara Municipal de Mato Grosso,250937005,118,Mato Grosso
+101119,Câmara Municipal de Maturéia,250939605,119,Maturéia
+101120,Câmara Municipal de Mogeiro,250940405,120,Mogeiro
+101121,Câmara Municipal de Montadas,250950305,121,Montadas
+101122,Câmara Municipal de Monte Horebe,250960205,122,Monte Horebe
+101123,Câmara Municipal de Monteiro,250970105,123,Monteiro
+101124,Câmara Municipal de Mulungu,250980005,124,Mulungu
+101125,Câmara Municipal de Natuba,250990905,125,Natuba
+101126,Câmara Municipal de Nazarezinho,251000605,126,Nazarezinho
+101127,Câmara Municipal de Nova Floresta,251010505,127,Nova Floresta
+101128,Câmara Municipal de Nova Olinda,251020405,128,Nova Olinda
+101129,Câmara Municipal de Nova Palmeira,251030305,129,Nova Palmeira
+101130,Câmara Municipal de Olho d'Água,251040205,130,Olho d'Água
+101131,Câmara Municipal de Olivedos,251050105,131,Olivedos
+101132,Câmara Municipal de Ouro Velho,251060005,132,Ouro Velho
+101133,Câmara Municipal de Parari,251065905,133,Parari
+101134,Câmara Municipal de Passagem,251070905,134,Passagem
+101135,Câmara Municipal de Patos,251080805,135,Patos
+101136,Câmara Municipal de Paulista,251090705,136,Paulista
+101137,Câmara Municipal de Pedra Branca,251100405,137,Pedra Branca
+101138,Câmara Municipal de Pedra Lavrada,251110305,138,Pedra Lavrada
+101139,Câmara Municipal de Pedras de Fogo,251120205,139,Pedras de Fogo
+101140,Câmara Municipal de Pedro Régis,251272105,140,Pedro Régis
+101141,Câmara Municipal de Piancó,251130105,141,Piancó
+101142,Câmara Municipal de Picuí,251140005,142,Picuí
+101143,Câmara Municipal de Pilar,251150905,143,Pilar
+101144,Câmara Municipal de Pilões,251160805,144,Pilões
+101145,Câmara Municipal de Pilõezinhos,251170705,145,Pilõezinhos
+101146,Câmara Municipal de Pirpirituba,251180605,146,Pirpirituba
+101147,Câmara Municipal de Pitimbu,251190505,147,Pitimbu
+101148,Câmara Municipal de Pocinhos,251200205,148,Pocinhos
+101149,Câmara Municipal de Poço Dantas,251203605,149,Poço Dantas
+101150,Câmara Municipal de Poço de José de Moura,251207705,150,Poço de José de Moura
+101151,Câmara Municipal de Pombal,251210105,151,Pombal
+101152,Câmara Municipal de Prata,251220005,152,Prata
+101153,Câmara Municipal de Princesa Isabel,251230905,153,Princesa Isabel
+101154,Câmara Municipal de Puxinanã,251240805,154,Puxinanã
+101155,Câmara Municipal de Queimadas,251250705,155,Queimadas
+101156,Câmara Municipal de Quixabá,251260605,156,Quixabá
+101157,Câmara Municipal de Remígio,251270505,157,Remígio
+101158,Câmara Municipal de Riachão,251274705,158,Riachão
+101159,Câmara Municipal de Riachão do Bacamarte,251275405,159,Riachão do Bacamarte
+101160,Câmara Municipal de Riachão do Poço,251276205,160,Riachão do Poço
+101161,Câmara Municipal de Riacho de Santo Antônio,251278805,161,Riacho de Santo Antônio
+101162,Câmara Municipal de Riacho dos Cavalos,251280405,162,Riacho dos Cavalos
+101163,Câmara Municipal de Rio Tinto,251290305,163,Rio Tinto
+101164,Câmara Municipal de Salgadinho,251300005,164,Salgadinho
+101165,Câmara Municipal de Salgado de São Félix,251310905,165,Salgado de São Félix
+101166,Câmara Municipal de Santa Cecília,251315805,166,Santa Cecília
+101167,Câmara Municipal de Santa Cruz,251320805,167,Santa Cruz
+101168,Câmara Municipal de Santa Helena,251330705,168,Santa Helena
+101169,Câmara Municipal de Santa Inês,251335605,169,Santa Inês
+101170,Câmara Municipal de Santa Luzia,251340605,170,Santa Luzia
+101171,Câmara Municipal de Santa Rita,251370305,171,Santa Rita
+101172,Câmara Municipal de Santa Teresinha,251380205,172,Santa Teresinha
+101173,Câmara Municipal de Santana de Mangueira,251350505,173,Santana de Mangueira
+101174,Câmara Municipal de Santana dos Garrotes,251360405,174,Santana dos Garrotes
+101175,Câmara Municipal de Joca Claudino,251365305,175,Joca Claudino
+101176,Câmara Municipal de Santo André,251385105,176,Santo André
+101177,Câmara Municipal de São Bentinho,251392705,177,São Bentinho
+101178,Câmara Municipal de São Bento,251390105,178,São Bento
+101179,Câmara Municipal de São Domingos,251396805,179,São Domingos
+101180,Câmara Municipal de São Domingos do Cariri,251394305,180,São Domingos do Cariri
+101181,Câmara Municipal de São Francisco,251398405,181,São Francisco
+101182,Câmara Municipal de São João do Cariri,251400805,182,São João do Cariri
+101183,Câmara Municipal de São João do Rio do Peixe,250070005,183,São João do Rio do Peixe
+101184,Câmara Municipal de São João do Tigre,251410705,184,São João do Tigre
+101185,Câmara Municipal de São José da Lagoa Tapada,251420605,185,São José da Lagoa Tapada
+101186,Câmara Municipal de São José de Caiana,251430505,186,São José de Caiana
+101187,Câmara Municipal de São José de Espinharas,251440405,187,São José de Espinharas
+101188,Câmara Municipal de São José de Piranhas,251450305,188,São José de Piranhas
+101189,Câmara Municipal de São José de Princesa,251455205,189,São José de Princesa
+101190,Câmara Municipal de São José do Bonfim,251460205,190,São José do Bonfim
+101191,Câmara Municipal de São José do Brejo do Cruz,251465105,191,São José do Brejo do Cruz
+101192,Câmara Municipal de São José do Sabugi,251470105,192,São José do Sabugi
+101193,Câmara Municipal de São José dos Cordeiros,251480005,193,São José dos Cordeiros
+101194,Câmara Municipal de São José dos Ramos,251445305,194,São José dos Ramos
+101195,Câmara Municipal de São Mamede,251490905,195,São Mamede
+101196,Câmara Municipal de São Miguel de Taipu,251500505,196,São Miguel de Taipu
+101197,Câmara Municipal de São Sebastião de Lagoa de Roça,251510405,197,São Sebastião de Lagoa de Roça
+101198,Câmara Municipal de São Sebastião do Umbuzeiro,251520305,198,São Sebastião do Umbuzeiro
+101199,Câmara Municipal de São Vicente do Seridó,251540105,199,São Vicente do Seridó
+101200,Câmara Municipal de Sapé,251530205,200,Sapé
+101201,Câmara Municipal de Serra Branca,251550005,201,Serra Branca
+101202,Câmara Municipal de Serra da Raiz,251560905,202,Serra da Raiz
+101203,Câmara Municipal de Serra Grande,251570805,203,Serra Grande
+101204,Câmara Municipal de Serra Redonda,251580705,204,Serra Redonda
+101205,Câmara Municipal de Serraria,251590605,205,Serraria
+101206,Câmara Municipal de Sertãozinho,251593005,206,Sertãozinho
+101207,Câmara Municipal de Sobrado,251597105,207,Sobrado
+101208,Câmara Municipal de Solânea,251600305,208,Solânea
+101209,Câmara Municipal de Soledade,251610205,209,Soledade
+101210,Câmara Municipal de Sossêgo,251615105,210,Sossêgo
+101211,Câmara Municipal de Sousa,251620105,211,Sousa
+101212,Câmara Municipal de Sumé,251630005,212,Sumé
+101213,Câmara Municipal de Taperoá,251650805,213,Taperoá
+101214,Câmara Municipal de Tavares,251660705,214,Tavares
+101215,Câmara Municipal de Teixeira,251670605,215,Teixeira
+101216,Câmara Municipal de Tenório,251675505,216,Tenório
+101217,Câmara Municipal de Triunfo,251680505,217,Triunfo
+101218,Câmara Municipal de Uiraúna,251690405,218,Uiraúna
+101219,Câmara Municipal de Umbuzeiro,251700105,219,Umbuzeiro
+101220,Câmara Municipal de Várzea,251710005,220,Várzea
+101221,Câmara Municipal de Vieirópolis,251720905,221,Vieirópolis
+101222,Câmara Municipal de Vista Serrana,250550105,222,Vista Serrana
+101223,Câmara Municipal de Zabelê,251740705,223,Zabelê
+201001,Prefeitura Municipal de Água Branca,250010605,001,Água Branca
+201002,Prefeitura Municipal de Aguiar,250020505,002,Aguiar
+201003,Prefeitura Municipal de Alagoa Grande,250030405,003,Alagoa Grande
+201004,Prefeitura Municipal de Alagoa Nova,250040305,004,Alagoa Nova
+201005,Prefeitura Municipal de Alagoinha,250050205,005,Alagoinha
+201006,Prefeitura Municipal de Alcantil,250053605,006,Alcantil
+201007,Prefeitura Municipal de Algodão de Jandaíra,250057705,007,Algodão de Jandaíra
+201008,Prefeitura Municipal de Alhandra,250060105,008,Alhandra
+201009,Prefeitura Municipal de Amparo,250073405,009,Amparo
+201010,Prefeitura Municipal de Aparecida,250077505,010,Aparecida
+201011,Prefeitura Municipal de Araçagi,250080905,011,Araçagi
+201012,Prefeitura Municipal de Arara,250090805,012,Arara
+201013,Prefeitura Municipal de Araruna,250100505,013,Araruna
+201014,Prefeitura Municipal de Areia,250110405,014,Areia
+201015,Prefeitura Municipal de Areia de Baraúnas,250115305,015,Areia de Baraúnas
+201016,Prefeitura Municipal de Areial,250120305,016,Areial
+201017,Prefeitura Municipal de Aroeiras,250130205,017,Aroeiras
+201018,Prefeitura Municipal de Assunção,250135105,018,Assunção
+201019,Prefeitura Municipal de Baía da Traição,250140105,019,Baía da Traição
+201020,Prefeitura Municipal de Bananeiras,250150005,020,Bananeiras
+201021,Prefeitura Municipal de Baraúna,250153405,021,Baraúna
+201022,Prefeitura Municipal de Barra de Santa Rosa,250160905,022,Barra de Santa Rosa
+201023,Prefeitura Municipal de Barra de Santana,250157505,023,Barra de Santana
+201024,Prefeitura Municipal de Barra de São Miguel,250170805,024,Barra de São Miguel
+201025,Prefeitura Municipal de Bayeux,250180705,025,Bayeux
+201026,Prefeitura Municipal de Belém,250190605,026,Belém
+201027,Prefeitura Municipal de Belém do Brejo do Cruz,250200305,027,Belém do Brejo do Cruz
+201028,Prefeitura Municipal de Bernardino Batista,250205205,028,Bernardino Batista
+201029,Prefeitura Municipal de Boa Ventura,250210205,029,Boa Ventura
+201030,Prefeitura Municipal de Boa Vista,250215105,030,Boa Vista
+201031,Prefeitura Municipal de Bom Jesus,250220105,031,Bom Jesus
+201032,Prefeitura Municipal de Bom Sucesso,250230005,032,Bom Sucesso
+201033,Prefeitura Municipal de Bonito de Santa Fé,250240905,033,Bonito de Santa Fé
+201034,Prefeitura Municipal de Boqueirão,250250805,034,Boqueirão
+201035,Prefeitura Municipal de Borborema,250270605,035,Borborema
+201036,Prefeitura Municipal de Brejo do Cruz,250280505,036,Brejo do Cruz
+201037,Prefeitura Municipal de Brejo dos Santos,250290405,037,Brejo dos Santos
+201038,Prefeitura Municipal de Caaporã,250300105,038,Caaporã
+201039,Prefeitura Municipal de Cabaceiras,250310005,039,Cabaceiras
+201040,Prefeitura Municipal de Cabedelo,250320905,040,Cabedelo
+201041,Prefeitura Municipal de Cachoeira dos Índios,250330805,041,Cachoeira dos Índios
+201042,Prefeitura Municipal de Cacimba de Areia,250340705,042,Cacimba de Areia
+201043,Prefeitura Municipal de Cacimba de Dentro,250350605,043,Cacimba de Dentro
+201044,Prefeitura Municipal de Cacimbas,250355505,044,Cacimbas
+201045,Prefeitura Municipal de Caiçara,250360505,045,Caiçara
+201046,Prefeitura Municipal de Cajazeiras,250370405,046,Cajazeiras
+201047,Prefeitura Municipal de Cajazeirinhas,250375305,047,Cajazeirinhas
+201048,Prefeitura Municipal de Caldas Brandão,250380305,048,Caldas Brandão
+201049,Prefeitura Municipal de Camalaú,250390205,049,Camalaú
+201050,Prefeitura Municipal de Campina Grande,250400905,050,Campina Grande
+201051,Prefeitura Municipal de Tacima,251640905,051,Tacima
+201052,Prefeitura Municipal de Capim,250403305,052,Capim
+201053,Prefeitura Municipal de Caraúbas,250407405,053,Caraúbas
+201054,Prefeitura Municipal de Carrapateira,250410805,054,Carrapateira
+201055,Prefeitura Municipal de Casserengue,250415705,055,Casserengue
+201056,Prefeitura Municipal de Catingueira,250420705,056,Catingueira
+201057,Prefeitura Municipal de Catolé do Rocha,250430605,057,Catolé do Rocha
+201058,Prefeitura Municipal de Caturité,250435505,058,Caturité
+201059,Prefeitura Municipal de Conceição,250440505,059,Conceição
+201060,Prefeitura Municipal de Condado,250450405,060,Condado
+201061,Prefeitura Municipal de Conde,250460305,061,Conde
+201062,Prefeitura Municipal de Congo,250470205,062,Congo
+201063,Prefeitura Municipal de Coremas,250480105,063,Coremas
+201064,Prefeitura Municipal de Coxixola,250485005,064,Coxixola
+201065,Prefeitura Municipal de Cruz do Espírito Santo,250490005,065,Cruz do Espírito Santo
+201066,Prefeitura Municipal de Cubati,250500605,066,Cubati
+201067,Prefeitura Municipal de Cuité,250510505,067,Cuité
+201068,Prefeitura Municipal de Cuité de Mamanguape,250523805,068,Cuité de Mamanguape
+201069,Prefeitura Municipal de Cuitegi,250520405,069,Cuitegi
+201070,Prefeitura Municipal de Curral de Cima,250527905,070,Curral de Cima
+201071,Prefeitura Municipal de Curral Velho,250530305,071,Curral Velho
+201072,Prefeitura Municipal de Damião,250535205,072,Damião
+201073,Prefeitura Municipal de Desterro,250540205,073,Desterro
+201074,Prefeitura Municipal de Diamante,250560005,074,Diamante
+201075,Prefeitura Municipal de Dona Inês,250570905,075,Dona Inês
+201076,Prefeitura Municipal de Duas Estradas,250580805,076,Duas Estradas
+201077,Prefeitura Municipal de Emas,250590705,077,Emas
+201078,Prefeitura Municipal de Esperança,250600405,078,Esperança
+201079,Prefeitura Municipal de Fagundes,250610305,079,Fagundes
+201080,Prefeitura Municipal de Frei Martinho,250620205,080,Frei Martinho
+201081,Prefeitura Municipal de Gado Bravo,250625105,081,Gado Bravo
+201082,Prefeitura Municipal de Guarabira,250630105,082,Guarabira
+201083,Prefeitura Municipal de Gurinhém,250640005,083,Gurinhém
+201084,Prefeitura Municipal de Gurjão,250650905,084,Gurjão
+201085,Prefeitura Municipal de Ibiara,250660805,085,Ibiara
+201086,Prefeitura Municipal de Igaracy,250260705,086,Igaracy
+201087,Prefeitura Municipal de Imaculada,250670705,087,Imaculada
+201088,Prefeitura Municipal de Ingá,250680605,088,Ingá
+201089,Prefeitura Municipal de Itabaiana,250690505,089,Itabaiana
+201090,Prefeitura Municipal de Itaporanga,250700205,090,Itaporanga
+201091,Prefeitura Municipal de Itapororoca,250710105,091,Itapororoca
+201092,Prefeitura Municipal de Itatuba,250720005,092,Itatuba
+201093,Prefeitura Municipal de Jacaraú,250730905,093,Jacaraú
+201094,Prefeitura Municipal de Jericó,250740805,094,Jericó
+201095,Prefeitura Municipal de João Pessoa,250750705,095,João Pessoa
+201096,Prefeitura Municipal de Juarez Távora,250760605,096,Juarez Távora
+201097,Prefeitura Municipal de Juazeirinho,250770505,097,Juazeirinho
+201098,Prefeitura Municipal de Junco do Seridó,250780405,098,Junco do Seridó
+201099,Prefeitura Municipal de Juripiranga,250790305,099,Juripiranga
+201100,Prefeitura Municipal de Juru,250800005,100,Juru
+201101,Prefeitura Municipal de Lagoa,250810905,101,Lagoa
+201102,Prefeitura Municipal de Lagoa de Dentro,250820805,102,Lagoa de Dentro
+201103,Prefeitura Municipal de Lagoa Seca,250830705,103,Lagoa Seca
+201104,Prefeitura Municipal de Lastro,250840605,104,Lastro
+201105,Prefeitura Municipal de Livramento,250850505,105,Livramento
+201106,Prefeitura Municipal de Logradouro,250855405,106,Logradouro
+201107,Prefeitura Municipal de Lucena,250860405,107,Lucena
+201108,Prefeitura Municipal de Mãe d'Água,250870305,108,Mãe d'Água
+201109,Prefeitura Municipal de Malta,250880205,109,Malta
+201110,Prefeitura Municipal de Mamanguape,250890105,110,Mamanguape
+201111,Prefeitura Municipal de Manaíra,250900805,111,Manaíra
+201112,Prefeitura Municipal de Marcação,250905705,112,Marcação
+201113,Prefeitura Municipal de Mari,250910705,113,Mari
+201114,Prefeitura Municipal de Marizópolis,250915605,114,Marizópolis
+201115,Prefeitura Municipal de Massaranduba,250920605,115,Massaranduba
+201116,Prefeitura Municipal de Mataraca,250930505,116,Mataraca
+201117,Prefeitura Municipal de Matinhas,250933905,117,Matinhas
+201118,Prefeitura Municipal de Mato Grosso,250937005,118,Mato Grosso
+201119,Prefeitura Municipal de Maturéia,250939605,119,Maturéia
+201120,Prefeitura Municipal de Mogeiro,250940405,120,Mogeiro
+201121,Prefeitura Municipal de Montadas,250950305,121,Montadas
+201122,Prefeitura Municipal de Monte Horebe,250960205,122,Monte Horebe
+201123,Prefeitura Municipal de Monteiro,250970105,123,Monteiro
+201124,Prefeitura Municipal de Mulungu,250980005,124,Mulungu
+201125,Prefeitura Municipal de Natuba,250990905,125,Natuba
+201126,Prefeitura Municipal de Nazarezinho,251000605,126,Nazarezinho
+201127,Prefeitura Municipal de Nova Floresta,251010505,127,Nova Floresta
+201128,Prefeitura Municipal de Nova Olinda,251020405,128,Nova Olinda
+201129,Prefeitura Municipal de Nova Palmeira,251030305,129,Nova Palmeira
+201130,Prefeitura Municipal de Olho d'Água,251040205,130,Olho d'Água
+201131,Prefeitura Municipal de Olivedos,251050105,131,Olivedos
+201132,Prefeitura Municipal de Ouro Velho,251060005,132,Ouro Velho
+201133,Prefeitura Municipal de Parari,251065905,133,Parari
+201134,Prefeitura Municipal de Passagem,251070905,134,Passagem
+201135,Prefeitura Municipal de Patos,251080805,135,Patos
+201136,Prefeitura Municipal de Paulista,251090705,136,Paulista
+201137,Prefeitura Municipal de Pedra Branca,251100405,137,Pedra Branca
+201138,Prefeitura Municipal de Pedra Lavrada,251110305,138,Pedra Lavrada
+201139,Prefeitura Municipal de Pedras de Fogo,251120205,139,Pedras de Fogo
+201140,Prefeitura Municipal de Pedro Régis,251272105,140,Pedro Régis
+201141,Prefeitura Municipal de Piancó,251130105,141,Piancó
+201142,Prefeitura Municipal de Picuí,251140005,142,Picuí
+201143,Prefeitura Municipal de Pilar,251150905,143,Pilar
+201144,Prefeitura Municipal de Pilões,251160805,144,Pilões
+201145,Prefeitura Municipal de Pilõezinhos,251170705,145,Pilõezinhos
+201146,Prefeitura Municipal de Pirpirituba,251180605,146,Pirpirituba
+201147,Prefeitura Municipal de Pitimbu,251190505,147,Pitimbu
+201148,Prefeitura Municipal de Pocinhos,251200205,148,Pocinhos
+201149,Prefeitura Municipal de Poço Dantas,251203605,149,Poço Dantas
+201150,Prefeitura Municipal de Poço de José de Moura,251207705,150,Poço de José de Moura
+201151,Prefeitura Municipal de Pombal,251210105,151,Pombal
+201152,Prefeitura Municipal de Prata,251220005,152,Prata
+201153,Prefeitura Municipal de Princesa Isabel,251230905,153,Princesa Isabel
+201154,Prefeitura Municipal de Puxinanã,251240805,154,Puxinanã
+201155,Prefeitura Municipal de Queimadas,251250705,155,Queimadas
+201156,Prefeitura Municipal de Quixabá,251260605,156,Quixabá
+201157,Prefeitura Municipal de Remígio,251270505,157,Remígio
+201158,Prefeitura Municipal de Riachão,251274705,158,Riachão
+201159,Prefeitura Municipal de Riachão do Bacamarte,251275405,159,Riachão do Bacamarte
+201160,Prefeitura Municipal de Riachão do Poço,251276205,160,Riachão do Poço
+201161,Prefeitura Municipal de Riacho de Santo Antônio,251278805,161,Riacho de Santo Antônio
+201162,Prefeitura Municipal de Riacho dos Cavalos,251280405,162,Riacho dos Cavalos
+201163,Prefeitura Municipal de Rio Tinto,251290305,163,Rio Tinto
+201164,Prefeitura Municipal de Salgadinho,251300005,164,Salgadinho
+201165,Prefeitura Municipal de Salgado de São Félix,251310905,165,Salgado de São Félix
+201166,Prefeitura Municipal de Santa Cecília,251315805,166,Santa Cecília
+201167,Prefeitura Municipal de Santa Cruz,251320805,167,Santa Cruz
+201168,Prefeitura Municipal de Santa Helena,251330705,168,Santa Helena
+201169,Prefeitura Municipal de Santa Inês,251335605,169,Santa Inês
+201170,Prefeitura Municipal de Santa Luzia,251340605,170,Santa Luzia
+201171,Prefeitura Municipal de Santa Rita,251370305,171,Santa Rita
+201172,Prefeitura Municipal de Santa Teresinha,251380205,172,Santa Teresinha
+201173,Prefeitura Municipal de Santana de Mangueira,251350505,173,Santana de Mangueira
+201174,Prefeitura Municipal de Santana dos Garrotes,251360405,174,Santana dos Garrotes
+201175,Prefeitura Municipal de Joca Claudino,251365305,175,Joca Claudino
+201176,Prefeitura Municipal de Santo André,251385105,176,Santo André
+201177,Prefeitura Municipal de São Bentinho,251392705,177,São Bentinho
+201178,Prefeitura Municipal de São Bento,251390105,178,São Bento
+201179,Prefeitura Municipal de São Domingos,251396805,179,São Domingos
+201180,Prefeitura Municipal de São Domingos do Cariri,251394305,180,São Domingos do Cariri
+201181,Prefeitura Municipal de São Francisco,251398405,181,São Francisco
+201182,Prefeitura Municipal de São João do Cariri,251400805,182,São João do Cariri
+201183,Prefeitura Municipal de São João do Rio do Peixe,250070005,183,São João do Rio do Peixe
+201184,Prefeitura Municipal de São João do Tigre,251410705,184,São João do Tigre
+201185,Prefeitura Municipal de São José da Lagoa Tapada,251420605,185,São José da Lagoa Tapada
+201186,Prefeitura Municipal de São José de Caiana,251430505,186,São José de Caiana
+201187,Prefeitura Municipal de São José de Espinharas,251440405,187,São José de Espinharas
+201188,Prefeitura Municipal de São José de Piranhas,251450305,188,São José de Piranhas
+201189,Prefeitura Municipal de São José de Princesa,251455205,189,São José de Princesa
+201190,Prefeitura Municipal de São José do Bonfim,251460205,190,São José do Bonfim
+201191,Prefeitura Municipal de São José do Brejo do Cruz,251465105,191,São José do Brejo do Cruz
+201192,Prefeitura Municipal de São José do Sabugi,251470105,192,São José do Sabugi
+201193,Prefeitura Municipal de São José dos Cordeiros,251480005,193,São José dos Cordeiros
+201194,Prefeitura Municipal de São José dos Ramos,251445305,194,São José dos Ramos
+201195,Prefeitura Municipal de São Mamede,251490905,195,São Mamede
+201196,Prefeitura Municipal de São Miguel de Taipu,251500505,196,São Miguel de Taipu
+201197,Prefeitura Municipal de São Sebastião de Lagoa de Roça,251510405,197,São Sebastião de Lagoa de Roça
+201198,Prefeitura Municipal de São Sebastião do Umbuzeiro,251520305,198,São Sebastião do Umbuzeiro
+201199,Prefeitura Municipal de São Vicente do Seridó,251540105,199,São Vicente do Seridó
+201200,Prefeitura Municipal de Sapé,251530205,200,Sapé
+201201,Prefeitura Municipal de Serra Branca,251550005,201,Serra Branca
+201202,Prefeitura Municipal de Serra da Raiz,251560905,202,Serra da Raiz
+201203,Prefeitura Municipal de Serra Grande,251570805,203,Serra Grande
+201204,Prefeitura Municipal de Serra Redonda,251580705,204,Serra Redonda
+201205,Prefeitura Municipal de Serraria,251590605,205,Serraria
+201206,Prefeitura Municipal de Sertãozinho,251593005,206,Sertãozinho
+201207,Prefeitura Municipal de Sobrado,251597105,207,Sobrado
+201208,Prefeitura Municipal de Solânea,251600305,208,Solânea
+201209,Prefeitura Municipal de Soledade,251610205,209,Soledade
+201210,Prefeitura Municipal de Sossêgo,251615105,210,Sossêgo
+201211,Prefeitura Municipal de Sousa,251620105,211,Sousa
+201212,Prefeitura Municipal de Sumé,251630005,212,Sumé
+201213,Prefeitura Municipal de Taperoá,251650805,213,Taperoá
+201214,Prefeitura Municipal de Tavares,251660705,214,Tavares
+201215,Prefeitura Municipal de Teixeira,251670605,215,Teixeira
+201216,Prefeitura Municipal de Tenório,251675505,216,Tenório
+201217,Prefeitura Municipal de Triunfo,251680505,217,Triunfo
+201218,Prefeitura Municipal de Uiraúna,251690405,218,Uiraúna
+201219,Prefeitura Municipal de Umbuzeiro,251700105,219,Umbuzeiro
+201220,Prefeitura Municipal de Várzea,251710005,220,Várzea
+201221,Prefeitura Municipal de Vieirópolis,251720905,221,Vieirópolis
+201222,Prefeitura Municipal de Vista Serrana,250550105,222,Vista Serrana
+201223,Prefeitura Municipal de Zabelê,251740705,223,Zabelê
+301001,Instituto de Previdência dos Servidores Municipais do Poder Executivo e Legislativo de Água Branca,250010605,001,Água Branca
+301001,Instituto de Previdência dos Servidores Municipais do Poder Executivo e Legislativo de Água Branca,0,001,Água Branca
+301003,SUPERINTENDENCIA MUNICIPAL DE TRANSITO DE ALAGOA GRANDE,250030405,003,Alagoa Grande
+301004,Instituto de Previdência de Alagoa Nova,0,004,Alagoa Nova
+301004,Instituto de Previdência de Alagoa Nova,250040305,004,Alagoa Nova
+301005,Instituto de Prev. do Município de Alagoinha,0,005,Alagoinha
+301005,Instituto de Prev. do Município de Alagoinha,250050205,005,Alagoinha
+301007,Instituto de Prev. dos Serv. de Algodão de Jandaíra,0,007,Algodão de Jandaíra
+301007,Instituto de Prev. dos Serv. de Algodão de Jandaíra,250057705,007,Algodão de Jandaíra
+301008,Instituto de Seguridade Social do Municipio de Alhandra,0,008,Alhandra
+301008,Instituto de Seguridade Social do Municipio de Alhandra,250060105,008,Alhandra
+301012,Instituto Municipal de Previdência de Arara,0,012,Arara
+301012,Instituto Municipal de Previdência de Arara,250090805,012,Arara
+301019,Serviço Autônomo de Água e Esgoto da Baia da Traição,0,019,Baía da Traição
+301019,Serviço Autônomo de Água e Esgoto da Baia da Traição,250140105,019,Baía da Traição
+301020,Instituto Bananeirense de Previdência Municipal IBPEM,0,020,Bananeiras
+301020,Instituto Bananeirense de Previdência Municipal IBPEM,250150005,020,Bananeiras
+301025,Instituto de Prev. e Assistência dos Serv. Pub. do Mun. de Bayeux,0,025,Bayeux
+301025,Instituto de Prev. e Assistência dos Serv. Pub. do Mun. de Bayeux,250180705,025,Bayeux
+301026,Instituto de Previdência dos Servidores Municipais de Belém,0,026,Belém
+301026,Instituto de Previdência dos Servidores Municipais de Belém,250190605,026,Belém
+301027,Instituto de Prev. do Mun. de Belém do Brejo do Cruz,0,027,Belém do Brejo do Cruz
+301027,Instituto de Prev. do Mun. de Belém do Brejo do Cruz,250200305,027,Belém do Brejo do Cruz
+301030,Fundo dos Servidores Municipais de Boa Vista,0,030,Boa Vista
+301030,Fundo dos Servidores Municipais de Boa Vista,250215105,030,Boa Vista
+301031,Instituto de Prev. e Assistência do Município de Bom Jesus,0,031,Bom Jesus
+301031,Instituto de Prev. e Assistência do Município de Bom Jesus,250220105,031,Bom Jesus
+301033,Instituto de Prev. dos Serv. Municipal Bonitense,0,033,Bonito de Santa Fé
+301033,Instituto de Prev. dos Serv. Municipal Bonitense,250240905,033,Bonito de Santa Fé
+301036,Instituto de Previdência do Municipio de Brejo do Cruz,0,036,Brejo do Cruz
+301036,Instituto de Previdência do Municipio de Brejo do Cruz,250280505,036,Brejo do Cruz
+301038,Instituto de Prev. Social dos Servidores de Caaporã,0,038,Caaporã
+301038,Instituto de Prev. Social dos Servidores de Caaporã,250300105,038,Caaporã
+301040,Instituto de Prev. dos Serv. Mun. de Cabedelo,0,040,Cabedelo
+301040,Instituto de Prev. dos Serv. Mun. de Cabedelo,250320905,040,Cabedelo
+301041,Instituto Cachoeirense de Previdência Municipal,0,041,Cachoeira dos Índios
+301041,Instituto Cachoeirense de Previdência Municipal,250330805,041,Cachoeira dos Índios
+301046,Superitendência Cajazeirense de Transporte e Trânsito,0,046,Cajazeiras
+301046,Superitendência Cajazeirense de Transporte e Trânsito,250370405,046,Cajazeiras
+301048,Instituto de Prev. dos Serv. Públicos de Caldas Brandão,0,048,Caldas Brandão
+301048,Instituto de Prev. dos Serv. Públicos de Caldas Brandão,250380305,048,Caldas Brandão
+301050,Instituto de Prev. dos Serv. Mun. de Campina Grande,0,050,Campina Grande
+301050,Instituto de Prev. dos Serv. Mun. de Campina Grande,250400905,050,Campina Grande
+301051,PLANO MUNICIPAL DE SEGURIDADE SOCIAL,0,051,Tacima
+301051,Instituto de Prev. dos Serv. Mun. de Campo de Santana,251640905,051,Tacima
+301051,Instituto de Prev. dos Serv. Mun. de Campo de Santana,0,051,Tacima
+301061,Instituto de Prev. e Assistência do Município do Conde,0,061,Conde
+301061,Instituto de Prev. e Assistência do Município do Conde,250460305,061,Conde
+301062,Fundo Municipal de Saúde de Congo,0,062,Congo
+301069,Instituto de Prev. do Município de Cuitegi,0,069,Cuitegi
+301069,Instituto de Prev. do Município de Cuitegi,250520405,069,Cuitegi
+301074,Instituto de Previdência Municipal de Diamante,0,074,Diamante
+301074,Instituto de Previdência Municipal de Diamante,250560005,074,Diamante
+301075,Instituto de Previdência dos Serv. Púb. de Dona Inês,0,075,Dona Inês
+301075,Instituto de Previdência dos Serv. Púb. de Dona Inês,250570905,075,Dona Inês
+301080,Instituto de Prev. dos Servidores de Frei Martinho,0,080,Frei Martinho
+301080,Instituto de Prev. dos Servidores de Frei Martinho,250620205,080,Frei Martinho
+301082,Instituto de Assistência e Prev. Mun. de Guarabira,0,082,Guarabira
+301082,Instituto de Assistência e Prev. Mun. de Guarabira,250630105,082,Guarabira
+301095,Superintendência de Transp. e Trânsito de J. Pessoa,0,095,João Pessoa
+301095,Superintendência de Transp. e Trânsito de J. Pessoa,250750705,095,João Pessoa
+301097,Instituto Previdênciário do Município de Juazeirinho,250770505,097,Juazeirinho
+301099,Instituto de Prev. dos Serv.Pub. do Munic. Juripiranga,0,099,Juripiranga
+301099,Instituto de Prev. dos Serv.Pub. do Munic. Juripiranga,250790305,099,Juripiranga
+301100,Instituto de Previdencia dos Servidores Municipais de Juru,0,100,Juru
+301100,Instituto de Previdencia dos Servidores Municipais de Juru,250800005,100,Juru
+301103,Instituto de Prev. dos Servidores Municipais de Lagoa Seca,0,103,Lagoa Seca
+301103,Instituto de Prev. dos Servidores Municipais de Lagoa Seca,250830705,103,Lagoa Seca
+301107,Instituto de Previdência Municipal de Lucena,0,107,Lucena
+301107,Instituto de Previdência Municipal de Lucena,250860405,107,Lucena
+301110,Superintendencia Municipal de Transporte e Transito de Mamanguape,0,110,Mamanguape
+301113,Autarquia Municipal Mari Prev,250910705,113,Mari
+301114,Instituto de Prev. e Assist. Social dos Serv. de Marizópolis,0,114,Marizópolis
+301114,Instituto de Prev. e Assist. Social dos Serv. de Marizópolis,250915605,114,Marizópolis
+301123,Centro Integrado de Desenvolvimento da Ovinocaprinocultura de Monteiro,0,123,Monteiro
+301123,Centro Integrado de Desenvolvimento da Ovinocaprinocultura de Monteiro,250970105,123,Monteiro
+301126,Instituto de Prev. dos Serv. Mun. de Nazarezinho,0,126,Nazarezinho
+301126,Instituto de Prev. dos Serv. Mun. de Nazarezinho,251000605,126,Nazarezinho
+301129,Instituto de Previdência dos Serv. Púb. de Nova Palmeira,0,129,Nova Palmeira
+301129,Instituto de Previdência dos Serv. Púb. de Nova Palmeira,251030305,129,Nova Palmeira
+301135,Instituto de Seguridade Social do Municipio de Patos,0,135,Patos
+301135,Instituto de Seguridade Social do Municipio de Patos,251080805,135,Patos
+301138,Instituto de Prev. dos Serv. Pub. Mun. de Pedra Lavrada,251110305,138,Pedra Lavrada
+301139,Instituto de Prev. Municipal de Pedras de Fogo,0,139,Pedras de Fogo
+301139,Instituto de Prev. Municipal de Pedras de Fogo,251120205,139,Pedras de Fogo
+301142,Instituto de Prev. Social dos Servidores da Pref. de Picuí,0,142,Picuí
+301142,Instituto de Prev. Social dos Servidores da Pref. de Picuí,251140005,142,Picuí
+301144,Instituto de Prev. e Assistência do Município de Pilões,0,144,Pilões
+301144,Instituto de Prev. e Assistência do Município de Pilões,251160805,144,Pilões
+301145,Instituto de Prev. dos Serv. do Mun. de Pilõezinhos,0,145,Pilõezinhos
+301145,Instituto de Prev. dos Serv. do Mun. de Pilõezinhos,251170705,145,Pilõezinhos
+301146,Instituto de Previdência Municipal de Pirpirituba,0,146,Pirpirituba
+301146,Instituto de Previdência Municipal de Pirpirituba,251180605,146,Pirpirituba
+301147,Serviço Autonômo de Água e Esgoto de Pitimbú,0,147,Pitimbu
+301147,Serviço Autonômo de Água e Esgoto de Pitimbú,251190505,147,Pitimbu
+301149,Instituto Poçodantense de Previdência Municipal,0,149,Poço Dantas
+301149,Instituto Poçodantense de Previdência Municipal,251203605,149,Poço Dantas
+301150,Instituto de Prev. dos Serv. Pub. de Poço José de Moura,0,150,Poço de José de Moura
+301150,Instituto de Prev. dos Serv. Pub. de Poço José de Moura,251207705,150,Poço de José de Moura
+301153,Instituto de Prev. dos Servidores de Princesa Isabel,0,153,Princesa Isabel
+301153,Instituto de Prev. dos Servidores de Princesa Isabel,251230905,153,Princesa Isabel
+301155,Instituto de Previdência Municipal de Queimadas,0,155,Queimadas
+301155,Instituto de Previdência Municipal de Queimadas,251250705,155,Queimadas
+301157,Instituto de Prev. dos Serv. do Mun. de Remígio,0,157,Remígio
+301157,Instituto de Prev. dos Serv. do Mun. de Remígio,251270505,157,Remígio
+301158,Inst. Prev. Assistência Social de Riachão,0,158,Riachão
+301158,Inst. Prev. Assistência Social de Riachão,251274705,158,Riachão
+301170,Inst. de Prev. Social dos Servidores Públicos do Mun. de Santa Luzia,0,170,Santa Luzia
+301170,Inst. de Prev. Social dos Servidores Públicos do Mun. de Santa Luzia,251340605,170,Santa Luzia
+301171,Instituto de Previdência Social do Município de Santa Rita,0,171,Santa Rita
+301171,Instituto de Previdência Social do Município de Santa Rita,251370305,171,Santa Rita
+301185,Instituto de Prev. dos Serv. Pub. do Mun. de São José da Lagoa Tapada,0,185,São José da Lagoa Tapada
+301185,Instituto de Prev. dos Serv. Pub. do Mun. de São José da Lagoa Tapada,251420605,185,São José da Lagoa Tapada
+301194,Instituto de Prev. dos Serv. do Munic. de São José dos Ramos,0,194,São José dos Ramos
+301194,Instituto de Prev. dos Serv. do Munic. de São José dos Ramos,251445305,194,São José dos Ramos
+301197,Instituto de Prev. dos Serv. Mun. de S. S. de Lagoa de Roça,0,197,São Sebastião de Lagoa de Roça
+301197,Instituto de Prev. dos Serv. Mun. de S. S. de Lagoa de Roça,251510405,197,São Sebastião de Lagoa de Roça
+301201,Instituto de Prev. dos Serv. do Mun. de Serra Branca,0,201,Serra Branca
+301201,Instituto de Prev. dos Serv. do Mun. de Serra Branca,251550005,201,Serra Branca
+301209,Instituto de Previdência dos Servidores Municipais de Soledade,0,209,Soledade
+301209,Instituto de Previdência dos Servidores Municipais de Soledade,251610205,209,Soledade
+301212,Instituto de Previdência e Assistência Social de Sumé,0,212,Sumé
+301212,Instituto de Previdência e Assistência Social de Sumé,251630005,212,Sumé
+301213,Instituto de Previdência do Município de Taperoá,251650805,213,Taperoá
+302005,Serviço Autônomo de Água e Esgoto de Alagoinha,0,005,Alagoinha
+302005,Serviço Autônomo de Água e Esgoto de Alagoinha,250050205,005,Alagoinha
+302038,Serviço Autonômo de Água e Esgoto de Cupissura - Caaporã,0,038,Caaporã
+302038,Serviço Autonômo de Água e Esgoto de Cupissura - Caaporã,250300105,038,Caaporã
+302046,Instituto de Prev. e Assistência do Município de Cajazeiras,0,046,Cajazeiras
+302046,Instituto de Prev. e Assistência do Município de Cajazeiras,250370405,046,Cajazeiras
+302050,Agência Municipal de Desenvolvimento de Campina Grande,0,050,Campina Grande
+302050,Agência Municipal de Desenvolvimento de Campina Grande,250400905,050,Campina Grande
+302061,AGENCIA MUNICIPAL DE DESENVOLVIMENTO DE CONDE,250460305,061,Conde
+302095,Instituto de Prev. e Assistência do Município de João Pessoa,0,095,João Pessoa
+302095,Instituto de Prev. e Assistência do Município de João Pessoa,250750705,095,João Pessoa
+302135,Superitendência de Trânsito e Transporte do Município de Patos,0,135,Patos
+302135,Superitendência de Trânsito e Transporte do Município de Patos,251080805,135,Patos
+302206,Instituto de Prev. do Município de Sertãozinho,0,206,Sertãozinho
+302206,Instituto de Prev. do Município de Sertãozinho,251593005,206,Sertãozinho
+303046,Instituto Materno Infantil Júlio Maria Bandeira de Melo,0,046,Cajazeiras
+303046,Instituto Materno Infantil Júlio Maria Bandeira de Melo,250370405,046,Cajazeiras
+303050,Superintendência de Transportes Públicos de Campina Grande,0,050,Campina Grande
+303050,Superintendência de Transportes Públicos de Campina Grande,250400905,050,Campina Grande
+303095,Instituto Cândida Vargas,0,095,João Pessoa
+303095,Instituto Cândida Vargas,250750705,095,João Pessoa
+304046,Superintendência Municipal de Meio Ambiente de Cajazeiras,0,046,Cajazeiras
+304050,Empresa Municipal de Urbanização da Borborema,0,050,Campina Grande
+304050,Empresa Municipal de Urbanização da Borborema,250400905,050,Campina Grande
+304095,Autarquia Especial Municipal de Limpeza Urbana - EMLUR,0,095,João Pessoa
+304095,Autarquia Especial Municipal de Limpeza Urbana - EMLUR,250750705,095,João Pessoa
+601001,Fundo Municipal de Saúde de Água Branca,250010605,001,Água Branca
+601001,Fundo Municipal de Saúde de Água Branca,0,001,Água Branca
+601003,Fundo Municipal de Saúde de Alagoa Grande,0,003,Alagoa Grande
+601003,Fundo Municipal de Saúde de Alagoa Grande,250030405,003,Alagoa Grande
+601005,Fundo Municipal de Saúde de Alagoinha,0,005,Alagoinha
+601011,Fundo Municipal de Saúde de Araçagi,0,011,Araçagi
+601013,Fundo Municipal de Saúde de Araruna,250100505,013,Araruna
+601015,Fundo Municipal de Saúde de Areia de Baraúnas,250115305,015,Areia de Baraúnas
+601017,Fundo Municipal de Saúde de Aroeiras,0,017,Aroeiras
+601017,Fundo Municipal de Saúde de Aroeiras,250130205,017,Aroeiras
+601022,Fundo de Aposentadoria e Pensão de Barra de Santa Rosa,0,022,Barra de Santa Rosa
+601022,Fundo de Aposentadoria e Pensão de Barra de Santa Rosa,250160905,022,Barra de Santa Rosa
+601025,Fundo Municipal de Saúde de Bayeux,0,025,Bayeux
+601025,Fundo Municipal de Saúde de Bayeux,250180705,025,Bayeux
+601026,Fundo Municipal de Saúde de Belém,250190605,026,Belém
+601026,Fundo Municipal de Saúde de Belém,0,026,Belém
+601029,Fundo Municipal de Saúde de Boa Ventura,250210205,029,Boa Ventura
+601029,Fundo Municipal de Saúde de Boa Ventura,0,029,Boa Ventura
+601031,Fundo Municipal de Saúde de Bom Jesus,250220105,031,Bom Jesus
+601038,Fundo Municipal de Saúde de Caaporã,0,038,Caaporã
+601040,Fundo Municipal de Saúde de Cabedelo,250320905,040,Cabedelo
+601043,Fundo Municipal de Saúde de Cacimba de Dentro,250350605,043,Cacimba de Dentro
+601044,Fundo Municipal de Saúde de Cacimbas,250355505,044,Cacimbas
+601044,Fundo Municipal de Saúde de Cacimbas,0,044,Cacimbas
+601046,Fundo Municipal de Saúde de Cajazeiras,0,046,Cajazeiras
+601046,Fundo Municipal de Saúde de Cajazeiras,250370405,046,Cajazeiras
+601047,Fundo Municipal de Saúde de Cajazeirinhas,250375305,047,Cajazeirinhas
+601047,Fundo Municipal de Saúde de Cajazeirinhas,0,047,Cajazeirinhas
+601050,Fundo Municipal de Saúde de Campina Grande,0,050,Campina Grande
+601050,Fundo Municipal de Saúde de Campina Grande,250400905,050,Campina Grande
+601052,Fundo Municipal de Saúde de Capim,0,052,Capim
+601052,Fundo Municipal de Saúde de Capim,250403305,052,Capim
+601053,Fundo Muncipal de Saúde de Caraúbas,0,053,Caraúbas
+601055,FUNDO MUNICIPAL DE SAUDE DE CASSERENGUE,250415705,055,Casserengue
+601056,Fundo Municipal de Saúde de Catingueira,0,056,Catingueira
+601061,Fundo Municipal de Assitência Social do Conde,250460305,061,Conde
+601061,Fundo Municipal de Assitência Social do Conde,0,061,Conde
+601066,Fundo Municipal de Saúde de Cubatí,0,066,Cubati
+601066,Fundo Municipal de Saúde de Cubatí,250500605,066,Cubati
+601067,Instituto de Previdência dos Servidores de Cuité,0,067,Cuité
+601067,Instituto de Previdência dos Servidores de Cuité,250510505,067,Cuité
+601068,Fundo Municipal de Saúde de Cuité de Mananguape,0,068,Cuité de Mamanguape
+601069,Fundo Municipal de Saúde de Cuitegi,250520405,069,Cuitegi
+601071,Fundo Municipal de Saúde de Curral Velho,250530305,071,Curral Velho
+601071,Fundo Municipal de Saúde de Curral Velho,0,071,Curral Velho
+601073,Fundo Municipal de Saúde de Desterro,250540205,073,Desterro
+601073,Fundo Municipal de Saúde de Desterro,0,073,Desterro
+601075,Fundo Municipal de Saúde de Dona Inês,0,075,Dona Inês
+601078,Fundo de Previdência Social dos Serv. do Mun. de Esperança,0,078,Esperança
+601078,Fundo de Previdência Social dos Serv. do Mun. de Esperança,250600405,078,Esperança
+601082,Fundo Municipal de Saúde de Guarabira,0,082,Guarabira
+601082,Fundo Municipal de Saúde de Guarabira,250630105,082,Guarabira
+601085,Fundo Municipal de Saúde de Ibiara,0,085,Ibiara
+601085,Fundo Municipal de Saúde de Ibiara,250660805,085,Ibiara
+601086,Fundo Municipal de Saúde de Igaracy,250260705,086,Igaracy
+601086,Fundo Municipal de Saúde de Igaracy,0,086,Igaracy
+601087,Fundo Municipal de Saúde de Imaculada,250670705,087,Imaculada
+601089,Fundo Municipal de Saúde de Itabaiana,0,089,Itabaiana
+601089,Fundo Municipal de Saúde de Itabaiana,250690505,089,Itabaiana
+601090,Fundo Municipal de Saúde de Itaporanga,250700205,090,Itaporanga
+601090,Fundo Municipal de Saúde de Itaporanga,0,090,Itaporanga
+601091,Fundo Municipal de Saúde de Itapororoca,0,091,Itapororoca
+601093,Instituto de Prev. e Assistência do Município de Jacaraú,0,093,Jacaraú
+601093,Instituto de Prev. e Assistência do Município de Jacaraú,250730905,093,Jacaraú
+601095,Fundo Municipal do Meio Ambiente de João Pessoa,0,095,João Pessoa
+601095,Fundo Municipal do Meio Ambiente de João Pessoa,250750705,095,João Pessoa
+601097,Fundo Municipal de Saúde de Juazeirinho,250770505,097,Juazeirinho
+601098,Fundo Municipal de Saúde de Junco do Seridó,0,098,Junco do Seridó
+601099,Fundo Municipal de Saúde de Juripiranga,250790305,099,Juripiranga
+601099,Fundo Municipal de Saúde de Juripiranga,0,099,Juripiranga
+601102,Fundo Municipal de Saúde de Lagoa de Dentro,0,102,Lagoa de Dentro
+601107,Fundo Municipal de Saúde de Lucena,250860405,107,Lucena
+601107,Fundo Municipal de Saúde de Lucena,0,107,Lucena
+601110,Fundo Municipal de Saúde de Mamanguape,0,110,Mamanguape
+601110,Fundo Municipal de Saúde de Mamanguape,250890105,110,Mamanguape
+601111,Fundo Municipal de Saúde de Manaíra,250900805,111,Manaíra
+601111,Fundo Municipal de Saúde de Manaíra,0,111,Manaíra
+601112,Fundo Municipal de Saúde de Marcação,0,112,Marcação
+601115,FUNDO MUNICIPAL DE SAÚDE DE MASSARANDUBA,0,115,Massaranduba
+601115,Fundo Municipal de Saúde de Massaranduba,250920605,115,Massaranduba
+601115,Fundo Municipal de Saúde de Massaranduba,0,115,Massaranduba
+601116,Fundo Municipal de Saude de Mataraca,0,116,Mataraca
+601123,Fundo Municipal de Assistência Social de Monteiro,250970105,123,Monteiro
+601123,Fundo Municipal de Assistência Social de Monteiro,0,123,Monteiro
+601132,Fundo Municipal de Saúde de Ouro Velho,251060005,132,Ouro Velho
+601136,Instituto de Previdência de Paulista,0,136,Paulista
+601136,Instituto de Previdência de Paulista,251090705,136,Paulista
+601138,Fundo Municipal de Saúde de Pedra Lavrada,251110305,138,Pedra Lavrada
+601138,Fundo Municipal de Saúde de Pedra Lavrada,0,138,Pedra Lavrada
+601139,Fundo Municipal de Assistência Social de Pedras de Fogo,251120205,139,Pedras de Fogo
+601139,Fundo Municipal de Assistência Social de Pedras de Fogo,0,139,Pedras de Fogo
+601140,Fundo Municipal de Saúde de Pedro Regis,0,140,Pedro Régis
+601143,Fundo Municipal de Saúde de Pilar,251150905,143,Pilar
+601143,Fundo Municipal de Saúde de Pilar,0,143,Pilar
+601147,Fundo Municipal de Saúde de Pitimbu,251190505,147,Pitimbu
+601148,Fundo Municipal de Saúde de Pocinhos,0,148,Pocinhos
+601148,Fundo Municipal de Saúde de Pocinhos,251200205,148,Pocinhos
+601150,Fundo Municipal de Saúde de Poço de José de Moura,251207705,150,Poço de José de Moura
+601151,Fundo Municipal de Saúde de Pombal,0,151,Pombal
+601151,Fundo Municipal de Saúde de Pombal,251210105,151,Pombal
+601152,Fundo Municipal de Saúde do Município de Prata,251220005,152,Prata
+601152,Fundo Municipal de Saúde do Município de Prata,0,152,Prata
+601154,Fundo Municipal de Saúde de Puxinanã,251240805,154,Puxinanã
+601154,Fundo Municipal de Saúde de Puxinanã,0,154,Puxinanã
+601156,Fundo Municipal de Saúde de Quixaba,0,156,Quixabá
+601159,Fundo Municipal de Saúde de Riachão do Bacamarte,0,159,Riachão do Bacamarte
+601163,Fundo Municipal de Saúde de Rio Tinto,0,163,Rio Tinto
+601165,Fundo Municipal de Saúde de Salgado de São Félix,251310905,165,Salgado de São Félix
+601165,Fundo Municipal de Saúde de Salgado de São Félix,0,165,Salgado de São Félix
+601167,Instituto de Previdência dos Servidores de Santa Cruz,0,167,Santa Cruz
+601167,Instituto de Previdência dos Servidores de Santa Cruz,251320805,167,Santa Cruz
+601168,Instituto de Prev. e Assist. Municipal Santa Helena,0,168,Santa Helena
+601168,Instituto de Prev. e Assist. Municipal Santa Helena,251330705,168,Santa Helena
+601171,Fundo Municipal de Assistência Social de Santa Rita,0,171,Santa Rita
+601171,Fundo Municipal de Assistência Social de Santa Rita,251370305,171,Santa Rita
+601176,Fundo Municipal de Saúde de Santo André,251385105,176,Santo André
+601176,Fundo Municipal de Saúde de Santo André,0,176,Santo André
+601177,Fundo Municipal de Saúde de São Bentinho,251392705,177,São Bentinho
+601177,Fundo Municipal de Saúde de São Bentinho,0,177,São Bentinho
+601178,Instituto Municipal de Previdência de São Bento,0,178,São Bento
+601178,Instituto Municipal de Previdência de São Bento,251390105,178,São Bento
+601186,Fundo Municipal de Saúde de São José de Caiana,251430505,186,São José de Caiana
+601186,Fundo Municipal de Saúde de São José de Caiana,0,186,São José de Caiana
+601189,Fundo Municipal de São José de Princesa,251455205,189,São José de Princesa
+601189,Fundo Municipal de São José de Princesa,0,189,São José de Princesa
+601192,Fundo Municipal de Saúde do Município de São José do Sabugi,251470105,192,São José do Sabugi
+601194,Fundo Municipal de Saúde de São José dos Ramos,251445305,194,São José dos Ramos
+601194,Fundo Municipal de Saúde de São José dos Ramos,0,194,São José dos Ramos
+601196,Fundo Municipal de Saúde de São Miguel de Taipú,251500505,196,São Miguel de Taipu
+601196,Fundo Municipal de Saúde de São Miguel de Taipú,0,196,São Miguel de Taipu
+601199,Fundo Municipal de Saúde de São Vicente do Seridó,251540105,199,São Vicente do Seridó
+601199,Fundo Municipal de Saúde de São Vicente do Seridó,0,199,São Vicente do Seridó
+601200,Fundo Municipal de Saúde de Sapé,0,200,Sapé
+601200,Fundo Municipal de Saúde de Sapé,251530205,200,Sapé
+601209,FUNDO MUNICIPAL DE SAUDE DE SOLEDADE,0,209,Soledade
+601209,Fundo Municipal de Saúde de Soledade,251610205,209,Soledade
+601209,Fundo Municipal de Saúde de Soledade,0,209,Soledade
+601210,FUNDO DE ASSISTENCIA SOCIAL DE SOSSEGO,0,210,Sossêgo
+601210,Fundo Municipal de Assistência Social de Sossêgo,251615105,210,Sossêgo
+601210,Fundo Municipal de Assistência Social de Sossêgo,0,210,Sossêgo
+601211,Fundo Municipal de Saúde de Sousa,0,211,Sousa
+601211,Fundo Municipal de Saúde de Sousa,251620105,211,Sousa
+601216,Fundo Municipal de Saúde de Tenório,251675505,216,Tenório
+601218,Fundo Municipal de Saude de Uirauna,0,218,Uiraúna
+601219,Fundo Municipal de Assistência Social de Umbuzeiro,0,219,Umbuzeiro
+601219,Fundo Municipal de Assistência Social de Umbuzeiro,251700105,219,Umbuzeiro
+601223,INSTITUTO DE SEGURIDADE SOCIAL DO MUNICIPIO DE ZABELE,0,223,Zabelê
+601223,Instituto de Seguridade Social de Zabelê,251740705,223,Zabelê
+601223,Instituto de Seguridade Social de Zabelê,0,223,Zabelê
+602015,Fundo Municipal de Assistência Social de Areia de Baraúnas,250115305,015,Areia de Baraúnas
+602026,Fundo Municipal de Assistência Social de Belém,250190605,026,Belém
+602026,Fundo Municipal de Assistência Social de Belém,0,026,Belém
+602044,Instituto de Previdência do Munícipio de Cacimbas,250355505,044,Cacimbas
+602044,Instituto de Previdência do Munícipio de Cacimbas,0,044,Cacimbas
+602046,Fundo Municipal de Assistência Social de Cajazeiras,250370405,046,Cajazeiras
+602050,Fundo Municipal da Infância e Adolescência de Campina Grande,0,050,Campina Grande
+602050,Fundo Municipal da Infância e Adolescência de Campina Grande,250400905,050,Campina Grande
+602052,Fundo Municipal de Assistência Social de Capim,0,052,Capim
+602052,Fundo Municipal de Assistência Social de Capim,250403305,052,Capim
+602061,Fundo Municipal de Saúde do Conde,250460305,061,Conde
+602061,Fundo Municipal de Saúde do Conde,0,061,Conde
+602073,Instituto de Previdência do Município de Desterro,250540205,073,Desterro
+602073,Instituto de Previdência do Município de Desterro,0,073,Desterro
+602089,Fundo Municipal de Assitência Social de Itabaiana,250690505,089,Itabaiana
+602089,Fundo Municipal de Assitência Social de Itabaiana,0,089,Itabaiana
+602095,Fundo Municipal de Defesa dos Direitos Difusos,0,095,João Pessoa
+602095,Fundo Municipal de Defesa dos Direitos Difusos,250750705,095,João Pessoa
+602107,Fundo Municipal de Assistência Social de Lucena,250860405,107,Lucena
+602107,Fundo Municipal de Assistência Social de Lucena,0,107,Lucena
+602123,Fundo Municipal de Saúde de Monteiro,250970105,123,Monteiro
+602123,Fundo Municipal de Saúde de Monteiro,0,123,Monteiro
+602132,Fundo Municipal de Assistência Social de Ouro Velho,251060005,132,Ouro Velho
+602138,Fundo Municipal de Assistência Social de Pedra Lavrada,251110305,138,Pedra Lavrada
+602139,Fundo Municipal de Saúde de Pedras de Fogo,251120205,139,Pedras de Fogo
+602139,Fundo Municipal de Saúde de Pedras de Fogo,0,139,Pedras de Fogo
+602143,Fundo Municipal de Assistência Social de Pilar,0,143,Pilar
+602147,Fundo Municipal de Assistência Social de Pitimbu,251190505,147,Pitimbu
+602152,Fundo Municipal de Educação de Prata,251220005,152,Prata
+602165,Fundo Municipal de Assistência Social de Salgado de São Félix,0,165,Salgado de São Félix
+602166,Fundo Municipal de Saúde de Santa Cecília,0,166,Santa Cecília
+602166,Fundo Municipal de Saúde de Santa Cecília,251315805,166,Santa Cecília
+602168,FUNDO MUNICIPAL DE SAUDE DE SANTA HELENA,0,168,Santa Helena
+602171,Fundo Municipal de Saúde de Santa Rita,0,171,Santa Rita
+602171,Fundo Municipal de Saúde de Santa Rita,251370305,171,Santa Rita
+602192,Fundo Municipal de Assistência Social de São José do Sabugi,251470105,192,São José do Sabugi
+602200,Fundo de Previdência de Sapé,0,200,Sapé
+602200,Fundo de Previdência de Sapé,251530205,200,Sapé
+602219,Fundo Municipal de Saúde de Umbuzeiro,0,219,Umbuzeiro
+602219,Fundo Municipal de Saúde de Umbuzeiro,251700105,219,Umbuzeiro
+603040,Fundo Municipal de Apoio aos Pequenos Negócios de Cabedelo - FMAPN,250320905,040,Cabedelo
+603050,Fundo Municipal de Assistencia Social de Campina Grande,0,050,Campina Grande
+603050,Fundo Municipal de Assistencia Social de Campina Grande,250400905,050,Campina Grande
+603095,Fundação Cultural de João Pessoa,0,095,João Pessoa
+603095,Fundação Cultural de João Pessoa,250750705,095,João Pessoa
+603123,Fundo Municipal de Educação de Monteiro,250970105,123,Monteiro
+603123,Fundo Municipal de Educação de Monteiro,0,123,Monteiro
+603166,Fundo Mun. de Assist. Social de Santa Cecília,0,166,Santa Cecília
+603166,Fundo Mun. de Assist. Social de Santa Cecília,251315805,166,Santa Cecília
+603200,Fundo Municipal de Assistência Social de Sapé,0,200,Sapé
+604050,Fundo Municipal de Defesa dos Direitos Difusos de Campina Grande,0,050,Campina Grande
+604050,Fundo Municipal de Defesa dos Direitos Difusos de Campina Grande,250400905,050,Campina Grande
+605050,Fundo Municipal do Meio Ambiente de Campina Grande,0,050,Campina Grande
+605050,Fundo Municipal do Meio Ambiente de Campina Grande,250400905,050,Campina Grande
+605095,Fundo Municipal de Apoio aos Pequenos Negócios - EMPREENDER-JP,0,095,João Pessoa
+605095,Fundo Municipal de Apoio aos Pequenos Negócios - EMPREENDER-JP,250750705,095,João Pessoa
+606095,Fundo Municipal de Urbanização,0,095,João Pessoa
+606095,Fundo Municipal de Urbanização,250750705,095,João Pessoa
+607095,Fundo Municipal de Cultura,0,095,João Pessoa
+607095,Fundo Municipal de Cultura,250750705,095,João Pessoa
+608095,Fundo Municipal dos Dir. da Criança e do Adolescente de J. Pessoa,0,095,João Pessoa
+608095,Fundo Municipal dos Dir. da Criança e do Adolescente de J. Pessoa,250750705,095,João Pessoa
+609095,Fundo Municipal de Assistência Social de João Pessoa,0,095,João Pessoa
+609095,Fundo Municipal de Assistência Social de João Pessoa,250750705,095,João Pessoa
+610095,Fundo Municipal de Saúde de João Pessoa,0,095,João Pessoa
+610095,Fundo Municipal de Saúde de João Pessoa,250750705,095,João Pessoa
+611095,"FUNDO DE GESTAO, DESENV. E MODERNIZAÇÃO DA PROCURADORIA GERAL DO MUNICIPIO DE JOAO PESSOA - FUNDERM",250750705,095,João Pessoa
+701046,Consórcio Intermunicipal de Saúde dos Municípios do Alto Sertão Paraibano,0,046,Cajazeiras
+701057,Consórcio Público de Desenvolvimento Sustentável do Médio Piranha,250430605,057,Catolé do Rocha
+701057,Consórcio Público de Desenvolvimento Sustentável do Médio Piranha,0,057,Catolé do Rocha
+701067,Consórcio Intermunicipal de Saúde do Curimataú e seridó Paraibano,0,067,Cuité
+701067,Consórcio Intermunicipal de Saúde do Curimataú e seridó Paraibano,250510505,067,Cuité
+701141,Consórcio Intermunicipal de Saúde da Região do Vale do Piancó,0,141,Piancó
+701141,Consórcio Intermunicipal de Saúde da Região do Vale do Piancó,251130105,141,Piancó
+701155,Consórcio Intermunicipal de Saúde do Cariri Oriental,0,155,Queimadas
+701155,Consórcio Intermunicipal de Saúde do Cariri Oriental,251250705,155,Queimadas
+701212,Consórcio Intermunicipal de Saúde do Cariri Ocidental,0,212,Sumé
+701212,Consórcio Intermunicipal de Saúde do Cariri Ocidental,251630005,212,Sumé
+701213,Consorcio de Desenvolvimento Sustentavel Sao Sarue,251650805,213,Taperoá
