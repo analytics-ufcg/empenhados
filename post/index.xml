@@ -113,14 +113,5 @@ Este relatório busca compreender o processo de gasto do dinheiro público, a ex
 O que você precisa saber para ler esse relatório é que ao lançar uma licitação, dependendo de sua modalidade, as empresas podem apresentar propostas que serão avaliadas pela administração pública conforme critérios estabelecidos no edital da licitação e só as vencedoras irão participar do processo de execução orçamentária do município.</description>
     </item>
     
-    <item>
-      <title>Untitled</title>
-      <link>/2017/04/untitled/</link>
-      <pubDate>Mon, 10 Apr 2017 00:00:00 +0000</pubDate>
-      
-      <guid>/2017/04/untitled/</guid>
-      <description>sagres &amp;lt;- src_mysql(&amp;#39;sagres_municipal&amp;#39;, group=&amp;#39;ministerio-publico&amp;#39;, password=NULL, username = &amp;quot;empenhados&amp;quot;) query &amp;lt;- sql(&amp;#39; SELECT e.* FROM Empenhos as e INNER JOIN ( SELECT * FROM Propostas WHERE st_Proposta = 2) as p ON (e.cd_UGestora = p.cd_UGestora AND e.nu_Licitacao = p.nu_Licitacao AND e.tp_Licitacao = p.tp_Licitacao AND e.cd_Credor = p.nu_CPFCNPJ) &amp;#39;) empenhos_para_perdedores &amp;lt;- tbl(sagres, query) %&amp;gt;% collect() ## Warning in .local(conn, statement, ...): Decimal MySQL column 18 imported ## as numeric ## Warning in .</description>
-    </item>
-    
   </channel>
 </rss>
