@@ -449,7 +449,7 @@ empenhos_nao_pagos %>%
   )
 ```
 
-Os municípios de Monteiro e Água Branca realizaram empenhos com valores altos, mas não há, nos dados, nenhum pagamento desses municípios. 
+Os municípios de Monteiro e Pedra Branca realizaram empenhos com valores altos, mas não há, nos dados, nenhum pagamento desses municípios. 
 
 ## Municípios que mais gastaram por aluno
 
