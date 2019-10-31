@@ -79,7 +79,7 @@ licitacoes %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    title = "Número de licitações de transporte escolar por mês \nem 2016",
+    subtitle = "Número de licitações de transporte escolar por mês em 2016",
     x = "Mês",
     y = "Licitações"
   )
@@ -110,7 +110,7 @@ licitacoes_municipios %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    title = "Municípios que mais realizaram licitações de \ntransporte escolar em 2016",
+    subtitle = "Municípios que mais realizaram licitações de transporte \nescolar em 2016",
     x = "Município",
     y = "Quantidade de licitações"
   ) +
@@ -188,7 +188,7 @@ licitacoes %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    title = "Quantidade de licitações de cada modalidade",
+    subtitle = "Quantidade de licitações de cada modalidade",
     x = NULL,
     y = "Licitações"
   ) +
@@ -208,7 +208,7 @@ licitacoes %>%
   geom_jitter(colour = "dodgerblue4") +
   scale_y_log10() +
   labs(
-    title = "Relação entre a quantidade de propostas e o valor de \numa licitação",
+    subtitle = "Relação entre a quantidade de propostas e o valor \nde uma licitação",
     x = "Propostas",
     y = "Valor (em milhares)"
   )
@@ -258,7 +258,7 @@ licitacoes.mediana %>%
     shape = 124
   ) +
   labs(
-    title = "Distribuição dos valores de licitações",
+    subtitle = "Distribuição dos valores de licitações",
     x = "Modalidade",
     y = "Valor (em milhares)"
   ) +
@@ -322,7 +322,6 @@ fornecedores %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    title = "Valor dos empenhos de transporte \n escolar recebido por fornecedor.",
     x = "Fornecedor",
     y = "Valor recebido (em milhares)"
   ) +
@@ -360,7 +359,7 @@ pagamentos.municipio %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    title = "Municípios que mais gastaram com transporte \nescolar",
+    subtitle = "Municípios que mais gastaram com \ntransporte escolar",
     x = NULL,
     y = "Total pago (em milhares)"
   ) +
@@ -439,7 +438,7 @@ empenhos_nao_pagos %>%
     hjust = -0.5
   ) +
   labs(
-    title = "Total empenhado pelos municípios que não \nrealizaram pagamentos",
+    subtitle = "Total empenhado pelos municípios que não realizaram \npagamentos",
     x = "Municípios",
     y = "Valor empenhado (milhares)"
   ) +
@@ -483,7 +482,7 @@ gasto_municipio_aluno %>%
     colour = "white"
   ) +
   labs(
-    title = "Distribuição do total gasto por aluno em 2016",
+    subtitle = "Distribuição do total gasto por aluno em 2016",
     x = "Total gasto",
     y = "Ocorrências"
   ) +
@@ -517,7 +516,7 @@ gasto_municipio_aluno %>%
     colour = "dodgerblue4"
   ) +
   labs(
-    title = "Municípios que mais gastaram com transporte \nescolar por aluno",
+    subtitle = "Municípios que mais gastaram com \ntransporte escolar por aluno",
     caption = "Estimativa realizada com base em dados sobre alunos matriculados em 2015",
     x = NULL,
     y = "Total gasto"
