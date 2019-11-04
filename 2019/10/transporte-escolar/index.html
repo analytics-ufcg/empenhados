@@ -238,6 +238,7 @@ if (!doNotTrack) {
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               
+<script src="../../../rmarkdown-libs/kePrint/kePrint.js"></script>
 
 
 <p>Nesse post realizamos uma análise sobre os gastos com transporte escolar no estado da Paraíba em 2016. Os dados utilizados foram obtidos a partir da plataforma SAGRES do Tribunal de Contas do Estado da Paraíba, que contém informações sobre gastos públicos dos municípios.</p>
@@ -269,29 +270,49 @@ As licitações de Igaracy ocorreram nos meses de março a junho, e todas para c
 </ul></li>
 <li>Aquisição: as licitações desse grupo são relacionadas à aquisição de veículos para o transporte escolar.</li>
 </ol>
-<table>
+<table class="table table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Título</th>
-<th align="right">Porcentagem (%)</th>
+<tr>
+<th style="text-align:left;">
+Título
+</th>
+<th style="text-align:right;">
+Porcentagem (%)
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">Contratação</td>
-<td align="right">72.82</td>
+<tr>
+<td style="text-align:left;">
+Contratação
+</td>
+<td style="text-align:right;">
+72.82
+</td>
 </tr>
-<tr class="even">
-<td align="left">Locação</td>
-<td align="right">19.42</td>
+<tr>
+<td style="text-align:left;">
+Locação
+</td>
+<td style="text-align:right;">
+19.42
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Aquisição</td>
-<td align="right">4.85</td>
+<tr>
+<td style="text-align:left;">
+Aquisição
+</td>
+<td style="text-align:right;">
+4.85
+</td>
 </tr>
-<tr class="even">
-<td align="left">Não atribuído</td>
-<td align="right">2.91</td>
+<tr>
+<td style="text-align:left;">
+Não atribuído
+</td>
+<td style="text-align:right;">
+2.91
+</td>
 </tr>
 </tbody>
 </table>
@@ -311,112 +332,228 @@ As licitações de Igaracy ocorreram nos meses de março a junho, e todas para c
 <div id="em-geral-qual-o-valor-de-uma-licitacao-esse-valor-varia-entre-cada-modalidade" class="section level1">
 <h1>Em geral, qual o valor de uma licitação? Esse valor varia entre cada modalidade?</h1>
 <p>Já que a mediana representa o valor que separa a metade menor e maior de um conjunto de dados, e, ao contrário da média, não é afetada por valores extremos, utilizaremos esta medida para representar o valor geral de uma licitação.</p>
-<table>
+<table class="table table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Modalidade</th>
-<th align="right">Mediana do Valor (R$)</th>
+<tr>
+<th style="text-align:left;">
+Modalidade
+</th>
+<th style="text-align:right;">
+Mediana do Valor (R$)
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">Concorrência</td>
-<td align="right">657690.0</td>
+<tr>
+<td style="text-align:left;">
+Concorrência
+</td>
+<td style="text-align:right;">
+657690.0
+</td>
 </tr>
-<tr class="even">
-<td align="left">Adesão a Registro de Preço</td>
-<td align="right">640000.0</td>
+<tr>
+<td style="text-align:left;">
+Adesão a Registro de Preço
+</td>
+<td style="text-align:right;">
+640000.0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Tomada de Preços</td>
-<td align="right">215900.0</td>
+<tr>
+<td style="text-align:left;">
+Tomada de Preços
+</td>
+<td style="text-align:right;">
+215900.0
+</td>
 </tr>
-<tr class="even">
-<td align="left">Dispensa por outros motivos</td>
-<td align="right">76425.0</td>
+<tr>
+<td style="text-align:left;">
+Dispensa por outros motivos
+</td>
+<td style="text-align:right;">
+76425.0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Pregão Presencial</td>
-<td align="right">67142.5</td>
+<tr>
+<td style="text-align:left;">
+Pregão Presencial
+</td>
+<td style="text-align:right;">
+67142.5
+</td>
 </tr>
-<tr class="even">
-<td align="left">Convite</td>
-<td align="right">42000.0</td>
+<tr>
+<td style="text-align:left;">
+Convite
+</td>
+<td style="text-align:right;">
+42000.0
+</td>
 </tr>
 </tbody>
 </table>
 <p>Vejamos, agora, a distruibuição dos valores de licitações para cada modalidade.</p>
 <p><img src="../../../post/transporte-escolar/2019-10-17-transporte-escolar_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>No gráfico acima, a linha preta representa a mediana, e o tamanho do ponto a quantidade de licitações daquela modalidade com aquele valor. Com exceção das modalidades que possuem apenas uma observação, os valores das licitações não se concentram em uma mesma faixa. Vejamos mais detalhes sobre as licitações de valor mais alto.</p>
-<table>
+<table class="table table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Licitação</th>
-<th align="left">Descrição</th>
-<th align="right">Valor (R$)</th>
-<th align="left">Município</th>
+<tr>
+<th style="text-align:left;">
+Licitação
+</th>
+<th style="text-align:left;">
+Descrição
+</th>
+<th style="text-align:right;">
+Valor (R$)
+</th>
+<th style="text-align:left;">
+Município
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">000172016</td>
-<td align="left">LOCACAO DE ONIBUS E KOMBI COM MOTORISTA, MANUTENCAO E ABASTECIMENTO PARA O TRANSPORTE ESCOLAR, JUNTO A SECRETARIA DE EDU</td>
-<td align="right">1876512.0</td>
-<td align="left">Santa Rita</td>
+<tr>
+<td style="text-align:left;">
+000172016
+</td>
+<td style="text-align:left;">
+LOCACAO DE ONIBUS E KOMBI COM MOTORISTA, MANUTENCAO E ABASTECIMENTO PARA O TRANSPORTE ESCOLAR, JUNTO A SECRETARIA DE EDU
+</td>
+<td style="text-align:right;">
+1876512.0
+</td>
+<td style="text-align:left;">
+Santa Rita
+</td>
 </tr>
-<tr class="even">
-<td align="left">000072016</td>
-<td align="left">CONTRATACAO DE PESSOA JURIDICA E PESSOA FISICA PARA LOCACAO DE TRANSPORTE ESCOLAR ATENDENDO AOS ALUNOS DA REDE MUNICIPAL</td>
-<td align="right">1126050.0</td>
-<td align="left">Sousa</td>
+<tr>
+<td style="text-align:left;">
+000072016
+</td>
+<td style="text-align:left;">
+CONTRATACAO DE PESSOA JURIDICA E PESSOA FISICA PARA LOCACAO DE TRANSPORTE ESCOLAR ATENDENDO AOS ALUNOS DA REDE MUNICIPAL
+</td>
+<td style="text-align:right;">
+1126050.0
+</td>
+<td style="text-align:left;">
+Sousa
+</td>
 </tr>
-<tr class="odd">
-<td align="left">000142016</td>
-<td align="left">CONTRATACAO DE EMPRESA ESPECIALIZADA NA PRESTACAO DE SERVICOS DE TRANSPORTE ESCOLAR DE ESTUDANTES.</td>
-<td align="right">1112970.0</td>
-<td align="left">Pocinhos</td>
+<tr>
+<td style="text-align:left;">
+000142016
+</td>
+<td style="text-align:left;">
+CONTRATACAO DE EMPRESA ESPECIALIZADA NA PRESTACAO DE SERVICOS DE TRANSPORTE ESCOLAR DE ESTUDANTES.
+</td>
+<td style="text-align:right;">
+1112970.0
+</td>
+<td style="text-align:left;">
+Pocinhos
+</td>
 </tr>
-<tr class="even">
-<td align="left">000012016</td>
-<td align="left">AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE).</td>
-<td align="right">726300.0</td>
-<td align="left">Alagoinha</td>
+<tr>
+<td style="text-align:left;">
+000012016
+</td>
+<td style="text-align:left;">
+AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE).
+</td>
+<td style="text-align:right;">
+726300.0
+</td>
+<td style="text-align:left;">
+Alagoinha
+</td>
 </tr>
-<tr class="odd">
-<td align="left">000312016</td>
-<td align="left">LOCACAO DE VEICULOS DESTINADOS AO TRANSPORTE DOS ESTUDANTES DA REDE MUNICIPAL E ESTADUAL DE ENSINO DESTE MUNICIPIO - BAN</td>
-<td align="right">688583.3</td>
-<td align="left">Bananeiras</td>
+<tr>
+<td style="text-align:left;">
+000312016
+</td>
+<td style="text-align:left;">
+LOCACAO DE VEICULOS DESTINADOS AO TRANSPORTE DOS ESTUDANTES DA REDE MUNICIPAL E ESTADUAL DE ENSINO DESTE MUNICIPIO - BAN
+</td>
+<td style="text-align:right;">
+688583.3
+</td>
+<td style="text-align:left;">
+Bananeiras
+</td>
 </tr>
-<tr class="even">
-<td align="left">000042016</td>
-<td align="left">CONTRATACAO VISANDO A PRESTACAO DE SERVICO DE LOCACAO DE VEICULOS PARA O TRANSPORTE ESCOLAR, PARA ATENDER AS NECESSIDADE</td>
-<td align="right">657690.0</td>
-<td align="left">Queimadas</td>
+<tr>
+<td style="text-align:left;">
+000042016
+</td>
+<td style="text-align:left;">
+CONTRATACAO VISANDO A PRESTACAO DE SERVICO DE LOCACAO DE VEICULOS PARA O TRANSPORTE ESCOLAR, PARA ATENDER AS NECESSIDADE
+</td>
+<td style="text-align:right;">
+657690.0
+</td>
+<td style="text-align:left;">
+Queimadas
+</td>
 </tr>
-<tr class="odd">
-<td align="left">280022016</td>
-<td align="left">AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE</td>
-<td align="right">640000.0</td>
-<td align="left">Monteiro</td>
+<tr>
+<td style="text-align:left;">
+280022016
+</td>
+<td style="text-align:left;">
+AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE
+</td>
+<td style="text-align:right;">
+640000.0
+</td>
+<td style="text-align:left;">
+Monteiro
+</td>
 </tr>
-<tr class="even">
-<td align="left">280022016</td>
-<td align="left">AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE</td>
-<td align="right">640000.0</td>
-<td align="left">Monteiro</td>
+<tr>
+<td style="text-align:left;">
+280022016
+</td>
+<td style="text-align:left;">
+AQUISICAO DE TRANSPORTE ESCOLAR DIARIO DE ESTUDANTES, DENOMINADO DE ONIBUS RURAL ESCOLAR (ORE), PROVENIENTE DA ATA DE RE
+</td>
+<td style="text-align:right;">
+640000.0
+</td>
+<td style="text-align:left;">
+Monteiro
+</td>
 </tr>
-<tr class="odd">
-<td align="left">206092016</td>
-<td align="left">CONTRATACAO DE EMPRESA ESPECIALIZADA NOS SERVICOS DE LOCACAO DE TRANSPORTE ESCOLAR VISANDO GARANTIR AOS ALUNOS DAS ESCOL</td>
-<td align="right">597720.2</td>
-<td align="left">Campina Grande</td>
+<tr>
+<td style="text-align:left;">
+206092016
+</td>
+<td style="text-align:left;">
+CONTRATACAO DE EMPRESA ESPECIALIZADA NOS SERVICOS DE LOCACAO DE TRANSPORTE ESCOLAR VISANDO GARANTIR AOS ALUNOS DAS ESCOL
+</td>
+<td style="text-align:right;">
+597720.2
+</td>
+<td style="text-align:left;">
+Campina Grande
+</td>
 </tr>
-<tr class="even">
-<td align="left">000482016</td>
-<td align="left">CONTRATACAO DE VEICULOS PARA TRANSPORTE ESCOLAR DA ZONA RURAL A ZONA URBANA NESTE MUNICIPIO</td>
-<td align="right">587520.0</td>
-<td align="left">Catolé do Rocha</td>
+<tr>
+<td style="text-align:left;">
+000482016
+</td>
+<td style="text-align:left;">
+CONTRATACAO DE VEICULOS PARA TRANSPORTE ESCOLAR DA ZONA RURAL A ZONA URBANA NESTE MUNICIPIO
+</td>
+<td style="text-align:right;">
+587520.0
+</td>
+<td style="text-align:left;">
+Catolé do Rocha
+</td>
 </tr>
 </tbody>
 </table>
@@ -453,7 +590,7 @@ As licitações de Igaracy ocorreram nos meses de março a junho, e todas para c
 </div>
 <div id="consideracoes" class="section level1">
 <h1>Considerações</h1>
-<p>A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R$ 50,00, ou seja, R$ 0.25 por dia letivo. Apenas um município do estado investiu mais de R$ 300,00 por aluno durante 2016.</p>
+<p>A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R$ 50,00, ou seja, R$ 0.25 por dia letivo. Apenas um município do estado investiu mais de R$ 300,00 por aluno durante 2016. É importante observar que existem municípios que fazem licitações para transporte de alunos junto com outros tipos de transportes no geral, aumentando a estimativa do valor gasto por aluno em cada município.</p>
 </div>
 
               
