@@ -35,6 +35,7 @@ library(here)
 library(ggplot2)
 library(readr)
 library(knitr)
+library(kableExtra)
 library(hrbrthemes)
 
 options(scipen = 999)
@@ -79,10 +80,11 @@ licitacoes %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    subtitle = "Número de licitações de transporte escolar por mês em 2016",
+    title = "Número de licitações de transporte escolar por mês \nem 2016",
     x = "Mês",
     y = "Licitações"
-  )
+  ) +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 O mês de maio foi o que teve maior número de licitações de transporte escolar, seguido de junho e julho, respectivamente. Isso chama atenção, pois o esperado é que a maioria das licitações ocorram nos primeiros meses, quando são firmados os contratos do ano inteiro. 
@@ -110,12 +112,13 @@ licitacoes_municipios %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    subtitle = "Municípios que mais realizaram licitações de transporte \nescolar em 2016",
+    title = "Municípios que mais realizaram licitações de \ntransporte escolar em 2016",
     x = "Município",
     y = "Quantidade de licitações"
   ) +
   scale_y_continuous(breaks = seq(0, 9, 1)) +
-  coord_flip()
+  coord_flip() +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 Entre os municípios que mais realizaram licitações, os que mais se destacaram foram Igaracy e Água Branca.
@@ -166,7 +169,8 @@ licitacoes %>%
   kable(
     col.names = c("Título", "Porcentagem (%)"),
     row.names = FALSE
-  )
+  ) %>%
+  kable_styling(bootstrap_options = c("condensed"))
 ```
 
 Mais de 70% das licitações estão relacionadas à contratação de empresa, pessoa fisíca ou pessoa jurídica para prestar serviços ao transporte escolar dos municípios.
@@ -188,11 +192,12 @@ licitacoes %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    subtitle = "Quantidade de licitações de cada modalidade",
+    title = "Quantidade de licitações de cada modalidade",
     x = NULL,
     y = "Licitações"
   ) +
-  coord_flip()
+  coord_flip() +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 A modalidade mais comum nas licitações sobre transporte escolar é o **Pregão Presencial**. Nas versões presencial e eletrônica, o pregão não determina limites para os valores, sendo que a disputa ocorre durante sessão pública. O vencedor é o concorrente que oferece o menor preço.
@@ -208,10 +213,11 @@ licitacoes %>%
   geom_jitter(colour = "dodgerblue4") +
   scale_y_log10() +
   labs(
-    subtitle = "Relação entre a quantidade de propostas e o valor \nde uma licitação",
+    title = "Relação entre a quantidade de propostas e o valor \nde uma licitação",
     x = "Propostas",
     y = "Valor (em milhares)"
-  )
+  ) +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 Licitações de valores mais altos receberam mais propostas. Embora existam licitações de valor alto que receberam poucas propostas, não é possível ver no gráfico, por exemplo, licitações que receberam mais que 10 propostas com valor menor que R\$ 100 mil. 
@@ -236,7 +242,8 @@ licitacoes.mediana %>%
   kable(
     row.names = FALSE,
     col.names = c("Modalidade", "Mediana do Valor (R$)")
-  )
+  ) %>%
+  kable_styling(bootstrap_options = c("condensed"))
 ```
 
 Vejamos, agora, a distruibuição dos valores de licitações para cada modalidade. 
@@ -258,7 +265,7 @@ licitacoes.mediana %>%
     shape = 124
   ) +
   labs(
-    subtitle = "Distribuição dos valores de licitações",
+    title = "Distribuição dos valores de licitações",
     x = "Modalidade",
     y = "Valor (em milhares)"
   ) +
@@ -268,7 +275,7 @@ licitacoes.mediana %>%
   ) +
   scale_y_log10() +
   coord_flip() +
-  scale_color_ipsum()
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 No gráfico acima, a linha preta representa a mediana, e o tamanho do ponto a quantidade de licitações daquela modalidade com aquele valor. Com exceção das modalidades que possuem apenas uma observação, os valores das licitações não se concentram em uma mesma faixa. Vejamos mais detalhes sobre as licitações de valor mais alto.
@@ -292,7 +299,8 @@ licitacoes.caras %>%
   kable(
     row.names = FALSE,
     col.names = c("Licitação", "Descrição", "Valor (R$)", "Município")
-  )
+  ) %>%
+  kable_styling(bootstrap_options = c("condensed"))
 ```
 
 Olhando mais de perto a licitação mais cara, vemos que ela trata da locação e manutenção de ônibus e kombi com motorista para o transporte escolar na cidade de Santa Rita. O número de propostas recebidas por esta licitação foi 19, um número alto em comparação com outras licitações, e é o mesmo número de contratos associados a esta licitação. Ou seja, todos os 19 fornecedores que fizeram alguma proposta foram contratados para a prestação do serviço. 
@@ -326,7 +334,8 @@ fornecedores %>%
     y = "Valor recebido (em milhares)"
   ) +
   scale_y_log10() +
-  coord_flip()
+  coord_flip() +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 ALUYLSON PESSOA DOS SANTOS - ME foi o fornecedor com maior valor recebido dentre os empenhos de transporte escolar em 2016, com total aproximado de R$1.84 mi. Temos três licitações associadas a esse fornecedor, todas para contratação de empresa para locação de transporte para três cidades diferentes: Queimadas, Pocinhos e Campina Grande.
@@ -359,12 +368,13 @@ pagamentos.municipio %>%
     fill = "dodgerblue4"
   ) +
   labs(
-    subtitle = "Municípios que mais gastaram com \ntransporte escolar",
-    x = NULL,
+    title = "Municípios que mais gastaram com \ntransporte escolar",
+    x = "Município",
     y = "Total pago (em milhares)"
   ) +
   scale_y_log10() +
-  coord_flip()
+  coord_flip() +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 O município de Sousa é um dos municípios que mais gastou em pagamentos relacionados a contratos de transporte escolar. Analisando o número da população dos municípios listados acima, vemos que existe uma grande diferença entre eles. Isso nos leva a suspeitar que a população de uma cidade não influencia nos gastos com transporte escolar.
@@ -438,14 +448,15 @@ empenhos_nao_pagos %>%
     hjust = -0.5
   ) +
   labs(
-    subtitle = "Total empenhado pelos municípios que não realizaram \npagamentos",
+    title = "Total empenhado pelos municípios que não realizaram \npagamentos",
     x = "Municípios",
     y = "Valor empenhado (milhares)"
   ) +
   scale_y_continuous(
     breaks = seq(0, 700, 100),
     limits = c(0, 700)
-  )
+  ) +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 Os municípios de Monteiro e Pedra Branca realizaram empenhos com valores altos, mas não há, nos dados, nenhum pagamento desses municípios. 
@@ -482,7 +493,7 @@ gasto_municipio_aluno %>%
     colour = "white"
   ) +
   labs(
-    subtitle = "Distribuição do total gasto por aluno em 2016",
+    title = "Distribuição do total gasto por aluno em 2016",
     x = "Total gasto",
     y = "Ocorrências"
   ) +
@@ -490,7 +501,8 @@ gasto_municipio_aluno %>%
   scale_y_continuous(
     breaks = seq(0, 18, 2),
     limits = c(0, 18)
-  )
+  ) +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 A maioria das cidades gastam no máximo até R$ 50,00 por aluno com transporte escolar durante um ano, e poucos municípios gastam mais que R\$ 100. Quais são esses municípios?
@@ -516,16 +528,17 @@ gasto_municipio_aluno %>%
     colour = "dodgerblue4"
   ) +
   labs(
-    subtitle = "Municípios que mais gastaram com \ntransporte escolar por aluno",
+    title = "Municípios que mais gastaram com \ntransporte escolar por aluno",
     caption = "Estimativa realizada com base em dados sobre alunos matriculados em 2015",
     x = NULL,
     y = "Total gasto"
   ) +
-  coord_flip()
+  coord_flip() +
+  theme(title = element_text(colour = "#4a4a4a"))
 ```
 
 O total gasto por aluno varia de aproximadamente R\$ 150.00 a R\$ 300,00. O município de Alcantil foi o que mais gastou, totalizando um pouco mais de R\$ 300,00. Ao considerarmos que um ano letivo tem aproximadamente 200 dias, cerca de R$ 1,50 foi gasto por dia para cada aluno. Notamos, ao analisar o IDEB deste município, que ele está entre os 25 municípios do estado que possuem os melhores índices de educação.
 
 # Considerações
 
-A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R\$ 50,00, ou seja, R\$ 0.25 por dia letivo. Apenas um município do estado investiu mais de R\$ 300,00 por aluno durante 2016.
+A partir das análises realizadas vimos que neste ano as licitações ocorerram com mais frequência entre os meses de maio e julho. A maioria dessas licitações são da modalidade Pregão Presencial e tratam mais sobre locação e contratação de serviços para o transporte escolar. As licitações de valores mais altos são as que mais recebem propostas, e esses valores não se concentram em uma mesma faixa. Vimos também que na maioria dos municípios o investimento por aluno com transporte escolar é de aproximadamente R\$ 50,00, ou seja, R\$ 0.25 por dia letivo. Apenas um município do estado investiu mais de R\$ 300,00 por aluno durante 2016. É importante observar que existem municípios que fazem licitações para transporte de alunos junto com outros tipos de transportes no geral, aumentando a estimativa do valor gasto por aluno em cada município.
