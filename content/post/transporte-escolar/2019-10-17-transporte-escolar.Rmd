@@ -38,6 +38,22 @@ library(knitr)
 library(kableExtra)
 library(hrbrthemes)
 
+library(RColorBrewer)
+library(scales)
+
+library(tm)
+library(wordcloud)
+library(stringr)
+
+library(maps)
+library(ggmap)
+library(rgdal)
+library(leaflet)
+library(htmltools)
+
+library(knitr)
+library(methods)
+
 options(scipen = 999)
 theme_set(theme_ipsum_rc())
 ```
@@ -355,26 +371,52 @@ pagamentos.municipio <- pagamentos %>%
   group_by(de_Municipio) %>%
   summarise(total = sum(vl_Pagamento)) %>%
   ungroup()
+```
 
-pagamentos.municipio %>%
-  top_n(10, wt = total) %>%
-  ggplot(aes(
-    x = reorder(de_Municipio, total),
-    y = total / 1000
-  )) +
-  geom_bar(
-    stat = "identity",
-    width = .5,
-    fill = "dodgerblue4"
-  ) +
-  labs(
-    title = "Municípios que mais gastaram com \ntransporte escolar",
-    x = "Município",
-    y = "Total pago (em milhares)"
-  ) +
-  scale_y_log10() +
-  coord_flip() +
-  theme(title = element_text(colour = "#4a4a4a"))
+```{r }
+mapa_paraiba <- readOGR("../../../utils/dados/mapa_paraiba_ibge/Municipios.shp", verbose = FALSE)
+```
+
+```{r}
+mapa_paraiba@data$Nome_Munic = as.character(mapa_paraiba@data$Nome_Munic)
+paraiba = pagamentos.municipio %>%
+  inner_join(mapa_paraiba@data, c('de_Municipio' = 'Nome_Munic'))
+```
+
+```{r}
+paraiba$total = cut(paraiba$total,
+                                breaks = c(5000, 10000, 50000, 100000, 500000, 1000000, 1500000),
+                                labels = c("de 5 mil a 10 mil", "de 10 mil a 50 mil", "de 50 mil  a 100 mil", "de 100 mil  a 500 mil", "de 500 mil a 1 milhão", "Acima de 1 milhão"),
+                                include.lowest = T)
+```
+
+```{r}
+levels_mapa = mapa_paraiba@data$Nome_Munic
+paraiba_municipios = data.frame(levels_mapa, mapa_paraiba@data$OBJECTID)
+paraiba_municipios = paraiba_municipios %>% left_join(paraiba, c('levels_mapa' = 'de_Municipio'))
+```
+
+```{r}
+colors = brewer.pal(7, "YlOrRd")
+mapa_paraiba@data$X <- paraiba_municipios$total
+colors = colorFactor('OrRd', mapa_paraiba@data$X)
+```
+
+```{r}
+leaflet(data = mapa_paraiba) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+  addPolygons(opacity = 0.5,
+              weight = 1,
+              fillColor = colors(mapa_paraiba@data$X),
+              color = 'black',
+              label = paste(mapa_paraiba@data$Nome_Munic),
+              popup = paste("Município: ", str_to_upper(mapa_paraiba@data$Nome_Munic), "</br>",
+                            "Número de Licitações: ", mapa_paraiba@data$X),
+              fillOpacity = 1) %>%
+  addLegend(position = "bottomright", pal = colors, values = mapa_paraiba@data$X,
+            title = "Total pago por município",
+            opacity = 1, na.label = "0"
+  )
 ```
 
 O município de Sousa é um dos municípios que mais gastou em pagamentos relacionados a contratos de transporte escolar. Analisando o número da população dos municípios listados acima, vemos que existe uma grande diferença entre eles. Isso nos leva a suspeitar que a população de uma cidade não influencia nos gastos com transporte escolar.
